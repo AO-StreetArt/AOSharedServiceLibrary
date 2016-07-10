@@ -15,4 +15,9 @@ void send_zmqo_message(const char * msg, int msg_size);
 
 void send_zmqo_str_message(std::string &msg);
 
+//Convert a ZMQ Message to a std::string
+inline std::string hexDump ( zmq::message_t &aMessage ) {
+return std::string(static_cast<char*>(aMessage.data()), aMessage.size());
+}
+
 #endif

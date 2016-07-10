@@ -1,4 +1,4 @@
-#include "couchbase_admin.h"
+#include "include/couchbase_admin.h"
 
 void CouchbaseAdmin::initialize (const char * conn)
 {

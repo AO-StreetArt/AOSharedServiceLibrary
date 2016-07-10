@@ -6,7 +6,8 @@
 //the couchbase engine, which are called upon
 //completion of the asynchronous threads
 
-#include "db_admin.h"
+#include "include/db_admin.h"
+#include "include/writeable.h"
 
 #include <sstream>
 #include <string>
