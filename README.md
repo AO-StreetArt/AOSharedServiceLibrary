@@ -1,4 +1,4 @@
-# Project CLyman
+# AO Shared Service Library 
 
 ## Build Status
 * Project - Successful
@@ -12,7 +12,7 @@ Features:
 * Couchbase Administrator with cluster support
 * Redis Administrator with cluster support
 * HTTP Request Administrator
-* Logging Module
+* Asynchronous Logging Module
 * UUID Generator
 * Outbound ZMQ Socket
 
