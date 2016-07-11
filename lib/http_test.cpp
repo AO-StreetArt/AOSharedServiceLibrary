@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 
     //Logging
 
-    std::string initFileName = "log4cpp.properties";
+    std::string initFileName = "test/log4cpp_test.properties";
     try {
     	log4cpp::PropertyConfigurator::configure(initFileName);
     }
@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 
     //-------------------------------PUT--------------------------------------//
 
-    success = ha.put(PUTURL, 5);
+    success = ha.put(PUTURL, "123", 5);
     if (!success)
     {
       //We now have the full response

@@ -4,7 +4,7 @@
 int main()
 {
   //Set up logging
-  std::string initFileName = "log4cpp.properties";
+  std::string initFileName = "test/log4cpp_test.properties";
   try {
   	log4cpp::PropertyConfigurator::configure(initFileName);
   }

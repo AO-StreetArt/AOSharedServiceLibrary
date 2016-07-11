@@ -35,7 +35,7 @@ int main()
 //Read the Redis Configuration File
 //Open the file
 std::string line;
-std::ifstream file ("redis.properties");
+std::ifstream file ("test/redis.properties");
 
 if (file.is_open()) {
   while (getline (file, line) ) {
@@ -105,7 +105,7 @@ if (file.is_open()) {
 
 //Read the Logging Configuration File
 try {
-  log4cpp::PropertyConfigurator::configure("logging.properties");
+  log4cpp::PropertyConfigurator::configure("test/logging.properties");
 }
 catch ( log4cpp::ConfigureFailure &e ) {
   std::cout << "[log4cpp::ConfigureFailure] caught while reading logging.properties" << std::endl;

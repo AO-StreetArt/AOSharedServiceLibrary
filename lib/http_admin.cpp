@@ -27,22 +27,21 @@ bool HttpAdmin::send(char * url, int timeout)
   return ret;
 }
 
-//Needs a Read function and pointer registered
-bool HttpAdmin::put(char * url, int timeout)
+bool HttpAdmin::put(char * url, char * data, int timeout)
 {
   logging->debug("HTTP: Put Initiated");
   curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
   return send(url, timeout);
 }
 
-//Needs a Read function and pointer registered
+//Needs a write function registered
 bool HttpAdmin::get(char * url, int timeout)
 {
   logging->debug("HTTP: Get Initiated");
   return send(url, timeout);
 }
 
-//Needs a write function registered
 bool HttpAdmin::post(char * url, char * data, int timeout)
 {
   logging->debug("HTTP: Post Initiated with data:");

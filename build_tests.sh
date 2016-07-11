@@ -27,11 +27,13 @@ then
     g++ -g -c -o lib/couchbase_test.o lib/couchbase_test.cpp -std=c++11
     g++ -g -o cb_test lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o -lpthread -llog4cpp -lcouchbase -std=c++11
 
-    #Finally, the Redis tests:
+    #Next, the Redis tests:
     g++ -g -c -o lib/redis_test.o lib/redis_test.cpp -std=c++11
     g++ -g -o redis_test lib/logging.o lib/xredis_admin.o lib/redis_test.o -lpthread -llog4cpp -lxredis `pkg-config --cflags --libs hiredis` -std=c++11
 
-
+    #Finally, we build the ZMQ Tests
+    g++ -g -c -o lib/zmqio_test.o lib/zmqio_test.cpp
+    g++ -g -o zmqio_test lib/logging.o lib/zmqio.o lib/zmqio_test.o -lpthread -llog4cpp -lzmq -std=c++11
 
     echo "Debugger Lines Set"
 
@@ -55,8 +57,12 @@ else
   g++ -c -o lib/couchbase_test.o lib/couchbase_test.cpp -std=c++11
   g++ -o cb_test lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o -lpthread -llog4cpp -lcouchbase -std=c++11
 
-  #Finally, the Redis tests:
+  #Next, the Redis tests:
   g++ -c -o lib/redis_test.o lib/redis_test.cpp -std=c++11
   g++ -o redis_test lib/logging.o lib/xredis_admin.o lib/redis_test.o -lpthread -llog4cpp -lxredis `pkg-config --cflags --libs hiredis` -std=c++11
+
+  #Finally, we build the ZMQ Tests
+  g++ -c -o lib/zmqio_test.o lib/zmqio_test.cpp
+  g++ -o zmqio_test lib/logging.o lib/zmqio.o lib/zmqio_test.o -lpthread -llog4cpp -lzmq -std=c++11
 
 fi

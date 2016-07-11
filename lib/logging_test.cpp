@@ -9,7 +9,7 @@ void test_func(std::string msg)
 
 int main()
 {
-  std::string initFileName = "log4cpp.properties";
+  std::string initFileName = "test/log4cpp_test.properties";
   try {
   	log4cpp::PropertyConfigurator::configure(initFileName);
   }
