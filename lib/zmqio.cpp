@@ -16,16 +16,16 @@ Zmqi::~Zmqi()
 //Bind the inbound socket
 void Zmqi::bind(std::string conn_str)
 {
-  zmqi->bind(conn_str;
+  zmqi->bind(conn_str);
 }
 
 //Recieve an inbound message
-std::string Zmqi::recv();
+std::string Zmqi::recv()
 {
   zmq::message_t request;
 
   //  Wait for next request from client
-  socket.recv (&request);
+  zmqi->recv (&request);
   logging->info("ZMQ: Inbound Request Recieved");
 
   //Convert the OMQ message into a string to be passed
@@ -44,7 +44,7 @@ void Zmqi::send(const char * msg, int msg_size)
   //Prepare return data
   memcpy (reply.data (), msg, msg_size);
   //Send the response
-  socket.send (reply);
+  zmqi->send (reply);
   logging->info("ZMQ: Inbound Response Sent");
   logging->debug(msg);
 }

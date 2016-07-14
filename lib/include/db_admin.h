@@ -15,8 +15,8 @@ public:
 	~DBAdmin() {}
 	//Basic CRUD Operations
 	virtual void load_object ( const char * key ) = 0;
-	virtual void save_object ( Writeable const *obj ) = 0;
-	virtual void create_object (Writeable const *obj ) = 0;
+	virtual void save_object ( Writeable *obj ) = 0;
+	virtual void create_object (Writeable *obj ) = 0;
 	virtual void delete_object (const char * key) = 0;
 
 	//If the engine is asynchronous, wait for the

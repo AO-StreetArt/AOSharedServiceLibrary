@@ -17,7 +17,7 @@ then
 
     #We build the UUID Tests
     g++ -g -c -o lib/uuid_test.o lib/uuid_test.cpp -std=c++11
-    g++ -g -o uuid_test lib/logging.o lib/uuid_admin.o  -lpthread -llog4cpp -luuid -std=c++11
+    g++ -g -o uuid_test lib/logging.o lib/uuid_admin.o lib/uuid_test.o -lpthread -llog4cpp -luuid -std=c++11
 
     #We have the HTTP Tests
     g++ -g -c -o lib/http_test.o lib/http_test.cpp -std=c++11
@@ -47,7 +47,7 @@ else
 
   #We build the UUID Tests
   g++ -c -o lib/uuid_test.o lib/uuid_test.cpp -std=c++11
-  g++ -o uuid_test lib/logging.o lib/uuid_admin.o  -lpthread -llog4cpp -luuid -std=c++11
+  g++ -o uuid_test lib/logging.o lib/uuid_admin.o lib/uuid_test.o -lpthread -llog4cpp -luuid -std=c++11
 
   #We have the HTTP Tests
   g++ -c -o lib/http_test.o lib/http_test.cpp -std=c++11

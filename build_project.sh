@@ -24,7 +24,7 @@ then
 
     #We compile the Outbound ZMQ Socket
 
-    g++ -g -c -o lib/zmqo.o lib/zmqo.cpp -std=c++11
+    g++ -g -c -o lib/zmqio.o lib/zmqio.cpp -std=c++11
 
     #We then build the couchbase admin:
 
@@ -54,7 +54,7 @@ else
 
   #We compile the Outbound ZMQ Socket
 
-  g++ -c -o lib/zmqo.o lib/zmqo.cpp -std=c++11
+  g++ -c -o lib/zmqio.o lib/zmqio.cpp -std=c++11
 
   #We then build the couchbase admin:
 
@@ -74,4 +74,4 @@ fi
 
 #Build the static library
 
-ar rcs libaossl.a.$version_major.$version_minor lib/logging.o lib/http_admin.o lib/zmqo.o lib/couchbase_admin.o lib/xredis_admin.o lib/uuid_admin.o
+ar rcs libaossl.a.$version_major.$version_minor lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/uuid_admin.o

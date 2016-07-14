@@ -24,9 +24,10 @@ public:
     json_str = json_str.append(istr);
     json_str = json_str.append(", j:");
     json_str = json_str.append(jstr);
-    json_str = json_str.append("}")
+    json_str = json_str.append("}");
+    return json_str;
   }
-}
+};
 
 static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t op,
    lcb_error_t err, const lcb_store_resp_t *resp)
@@ -92,7 +93,7 @@ cb.load_object ( obj_key );
 cb.wait();
 printf("Load Object Tested");
 //Update the object in the DB
-obj.set_name ( "Weeee" );
+data.set_name ( "Weeee" );
 cb.save_object ( obj_ptr );
 cb.wait();
 printf("Save Object Tested");

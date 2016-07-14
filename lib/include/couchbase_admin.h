@@ -6,8 +6,8 @@
 //the couchbase engine, which are called upon
 //completion of the asynchronous threads
 
-#include "include/db_admin.h"
-#include "include/writeable.h"
+#include "db_admin.h"
+#include "writeable.h"
 
 #include <sstream>
 #include <string>
@@ -46,8 +46,8 @@ public:
 
 	//Object CRUD Operations
 	void load_object ( const char * key );
-	void save_object ( Writeable const *obj );
-	void create_object ( Writeable const *obj );
+	void save_object ( Writeable *obj );
+	void create_object ( Writeable *obj );
 	void delete_object ( const char * key );
 
 	//Get the instance, needed for binding callbacks

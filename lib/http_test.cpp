@@ -29,7 +29,7 @@ return size*nmemb;
 
 //-----------------------------MAIN METHOD------------------------------------//
 
-int main(int argc, char* argv[])
+int main()
 {
   if (argc > 0)
   {

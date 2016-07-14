@@ -1,5 +1,8 @@
 //This Interface Defines an object that is writeable to Couchbase
 
+#include <string>
+#include <string.h>
+
 #ifndef WRITEABLE
 #define WRITEABLE
 
@@ -10,6 +13,6 @@ public:
   virtual bool set_key(std::string new_key) = 0;
   //Convert the object to JSON
   virtual std::string to_json() = 0;
-}
+};
 
 #endif

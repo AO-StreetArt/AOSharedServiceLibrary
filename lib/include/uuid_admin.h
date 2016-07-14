@@ -11,9 +11,7 @@
 class uuidAdmin
 {
 public:
-	uuidAdmin();
-	~uuidAdmin();
 	std::string generate();
-}
+};
 
 #endif

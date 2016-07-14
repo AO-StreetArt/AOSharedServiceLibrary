@@ -1,0 +1,9 @@
+*.o
+*.properties
+*.log
+*.log.*
+*.cc
+*.pb.*
+*_test
+*_benchmark
+*.a.*

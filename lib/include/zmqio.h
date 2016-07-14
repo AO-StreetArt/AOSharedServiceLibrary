@@ -17,7 +17,7 @@ public:
   virtual std::string recv() = 0;
   virtual void send(const char * msg, int msg_size) = 0;
   virtual void send(std::string msg) = 0;
-}
+};
 
 class Zmqo: public Zmqio
 {
@@ -29,7 +29,7 @@ public:
   void send(const char * msg, int msg_size);
   void send_str(std::string &msg);
   std::string recv();
-}
+};
 
 class Zmqi: public Zmqio
 {
@@ -41,5 +41,5 @@ public:
   std::string recv();
   void send(const char * msg, int msg_size);
   void send_str(std::string msg);
-}
+};
 #endif

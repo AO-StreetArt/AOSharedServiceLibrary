@@ -65,7 +65,7 @@ void CouchbaseAdmin::load_object ( const char * key )
 	}
 }
 
-void CouchbaseAdmin::save_object ( Writeable const *obj )
+void CouchbaseAdmin::save_object ( Writeable *obj )
 {
 	logging->info("CB_Admin:DB: Object being saved");
 	lcb_store_cmd_t scmd;
@@ -85,7 +85,7 @@ void CouchbaseAdmin::save_object ( Writeable const *obj )
         }
 }
 
-void CouchbaseAdmin::create_object ( Writeable const *obj )
+void CouchbaseAdmin::create_object ( Writeable *obj )
 {
 	logging->info("CB_Admin:Create Object Called");
 	lcb_error_t err;

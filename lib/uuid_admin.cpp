@@ -1,8 +1,8 @@
 #include "include/uuid_admin.h"
 
 //Constructor & Destructor
-uuidAdmin::uuidAdmin() {}
-uuidAdmin::~uuidAdmin() {}
+//uuidAdmin::uuidAdmin() {}
+//uuidAdmin::~uuidAdmin() {}
 
 //Generate a new UUID
 std::string uuidAdmin::generate()

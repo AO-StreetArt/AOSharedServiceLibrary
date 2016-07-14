@@ -1,6 +1,6 @@
 //Tests for the Zmqio Module
 
-#include "zmqio.h"
+#include "include/zmqio.h"
 
 int main()
 {
