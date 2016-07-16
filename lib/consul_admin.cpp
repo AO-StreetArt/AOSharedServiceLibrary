@@ -88,8 +88,8 @@ std::string Service::to_json()
   writer.String( addr.c_str(), (rapidjson::SizeType)addr.length() );
 
   writer.Key("Port");
-  std::string name = port;
-  writer.String( port.c_str(), (rapidjson::SizeType)port.length() );
+  std::string p = port;
+  writer.String( p.c_str(), (rapidjson::SizeType)p.length() );
 
   writer.EndObject();
 
@@ -178,7 +178,7 @@ bool ConsulAdmin::deregister_service(Service& s)
 {
   //Get the URL
   std::string url_string = "/v1/agent/service/deregister/";
-  url_string = url_string.append(id);
+  url_string = url_string.append(s.get_id());
   url_string = build_url(url_string);
   const char * url_cstr = url_string.c_str();
   char *url = new char[url_string.length() + 1];
@@ -266,7 +266,7 @@ bool ConsulAdmin::set_config_value(std::string key, std::string val)
   strcpy(body, body_cstr);
 
   //Send the HTTP Request
-  bool success = ha->put(url, data, timeout);
+  bool success = ha->put(url, body, timeout);
   delete body;
   delete url;
   if (success)
@@ -284,11 +284,6 @@ std::string ConsulAdmin::get_config_value(std::string key)
 {
   std::string url = "/v1/kv/";
   url = url.append(key);
-  if (!data_center.empty())
-  {
-    url = url.append("?dc=");
-    url = url.append(data_center);
-  }
   return query(url);
 }
 
