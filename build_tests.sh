@@ -33,7 +33,7 @@ then
 
     #Next, the Consul tests:
     g++ -g -c -o lib/consul_test.o lib/consul_test.cpp -std=c++11
-    g++ -g -o consul_test lib/logging.o lib/http_admin.o lib/consul_admin.o -lpthread -llog4cpp -lcurl -std=c++11
+    g++ -g -o consul_test lib/logging.o lib/http_admin.o lib/consul_admin.o lib/consul_test.o -lpthread -llog4cpp -lcurl -std=c++11
 
     #Finally, we build the ZMQ Tests
     g++ -g -c -o lib/zmqio_test.o lib/zmqio_test.cpp
@@ -67,7 +67,7 @@ else
 
   #Next, the Consul tests:
   g++ -c -o lib/consul_test.o lib/consul_test.cpp -std=c++11
-  g++ -o consul_test lib/logging.o lib/http_admin.o lib/consul_admin.o -lpthread -llog4cpp -lcurl -std=c++11
+  g++ -o consul_test lib/logging.o lib/http_admin.o lib/consul_admin.o lib/consul_test.o -lpthread -llog4cpp -lcurl -std=c++11
 
   #Finally, we build the ZMQ Tests
   g++ -c -o lib/zmqio_test.o lib/zmqio_test.cpp
