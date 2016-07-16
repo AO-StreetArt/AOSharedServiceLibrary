@@ -22,7 +22,7 @@ then
 
     g++ -g -c -o lib/http_admin.o lib/http_admin.cpp -std=c++11
 
-    #We compile the Outbound ZMQ Socket
+    #We compile the Inbound & Outbound ZMQ Socket managers
 
     g++ -g -c -o lib/zmqio.o lib/zmqio.cpp -std=c++11
 
@@ -33,6 +33,10 @@ then
     #Now, we build the Redis Admin
 
     g++ -g -c -o lib/xredis_admin.o lib/xredis_admin.cpp -std=c++11
+
+    #Next, we build the Consul Admin
+
+    g++ -g -c -o lib/consul_admin.o lib/consul_admin.cpp -std=c++11
 
     #Finally, We build the UUID Admin
 
@@ -52,7 +56,7 @@ else
 
   g++ -c -o lib/http_admin.o lib/http_admin.cpp -std=c++11
 
-  #We compile the Outbound ZMQ Socket
+  #We compile the Inbound & Outbound ZMQ Socket managers
 
   g++ -c -o lib/zmqio.o lib/zmqio.cpp -std=c++11
 
@@ -64,6 +68,10 @@ else
 
   g++ -c -o lib/xredis_admin.o lib/xredis_admin.cpp -std=c++11
 
+  #Next, we build the Consul Admin
+
+  g++ -c -o lib/consul_admin.o lib/consul_admin.cpp -std=c++11
+
   #Finally, We build the UUID Admin
 
   g++ -c -o lib/uuid_admin.o lib/uuid_admin.cpp -std=c++11
@@ -74,4 +82,4 @@ fi
 
 #Build the static library
 
-ar rcs libaossl.a.$version_major.$version_minor lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/uuid_admin.o
+ar rcs libaossl.a.$version_major.$version_minor lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/uuid_admin.o

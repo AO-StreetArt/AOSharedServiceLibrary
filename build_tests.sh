@@ -31,6 +31,10 @@ then
     g++ -g -c -o lib/redis_test.o lib/redis_test.cpp -std=c++11
     g++ -g -o redis_test lib/logging.o lib/xredis_admin.o lib/redis_test.o -lpthread -llog4cpp -lxredis `pkg-config --cflags --libs hiredis` -std=c++11
 
+    #Next, the Consul tests:
+    g++ -g -c -o lib/consul_test.o lib/consul_test.cpp -std=c++11
+    g++ -g -o consul_test lib/logging.o lib/http_admin.o lib/consul_admin.o -lpthread -llog4cpp -lcurl -std=c++11
+
     #Finally, we build the ZMQ Tests
     g++ -g -c -o lib/zmqio_test.o lib/zmqio_test.cpp
     g++ -g -o zmqio_test lib/logging.o lib/zmqio.o lib/zmqio_test.o -lpthread -llog4cpp -lzmq -std=c++11
@@ -60,6 +64,10 @@ else
   #Next, the Redis tests:
   g++ -c -o lib/redis_test.o lib/redis_test.cpp -std=c++11
   g++ -o redis_test lib/logging.o lib/xredis_admin.o lib/redis_test.o -lpthread -llog4cpp -lxredis `pkg-config --cflags --libs hiredis` -std=c++11
+
+  #Next, the Consul tests:
+  g++ -c -o lib/consul_test.o lib/consul_test.cpp -std=c++11
+  g++ -o consul_test lib/logging.o lib/http_admin.o lib/consul_admin.o -lpthread -llog4cpp -lcurl -std=c++11
 
   #Finally, we build the ZMQ Tests
   g++ -c -o lib/zmqio_test.o lib/zmqio_test.cpp

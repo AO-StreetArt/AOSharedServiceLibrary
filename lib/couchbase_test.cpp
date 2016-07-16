@@ -101,6 +101,9 @@ data.set_i ( 10 );
 cb.save_object ( obj_ptr );
 cb.wait();
 printf("Save Object Tested");
+//Get the object from the DB to ensure it updates correctly
+cb.load_object ( obj_key );
+cb.wait();
 //Delete the object
 cb.delete_object ( obj_key );
 cb.wait();
