@@ -58,7 +58,7 @@ public:
   //Get the tags
   std::vector<std::string> get_tags() {return tags;}
   //Add a tag
-  void add_tag(std::string new_tag) {tags.push_back(new_tag)}
+  void add_tag(std::string new_tag) {tags.push_back(new_tag);}
   //Clear the tags
 	void clear_tags(){tags.clear();}
 	//How many tags are there?
@@ -72,7 +72,7 @@ class ConsulAdmin
 {
 HttpAdmin *ha;
 std::string consul_addr;
-int timout;
+int timeout;
 std::string build_url(std::string request_url_segment);
 std::string query(std::string query_url);
 public:

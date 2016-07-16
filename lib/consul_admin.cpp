@@ -53,7 +53,7 @@ Service::Service(std::string new_id, std::string new_name, std::string new_addre
   tags=new_tags;
 }
 
-std::string Service::to_register_json()
+std::string Service::to_json()
 {
   logging->debug("CONSUL: Service to JSON method Called:");
   logging->debug(id);
@@ -118,14 +118,14 @@ std::string ConsulAdmin::query(std::string query_url)
   logging->info("CONSUL: Firing Query");
   logging->debug(query_url);
   //Clear the string that will hold the response data.
-  writedata.clear()
+  writedata.clear();
   //Get the URL
   std::string url_string = build_url(query_url);
   const char * url_cstr = url_string.c_str();
   char *url = new char[url_string.length() + 1];
   strcpy(url, url_cstr);
 
-  curl_easy_setopt(ha.get_instance(), CURLOPT_WRITEFUNCTION, &writeCallback);
+  curl_easy_setopt(ha->get_instance(), CURLOPT_WRITEFUNCTION, &writeCallback);
 
   //Send the HTTP Request
   bool success = ha->get(url, timeout);
@@ -282,7 +282,7 @@ bool ConsulAdmin::set_config_value(std::string key, std::string val)
 
 std::string ConsulAdmin::get_config_value(std::string key)
 {
-  std::string url = "/v1/kv/"
+  std::string url = "/v1/kv/";
   url = url.append(key);
   if (!data_center.empty())
   {
