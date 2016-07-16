@@ -43,7 +43,8 @@ int main()
   logging->info("ZMQ Socket Open, opening request loop");
 
   //Send a Message
-  zmqo->send_str("Test");
+  std::string msg = "Test";
+  zmqo->send_str(msg);
   bool keep_going = true;
 
   while (keep_going) {

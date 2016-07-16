@@ -13,11 +13,11 @@ int j;
 public:
   TestData(int a, int b) {i=a;j=b;}
   std::string get_key() {return key;}
-  void set_key(std::string new_key) {key=new_key;}
+  bool set_key(std::string new_key) {key=new_key; return true;}
   int get_i() {return i;}
   int get_j() {return j;}
-  void set_i(int new_i) {i = new_i;}
-  void set_j(int new_j) {j = new_j;}
+  bool set_i(int new_i) {i = new_i; return true;}
+  bool set_j(int new_j) {j = new_j; return true;}
   std::string to_json()
   {
     std::string json_str = "{key:";
