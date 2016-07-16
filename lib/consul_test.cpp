@@ -1,7 +1,7 @@
 //Consul Admin Tests
 
-#include "logging.h"
-#include "consul_admin.h"
+#include "include/logging.h"
+#include "include/consul_admin.h"
 #include <string>
 #include <string.h>
 #include <assert.h>
