@@ -77,7 +77,7 @@ std::string Service::to_json()
   writer.Key("Tags");
   std::string tag;
   writer.StartArray();
-  for (i=0; i<num_tags(); i++) {
+  for (int i=0; i<num_tags(); i++) {
     tag = tags[i];
     writer.String( tag.c_str(), (rapidjson::SizeType)tag.length() );
   }
@@ -160,7 +160,7 @@ bool ConsulAdmin::register_service(Service& s)
   strcpy(body, body_cstr);
 
   //Send the HTTP Request
-  bool success = ha->put(url, data, timeout);
+  bool success = ha->put(url, body, timeout);
   delete body;
   delete url;
   if (success)
@@ -207,7 +207,7 @@ std::string ConsulAdmin::datacenters()
 
 std::string ConsulAdmin::nodes_dc(std::string data_center)
 {
-  std::string url = "/v1/catalog/nodes"
+  std::string url = "/v1/catalog/nodes";
   if (!data_center.empty())
   {
     url = url.append("?dc=");
@@ -218,7 +218,7 @@ std::string ConsulAdmin::nodes_dc(std::string data_center)
 
 std::string ConsulAdmin::services_dc(std::string data_center)
 {
-  std::string url = "/v1/catalog/services"
+  std::string url = "/v1/catalog/services";
   if (!data_center.empty())
   {
     url = url.append("?dc=");
@@ -229,14 +229,14 @@ std::string ConsulAdmin::services_dc(std::string data_center)
 
 std::string ConsulAdmin::nodes_service(std::string service)
 {
-  std::string url = "/v1/catalog/service/"
+  std::string url = "/v1/catalog/service/";
   url = url.append(service);
   return query(url);
 }
 
 std::string ConsulAdmin::services_node(std::string node, std::string data_center)
 {
-  std::string url = "/v1/catalog/node/"
+  std::string url = "/v1/catalog/node/";
   url = url.append(node);
   if (!data_center.empty())
   {
