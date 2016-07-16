@@ -68,28 +68,28 @@ std::string Service::to_json()
 
   writer.Key("ID");
   std::string id = id;
-  writer.String( id.c_str(), (SizeType)id.length() );
+  writer.String( id.c_str(), (rapidjson::SizeType)id.length() );
 
   writer.Key("Name");
   std::string name = name;
-  writer.String( name.c_str(), (SizeType)name.length() );
+  writer.String( name.c_str(), (rapidjson::SizeType)name.length() );
 
   writer.Key("Tags");
   std::string tag;
   writer.StartArray();
   for (i=0; i<num_tags(); i++) {
     tag = tags[i];
-    writer.String( tag.c_str(), (SizeType)tag.length() );
+    writer.String( tag.c_str(), (rapidjson::SizeType)tag.length() );
   }
   writer.EndArray();
 
   writer.Key("Address");
   std::string addr = address;
-  writer.String( addr.c_str(), (SizeType)addr.length() );
+  writer.String( addr.c_str(), (rapidjson::SizeType)addr.length() );
 
   writer.Key("Port");
-  std::string name = name;
-  writer.String( name.c_str(), (SizeType)name.length() );
+  std::string name = port;
+  writer.String( port.c_str(), (rapidjson::SizeType)port.length() );
 
   writer.EndObject();
 

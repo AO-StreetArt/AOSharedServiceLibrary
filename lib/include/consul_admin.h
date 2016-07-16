@@ -93,7 +93,7 @@ public:
   std::string nodes_dc(std::string data_center);
   std::string services_dc(std::string data_center);
   std::string nodes_service(std::string service);
-  std::string services_node(std::string data_center);
+  std::string services_node(std::string node, std::string data_center);
 
   //-------------Configuration Key-Value Storage Functions--------------------//
   bool set_config_value(std::string key, std::string val);
