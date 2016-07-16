@@ -37,7 +37,7 @@ logging->debug(ca.services_dc(""));
 //Test Queries
 
 std::string empty = "";
-std::string clyman = "CLyman"
+std::string clyman = "CLyman";
 logging->debug(ca.datacenters());
 logging->debug(ca.nodes_dc(empty));
 logging->debug(ca.nodes_service(clyman));
