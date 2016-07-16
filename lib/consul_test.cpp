@@ -36,10 +36,14 @@ logging->debug(ca.services_dc(""));
 
 //Test Queries
 
+std::string empty = "";
+std::string clyman = "CLyman"
 logging->debug(ca.datacenters());
-logging->debug(ca.nodes_dc(""));
-logging->debug(ca.nodes_service("CLyman"));
-logging->debug(ca.services_node(""));
+logging->debug(ca.nodes_dc(empty));
+logging->debug(ca.nodes_service(clyman));
+
+//We need to figure out how to find nodes on the network
+logging->debug(ca.services_node(empty, empty));
 
 //Test Key-Value Store
 bool success = ca.set_config_value("Test", "123");
