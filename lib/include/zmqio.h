@@ -27,7 +27,7 @@ public:
   ~Zmqo();
   void connect(std::string conn_str);
   void send(const char * msg, int msg_size);
-  void send_str(std::string &msg);
+  void send_str(std::string msg);
   std::string recv();
 };
 
