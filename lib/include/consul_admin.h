@@ -15,7 +15,7 @@
 
 //HTTP Callbacks
 //A String to store response data
-std::string writedata;
+extern std::string writedata;
 
 //This is the callback that gets called when we recieve the response to the
 //Get Curl Request

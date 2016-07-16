@@ -1,5 +1,8 @@
 #include "include/consul_admin.h"
 
+//Global writedata instantiation to store HTTP Callbacks
+std::string writedata;
+
 //----------------------------HTTP Callbacks----------------------------------//
 
 //This is the callback that gets called when we recieve the response to the
