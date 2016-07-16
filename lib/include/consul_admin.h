@@ -63,7 +63,7 @@ public:
 	void clear_tags(){tags.clear();}
 	//How many tags are there?
 	int num_tags() const {return tags.size();}
-}
+};
 
 //------------------------------Consul Admin-----------------------------------//
 
@@ -99,6 +99,6 @@ public:
   bool set_config_value(std::string key, std::string val);
   std::string get_config_value(std::string key);
   bool del_config_value(std::string key);
-}
+};
 
 #endif
