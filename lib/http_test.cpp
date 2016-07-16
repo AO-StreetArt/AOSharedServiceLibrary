@@ -31,9 +31,6 @@ return size*nmemb;
 
 int main()
 {
-  if (argc > 0)
-  {
-
     //----------------------------TEST SETUP----------------------------------//
 
     //Variables to store URL's
@@ -137,8 +134,6 @@ int main()
     logging->debug("Tests completed");
 
     ha.shutdown();
-
-  }
 
   return 0;
 }

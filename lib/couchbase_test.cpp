@@ -13,7 +13,11 @@ int j;
 public:
   TestData(int a, int b) {i=a;j=b;}
   std::string get_key() {return key;}
-  bool set_key(std::string new_key) {key=new_key;}
+  void set_key(std::string new_key) {key=new_key;}
+  int get_i() {return i;}
+  int get_j() {return j;}
+  void set_i(int new_i) {i = new_i;}
+  void set_j(int new_j) {j = new_j;}
   std::string to_json()
   {
     std::string json_str = "{key:";
@@ -93,7 +97,7 @@ cb.load_object ( obj_key );
 cb.wait();
 printf("Load Object Tested");
 //Update the object in the DB
-data.set_name ( "Weeee" );
+data.set_i ( 10 );
 cb.save_object ( obj_ptr );
 cb.wait();
 printf("Save Object Tested");

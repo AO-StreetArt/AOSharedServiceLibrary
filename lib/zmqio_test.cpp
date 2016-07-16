@@ -23,6 +23,13 @@ int main()
 
   logging = &log;
 
+  //Set up the underlying variables
+  Zmqo *zmqo;
+  Zmqi *zmqi;
+
+  //We maintain the ZMQ Context and pass it to the ZMQ objects coming from aossl
+  zmq::context_t context(1, 2);
+
   //Set up the outbound ZMQ Client
   zmqo = new Zmqo (context);
   logging->info("0MQ Constructor Called");
@@ -44,7 +51,7 @@ int main()
     //Convert the OMQ message into a string to be passed on the event
     std::string req_string = zmqi->recv();
 
-    resp = "success";
+    std::string resp = "success";
     logging->debug("Object Update Event Emitted, response:");
     logging->debug(resp);
 
@@ -53,6 +60,8 @@ int main()
     logging->debug("Response Sent");
 
     keep_going = false;
+
+  }
 
   std::string response = zmqo->recv();
   logging->debug("Response Recieved");
