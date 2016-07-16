@@ -1,5 +1,5 @@
-#ifndef HTTP_ADMIN
-#define HTTP_ADMIN
+#ifndef CONSUL_ADMIN
+#define CONSUL_ADMIN
 
 #include "http_admin.h"
 #include "writeable.h"
