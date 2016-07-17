@@ -231,13 +231,6 @@ std::string ConsulAdmin::services()
   return result;
 }
 
-
-
-
-
-
-
-
 //--------------Configuration Key-Value Storage Functions---------------------//
 
 bool ConsulAdmin::set_config_value(std::string key, std::string val)
@@ -303,11 +296,6 @@ bool ConsulAdmin::del_config_value(std::string key)
   }
   return success;
 }
-
-
-
-
-//Appear to be depricated?
 
 std::string ConsulAdmin::datacenters()
 {

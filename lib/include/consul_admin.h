@@ -94,7 +94,7 @@ public:
   std::string get_config_value(std::string key);
   bool del_config_value(std::string key);
 
-  //Basic Queries -- Appear to be depricated
+  //Basic Queries
   //All Return a JSON string
   std::string datacenters();
   std::string nodes_dc(std::string data_center);

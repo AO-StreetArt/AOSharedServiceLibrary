@@ -27,7 +27,7 @@ log4cpp::Category& log = log4cpp::Category::getInstance(std::string("sub1.log"))
 logging = &log;
 
 //Construction tests
-ConsulAdmin ca ("http://localhost:8500/");
+ConsulAdmin ca ("localhost:8500/");
 
 Service s ("1", "CLyman", "tcp://*", "5555");
 s.add_tag("Testing");
