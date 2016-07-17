@@ -45,12 +45,12 @@ assert(s3.num_tags() == 2);
 //Test Service Registration
 ca.register_service(s);
 
-logging->debug(ca.services_dc(""));
+logging->debug(ca.services());
 
 //Test Service Deregistration
 ca.deregister_service(s);
 
-logging->debug(ca.services_dc(""));
+logging->debug(ca.services());
 
 //Test Queries
 
