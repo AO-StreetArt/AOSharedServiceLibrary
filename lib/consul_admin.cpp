@@ -68,7 +68,7 @@ std::string Service::to_json()
   std::string port_key = "Port";
 
   std::string json_str = "{\"" + id_key + "\": \"" + id + "\", \"" +
-    name_key + "\": " + name + "\", \"" +
+    name_key + "\": \"" + name + "\", \"" +
       tags_key + "\": [\"" + tags[0] + "\"";
 
   for (int i=1; i<num_tags(); i++) {

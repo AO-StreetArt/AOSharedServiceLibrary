@@ -47,11 +47,6 @@ ca.register_service(s);
 
 logging->debug(ca.services());
 
-//Test Service Deregistration
-ca.deregister_service(s);
-
-logging->debug(ca.services());
-
 //Test Queries
 
 std::string empty = "";
@@ -72,5 +67,10 @@ assert(test_val == "123");
 
 success = ca.del_config_value("Test");
 assert(success);
+
+//Test Service Deregistration
+ca.deregister_service(s);
+
+logging->debug(ca.services());
 
 }
