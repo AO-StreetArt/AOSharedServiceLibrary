@@ -224,7 +224,7 @@ bool ConsulAdmin::deregister_service(Service& s)
 
 //----------------------------Basic Queries-----------------------------------//
 
-std::string services()
+std::string ConsulAdmin::services()
 {
   std::string url = "/v1/agent/services";
   std::string result = query(url);
