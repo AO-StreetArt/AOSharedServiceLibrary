@@ -82,48 +82,6 @@ std::string Service::to_json()
 
   return json_str;
 
-  //Initialize the string buffer and writer
-  // rapidjson::StringBuffer s;
-  // rapidjson::Writer<rapidjson::StringBuffer> writer(s);
-  //
-  // //Start writing the object
-  //
-  // writer.StartObject();
-  //
-  // writer.Key("ID");
-  // std::string id = id;
-  // writer.String( id.c_str(), (rapidjson::SizeType)id.length() );
-  //
-  // writer.Key("Name");
-  // std::string name = name;
-  // writer.String( name.c_str(), (rapidjson::SizeType)name.length() );
-  //
-  // writer.Key("Tags");
-  // std::string tag;
-  // writer.StartArray();
-  // for (int i=0; i<num_tags(); i++) {
-  //   tag = tags[i];
-  //   writer.String( tag.c_str(), (rapidjson::SizeType)tag.length() );
-  // }
-  // writer.EndArray();
-  //
-  // writer.Key("Address");
-  // std::string addr = address;
-  // writer.String( addr.c_str(), (rapidjson::SizeType)addr.length() );
-  //
-  // writer.Key("Port");
-  // std::string p = port;
-  // writer.String( p.c_str(), (rapidjson::SizeType)p.length() );
-  //
-  // writer.EndObject();
-  //
-  // //The Stringbuffer now contains a json message
-  // //of the object
-	// const char* ret_val = s.GetString();
-	// std::string ret_string (ret_val);
-  // logging->debug(ret_string);
-  // return ret_string;
-
 }
 
 //------------------------Consul Administrator--------------------------------//

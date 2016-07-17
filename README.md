@@ -14,8 +14,8 @@ Features:
 * Consul Administrator
 * HTTP Request Administrator
 * Asynchronous Logging Module
-* UUID Generator
-* Inbound & Outbound ZMQ Socket managers
+* Universally Unique ID Generator
+* Inbound & Outbound Request/Response ZeroMQ Socket managers
 
 In order to use the respective administrators, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Couchbase] (http://www.couchbase.com/) and [Redis] (http://redis.io/) to connect to.
 
@@ -37,6 +37,7 @@ At this point, you will have a few outputs, which can be copied to allow easy us
 * A set of header files in the lib/include directory that need to be put onto the include path
 
 `sudo mkdir /usr/local/include/aossl`
+
 `sudo cp lib/include/* /usr/local/include/aossl`
 
 ## Tests
@@ -54,8 +55,6 @@ For Ubuntu 14.04 & Debian 7, the build_deps.sh script should allow for automatic
 ### Other
 
 Links are included below for those who wish to build on other Operating Systems.
-
-You will need RapidJSON which can be found [here] (https://github.com/miloyip/rapidjson).
 
 Next, you will need Zero MQ which can be found [here] (http://zeromq.org/intro:get-the-software). Be sure to get the [C++ Drivers] (https://github.com/zeromq/cppzmq) in addition to the software.
 

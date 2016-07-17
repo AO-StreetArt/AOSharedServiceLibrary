@@ -9,10 +9,6 @@
 #include <string.h>
 #include <vector>
 
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
-
 //HTTP Callbacks
 //A String to store response data
 extern std::string writedata;

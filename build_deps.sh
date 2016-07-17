@@ -24,21 +24,6 @@ printf "Addressing pre-build requirements"
 #Ensure that specific build requirements are satisfied
 sudo apt-get -y install build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev
 
-#Determine if we Need RapidJSON
-if [ ! -d /usr/local/include/rapidjson ]; then
-
-  printf "Cloning RapidJSON"
-
-  mkdir $PRE/rapidjson
-
-  #Get the RapidJSON Dependency
-  git clone https://github.com/miloyip/rapidjson.git $PRE/rapidjson
-
-  #Move the RapidJSON header files to the include path
-  sudo cp -r $PRE/rapidjson/include/rapidjson/ /usr/local/include
-
-fi
-
 #Determine if we Need XRedis
 if [ ! -d /usr/local/include/xredis ]; then
 

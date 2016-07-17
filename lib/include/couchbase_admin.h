@@ -20,10 +20,6 @@
 
 #include "logging.h"
 
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-
 extern "C"
 {
 	#include <libcouchbase/couchbase.h>
