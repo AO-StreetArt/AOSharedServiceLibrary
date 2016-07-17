@@ -63,6 +63,7 @@ bool success = ca.set_config_value("Test", "123");
 assert(success);
 
 std::string test_val = ca.get_config_value("Test");
+logging->debgu(test_val);
 assert(test_val == "123");
 
 success = ca.del_config_value("Test");
