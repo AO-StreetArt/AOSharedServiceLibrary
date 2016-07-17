@@ -69,14 +69,14 @@ std::string Service::to_json()
 
   std::string json_str = "{\"" + id_key + "\": \"" + id + "\", \"" +
     name_key + "\": " + name + "\", \"" +
-      tags_key + "\": [\"" + tags[0] "\"";
+      tags_key + "\": [\"" + tags[0] + "\"";
 
   for (int i=1; i<num_tags(); i++) {
     json_str = json_str + ", \"" + tags[i] + "\"";
   }
 
-  json_str = json_str + ", \"" + addr_key + "\": \"" + address "\"" +
-    ", \"" + port_key + "\": " + port "}";
+  json_str = json_str + ", \"" + addr_key + "\": \"" + address + "\"" +
+    ", \"" + port_key + "\": " + port + "}";
 
   logging->debug(json_str);
 
