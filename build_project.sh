@@ -1,6 +1,4 @@
 #!/bin/bash
-version_major=0
-version_minor=1
 
 opt=$1
 
@@ -13,6 +11,10 @@ then
     #We start by compiling the logging module:
 
     g++ -g -c -o lib/logging.o lib/logging.cpp -std=c++11
+
+	#Next, we compile the command line interpreter
+
+	g++ -g -c -o lib/cli.o lib/cli.cpp -std=c++11
 
     #We then compile the http administrator
 
@@ -48,6 +50,10 @@ else
 
   g++ -c -o lib/logging.o lib/logging.cpp -std=c++11
 
+  #Next, we compile the command line interpreter
+
+  g++ -c -o lib/cli.o lib/cli.cpp -std=c++11
+
   #We then compile the http administrator
 
   g++ -c -o lib/http_admin.o lib/http_admin.cpp -std=c++11
@@ -78,4 +84,4 @@ fi
 
 #Build the static library
 
-ar rcs libaossl.a.$version_major.$version_minor lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/uuid_admin.o
+ar rcs libaossl.a lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/uuid_admin.o lib/cli.o

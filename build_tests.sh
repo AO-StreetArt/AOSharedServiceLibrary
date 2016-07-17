@@ -39,6 +39,10 @@ then
     g++ -g -c -o lib/zmqio_test.o lib/zmqio_test.cpp
     g++ -g -o zmqio_test lib/logging.o lib/zmqio.o lib/zmqio_test.o -lpthread -llog4cpp -lzmq -std=c++11
 
+	#Finally, we build the command line interpreter tests
+	g++ -g -c -o lib/cli_test.o lib/cli_test.cpp -std=c++11
+	g++ -g -o cli_test lib/cli.o lib/cli_test.o
+
     echo "Debugger Lines Set"
 
   fi
@@ -72,5 +76,9 @@ else
   #Finally, we build the ZMQ Tests
   g++ -c -o lib/zmqio_test.o lib/zmqio_test.cpp
   g++ -o zmqio_test lib/logging.o lib/zmqio.o lib/zmqio_test.o -lpthread -llog4cpp -lzmq -std=c++11
+
+  #Finally, we build the command line interpreter tests
+	g++ -c -o lib/cli_test.o lib/cli_test.cpp -std=c++11
+	g++ -o cli_test lib/cli.o lib/cli_test.o
 
 fi
