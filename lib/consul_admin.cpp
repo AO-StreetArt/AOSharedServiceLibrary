@@ -224,51 +224,18 @@ bool ConsulAdmin::deregister_service(Service& s)
 
 //----------------------------Basic Queries-----------------------------------//
 
-std::string ConsulAdmin::datacenters()
+std::string services()
 {
-  return query("/v1/catalog/datacenters");
-}
-
-std::string ConsulAdmin::nodes_dc(std::string data_center)
-{
-  std::string url = "/v1/catalog/nodes";
-  if (!data_center.empty())
-  {
-    url = url.append("?dc=");
-    url = url.append(data_center);
-  }
+  std::string url = "/v1/agent/services";
   return query(url);
 }
 
-std::string ConsulAdmin::services_dc(std::string data_center)
-{
-  std::string url = "/v1/catalog/services";
-  if (!data_center.empty())
-  {
-    url = url.append("?dc=");
-    url = url.append(data_center);
-  }
-  return query(url);
-}
 
-std::string ConsulAdmin::nodes_service(std::string service)
-{
-  std::string url = "/v1/catalog/service/";
-  url = url.append(service);
-  return query(url);
-}
 
-std::string ConsulAdmin::services_node(std::string node, std::string data_center)
-{
-  std::string url = "/v1/catalog/node/";
-  url = url.append(node);
-  if (!data_center.empty())
-  {
-    url = url.append("?dc=");
-    url = url.append(data_center);
-  }
-  return query(url);
-}
+
+
+
+
 
 //--------------Configuration Key-Value Storage Functions---------------------//
 
@@ -334,4 +301,55 @@ bool ConsulAdmin::del_config_value(std::string key)
     logging->debug("CONSUL: Config Value Delete Unsuccessful");
   }
   return success;
+}
+
+
+
+
+//Appear to be depricated?
+
+std::string ConsulAdmin::datacenters()
+{
+  return query("/v1/catalog/datacenters");
+}
+
+std::string ConsulAdmin::nodes_dc(std::string data_center)
+{
+  std::string url = "/v1/catalog/nodes";
+  if (!data_center.empty())
+  {
+    url = url.append("?dc=");
+    url = url.append(data_center);
+  }
+  return query(url);
+}
+
+std::string ConsulAdmin::services_dc(std::string data_center)
+{
+  std::string url = "/v1/catalog/services";
+  if (!data_center.empty())
+  {
+    url = url.append("?dc=");
+    url = url.append(data_center);
+  }
+  return query(url);
+}
+
+std::string ConsulAdmin::nodes_service(std::string service)
+{
+  std::string url = "/v1/catalog/service/";
+  url = url.append(service);
+  return query(url);
+}
+
+std::string ConsulAdmin::services_node(std::string node, std::string data_center)
+{
+  std::string url = "/v1/catalog/node/";
+  url = url.append(node);
+  if (!data_center.empty())
+  {
+    url = url.append("?dc=");
+    url = url.append(data_center);
+  }
+  return query(url);
 }

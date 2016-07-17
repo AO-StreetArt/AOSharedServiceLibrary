@@ -87,18 +87,18 @@ public:
   bool register_service(Service& s);
   bool deregister_service(Service& s);
 
-  //Basic Queries
+  //-------------Configuration Key-Value Storage Functions--------------------//
+  bool set_config_value(std::string key, std::string val);
+  std::string get_config_value(std::string key);
+  bool del_config_value(std::string key);
+
+  //Basic Queries -- Appear to be depricated
   //All Return a JSON string
   std::string datacenters();
   std::string nodes_dc(std::string data_center);
   std::string services_dc(std::string data_center);
   std::string nodes_service(std::string service);
   std::string services_node(std::string node, std::string data_center);
-
-  //-------------Configuration Key-Value Storage Functions--------------------//
-  bool set_config_value(std::string key, std::string val);
-  std::string get_config_value(std::string key);
-  bool del_config_value(std::string key);
 };
 
 #endif
