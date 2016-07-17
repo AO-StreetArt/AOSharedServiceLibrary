@@ -87,7 +87,7 @@ public:
   bool register_service(Service& s);
   bool deregister_service(Service& s);
 
-  std:string services();
+  std::string services();
 
   //-------------Configuration Key-Value Storage Functions--------------------//
   bool set_config_value(std::string key, std::string val);
