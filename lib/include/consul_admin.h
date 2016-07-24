@@ -83,8 +83,6 @@ public:
   bool register_service(Service& s);
   bool deregister_service(Service& s);
 
-  std::string services();
-
   //-------------Configuration Key-Value Storage Functions--------------------//
   bool set_config_value(std::string key, std::string val);
   std::string get_config_value(std::string key);
@@ -92,6 +90,12 @@ public:
 
   //Basic Queries
   //All Return a JSON string
+
+  //Local Agent Queries
+  std::string services();
+  std::string agent_info();
+
+  //Catalog Queries
   std::string datacenters();
   std::string nodes_dc(std::string data_center);
   std::string services_dc(std::string data_center);

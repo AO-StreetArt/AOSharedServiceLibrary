@@ -12,9 +12,9 @@ then
 
     g++ -g -c -o lib/logging.o lib/logging.cpp -std=c++11
 
-	#Next, we compile the command line interpreter
+	  #Next, we compile the command line interpreter
 
-	g++ -g -c -o lib/cli.o lib/cli.cpp -std=c++11
+	  g++ -g -c -o lib/cli.o lib/cli.cpp -std=c++11
 
     #We then compile the http administrator
 

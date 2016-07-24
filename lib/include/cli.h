@@ -1,5 +1,6 @@
 #include <unordered_map>
 #include <string>
+#include <iterator>
 
 class CommandLineInterpreter
 {
@@ -20,4 +21,3 @@ public:
   //Get the program name
   std::string get_program_name() {return name;}
 };
-

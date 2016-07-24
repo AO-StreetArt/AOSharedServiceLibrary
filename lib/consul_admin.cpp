@@ -189,6 +189,13 @@ std::string ConsulAdmin::services()
   return result;
 }
 
+std::string ConsulAdmin::agent_info()
+{
+  std::string url = "/v1/agent/self";
+  std::string result = query(url);
+  return result;
+}
+
 //--------------Configuration Key-Value Storage Functions---------------------//
 
 bool ConsulAdmin::set_config_value(std::string key, std::string val)
