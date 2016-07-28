@@ -14,7 +14,6 @@ public:
 
   //Constructor
   CommandLineInterpreter(int argc, char* argv[]);
-  CommandLineInterpreter(int argc&, char*& argv);
 
   //Does a key exist?
   bool opt_exist( std::string key );
