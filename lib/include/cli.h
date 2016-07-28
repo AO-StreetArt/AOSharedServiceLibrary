@@ -2,6 +2,9 @@
 #include <string>
 #include <iterator>
 
+#ifndef COMMAND_LINE
+#define COMMAND_LINE
+
 class CommandLineInterpreter
 {
 //An unordered map of options from the command line
@@ -21,3 +24,5 @@ public:
   //Get the program name
   std::string get_program_name() {return name;}
 };
+
+#endif
