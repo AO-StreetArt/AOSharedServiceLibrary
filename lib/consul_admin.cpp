@@ -67,15 +67,21 @@ std::string Service::to_json()
   std::string addr_key = "Address";
   std::string port_key = "Port";
 
+  //Build the JSON String
   std::string json_str = "{\"" + id_key + "\": \"" + id + "\", \"" +
-    name_key + "\": \"" + name + "\", \"" +
-      tags_key + "\": [\"" + tags[0] + "\"";
+    name_key + "\": \"" + name + "\", \""
 
-  for (int i=1; i<num_tags(); i++) {
-    json_str = json_str + ", \"" + tags[i] + "\"";
+  if (num_tags() > 0) {
+    json_str = json_str + tags_key + "\": [\"" + tags[0] + "\"";
+
+    for (int i=1; i<num_tags(); i++) {
+      json_str = json_str + ", \"" + tags[i] + "\"";
+    }
+
+    json_str = json_str + "], \""
   }
 
-  json_str = json_str + "], \"" + addr_key + "\": \"" + address + "\"" +
+  json_str = json_str + addr_key + "\": \"" + address + "\"" +
     ", \"" + port_key + "\": " + port + "}";
 
   logging->debug(json_str);
