@@ -78,7 +78,7 @@ std::string Service::to_json()
       json_str = json_str + ", \"" + tags[i] + "\"";
     }
 
-    json_str = json_str + "], \""
+    json_str = json_str + "], \"";
   }
 
   json_str = json_str + addr_key + "\": \"" + address + "\"" +
