@@ -1,7 +1,7 @@
 #include "include/cli.h"
 #include <iostream>
 
-int main( int argc, char* argv )
+int main( int argc, char** argv )
 {
 
 CommandLineInterpreter cli ( argc, argv );
