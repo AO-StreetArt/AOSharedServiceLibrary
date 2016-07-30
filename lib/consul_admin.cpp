@@ -69,7 +69,7 @@ std::string Service::to_json()
 
   //Build the JSON String
   std::string json_str = "{\"" + id_key + "\": \"" + id + "\", \"" +
-    name_key + "\": \"" + name + "\", \""
+    name_key + "\": \"" + name + "\", \"";
 
   if (num_tags() > 0) {
     json_str = json_str + tags_key + "\": [\"" + tags[0] + "\"";
