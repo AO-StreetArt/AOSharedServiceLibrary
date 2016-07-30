@@ -90,7 +90,7 @@ std::string Service::to_json()
 std::string ConsulAdmin::build_url(std::string request_url_segment)
 {
   std::string url = consul_addr;
-  url = url.append(request_url_segment);
+  url = url + request_url_segment;
   return url;
 }
 
