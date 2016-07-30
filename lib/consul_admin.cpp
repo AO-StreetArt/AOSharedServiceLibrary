@@ -143,8 +143,8 @@ bool ConsulAdmin::register_service(Service& s)
 
   //Send the HTTP Request
   bool success = ha->put(url, body, timeout);
-  delete body;
-  delete url;
+  //delete body;
+  //delete url;
   if (success)
   {
     logging->debug("CONSUL: Registration Successful");

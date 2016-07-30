@@ -29,6 +29,8 @@ logging = &log;
 //Construction tests
 ConsulAdmin ca ("localhost:8500");
 
+Service s0 ("1", "CLyman", "tcp://*", "5555");
+
 Service s ("1", "CLyman", "tcp://*", "5555");
 s.add_tag("Testing");
 
@@ -44,6 +46,7 @@ assert(s3.num_tags() == 2);
 
 //Test Service Registration
 ca.register_service(s);
+ca.register_service(s0);
 
 logging->debug(ca.services());
 
@@ -72,6 +75,7 @@ assert(success);
 
 //Test Service Deregistration
 ca.deregister_service(s);
+ca.deregister_service(s0);
 
 logging->debug(ca.services());
 
