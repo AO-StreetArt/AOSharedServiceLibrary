@@ -1,13 +1,5 @@
 # Dependency Resolution
 
-## Ubuntu 14.04 / Debian 7
-
-For Ubuntu 14.04 & Debian 7, the build_deps.sh script should allow for automatic resolution of dependencies.  
-
-## Other
-
-Links are included below for those who wish to build on other Operating Systems.
-
 You will need Zero MQ which can be found [here] (http://zeromq.org/intro:get-the-software). Be sure to get the [C++ Drivers] (https://github.com/zeromq/cppzmq) in addition to the software.
 
 For logging, we use log4cpp, which can be found [here] (http://log4cpp.sourceforge.net/)
