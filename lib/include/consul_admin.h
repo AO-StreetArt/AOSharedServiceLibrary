@@ -17,6 +17,14 @@ extern std::string writedata;
 //Get Curl Request
 size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
 
+//-----------------------------Health Checks----------------------------------//
+
+struct HealthCheck
+{
+  std::string script;
+  std::string interval;
+};
+
 //--------------------------------Service-------------------------------------//
 
 //An instance of this class can be instantiated by a service and is
@@ -28,6 +36,7 @@ std::string name;
 std::vector<std::string> tags;
 std::string address;
 std::string port;
+HealthCheck check;
 
 public:
   //Constructors
@@ -59,6 +68,11 @@ public:
 	void clear_tags(){tags.clear();}
 	//How many tags are there?
 	int num_tags() const {return tags.size();}
+
+  //Get the health checks
+  HealthCheck get_check() {return check;}
+  //Add a check
+  void set_check(std::string scr, int interval_seconds) {check.script = scr; check.interval = std::to_string(interval_seconds) + "s";}
 };
 
 //------------------------------Consul Admin-----------------------------------//
@@ -95,12 +109,16 @@ public:
   std::string services();
   std::string agent_info();
 
+  //Query for healthy services only
+  std::string healthy_services();
+
   //Catalog Queries
   std::string datacenters();
   std::string nodes_dc(std::string data_center);
   std::string services_dc(std::string data_center);
   std::string nodes_service(std::string service);
   std::string services_node(std::string node, std::string data_center);
+
 };
 
 #endif

@@ -29,6 +29,7 @@ Service::Service()
   name="";
   address="";
   port="";
+  check.script = "";
 }
 
 Service::Service(std::string new_id, std::string new_name)
@@ -37,6 +38,7 @@ Service::Service(std::string new_id, std::string new_name)
   name=new_name;
   address="";
   port="";
+  check.script = "";
 }
 
 Service::Service(std::string new_id, std::string new_name, std::string new_address, std::string new_port)
@@ -45,6 +47,7 @@ Service::Service(std::string new_id, std::string new_name, std::string new_addre
   name=new_name;
   address=new_address;
   port=new_port;
+  check.script = "";
 }
 
 Service::Service(std::string new_id, std::string new_name, std::string new_address, std::string new_port, std::vector<std::string> new_tags)
@@ -54,6 +57,7 @@ Service::Service(std::string new_id, std::string new_name, std::string new_addre
   address=new_address;
   port=new_port;
   tags=new_tags;
+  check.script = "";
 }
 
 std::string Service::to_json()
@@ -67,10 +71,11 @@ std::string Service::to_json()
   std::string addr_key = "Address";
   std::string port_key = "Port";
 
-  //Build the JSON String
+  //Build the base JSON String
   std::string json_str = "{\"" + id_key + "\": \"" + id + "\", \"" +
     name_key + "\": \"" + name + "\", \"";
 
+  //Add in any service tags
   if (num_tags() > 0) {
     json_str = json_str + tags_key + "\": [\"" + tags[0] + "\"";
 
@@ -81,8 +86,16 @@ std::string Service::to_json()
     json_str = json_str + "], \"";
   }
 
+  //Finish the base json string
   json_str = json_str + addr_key + "\": \"" + address + "\"" +
-    ", \"" + port_key + "\": " + port + "}";
+    ", \"" + port_key + "\": " + port;
+
+  //Add the Health Check
+  if (!check.script.empty()) {
+    json_str = json_str + "\", \"check\": {\"script\": \"" + check.script + "\", \"interval\": \"" + check.interval + "\"}";
+  }
+
+  json_str = json_str + "}";
 
   logging->debug(json_str);
 
@@ -198,6 +211,13 @@ std::string ConsulAdmin::services()
 std::string ConsulAdmin::agent_info()
 {
   std::string url = "/v1/agent/self";
+  std::string result = query(url);
+  return result;
+}
+
+std::string ConsulAdmin::healthy_services()
+{
+  std::string url = "v1/health/service/web?passing";
   std::string result = query(url);
   return result;
 }
