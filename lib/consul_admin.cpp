@@ -92,7 +92,7 @@ std::string Service::to_json()
 
   //Add the Health Check
   if (!check.script.empty()) {
-    json_str = json_str + "\", \"check\": {\"script\": \"" + check.script + "\", \"interval\": \"" + check.interval + "\"}";
+    json_str = json_str + ", \"check\": {\"script\": \"" + check.script + "\", \"interval\": \"" + check.interval + "\"}";
   }
 
   json_str = json_str + "}";
