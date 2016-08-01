@@ -39,22 +39,4 @@ At this point, you will have a few outputs, which can be copied to allow easy us
 `sudo cp lib/include/* /usr/local/include/aossl`
 
 ## Use
-The library is designed to be easy to use, and examples can be found in the test file for each object.
-
-### Couchbase Administrator
-
-The Couchbase Administrator works with objects that extend the interface 'writeable.h', found in the include directory.
-
-### Redis Administrator
-
-### Consul Administrator
-
-### HTTP Administrator
-
-### Logging
-
-### UUID Generation
-
-### ZeroMQ Sockets
-
-### Command Line Argument Parser
+Please continue on to the [Use] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use) section of the documentation to see example uses of the library.
