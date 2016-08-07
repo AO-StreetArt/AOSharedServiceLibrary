@@ -16,9 +16,9 @@ int main()
   std::string test = "123";
   test_func(test);
 
-  logging->get_category("sub1")->info("Sub Test");
-  logging->get_category("unknown")->error("Bad Test");
+  logging->get_category("sub1").info("Sub Test");
+  logging->get_category("unknown").error("Bad Test");
 
-  
+
 
 }
