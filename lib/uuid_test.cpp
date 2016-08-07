@@ -14,4 +14,6 @@ int main()
   std::string uuid_str = uuid.generate();
   logging->debug(uuid_str);
 
+  delete logging;
+
 }

@@ -64,4 +64,6 @@ ca.deregister_service(s0);
 
 logging->debug(ca.services());
 
+delete logging;
+
 }

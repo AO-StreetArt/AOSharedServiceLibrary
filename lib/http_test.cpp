@@ -120,5 +120,7 @@ int main()
 
     ha.shutdown();
 
+  delete logging;
+
   return 0;
 }

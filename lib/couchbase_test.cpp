@@ -94,5 +94,7 @@ cb.delete_object ( obj_key );
 cb.wait();
 printf("Delete Object Tested");
 
+delete logging;
+
 return 0;
 }

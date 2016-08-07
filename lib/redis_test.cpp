@@ -163,6 +163,7 @@ logging->debug(strValue);
 xRedis->del("Test");
 
 delete xRedis;
+delete logging;
 
 return 0;
 }

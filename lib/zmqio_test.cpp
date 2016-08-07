@@ -54,9 +54,9 @@ int main()
   logging->debug(response);
 
   //Cleanup
-  end_log();
   delete zmqi;
   delete zmqo;
+  delete logging;
 
   return 0;
 

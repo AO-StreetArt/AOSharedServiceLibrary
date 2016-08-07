@@ -19,6 +19,6 @@ int main()
   logging->get_category("sub1").info("Sub Test");
   logging->get_category("unknown").error("Bad Test");
 
-
+  delete logging;
 
 }
