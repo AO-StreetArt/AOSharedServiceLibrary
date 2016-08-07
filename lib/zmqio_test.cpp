@@ -29,7 +29,7 @@ int main()
 
   //Send a Message
   std::string msg = "Test";
-  zmqo->send_str(msg);
+  zmqo->send(msg);
   bool keep_going = true;
 
   while (keep_going) {
@@ -42,7 +42,7 @@ int main()
     logging->debug(resp);
 
     //  Send reply back to client
-    zmqi->send_str(resp);
+    zmqi->send(resp);
     logging->debug("Response Sent");
 
     keep_going = false;
