@@ -16,7 +16,7 @@ class Zmqio
 public:
   virtual std::string recv() = 0;
   virtual void send(const char * msg, int msg_size) = 0;
-  virtual void send_str(std::string msg) = 0;
+  virtual void send(std::string msg) = 0;
 };
 
 class Zmqo: public Zmqio
@@ -27,7 +27,7 @@ public:
   ~Zmqo();
   void connect(std::string conn_str);
   void send(const char * msg, int msg_size);
-  void send_str(std::string msg);
+  void send(std::string msg);
   std::string recv();
 };
 
@@ -40,6 +40,6 @@ public:
   void bind(std::string conn_str);
   std::string recv();
   void send(const char * msg, int msg_size);
-  void send_str(std::string msg);
+  void send(std::string msg);
 };
 #endif

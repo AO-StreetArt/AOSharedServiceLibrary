@@ -58,6 +58,16 @@ It also has some limited query capabilities, please see API for further details.
 ## HTTP Administrator
 
 ## Logging
+Logging exposes a pointer to a Logger instance, which can log directly itself or
+provide categories to log to.
+
+    std::string initFileName = "configuration_file";
+    logging = new Logger(initFileName);
+
+    logging->debug("My message");
+    logging->get_category("MyCategory").error("My other message");
+
+We read from the log4cpp configuration files, of which several examples are provided within the library itself.
 
 ## UUID Generation
 
@@ -68,6 +78,27 @@ Easy and quick Universally Unique ID Generation:
 `std::string uuid_str = uuid.generate();``
 
 ## ZeroMQ Sockets
+
+This provides Request/Reply Managers for both Inbound and Outbound sockets.
+
+Both the Zmqo and Zmqi objects expose these methods:
+
+* recv() - a blocking call to wait for a message
+* send(const char * msg, int msg_size)
+* send(std::string msg)
+
+In order to connect to a socket, Zmqo exposes connect while Zmqi exposes bind:
+
+    //We maintain the ZMQ Context and pass it to the ZMQ objects coming from aossl
+    zmq::context_t context(1, 2);
+
+    //Set up the outbound ZMQ Client
+    zmqo = new Zmqo (context);
+    zmqo->connect("tcp://localhost:5555");
+
+    //Set up the inbound ZMQ Client
+    zmqi = new Zmqi (context);
+    zmqi->bind("tcp://*:5555");
 
 ## Command Line Argument Parser
 
@@ -88,4 +119,4 @@ We have access to an opt_exist method to determine if an option was entered.  We
     }
 
     return 0;
-    } 
+    }

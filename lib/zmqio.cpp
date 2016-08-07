@@ -50,7 +50,7 @@ void Zmqi::send(const char * msg, int msg_size)
 }
 
 //Send a string response
-void Zmqi::send_str(std::string msg)
+void Zmqi::send(std::string msg)
 {
   const char * msg_cstr = msg.c_str();
   send(msg_cstr, msg.size());
@@ -90,7 +90,7 @@ void Zmqo::send(const char * msg, int msg_size)
 }
 
 //Send a string message
-void Zmqo::send_str(std::string msg) {
+void Zmqo::send(std::string msg) {
   const char * msg_cstr = msg.c_str();
   send(msg_cstr, msg.size());
 }
