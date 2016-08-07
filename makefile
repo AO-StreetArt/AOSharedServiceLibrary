@@ -10,7 +10,7 @@ CFLAGS  = -g -Wall
 STD = -std=c++11
 OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o
 INCL = usr/local/include/aossl usr/local/include/aossl/cli.h usr/local/include/aossl/consul_admin.h usr/local/include/aossl/couchbase_admin.h usr/local/include/aossl/db_admin.h usr/local/include/aossl/http_admin.h usr/local/include/aossl/logging.h usr/local/include/aossl/uuid_admin.h usr/local/include/aossl/writeable.h usr/local/include/aossl/xredis_admin.h usr/local/include/aossl/zmqio.h
-INCL_DIR = usr/local/include/aossl
+INCL_DIR = /usr/local/include/aossl
 TESTS = cli_test consul_test couchbase_test http_test logging_test redis_test uuid_test zmqio_test
 LIBS = -lpthread -llog4cpp
 
