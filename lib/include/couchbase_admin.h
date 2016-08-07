@@ -28,6 +28,11 @@ extern "C"
 #ifndef COUCHBASE_ADMIN
 #define COUCHBASE_ADMIN
 
+//Define the callbacks that will get passed to Couchbase
+typedef static void (*StorageCallback)(lcb_t, const void*, lcb_storage_t, lcb_error_t, const lcb_store_resp_t*);
+typedef static void (*GetCallback)(lcb_t, const void*, lcb_error_t, const lcb_get_resp_t*);
+typedef static void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_resp_t*);
+
 class CouchbaseAdmin: public DBAdmin
 {
 lcb_t private_instance;
@@ -46,7 +51,12 @@ public:
 	void create_object ( Writeable *obj );
 	void delete_object ( const char * key );
 
-	//Get the instance, needed for binding callbacks
+	//Bind Callbacks
+	void bind_get_callback(GetCallback);
+	void bind_storage_callback(StorageCallback);
+	void bind_delete_callback(DelCallback);
+
+	//Get the instance, for advanced operations if necessary
 	lcb_t get_instance ();
 
 	//Blocking call until the transaction stack is empty

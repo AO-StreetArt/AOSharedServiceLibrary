@@ -51,6 +51,18 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
   printf("Value is %.*s\n", (int)resp->v.v0.nbytes, (char*)resp->v.v0.bytes);
 }
 
+static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp)
+{
+  if (err == LCB_SUCCESS) {
+    printf("Removed:");
+    printf( (char*)resp->v.v0.key );
+  }
+  else {
+    printf("Couldn't remove item:");
+    printf(lcb_strerror(instance, err));
+  }
+}
+
 int main ()
 {
 
@@ -69,8 +81,9 @@ CouchbaseAdmin cb ("couchbase://localhost/default");
 //Supports both password authentication and clustering
 printf("Connected to Couchbase");
 //Bind callbacks
-lcb_set_store_callback(cb.get_instance(), storage_callback);
-lcb_set_get_callback(cb.get_instance(), get_callback);
+cb.bind_get_callback(get_callback);
+cb.bind_storage_callback(storage_callback);
+cb.bind_delete_callback(del_callback);
 printf("Callbacks bound");
 //Write the object to the DB
 TestData *obj_ptr = &data;

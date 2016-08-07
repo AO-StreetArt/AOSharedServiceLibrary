@@ -17,9 +17,108 @@ methods implemented:
 * set_key
 * to_json
 
+Now, we can start building
+
+    //Create an object
+    std::string name = "TestObject";
+    TestData data ();
+    data.set_key(name);
+    const char* obj_key = data.get_key().c_str();
+
+    //Build the Couchbase Admin (which will automatically connect to the DB)
+    CouchbaseAdmin cb ("couchbase://localhost/default");
+
+    //Bind callbacks
+    cb.bind_get_callback(get_callback);
+    cb.bind_storage_callback(storage_callback);
+    cb.bind_delete_callback(del_callback);
+
+Please note that couchbase binds to callbacks for all operations.  Here we see a simple example:
+
+    static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t op,
+       lcb_error_t err, const lcb_store_resp_t *resp)
+    {
+      if (err == LCB_SUCCESS) {
+        printf("Stored %.*s\n", (int)resp->v.v0.nkey, (char*)resp->v.v0.key);
+      }
+      else {
+        fprintf(stderr, "Couldn't retrieve item: %s\n", lcb_strerror(instance, err));
+      }
+    }
+
+    static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
+       const lcb_get_resp_t *resp)
+    {
+      printf("Retrieved key %.*s\n", (int)resp->v.v0.nkey, (char*)resp->v.v0.key);
+      printf("Value is %.*s\n", (int)resp->v.v0.nbytes, (char*)resp->v.v0.bytes);
+    }
+
+    static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp)
+    {
+      if (err == LCB_SUCCESS) {
+        printf("Removed:");
+        printf( (char*)resp->v.v0.key );
+      }
+      else {
+        printf("Couldn't remove item:");
+        printf(lcb_strerror(instance, err));
+      }
+    }
+
+Once our callbacks are bound, we can start operating with Couchbase:
+
+    //Write the object to the DB
+    cb.create_object ( obj_ptr );
+    cb.wait();
+    //Get the object from the DB
+    cb.load_object ( obj_key );
+    cb.wait();
+    //Update the object in the DB
+    data.set_i ( 10 );
+    cb.save_object ( obj_ptr );
+    cb.wait();
+    //Get the object from the DB to ensure it updates correctly
+    cb.load_object ( obj_key );
+    cb.wait();
+    //Delete the object
+    cb.delete_object ( obj_key );
+    cb.wait();
 
 
 ## Redis Administrator
+
+The Redis Admin allows for quick Redis access, and exposes the below methods to do so:
+
+* std::string load ( const char * key )
+* bool save ( const char * key, std::string msg )
+* bool exists ( const char * key )
+* bool del ( const char * key )
+* bool expire ( const char * key, unsigned int second)
+
+We can connect to a single Redis Instance or a cluster.
+
+    //Set up The Redis Connection, whether single or clustered
+    RedisNode redis_list[1];
+
+    RedisNode redis_n;
+    redis_n.dbindex = 1;
+    redis_n.host = "127.0.0.1";
+    redis_n.port = 7000;
+    redis_n.passwd = "password";
+    redis_n.poolsize = 2;
+    redis_n.timeout = 5;
+    redis_n.role = 0;
+
+    redis_list[0] = redis_n;
+
+    //Connect to Redis
+    xRedis = new xRedisAdmin (redis_list, 1);
+
+    //Now, we can access our basic Redis Operations
+    bool bRet = xRedis->save("Test", "123");
+    bool eRet = xRedis->exists("Test");
+    std::string strValue = xRedis->load("Test");
+    xRedis->del("Test");
 
 ## Consul Administrator
 
