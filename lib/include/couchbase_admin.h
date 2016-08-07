@@ -29,9 +29,9 @@ extern "C"
 #define COUCHBASE_ADMIN
 
 //Define the callbacks that will get passed to Couchbase
-typedef static void (*StorageCallback)(lcb_t, const void*, lcb_storage_t, lcb_error_t, const lcb_store_resp_t*);
-typedef static void (*GetCallback)(lcb_t, const void*, lcb_error_t, const lcb_get_resp_t*);
-typedef static void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_resp_t*);
+typedef void (*StorageCallback)(lcb_t, const void*, lcb_storage_t, lcb_error_t, const lcb_store_resp_t*);
+typedef void (*GetCallback)(lcb_t, const void*, lcb_error_t, const lcb_get_resp_t*);
+typedef void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_resp_t*);
 
 class CouchbaseAdmin: public DBAdmin
 {
