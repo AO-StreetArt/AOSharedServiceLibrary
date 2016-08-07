@@ -30,37 +30,37 @@ usr/local/include/aossl:
 	mkdir /usr/local/include/aossl
 
 usr/local/include/aossl/cli.h: lib/include/cli.h
-	cp lib/include/cli.h $@
+	mv lib/include/cli.h $@
 
 usr/local/include/aossl/consul_admin.h: lib/include/consul_admin.h
-	cp lib/include/consul_admin.h $@
+	mv lib/include/consul_admin.h $@
 
 usr/local/include/aossl/couchbase_admin.h: lib/include/couchbase_admin.h
-	cp lib/include/couchbase_admin.h $@
+	mv lib/include/couchbase_admin.h $@
 
 usr/local/include/aossl/db_admin.h: lib/include/db_admin.h
-	cp lib/include/db_admin.h $@
+	mv lib/include/db_admin.h $@
 
 usr/local/include/aossl/http_admin.h: lib/include/http_admin.h
-	cp lib/include/http_admin.h $@
+	mv lib/include/http_admin.h $@
 
 usr/local/include/aossl/logging.h: lib/include/logging.h
-	cp lib/include/logging.h $@
+	mv lib/include/logging.h $@
 
 usr/local/include/aossl/uuid_admin.h: lib/include/uuid_admin.h
-	cp lib/include/uuid_admin.h $@
+	mv lib/include/uuid_admin.h $@
 
 usr/local/include/aossl/writeable.h: lib/include/writeable.h
-	cp lib/include/writeable.h $@
+	mv lib/include/writeable.h $@
 
 usr/local/include/aossl/xredis_admin.h: lib/include/xredis_admin.h
-	cp lib/include/xredis_admin.h $@
+	mv lib/include/xredis_admin.h $@
 
 usr/local/include/aossl/zmqio.h: lib/include/zmqio.h
-	cp lib/include/zmqio.h $@
+	mv lib/include/zmqio.h $@
 
 /usr/local/lib/libaossl.a: libaossl.a
-	cp libaossl.a /usr/local/lib/libaossl.a
+	mv libaossl.a /usr/local/lib/libaossl.a
 
 # Create the executable file cli_test
 cli_test: lib/cli_test.o lib/cli.o
