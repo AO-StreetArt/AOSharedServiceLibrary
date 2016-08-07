@@ -57,6 +57,63 @@ It also has some limited query capabilities, please see API for further details.
 
 ## HTTP Administrator
 
+The HTTP Admin allows quick and easy HTTP Requests by exposing:
+
+* bool put(char * url, char * data, int timeout)
+* bool get(char * url, int timeout)
+* bool post(char * url, char * data, int timeout)
+* bool del(char * url, int timeout)
+
+It also allows binding a callback to return when the data is recieved from a get request, by calling bind_get_callback(func)
+
+    //------------------------------SETUP-------------------------------------//
+
+    //A String to store response data
+    std::string writedata;
+
+    //This is the callback that gets called when we recieve the response to the
+    //Get Curl Request
+    size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up)
+    {
+
+      logging->debug("Callback Triggered");
+
+    //Put the response into a string
+    for (int c = 0; c<size*nmemb; c++)
+    {
+      writedata.push_back(buf[c]);
+    }
+
+    return size*nmemb;
+    }
+
+    //Declare the admin
+    HttpAdmin ha;
+
+    //-------------------------------GET--------------------------------------//
+
+    writedata.clear();
+
+    ha.bind_get_callback(writeCallback);
+
+    //Send the request
+    bool success = ha.get(GETURL, 5);
+    if (!success) {
+    }
+    else {
+      logging->debug("Retrieved:");
+      logging->debug(writedata);
+    }
+
+    //-------------------------------PUT--------------------------------------//
+    success = ha.put(PUTURL, "123", 5);
+
+    //-------------------------------POST-------------------------------------//
+    success = ha.post(POSTURL, "CLYMAN", 5);
+
+    //------------------------------DELETE------------------------------------//
+    success = ha.del(DELETEURL, 5);
+
 ## Logging
 Logging exposes a pointer to a Logger instance, which can log directly itself or
 provide categories to log to.

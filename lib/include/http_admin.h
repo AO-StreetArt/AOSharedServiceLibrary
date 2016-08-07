@@ -16,6 +16,7 @@ class HttpAdmin
 CURL* curl;
 bool send(char * url, int timeout);
 public:
+
   //Initializer
   HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();}
   //Shutdown the admin
@@ -25,6 +26,7 @@ public:
 
   //Return the instance to bind callbacks against
   CURL* get_instance() {return curl;}
+
   //HTTP Methods
   bool put(char * url, char * data, int timeout);
   bool get(char * url, int timeout);

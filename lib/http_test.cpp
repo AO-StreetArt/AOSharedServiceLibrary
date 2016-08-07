@@ -74,7 +74,7 @@ int main()
     //We set up the structure to store the return data
     writedata.clear();
 
-    curl_easy_setopt(ha.get_instance(), CURLOPT_WRITEFUNCTION, &writeCallback);
+    ha.bind_get_callback(writeCallback);
 
     //Send the request
     bool success = ha.get(GETURL, 5);
