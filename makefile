@@ -10,6 +10,7 @@ CFLAGS  = -g -Wall
 STD = -std=c++11
 OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o
 INCL = usr/local/include/aossl usr/local/include/aossl/cli.h usr/local/include/aossl/consul_admin.h usr/local/include/aossl/couchbase_admin.h usr/local/include/aossl/db_admin.h usr/local/include/aossl/http_admin.h usr/local/include/aossl/logging.h usr/local/include/aossl/uuid_admin.h usr/local/include/aossl/writeable.h usr/local/include/aossl/xredis_admin.h usr/local/include/aossl/zmqio.h
+INCL_DIR = usr/local/include/aossl
 TESTS = cli_test consul_test couchbase_test http_test logging_test redis_test uuid_test zmqio_test
 LIBS = -lpthread -llog4cpp
 
@@ -27,37 +28,37 @@ test: $(TESTS)
 install: /usr/local/lib/libaossl.a $(INCL)
 
 usr/local/include/aossl:
-	mkdir /usr/local/include/aossl
+	mkdir $(INCL_DIR)
 
 usr/local/include/aossl/cli.h: lib/include/cli.h
-	mv lib/include/cli.h $@
+	mv lib/include/cli.h $(INCL_DIR)
 
 usr/local/include/aossl/consul_admin.h: lib/include/consul_admin.h
-	mv lib/include/consul_admin.h $@
+	mv lib/include/consul_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/couchbase_admin.h: lib/include/couchbase_admin.h
-	mv lib/include/couchbase_admin.h $@
+	mv lib/include/couchbase_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/db_admin.h: lib/include/db_admin.h
-	mv lib/include/db_admin.h $@
+	mv lib/include/db_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/http_admin.h: lib/include/http_admin.h
-	mv lib/include/http_admin.h $@
+	mv lib/include/http_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/logging.h: lib/include/logging.h
-	mv lib/include/logging.h $@
+	mv lib/include/logging.h $(INCL_DIR)
 
 usr/local/include/aossl/uuid_admin.h: lib/include/uuid_admin.h
-	mv lib/include/uuid_admin.h $@
+	mv lib/include/uuid_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/writeable.h: lib/include/writeable.h
-	mv lib/include/writeable.h $@
+	mv lib/include/writeable.h $(INCL_DIR)
 
 usr/local/include/aossl/xredis_admin.h: lib/include/xredis_admin.h
-	mv lib/include/xredis_admin.h $@
+	mv lib/include/xredis_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/zmqio.h: lib/include/zmqio.h
-	mv lib/include/zmqio.h $@
+	mv lib/include/zmqio.h $(INCL_DIR)
 
 /usr/local/lib/libaossl.a: libaossl.a
 	mv libaossl.a /usr/local/lib/libaossl.a
