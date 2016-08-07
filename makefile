@@ -71,8 +71,8 @@ lib/cli_test.o: lib/cli_test.cpp lib/include/cli.h
 	$(CC) $(CFLAGS) -o $@ -c lib/cli_test.cpp $(STD)
 
 # Create the executable file consul_test
-consul_test: lib/consul_test.o lib/consul_admin.o lib/http_admin.o
-	$(CC) $(CFLAGS) -o $@ -o $@ lib/consul_test.o lib/consul_admin.o lib/http_admin.o $(LIBS) -lcurl $(STD)
+consul_test: lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o
+	$(CC) $(CFLAGS) -o $@ -o $@ lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o $(LIBS) -lcurl $(STD)
 
 # Create the object file consul_test.o
 lib/consul_test.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h
