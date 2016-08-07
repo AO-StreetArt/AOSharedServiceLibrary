@@ -14,12 +14,7 @@ void Logger::start_log_from_file(std::string initFileName)
   }
 
   //Find the categories defined in the file
-  std::vector<log4cpp::Category*> categories = log4cpp::Category::getCurrentCategories();
-
-  for (int i =0; i < categories.size(); i++)
-  {
-    logs.emplace( categories[i]->getName(), categories[i] );
-  }
+  // std::vector<log4cpp::Category*> categories = log4cpp::Category::getCurrentCategories();
 
   //Expose the logging handles
   log4cpp::Category& root = log4cpp::Category::getRoot();
@@ -48,7 +43,7 @@ start_log_from_file(initFileName);
 //Destructor
 Logger::~Logger()
 {
-  end_log()
+  end_log();
 }
 
 //Exposures that log to the root category
@@ -127,22 +122,7 @@ void Logger::info(const char * msg)
 //Pull down different categories by name
 log4cpp::Category* Logger::get_category(std::string name)
 {
-  auto search = logs.find(name);
-  if (search != logs.end())
-  {
-    return logs[name];
-  }
-  else
-  {
-    if (!root_log) {
-      std::cout << "Bad Logger Configuration, no root or category found" << std::endl;
-    }
-    else {
-      return root_log;
-      info("Category not found: ");
-      info(name);
-    }
-  }
+  return getInstance(name);
 }
 
 //Pull down different categories by name

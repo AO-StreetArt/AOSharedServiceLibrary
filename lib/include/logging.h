@@ -10,7 +10,6 @@
 
 class Logger
 {
-std::unordered_map<std::string, log4cpp::Category *log> logs;
 log4cpp::Category *root_log;
 void start_log_from_file(std::string initFileName);
 void end_log();
