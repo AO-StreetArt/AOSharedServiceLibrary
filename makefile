@@ -88,7 +88,7 @@ lib/couchbase_test.o: lib/couchbase_test.cpp lib/include/couchbase_admin.h lib/i
 
 # Create the executable file http_test
 http_test: lib/logging.o lib/http_admin.o lib/http_test.o
-	$(CC) $(CFLAGS) -o $@ lib/http_test.o lib/http_admin.o $(LIBS) -lcurl $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/http_test.o lib/http_admin.o $(LIBS) -lcurl $(STD)
 
 # Create the object file http_test.o
 lib/http_test.o: lib/http_test.cpp lib/include/http_admin.h lib/include/logging.h
