@@ -134,35 +134,35 @@ libaossl.a:  $(OBJS)
 
 # Create the object file consul_admin.o
 lib/consul_admin.o:  lib/consul_admin.cpp lib/include/logging.h lib/include/http_admin.h
-	$(CC) $(CFLAGS) -c lib/consul_admin.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c lib/consul_admin.cpp $(STD)
 
 # Create the object file xredis_admin.o
 lib/xredis_admin.o:  lib/xredis_admin.cpp lib/include/logging.h
-	$(CC) $(CFLAGS) -c lib/xredis_admin.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c lib/xredis_admin.cpp $(STD)
 
 # Create the object file couchbase_admin.o
 lib/couchbase_admin.o:  lib/couchbase_admin.cpp lib/include/logging.h lib/include/db_admin.h lib/include/writeable.h
-	$(CC) $(CFLAGS) -c lib/couchbase_admin.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_admin.cpp $(STD)
 
 # Create the object file zmqio.o
 lib/zmqio.o:  lib/zmqio.cpp lib/include/logging.h
-	$(CC) $(CFLAGS) -c lib/zmqio.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c lib/zmqio.cpp $(STD)
 
 # Create the object file http_admin.o
 lib/http_admin.o:  lib/http_admin.cpp lib/include/logging.h
-	$(CC) $(CFLAGS) -c lib/http_admin.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c lib/http_admin.cpp $(STD)
 
 # Create the object file uuid_admin.o
 lib/uuid_admin.o:  lib/uuid_admin.cpp lib/include/logging.h
-	$(CC) $(CFLAGS) -c lib/uuid_admin.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c lib/uuid_admin.cpp $(STD)
 
 # Create the object file logging.o
 lib/logging.o:  lib/logging.cpp lib/include/logging.h
-	$(CC) $(CFLAGS) -c lib/logging.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c lib/logging.cpp $(STD)
 
 # Create the object file cli.o
 lib/cli.o:  lib/cli.cpp lib/include/cli.h
-	$(CC) $(CFLAGS) -c lib/cli.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c lib/cli.cpp $(STD)
 
 # To start over from scratch, type 'make clean'.  This
 # removes the executable file, as well as old .o object
