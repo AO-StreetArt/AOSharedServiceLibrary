@@ -121,21 +121,21 @@ void CouchbaseAdmin::delete_object ( const char * key ) {
 }
 
 //Bind the Get Callback for the couchbase calls
-void CouchbaseAdmin::bind_get_callback(GetCallback)
+void CouchbaseAdmin::bind_get_callback(GetCallback gc)
 {
-lcb_set_get_callback(private_instance, GetCallback);
+lcb_set_get_callback(private_instance, gc);
 }
 
 //Bind the Storage Callback for the couchbase calls
-void CouchbaseAdmin::bind_storage_callback(StorageCallback)
+void CouchbaseAdmin::bind_storage_callback(StorageCallback sc)
 {
-lcb_set_store_callback(private_instance, StorageCallback);
+lcb_set_store_callback(private_instance, sc);
 }
 
 //Bind the Delete Callback for the couchbase calls
-void CouchbaseAdmin::bind_delete_callback(DelCallback)
+void CouchbaseAdmin::bind_delete_callback(DelCallback dc)
 {
-lcb_set_remove_callback(private_instance, DelCallback);
+lcb_set_remove_callback(private_instance, dc);
 }
 
 lcb_t CouchbaseAdmin::get_instance ()
