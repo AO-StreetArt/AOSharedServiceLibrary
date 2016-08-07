@@ -120,9 +120,9 @@ void Logger::info(const char * msg)
 }
 
 //Pull down different categories by name
-log4cpp::Category* Logger::get_category(std::string name)
+log4cpp::Category& Logger::get_category(std::string name)
 {
-  return getInstance(name);
+  return log4cpp::Category::getInstance(name);
 }
 
 //Pull down different categories by name
