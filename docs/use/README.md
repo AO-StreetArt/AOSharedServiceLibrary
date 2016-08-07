@@ -78,14 +78,14 @@ we get access to command line arguments in the form:
 
 We have access to an opt_exist method to determine if an option was entered.  We can also use get_opt to pull parameter values, and get_program_name to return the current program name executing on this instance.
 
-`int main( int argc, char** argv )
-{
+    int main( int argc, char** argv )
+    {
 
-CommandLineInterpreter cli ( argc, argv );
-std::cout << cli.get_program_name() << std::endl;
-if ( cli.opt_exist("name") ) {
-  std::cout << cli.get_opt("name") << std::endl;
-}
+    CommandLineInterpreter cli ( argc, argv );
+    std::cout << cli.get_program_name() << std::endl;
+    if ( cli.opt_exist("name") ) {
+      std::cout << cli.get_opt("name") << std::endl;
+    }
 
-return 0;
-}`
+    return 0;
+    } 
