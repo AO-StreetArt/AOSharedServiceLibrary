@@ -31,37 +31,37 @@ usr/local/include/aossl:
 	mkdir $(INCL_DIR)
 
 usr/local/include/aossl/cli.h: lib/include/cli.h
-	mv lib/include/cli.h $(INCL_DIR)
+	cp lib/include/cli.h $(INCL_DIR)
 
 usr/local/include/aossl/consul_admin.h: lib/include/consul_admin.h
-	mv lib/include/consul_admin.h $(INCL_DIR)
+	cp lib/include/consul_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/couchbase_admin.h: lib/include/couchbase_admin.h
-	mv lib/include/couchbase_admin.h $(INCL_DIR)
+	cp lib/include/couchbase_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/db_admin.h: lib/include/db_admin.h
-	mv lib/include/db_admin.h $(INCL_DIR)
+	cp lib/include/db_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/http_admin.h: lib/include/http_admin.h
-	mv lib/include/http_admin.h $(INCL_DIR)
+	cp lib/include/http_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/logging.h: lib/include/logging.h
-	mv lib/include/logging.h $(INCL_DIR)
+	cp lib/include/logging.h $(INCL_DIR)
 
 usr/local/include/aossl/uuid_admin.h: lib/include/uuid_admin.h
-	mv lib/include/uuid_admin.h $(INCL_DIR)
+	cp lib/include/uuid_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/writeable.h: lib/include/writeable.h
-	mv lib/include/writeable.h $(INCL_DIR)
+	cp lib/include/writeable.h $(INCL_DIR)
 
 usr/local/include/aossl/xredis_admin.h: lib/include/xredis_admin.h
-	mv lib/include/xredis_admin.h $(INCL_DIR)
+	cp lib/include/xredis_admin.h $(INCL_DIR)
 
 usr/local/include/aossl/zmqio.h: lib/include/zmqio.h
-	mv lib/include/zmqio.h $(INCL_DIR)
+	cp lib/include/zmqio.h $(INCL_DIR)
 
 /usr/local/lib/libaossl.a: libaossl.a
-	mv libaossl.a /usr/local/lib/libaossl.a
+	cp libaossl.a /usr/local/lib/libaossl.a
 
 # Create the executable file cli_test
 cli_test: lib/cli_test.o lib/cli.o
@@ -169,5 +169,11 @@ lib/cli.o:  lib/cli.cpp lib/include/cli.h
 # removes the executable file, as well as old .o object
 # files and *~ backup files:
 #
-clean:
+clean: clean_local clean_install
+
+clean_local:
 	$(RM) libaossl.a lib/*.o *~
+
+clean_install:
+	$(RM) -r /usr/local/include/aossl
+	$(RM) /usr/local/lib/libaossl.a
