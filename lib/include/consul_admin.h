@@ -2,7 +2,6 @@
 #define CONSUL_ADMIN
 
 #include "http_admin.h"
-#include "writeable.h"
 #include "logging.h"
 
 #include <string>
