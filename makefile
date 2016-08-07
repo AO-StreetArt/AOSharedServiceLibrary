@@ -27,7 +27,7 @@ test: $(TESTS)
 install: /usr/local/lib/libaossl.a $(INCL)
 
 usr/local/include/aossl:
-	mkdir usr/local/include/aossl
+	mkdir usr/local/include/aossl/
 
 usr/local/include/aossl/cli.h: lib/include/cli.h
 	cp lib/include/cli.h $@
