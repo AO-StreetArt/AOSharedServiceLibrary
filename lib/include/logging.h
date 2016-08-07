@@ -32,7 +32,7 @@ public:
 
   //Pull down the root category directly
   log4cpp::Category* get_root();
-}
+};
 
 extern Logger *logging;
 
