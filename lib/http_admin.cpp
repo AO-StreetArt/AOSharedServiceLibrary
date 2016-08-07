@@ -1,5 +1,10 @@
 #include "include/http_admin.h"
 
+void HttpAdmin::bind_get_callback(WriteCallback &new_func)
+{
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, new_func);
+}
+
 bool HttpAdmin::send(char * url, int timeout)
 {
   logging->debug("HTTP: Sending HTTP Request");

@@ -9,6 +9,8 @@
 #include <curl/curl.h>
 #include "logging.h"
 
+typedef size_t (*WriteCallback)(char *, size_t, size_t, void*);
+
 class HttpAdmin
 {
 CURL* curl;
@@ -18,6 +20,9 @@ public:
   HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();}
   //Shutdown the admin
   void shutdown() {curl_global_cleanup();}
+  //Bind Callbacks
+  void bind_get_callback(WriteCallback);
+
   //Return the instance to bind callbacks against
   CURL* get_instance() {return curl;}
   //HTTP Methods

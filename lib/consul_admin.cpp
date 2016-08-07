@@ -126,7 +126,7 @@ std::string ConsulAdmin::query(std::string query_url)
   char *url = new char[url_string.length() + 1];
   strcpy(url, url_cstr);
 
-  curl_easy_setopt(ha->get_instance(), CURLOPT_WRITEFUNCTION, &writeCallback);
+  ha->bind_get_callback(writeCallback);
 
   //Send the HTTP Request
   bool success = ha->get(url, timeout);
