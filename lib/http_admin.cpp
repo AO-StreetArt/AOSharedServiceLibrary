@@ -1,6 +1,6 @@
 #include "include/http_admin.h"
 
-void HttpAdmin::bind_get_callback(WriteCallback &new_func)
+void HttpAdmin::bind_get_callback(WriteCallback new_func)
 {
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, new_func);
 }
