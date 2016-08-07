@@ -28,7 +28,7 @@ public:
   void info(const char * msg);
 
   //Pull down different categories by name
-  log4cpp::Category* get_category(std::string name);
+  log4cpp::Category& get_category(std::string name);
 
   //Pull down the root category directly
   log4cpp::Category* get_root();
