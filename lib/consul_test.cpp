@@ -29,7 +29,7 @@ logging = &log;
 //Construction tests
 ConsulAdmin ca ("localhost:8500");
 
-Service s0 ("1", "CLyman", "tcp://*", "5555");
+Service s0 ("0", "CLyman", "tcp://*", "5555");
 
 Service s ("1", "CLyman", "tcp://*", "5555");
 s.add_tag("Testing");

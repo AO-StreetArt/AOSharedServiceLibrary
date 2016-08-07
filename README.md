@@ -23,5 +23,6 @@ In order to use the respective administrators, you should have an active [Consul
 ## Table of Contents
 
 * [Quickstart] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/quickstart)
+* [Use] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use)
 * [Dependency Resolution] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps)
 * [Tests] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/tests)

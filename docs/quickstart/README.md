@@ -7,13 +7,13 @@ Before we begin, we need to build our dependencies and then build the project.
 ### Dependencies
 
 #### Ubuntu 14.04
-The build_deps.sh script should allow for automatic resolution of dependencies.  Run the following commands from within the CLyman folder
+The build_deps.sh script should allow for automatic resolution of dependencies.  Run the following commands from within the main folder
 
-`mkdir ../CLyman_deps`
+`mkdir ../aossl_deps`
 
-`sudo cp build_deps.sh ../CLyman_deps`
+`sudo cp scripts/deb/build_deps.sh ../aossl_deps`
 
-`cd ../CLyman_deps`
+`cd ../aossl_deps`
 
 `sudo ./build_deps.sh`
 
@@ -22,21 +22,13 @@ Please refer to the [Dependency Resolution] (https://github.com/AO-StreetArt/AOS
 
 ### Build the Project
 
-The project and tests can be built with the provided scripts on Ubuntu 14.04 or Debian 7.
+The project and tests can be built with make on most linux systems.
 
-`./build_project.sh`
+`make`
 
-At this point, you will have a few outputs, which can be copied to allow easy use across many projects (example commands provided for Ubuntu 14.04):
+`make test`
 
-* A compiled shared library libaossl.a, that needs to be put on the linker path
-
-`sudo cp libaossl.a /usr/local/bin`
-
-* A set of header files in the lib/include directory that need to be put onto the include path
-
-`sudo mkdir /usr/local/include/aossl`
-
-`sudo cp lib/include/* /usr/local/include/aossl`
+`sudo make install`
 
 ## Use
 Please continue on to the [Use] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use) section of the documentation to see example uses of the library.
