@@ -1,0 +1,85 @@
+\hypertarget{classConsulAdmin}{\section{Consul\-Admin Class Reference}
+\label{classConsulAdmin}\index{Consul\-Admin@{Consul\-Admin}}
+}
+
+
+The Consul Administrator, who handles distributed configuration \& service discovery.  
+
+
+
+
+{\ttfamily \#include $<$consul\-\_\-admin.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classConsulAdmin_aafb2c493da3672acc348fd865036a883}{\hyperlink{classConsulAdmin_aafb2c493da3672acc348fd865036a883}{Consul\-Admin} (std\-::string caddr)}\label{classConsulAdmin_aafb2c493da3672acc348fd865036a883}
+
+\begin{DoxyCompactList}\small\item\em Construct a consul admin, passing in the connection string. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_ac84ff8c80f6bd731329c8acb6d236759}{\hyperlink{classConsulAdmin_ac84ff8c80f6bd731329c8acb6d236759}{$\sim$\-Consul\-Admin} ()}\label{classConsulAdmin_ac84ff8c80f6bd731329c8acb6d236759}
+
+\begin{DoxyCompactList}\small\item\em Delete a consul admin. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_aa83d0567051f66cf014f235586b2780f}{bool \hyperlink{classConsulAdmin_aa83d0567051f66cf014f235586b2780f}{register\-\_\-service} (\hyperlink{classService}{Service} \&s)}\label{classConsulAdmin_aa83d0567051f66cf014f235586b2780f}
+
+\begin{DoxyCompactList}\small\item\em Register the \hyperlink{classService}{Service}. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_ab3772ffad9c8751fd3ba909b67c9af5b}{bool \hyperlink{classConsulAdmin_ab3772ffad9c8751fd3ba909b67c9af5b}{deregister\-\_\-service} (\hyperlink{classService}{Service} \&s)}\label{classConsulAdmin_ab3772ffad9c8751fd3ba909b67c9af5b}
+
+\begin{DoxyCompactList}\small\item\em Deregister the \hyperlink{classService}{Service}. \end{DoxyCompactList}\item 
+bool \hyperlink{classConsulAdmin_a152fc37965039733bb53c56e208b4492}{set\-\_\-config\-\_\-value} (std\-::string key, std\-::string val)
+\begin{DoxyCompactList}\small\item\em Set a configuration value. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_a42569b08fba671535856c345fa05ef33}{std\-::string \hyperlink{classConsulAdmin_a42569b08fba671535856c345fa05ef33}{get\-\_\-config\-\_\-value} (std\-::string key)}\label{classConsulAdmin_a42569b08fba671535856c345fa05ef33}
+
+\begin{DoxyCompactList}\small\item\em Get a configuration value. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_a177d6d946f41c4efa8ad0746e04b3641}{bool \hyperlink{classConsulAdmin_a177d6d946f41c4efa8ad0746e04b3641}{del\-\_\-config\-\_\-value} (std\-::string key)}\label{classConsulAdmin_a177d6d946f41c4efa8ad0746e04b3641}
+
+\begin{DoxyCompactList}\small\item\em Delete a configuration value. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_a0e06b8914ba53221ad7756b1afe16d00}{std\-::string \hyperlink{classConsulAdmin_a0e06b8914ba53221ad7756b1afe16d00}{services} ()}\label{classConsulAdmin_a0e06b8914ba53221ad7756b1afe16d00}
+
+\begin{DoxyCompactList}\small\item\em Query the local agent for services registered. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_a815abcc0f65f0f20d27e4832d1c08994}{std\-::string \hyperlink{classConsulAdmin_a815abcc0f65f0f20d27e4832d1c08994}{agent\-\_\-info} ()}\label{classConsulAdmin_a815abcc0f65f0f20d27e4832d1c08994}
+
+\begin{DoxyCompactList}\small\item\em Query the local agent for it's info. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_a65391086283846fb4056a8f84105f9bd}{std\-::string \hyperlink{classConsulAdmin_a65391086283846fb4056a8f84105f9bd}{healthy\-\_\-services} ()}\label{classConsulAdmin_a65391086283846fb4056a8f84105f9bd}
+
+\begin{DoxyCompactList}\small\item\em Query for healthy services only. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_a9086263fd0d739607b30706dc86ad047}{std\-::string \hyperlink{classConsulAdmin_a9086263fd0d739607b30706dc86ad047}{datacenters} ()}\label{classConsulAdmin_a9086263fd0d739607b30706dc86ad047}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for datacenters. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_a20888c98619dc9bed63ecda78085fd4a}{std\-::string \hyperlink{classConsulAdmin_a20888c98619dc9bed63ecda78085fd4a}{nodes\-\_\-dc} (std\-::string data\-\_\-center)}\label{classConsulAdmin_a20888c98619dc9bed63ecda78085fd4a}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for the nodes in a particular datacenter. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_aaac11b600131ef18b5d88d51102a8007}{std\-::string \hyperlink{classConsulAdmin_aaac11b600131ef18b5d88d51102a8007}{services\-\_\-dc} (std\-::string data\-\_\-center)}\label{classConsulAdmin_aaac11b600131ef18b5d88d51102a8007}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for the services in a particular datacenter. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_ad667e4ff5102614a50a0e719eccd1ea4}{std\-::string \hyperlink{classConsulAdmin_ad667e4ff5102614a50a0e719eccd1ea4}{nodes\-\_\-service} (std\-::string service)}\label{classConsulAdmin_ad667e4ff5102614a50a0e719eccd1ea4}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for the nodes running a particular service. \end{DoxyCompactList}\item 
+\hypertarget{classConsulAdmin_a42bf71278508f190a7eeb345c9c692e1}{std\-::string \hyperlink{classConsulAdmin_a42bf71278508f190a7eeb345c9c692e1}{services\-\_\-node} (std\-::string node, std\-::string data\-\_\-center)}\label{classConsulAdmin_a42bf71278508f190a7eeb345c9c692e1}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for the services provided by a particular node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The Consul Administrator, who handles distributed configuration \& service discovery. 
+
+This relies on the H\-T\-T\-P Administrator, and takes in a \hyperlink{classService}{Service} object in order to register. It's responses are J\-S\-O\-N strings that are recieved from Consul. Note that the values returned from the Key-\/\-Value store will be stored in base64 format 
+
+\subsection{Member Function Documentation}
+\hypertarget{classConsulAdmin_a152fc37965039733bb53c56e208b4492}{\index{Consul\-Admin@{Consul\-Admin}!set\-\_\-config\-\_\-value@{set\-\_\-config\-\_\-value}}
+\index{set\-\_\-config\-\_\-value@{set\-\_\-config\-\_\-value}!ConsulAdmin@{Consul\-Admin}}
+\subsubsection[{set\-\_\-config\-\_\-value}]{\setlength{\rightskip}{0pt plus 5cm}bool Consul\-Admin\-::set\-\_\-config\-\_\-value (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{key, }
+\item[{std\-::string}]{val}
+\end{DoxyParamCaption}
+)}}\label{classConsulAdmin_a152fc37965039733bb53c56e208b4492}
+
+
+Set a configuration value. 
+
+If the key does not exist, then this will add it. Otherwise, it will update the existing key. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+lib/include/consul\-\_\-admin.\-h\item 
+lib/consul\-\_\-admin.\-cpp\end{DoxyCompactItemize}

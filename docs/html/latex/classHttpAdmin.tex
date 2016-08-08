@@ -1,0 +1,99 @@
+\hypertarget{classHttpAdmin}{\section{Http\-Admin Class Reference}
+\label{classHttpAdmin}\index{Http\-Admin@{Http\-Admin}}
+}
+
+
+The H\-T\-T\-P Requests Administrators.  
+
+
+
+
+{\ttfamily \#include $<$http\-\_\-admin.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classHttpAdmin_ad5821eb1e159cfad6e9e0676b8d1bd8d}{\hyperlink{classHttpAdmin_ad5821eb1e159cfad6e9e0676b8d1bd8d}{Http\-Admin} ()}\label{classHttpAdmin_ad5821eb1e159cfad6e9e0676b8d1bd8d}
+
+\begin{DoxyCompactList}\small\item\em Start a new H\-T\-T\-P Requests Admin. \end{DoxyCompactList}\item 
+\hypertarget{classHttpAdmin_acebe3cde5a43db8dd67fa47b71c37996}{void \hyperlink{classHttpAdmin_acebe3cde5a43db8dd67fa47b71c37996}{shutdown} ()}\label{classHttpAdmin_acebe3cde5a43db8dd67fa47b71c37996}
+
+\begin{DoxyCompactList}\small\item\em Shutdown the admin. \end{DoxyCompactList}\item 
+\hypertarget{classHttpAdmin_a8342985fecdaffdf72ee3a6f767236a7}{void \hyperlink{classHttpAdmin_a8342985fecdaffdf72ee3a6f767236a7}{bind\-\_\-get\-\_\-callback} (Write\-Callback)}\label{classHttpAdmin_a8342985fecdaffdf72ee3a6f767236a7}
+
+\begin{DoxyCompactList}\small\item\em Bind Callback. \end{DoxyCompactList}\item 
+\hypertarget{classHttpAdmin_abb47ebccfb59e2f11dac994d5c44fe7e}{C\-U\-R\-L $\ast$ \hyperlink{classHttpAdmin_abb47ebccfb59e2f11dac994d5c44fe7e}{get\-\_\-instance} ()}\label{classHttpAdmin_abb47ebccfb59e2f11dac994d5c44fe7e}
+
+\begin{DoxyCompactList}\small\item\em Return the instance to bind callbacks against. Not advised. \end{DoxyCompactList}\item 
+bool \hyperlink{classHttpAdmin_a671cbab4092d7602813722185560c6c4}{put} (char $\ast$url, char $\ast$data, int timeout)
+\begin{DoxyCompactList}\small\item\em Put. \end{DoxyCompactList}\item 
+bool \hyperlink{classHttpAdmin_a70b93e959d2cef3fe2526d78203d5b19}{get} (char $\ast$url, int timeout)
+\begin{DoxyCompactList}\small\item\em Get. \end{DoxyCompactList}\item 
+bool \hyperlink{classHttpAdmin_a1e323e24e18a80d635450fa218bd0025}{post} (char $\ast$url, char $\ast$data, int timeout)
+\begin{DoxyCompactList}\small\item\em Post. \end{DoxyCompactList}\item 
+bool \hyperlink{classHttpAdmin_ac503bfdb6ddbcb197390b57029411f8a}{del} (char $\ast$url, int timeout)
+\begin{DoxyCompactList}\small\item\em Delete. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The H\-T\-T\-P Requests Administrators. 
+
+This class is in charge of making H\-T\-T\-P Requests Support for put, get post, and delete 
+
+\subsection{Member Function Documentation}
+\hypertarget{classHttpAdmin_ac503bfdb6ddbcb197390b57029411f8a}{\index{Http\-Admin@{Http\-Admin}!del@{del}}
+\index{del@{del}!HttpAdmin@{Http\-Admin}}
+\subsubsection[{del}]{\setlength{\rightskip}{0pt plus 5cm}bool Http\-Admin\-::del (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{url, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)}}\label{classHttpAdmin_ac503bfdb6ddbcb197390b57029411f8a}
+
+
+Delete. 
+
+Delete from the given U\-R\-L with the specified timeout \hypertarget{classHttpAdmin_a70b93e959d2cef3fe2526d78203d5b19}{\index{Http\-Admin@{Http\-Admin}!get@{get}}
+\index{get@{get}!HttpAdmin@{Http\-Admin}}
+\subsubsection[{get}]{\setlength{\rightskip}{0pt plus 5cm}bool Http\-Admin\-::get (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{url, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)}}\label{classHttpAdmin_a70b93e959d2cef3fe2526d78203d5b19}
+
+
+Get. 
+
+Get from the given U\-R\-L with the specified timeout \hypertarget{classHttpAdmin_a1e323e24e18a80d635450fa218bd0025}{\index{Http\-Admin@{Http\-Admin}!post@{post}}
+\index{post@{post}!HttpAdmin@{Http\-Admin}}
+\subsubsection[{post}]{\setlength{\rightskip}{0pt plus 5cm}bool Http\-Admin\-::post (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{url, }
+\item[{char $\ast$}]{data, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)}}\label{classHttpAdmin_a1e323e24e18a80d635450fa218bd0025}
+
+
+Post. 
+
+Post to the given U\-R\-L the supplied data with the specified timeout \hypertarget{classHttpAdmin_a671cbab4092d7602813722185560c6c4}{\index{Http\-Admin@{Http\-Admin}!put@{put}}
+\index{put@{put}!HttpAdmin@{Http\-Admin}}
+\subsubsection[{put}]{\setlength{\rightskip}{0pt plus 5cm}bool Http\-Admin\-::put (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{url, }
+\item[{char $\ast$}]{data, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)}}\label{classHttpAdmin_a671cbab4092d7602813722185560c6c4}
+
+
+Put. 
+
+Put to the given U\-R\-L the supplied data with the specified timeout 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+lib/include/http\-\_\-admin.\-h\item 
+lib/http\-\_\-admin.\-cpp\end{DoxyCompactItemize}
