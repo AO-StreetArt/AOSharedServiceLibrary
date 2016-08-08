@@ -32,3 +32,5 @@ The project and tests can be built with make on most linux systems.
 
 ## Use
 Please continue on to the [Use] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use) section of the documentation to see example uses of the library.
+
+[Go Home] (https://github.com/AO-StreetArt/AOSharedServiceLibrary)

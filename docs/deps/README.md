@@ -11,3 +11,14 @@ You will need Couchbase drivers installed.  Couchbase drivers can be found [here
 We rely also on a set of base libraries which are installable via Ubuntu/Debian package managers:
 * libuuid
 * libcurl
+
+# External Services
+
+We use three external services which are necessary to use the respective elements of this library.  Note that the elements of this library can be used separately, so you are in no way tied to the use of these services as a part of your project.  In fact, you are encouraged to develop drivers for alternate technologies and submit a pull request.
+
+* [Redis] (http://redis.io/) - Key/Value Store
+* [Couchbase] (http://www.couchbase.com/) - Document Based Database
+* [Consul] (https://www.consul.io/) - Service Discovery, Distributed Configuration, Health Monitoring
+
+
+[Go Home] (https://github.com/AO-StreetArt/AOSharedServiceLibrary)

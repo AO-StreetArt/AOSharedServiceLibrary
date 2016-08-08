@@ -1,0 +1,7 @@
+PROJECT_NAME     = AoSharedServiceLibrary
+OUTPUT_DIRECTORY = docs/html
+WARNINGS         = YES
+INPUT            = lib lib/include
+FILE_PATTERNS    = *.cpp *.h
+INCLUDE_PATH     = lib
+SEARCHENGINE     = NO
