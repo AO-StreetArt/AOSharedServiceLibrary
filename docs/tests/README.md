@@ -18,7 +18,7 @@ Please note that the Redis, Couchbase, and Consul tests will require an active s
 ## Where to Go From Here
 Please continue on to the [Dependencies] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps) section of the documentation to see a discussion of the libraries dependencies for building on other operating systems.
 
-See the automatically generated [API Documentation] () for detailed documentation on the library.
+See the automatically generated [API Documentation] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/html) for detailed documentation on the library.
 
 
 [Go Home] (https://github.com/AO-StreetArt/AOSharedServiceLibrary)

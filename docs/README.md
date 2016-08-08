@@ -4,6 +4,6 @@ The Github Documentation is divided into several sections, the easiest way to ac
 
 # API Documentation
 
-The API Documentation is generated using [Doxygen] (http://www.stack.nl/~dimitri/doxygen/download.html), and is available in the html folder here as well.
+The API Documentation is generated using [Doxygen] (http://www.stack.nl/~dimitri/doxygen/download.html), and is available in the [html] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/html) folder here as well.
 
 A Doxyfile is provided for those wishing to re-generate the docs.

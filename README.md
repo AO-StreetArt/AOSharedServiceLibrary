@@ -20,6 +20,8 @@ Features:
 
 In order to use the respective administrators, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Couchbase] (http://www.couchbase.com/) and [Redis] (http://redis.io/) to connect to.
 
+Full API Documentation is available via doxygen, and the latest execution is stored in the docs/html folder.
+
 ## Table of Contents
 
 * [Quickstart] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/quickstart)
