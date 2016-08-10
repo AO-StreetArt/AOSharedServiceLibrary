@@ -169,7 +169,9 @@ lib/cli.o:  lib/cli.cpp lib/include/cli.h
 # removes the executable file, as well as old .o object
 # files and *~ backup files:
 #
-clean: clean_local clean_install clean_tests
+clean: clean_local clean_tests
+
+uninstall: clean_install
 
 clean_local:
 	$(RM) libaossl.a lib/*.o *~
