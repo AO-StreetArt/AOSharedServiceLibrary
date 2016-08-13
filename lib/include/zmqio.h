@@ -21,6 +21,8 @@ class Zmqo: public ZmqOut
 {
 zmq::socket_t *zmqo;
 public:
+  //! Build a new Inbound ZMQ Manager
+  Zmqo(zmq::context_t &context);
 
   //! Connect to the given conn_str
   void connect(std::string conn_str);
