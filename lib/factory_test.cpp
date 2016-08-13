@@ -28,6 +28,9 @@ uuidInterface *uuid = factory.get_uuid_interface();
 //! Get the HTTP Interface instance
 HttpInterface *ha = factory.get_http_interface();
 
+//! Get a Service Interface instance
+ServiceInterface *s = factory.get_service_interface();
+
 //! Get a Consul Interface instance
 ConsulInterface *consul = factory.get_consul_interface( "localhost:8500" );
 
@@ -66,6 +69,7 @@ if ( cli->opt_exist("name") ) {
 delete cli;
 delete uuid;
 delete ha;
+delete s;
 delete consul;
 delete ca;
 delete ca2;

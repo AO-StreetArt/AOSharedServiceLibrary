@@ -1,4 +1,4 @@
-#include "include/factory/factory.h"
+#include "include/factory.h"
 
 ServiceComponentFactory::ServiceComponentFactory()
 {
