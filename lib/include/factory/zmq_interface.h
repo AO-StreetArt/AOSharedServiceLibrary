@@ -1,7 +1,4 @@
 #include <string>
-#include <stdlib.h>
-#include <zmq.hpp>
-#include "logging.h"
 
 #ifndef ZMQ_INTERFACE
 #define ZMQ_INTERFACE
