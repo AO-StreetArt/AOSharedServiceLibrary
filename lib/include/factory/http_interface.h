@@ -16,9 +16,6 @@ class HttpInterface
 {
 public:
 
-  //! Start a new HTTP Requests Admin
-  virtual HttpInterface() = 0;
-
   //! Shutdown the admin
   virtual void shutdown() = 0;
 
