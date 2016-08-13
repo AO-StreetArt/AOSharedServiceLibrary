@@ -1,37 +1,29 @@
 //The HTTP Administrator
 //Responsible for placing HTTP Requests using curl
 
-#ifndef HTTP_ADMIN
-#define HTTP_ADMIN
-
 #include <string>
-#include <sstream>
-#include <curl/curl.h>
 
-#include "factory/logging_interface.h"
-#include "factory/http_interface.h"
+#ifndef HTTP_INTERFACE
+#define HTTP_INTERFACE
+
+typedef size_t (*WriteCallback)(char *, size_t, size_t, void*);
 
 //! The HTTP Requests Administrators
 
 //! This class is in charge of making HTTP Requests
 //! Support for put, get post, and delete
-class HttpAdmin: public HttpInterface
+class HttpInterface
 {
-CURL* curl;
-bool send(char * url, int timeout);
 public:
 
   //! Start a new HTTP Requests Admin
-  HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();}
+  virtual HttpInterface() = 0;
 
   //! Shutdown the admin
-  void shutdown() {curl_global_cleanup();}
+  virtual void shutdown() = 0;
 
   //! Bind Callback
-  void bind_get_callback(WriteCallback);
-
-  //! Return the instance to bind callbacks against.  Not advised
-  CURL* get_instance() {return curl;}
+  virtual void bind_get_callback(WriteCallback) = 0;
 
   //HTTP Methods
 
@@ -39,25 +31,25 @@ public:
 
   //! Put to the given URL the supplied data
   //! with the specified timeout
-  bool put(char * url, char * data, int timeout);
+  virtual bool put(char * url, char * data, int timeout) = 0;
 
   //! Get
 
   //! Get from the given URL
   //! with the specified timeout
-  bool get(char * url, int timeout);
+  virtual bool get(char * url, int timeout) = 0;
 
   //! Post
 
   //! Post to the given URL the supplied data
   //! with the specified timeout
-  bool post(char * url, char * data, int timeout);
+  virtual bool post(char * url, char * data, int timeout) = 0;
 
   //! Delete
 
   //! Delete from the given URL
   //! with the specified timeout
-  bool del(char * url, int timeout);
+  virtual bool del(char * url, int timeout) = 0;
 };
 
 #endif

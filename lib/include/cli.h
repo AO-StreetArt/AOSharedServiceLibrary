@@ -2,10 +2,12 @@
 #include <string>
 #include <iterator>
 
+#include "factory/commandline_interface.h"
+
 #ifndef COMMAND_LINE
 #define COMMAND_LINE
 
-class CommandLineInterpreter
+class CommandLineInterpreter: public CommandLineInterface
 {
 //An unordered map of options from the command line
 std::unordered_map<std::string, std::string> opts;

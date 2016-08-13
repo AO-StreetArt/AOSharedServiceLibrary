@@ -114,7 +114,6 @@ logging->info("Internal Variables Intialized");
 //Set up our Redis Connection List
 int conn_list_size = RedisConnectionList.size();
 RedisNode RedisList1[conn_list_size];
-{
 int y = 0;
 for (int y = 0; y < conn_list_size; ++y)
 {
@@ -132,7 +131,6 @@ for (int y = 0; y < conn_list_size; ++y)
   logging->debug(redis_n.host);
 
   RedisList1[y] = redis_n;
-}
 }
 logging->info("Redis Connection List Built");
 

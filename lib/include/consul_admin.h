@@ -2,7 +2,9 @@
 #define CONSUL_ADMIN
 
 #include "http_admin.h"
-#include "logging.h"
+#include "factory/logging_interface.h"
+
+#include "factory/consul_interface.h"
 
 #include <string>
 #include <string.h>
@@ -16,22 +18,13 @@ extern std::string writedata;
 //Get Curl Request
 size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
 
-//-----------------------------Health Checks----------------------------------//
-
-//! A strcut to hold health check information which can be added to a service
-struct HealthCheck
-{
-  std::string script;
-  std::string interval;
-};
-
 //--------------------------------Service-------------------------------------//
 
 //! A Service class which can be registered with Consul for each instance of a particular service
 
 //! An instance of this class can be instantiated by a service and is
 //! passed to the consul admin to register and de-register
-class Service
+class Service: public ServiceInterface
 {
 std::string id;
 std::string name;
@@ -105,7 +98,7 @@ public:
 //! This relies on the HTTP Administrator, and takes in a Service object in order to
 //! register.  It's responses are JSON strings that are recieved from Consul.
 //! Note that the values returned from the Key-Value store will be stored in base64 format
-class ConsulAdmin
+class ConsulAdmin: public ConsulInterface
 {
 HttpAdmin *ha;
 std::string consul_addr;

@@ -5,10 +5,12 @@
 #include <unordered_map>
 #include <vector>
 
+#include "factory/logging_interface.h"
+
 #ifndef LYMAN_LOG
 #define LYMAN_LOG
 
-class Logger
+class Logger: public LoggingInterface
 {
 log4cpp::Category *root_log;
 void start_log_from_file(std::string initFileName);
@@ -47,7 +49,5 @@ public:
   //! Pull down the root category directly
   log4cpp::Category* get_root();
 };
-
-extern Logger *logging;
 
 #endif

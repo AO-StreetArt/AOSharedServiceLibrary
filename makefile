@@ -8,10 +8,10 @@ CC = g++
 SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
-OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o
-INCL = usr/local/include/aossl usr/local/include/aossl/cli.h usr/local/include/aossl/consul_admin.h usr/local/include/aossl/couchbase_admin.h usr/local/include/aossl/db_admin.h usr/local/include/aossl/http_admin.h usr/local/include/aossl/logging.h usr/local/include/aossl/uuid_admin.h usr/local/include/aossl/writeable.h usr/local/include/aossl/xredis_admin.h usr/local/include/aossl/zmqio.h
+OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/factory.o
+INCL = usr/local/include/aossl usr/local/include/aossl/factory.h usr/local/include/aossl/commandline_interface.h usr/local/include/aossl/consul_interface.h usr/local/include/aossl/couchbase_interface.h usr/local/include/aossl/db_admin.h usr/local/include/aossl/http_interface.h usr/local/include/aossl/logging_interface.h usr/local/include/aossl/uuid_interface.h usr/local/include/aossl/writeable.h usr/local/include/aossl/redis_interface.h usr/local/include/aossl/zmq_interface.h
 INCL_DIR = /usr/local/include/aossl
-TESTS = cli_test consul_test couchbase_test http_test logging_test redis_test uuid_test zmqio_test
+TESTS = cli_test consul_test couchbase_test http_test logging_test redis_test uuid_test zmqio_test factory_test
 LIBS = -lpthread -llog4cpp
 
 # typing 'make' will invoke the first target entry in the file
@@ -30,35 +30,38 @@ install: /usr/local/lib/libaossl.a $(INCL)
 usr/local/include/aossl:
 	mkdir $(INCL_DIR)
 
-usr/local/include/aossl/cli.h: lib/include/cli.h
-	cp lib/include/cli.h $(INCL_DIR)
+usr/local/include/aossl/factory.h: lib/include/factory.h
+	cp lib/include/factory.h $(INCL_DIR)
 
-usr/local/include/aossl/consul_admin.h: lib/include/consul_admin.h
-	cp lib/include/consul_admin.h $(INCL_DIR)
+usr/local/include/aossl/commandline_interface.h: lib/include/factory/commandline_interface.h
+	cp lib/include/factory/commandline_interface.h $(INCL_DIR)
 
-usr/local/include/aossl/couchbase_admin.h: lib/include/couchbase_admin.h
-	cp lib/include/couchbase_admin.h $(INCL_DIR)
+usr/local/include/aossl/consul_interface.h: lib/include/factory/consul_interface.h
+	cp lib/include/factory/consul_interface.h $(INCL_DIR)
 
-usr/local/include/aossl/db_admin.h: lib/include/db_admin.h
-	cp lib/include/db_admin.h $(INCL_DIR)
+usr/local/include/aossl/couchbase_interface.h: lib/include/factory/couchbase_interface.h
+	cp lib/include/factory/couchbase_interface.h $(INCL_DIR)
 
-usr/local/include/aossl/http_admin.h: lib/include/http_admin.h
-	cp lib/include/http_admin.h $(INCL_DIR)
+usr/local/include/aossl/db_admin.h: lib/include/factory/db_admin.h
+	cp lib/include/factory/db_admin.h $(INCL_DIR)
 
-usr/local/include/aossl/logging.h: lib/include/logging.h
-	cp lib/include/logging.h $(INCL_DIR)
+usr/local/include/aossl/http_interface.h: lib/include/factory/http_interface.h
+	cp lib/include/factory/http_interface.h $(INCL_DIR)
 
-usr/local/include/aossl/uuid_admin.h: lib/include/uuid_admin.h
-	cp lib/include/uuid_admin.h $(INCL_DIR)
+usr/local/include/aossl/logging_interface.h: lib/include/factory/logging_interface.h
+	cp lib/include/factory/logging_interface.h $(INCL_DIR)
 
-usr/local/include/aossl/writeable.h: lib/include/writeable.h
-	cp lib/include/writeable.h $(INCL_DIR)
+usr/local/include/aossl/uuid_inteface.h: lib/include/factory/uuid_inteface.h
+	cp lib/include/factory/uuid_inteface.h $(INCL_DIR)
 
-usr/local/include/aossl/xredis_admin.h: lib/include/xredis_admin.h
-	cp lib/include/xredis_admin.h $(INCL_DIR)
+usr/local/include/aossl/writeable.h: lib/include/factory/writeable.h
+	cp lib/include/factory/writeable.h $(INCL_DIR)
 
-usr/local/include/aossl/zmqio.h: lib/include/zmqio.h
-	cp lib/include/zmqio.h $(INCL_DIR)
+usr/local/include/aossl/redis_interface.h: lib/include/factory/redis_interface.h
+	cp lib/include/factory/redis_interface.h $(INCL_DIR)
+
+usr/local/include/aossl/zmq_interface.h: lib/include/factory/zmq_interface.h
+	cp lib/include/factory/zmq_interface.h $(INCL_DIR)
 
 /usr/local/lib/libaossl.a: libaossl.a
 	cp libaossl.a /usr/local/lib/libaossl.a
@@ -127,6 +130,12 @@ zmqio_test: lib/logging.o lib/zmqio.o lib/zmqio_test.o
 lib/zmqio_test.o: lib/zmqio_test.cpp lib/include/zmqio.h lib/include/logging.h
 	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_test.cpp $(STD)
 
+factory_test: lib/factory_test.o lib/factory.o
+	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/zmqio.o lib/zmqio_test.o $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase $(STD)
+
+lib/factory_test.o: lib/factory_test.cpp lib/factory.cpp lib/include/factory.h
+	$(CC) $(CFLAGS) -o $@ -c lib/factory_test.cpp $(STD)
+
 # To create the static library we need the object files
 # Using $@ gives us the current target
 #
@@ -165,11 +174,16 @@ lib/logging.o:  lib/logging.cpp lib/include/logging.h
 lib/cli.o:  lib/cli.cpp lib/include/cli.h
 	$(CC) $(CFLAGS) -o $@ -c lib/cli.cpp $(STD)
 
-# To start over from scratch, type 'make clean'.  This
+lib/factory.o: lib/factory.cpp lib/include/factory.h lib/include/zmqio.h lib/include/couchbase_admin.h lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/uuid_admin.h lib/include/xredis_admin.h lib/include/cli.h lib/include/factory/commandline_interface.h lib/include/factory/consul_interface.h lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/http_interface.h lib/include/factory/logging_interface.h lib/include/factory/redis_interface.h lib/include/factory/uuid_interface.h lib/include/factory/writeable.h lib/include/factory/zmq_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/factory.cpp $(STD)
+
+# To start over from scratch, type 'make clean', then 'sudo make uninstall'.  This
 # removes the executable file, as well as old .o object
 # files and *~ backup files:
 #
-clean: clean_local clean_install clean_tests
+uninstall: clean_install
+
+clean: clean_local clean_tests
 
 clean_local:
 	$(RM) libaossl.a lib/*.o *~

@@ -130,5 +130,3 @@ log4cpp::Category* Logger::get_root()
 {
   return root_log;
 }
-
-Logger *logging;

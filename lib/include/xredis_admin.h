@@ -3,7 +3,9 @@
 #include "xredis/xRedisClient.h"
 #include <string.h>
 #include <string>
-#include "logging.h"
+#include "factory/logging_interface.h"
+
+#include "factory/redis_interface.h"
 
 #ifndef REDIS_ADMIN
 #define REDIS_ADMIN
@@ -12,7 +14,7 @@
 
 //! The XRedis Admin is responsible for all interactions with the Redis Key-Value
 //! Store.  This is capable of connecting to single Redis instances or Clusters
-class xRedisAdmin
+class xRedisAdmin: public RedisInterface
 {
 xRedisClient xRed;
 public:
