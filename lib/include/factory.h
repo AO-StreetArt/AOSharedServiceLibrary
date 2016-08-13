@@ -52,6 +52,18 @@ public:
   //! Get a Consul Interface instance
   ConsulInterface* get_consul_interface( std::string caddr );
 
+  //! Get a Service Interface instance
+  ServiceInterface* get_service_interface();
+
+  //! Get a Service Interface instance
+  ServiceInterface* get_service_interface(std::string new_id, std::string new_name);
+
+  //! Get a Service Interface instance
+  ServiceInterface* get_service_interface(std::string new_id, std::string new_name, std::string new_address, std::string new_port);
+
+  //! Get a Service Interface instance
+  ServiceInterface* get_service_interface(std::string new_id, std::string new_name, std::string new_address, std::string new_port, std::vector<std::string> new_tags);
+
   //! Get a Couchbase Interface instance
   CouchbaseInterface* get_couchbase_interface( const char * conn );
 

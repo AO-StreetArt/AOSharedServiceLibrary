@@ -82,10 +82,10 @@ public:
   //------------------Service Registry Functions------------------------------//
 
   //! Register the Service
-  virtual bool register_service(Service& s) = 0;
+  virtual bool register_service(ServiceInterface& s) = 0;
 
   //! Deregister the Service
-  virtual bool deregister_service(Service& s) = 0;
+  virtual bool deregister_service(ServiceInterface& s) = 0;
 
   //-------------Configuration Key-Value Storage Functions--------------------//
 

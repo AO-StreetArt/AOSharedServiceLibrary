@@ -28,6 +28,30 @@ HttpInterface* ServiceComponentFactory::get_http_interface()
   return new HttpAdmin ha;
 }
 
+ServiceInterface* ServiceComponentFactory::get_service_interface()
+{
+  return new Service s;
+}
+
+//! Get a Service Interface instance
+ServiceInterface* ServiceComponentFactory::get_service_interface(std::string new_id, std::string new_name)
+{
+  return new Service s ( new_id, new_name );
+}
+
+//! Get a Service Interface instance
+ServiceInterface* ServiceComponentFactory::get_service_interface(std::string new_id, std::string new_name, std::string new_address, std::string new_port)
+{
+  return new Service s ( new_id, new_name, new_address, new_port );
+}
+
+//! Get a Service Interface instance
+ServiceInterface* ServiceComponentFactory::get_service_interface(std::string new_id, std::string new_name, std::string new_address, std::string new_port, std::vector<std::string> new_tags)
+{
+  return new Service s ( new_id, new_name, new_address, new_port, new_tags );
+}
+
+
 //! Get a Consul Interface instance
 ConsulInterface* ServiceComponentFactory::get_consul_interface( std::string caddr )
 {
