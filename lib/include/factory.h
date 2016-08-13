@@ -77,10 +77,10 @@ public:
   LoggingInterface* get_logging_interface( std::string initFileName );
 
   //! Get a ZMQ Outbound Interface instance
-  ZmqOut* get_zmq_outbound_interface( std::string conn_str );
+  Zmqio* get_zmq_outbound_interface( std::string conn_str );
 
   //! Get a ZMQ Inbound Interface instance
-  ZmqIn* get_zmq_inbound_interface( std::string conn_str );
+  Zmqio* get_zmq_inbound_interface( std::string conn_str );
 };
 
 #endif

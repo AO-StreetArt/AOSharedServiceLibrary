@@ -27,6 +27,8 @@ public:
   //! Shutdown the admin
   void shutdown() {curl_global_cleanup();}
 
+  ~HttpAdmin() {shutdown();}
+
   //! Bind Callback
   void bind_get_callback(WriteCallback);
 
