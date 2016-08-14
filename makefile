@@ -9,11 +9,13 @@ SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
 OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/factory.o lib/logging_interface.o lib/uuid_admin.o lib/service.o
-INCL = usr/local/include/aossl usr/local/include/aossl/factory.h usr/local/include/aossl/commandline_interface.h usr/local/include/aossl/consul_interface.h usr/local/include/aossl/couchbase_interface.h usr/local/include/aossl/db_admin.h usr/local/include/aossl/http_interface.h usr/local/include/aossl/logging_interface.h usr/local/include/aossl/uuid_interface.h usr/local/include/aossl/writeable.h usr/local/include/aossl/redis_interface.h usr/local/include/aossl/zmq_interface.h
-INCL_DIR = /usr/local/include/aossl
+INCL = /usr/local/include/aossl /usr/local/include/aossl/factory /usr/local/include/aossl/factory.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h
+BASE_DIR = /usr/local/include/aossl
+INCL_DIR = /usr/local/include/aossl/factory
 TESTS = cli_test consul_test couchbase_test http_test logging_test redis_test uuid_test zmqio_test factory_test
 BENCHMARKS = consul_benchmark couchbase_benchmark http_benchmark logging_benchmark redis_benchmark uuid_benchmark zmqio_benchmark
 LIBS = -lpthread -llog4cpp
+FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis`
 
 # typing 'make' will invoke the first target entry in the file
 # (in this case the default target entry)
@@ -39,84 +41,87 @@ uninstall: clean_install
 
 clean: clean_local clean_tests clean_benchmarks
 
-usr/local/include/aossl:
+/usr/local/include/aossl:
 	mkdir $(INCL_DIR)
 
-usr/local/include/aossl/factory.h: lib/include/factory.h
-	cp lib/include/factory.h $(INCL_DIR)
+/usr/local/include/aossl/factory:
+	mkdir $(BASE_DIR)
 
-usr/local/include/aossl/commandline_interface.h: lib/include/factory/commandline_interface.h
-	cp lib/include/factory/commandline_interface.h $(INCL_DIR)
+/usr/local/include/aossl/factory.h: lib/include/factory.h
+	cp lib/include/factory.h $@
 
-usr/local/include/aossl/consul_interface.h: lib/include/factory/consul_interface.h
-	cp lib/include/factory/consul_interface.h $(INCL_DIR)
+/usr/local/include/aossl/factory/commandline_interface.h: lib/include/factory/commandline_interface.h
+	cp lib/include/factory/commandline_interface.h $@
 
-usr/local/include/aossl/couchbase_interface.h: lib/include/factory/couchbase_interface.h
-	cp lib/include/factory/couchbase_interface.h $(INCL_DIR)
+/usr/local/include/aossl/factory/consul_interface.h: lib/include/factory/consul_interface.h
+	cp lib/include/factory/consul_interface.h $@
 
-usr/local/include/aossl/db_admin.h: lib/include/factory/db_admin.h
-	cp lib/include/factory/db_admin.h $(INCL_DIR)
+/usr/local/include/aossl/factory/couchbase_interface.h: lib/include/factory/couchbase_interface.h
+	cp lib/include/factory/couchbase_interface.h $@
 
-usr/local/include/aossl/http_interface.h: lib/include/factory/http_interface.h
-	cp lib/include/factory/http_interface.h $(INCL_DIR)
+/usr/local/include/aossl/factory/db_admin.h: lib/include/factory/db_admin.h
+	cp lib/include/factory/db_admin.h $@
 
-usr/local/include/aossl/logging_interface.h: lib/include/factory/logging_interface.h
-	cp lib/include/factory/logging_interface.h $(INCL_DIR)
+/usr/local/include/aossl/factory/http_interface.h: lib/include/factory/http_interface.h
+	cp lib/include/factory/http_interface.h $@
 
-usr/local/include/aossl/uuid_inteface.h: lib/include/factory/uuid_inteface.h
-	cp lib/include/factory/uuid_inteface.h $(INCL_DIR)
+/usr/local/include/aossl/factory/logging_interface.h: lib/include/factory/logging_interface.h
+	cp lib/include/factory/logging_interface.h $@
 
-usr/local/include/aossl/writeable.h: lib/include/factory/writeable.h
-	cp lib/include/factory/writeable.h $(INCL_DIR)
+/usr/local/include/aossl/factory/uuid_inteface.h: lib/include/factory/uuid_inteface.h
+	cp lib/include/factory/uuid_inteface.h $@
 
-usr/local/include/aossl/redis_interface.h: lib/include/factory/redis_interface.h
-	cp lib/include/factory/redis_interface.h $(INCL_DIR)
+/usr/local/include/aossl/factory/writeable.h: lib/include/factory/writeable.h
+	cp lib/include/factory/writeable.h $@
 
-usr/local/include/aossl/zmq_interface.h: lib/include/factory/zmq_interface.h
-	cp lib/include/factory/zmq_interface.h $(INCL_DIR)
+/usr/local/include/aossl/factory/redis_interface.h: lib/include/factory/redis_interface.h
+	cp lib/include/factory/redis_interface.h $@
+
+/usr/local/include/aossl/factory/zmq_interface.h: lib/include/factory/zmq_interface.h
+	cp lib/include/factory/zmq_interface.h $@
 
 /usr/local/lib/libaossl.a: libaossl.a
-	cp libaossl.a /usr/local/lib/libaossl.a
+	cp libaossl.a $@
 
 # Generate Benchmarks
 consul_benchmark: lib/consul_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/consul_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/consul_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
 
 lib/consul_benchmark.o: lib/consul_benchmark.cpp lib/include/factory/consul_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_benchmark.cpp $(STD)
 
 couchbase_benchmark: lib/couchbase_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/couchbase_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/couchbase_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
 
 lib/couchbase_benchmark.o: lib/couchbase_benchmark.cpp lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_benchmark.cpp $(STD)
 
 http_benchmark: lib/http_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/http_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/http_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
 
 lib/http_benchmark.o: lib/http_benchmark.cpp lib/include/factory/http_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/http_benchmark.cpp $(STD)
 
 logging_benchmark: lib/logging_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/logging_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/logging_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
 
 lib/logging_benchmark.o: lib/logging_benchmark.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_benchmark.cpp $(STD)
 
 redis_benchmark: lib/redis_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/redis_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/redis_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
 
 lib/redis_benchmark.o: lib/redis_benchmark.cpp lib/include/factory/redis_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/redis_benchmark.cpp $(STD)
 
 uuid_benchmark: lib/uuid_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/uuid_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/uuid_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
 
 lib/uuid_benchmark.o: lib/uuid_benchmark.cpp lib/include/factory/uuid_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/uuid_benchmark.cpp $(STD)
 
 zmqio_benchmark: lib/zmqio_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/zmqio_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/zmqio_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
 
 lib/zmqio_benchmark.o: lib/zmqio_benchmark.cpp lib/include/factory/zmq_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_benchmark.cpp $(STD)
@@ -186,7 +191,7 @@ lib/zmqio_test.o: lib/zmqio_test.cpp lib/include/zmqio.h lib/include/logging.h l
 	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_test.cpp $(STD)
 
 factory_test: lib/factory_test.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/factory_test.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/factory_test.o $(OBJS) $(FULL_LIBS) $(STD)
 
 lib/factory_test.o: lib/factory_test.cpp lib/factory.cpp lib/include/factory.h
 	$(CC) $(CFLAGS) -o $@ -c lib/factory_test.cpp $(STD)

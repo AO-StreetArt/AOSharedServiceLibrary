@@ -44,7 +44,7 @@ CouchbaseInterface *ca = factory.get_couchbase_interface( "couchbase://localhost
 std::vector<RedisConnChain> RedisConnectionList;
 RedisConnChain r;
 r.ip = "127.0.0.1";
-r.port = 7000;
+r.port = 6379;
 r.password = "";
 r.pool_size = 2;
 r.timeout = 5;
