@@ -7,6 +7,7 @@
 //completion of the asynchronous threads
 
 #include "writeable.h"
+#include "db_admin.h"
 
 #include <string>
 #include <string.h>

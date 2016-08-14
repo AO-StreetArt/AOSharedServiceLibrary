@@ -19,7 +19,7 @@ CommandLineInterface* ServiceComponentFactory::get_command_line_interface( int a
 //! Get the UUID Interface instance
 uuidInterface* ServiceComponentFactory::get_uuid_interface()
 {
-  return new uuidAdmin uuid;
+  return new uuidAdmin;
 }
 
 //! Get the HTTP Interface instance
@@ -30,7 +30,7 @@ HttpInterface* ServiceComponentFactory::get_http_interface()
 
 ServiceInterface* ServiceComponentFactory::get_service_interface()
 {
-  return new Service s;
+  return new Service;
 }
 
 //! Get a Service Interface instance
@@ -107,7 +107,7 @@ LoggingInterface* ServiceComponentFactory::get_logging_interface( std::string in
 //! Get a ZMQ Outbound Interface instance
 Zmqio* ServiceComponentFactory::get_zmq_outbound_interface( std::string conn_str )
 {
-  ZmqOut *zmqo =  new Zmqo( context );
+  ZmqOut *zmqo =  new Zmqo( *context );
   zmqo->connect( conn_str );
   return zmqo;
 }
@@ -115,7 +115,7 @@ Zmqio* ServiceComponentFactory::get_zmq_outbound_interface( std::string conn_str
 //! Get a ZMQ Inbound Interface instance
 Zmqio* ServiceComponentFactory::get_zmq_inbound_interface( std::string conn_str )
 {
-  ZmqIn *zmqi = new Zmqi( context );
+  ZmqIn *zmqi = new Zmqi( *context );
   zmqi->bind( conn_str );
   return zmqi;
 }
