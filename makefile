@@ -9,7 +9,7 @@ SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
 OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/factory.o lib/logging_interface.o lib/uuid_admin.o lib/service.o
-INCL = /usr/local/include/aossl /usr/local/include/aossl/factory /usr/local/include/aossl/factory.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h
+INCL = /usr/local/include/aossl /usr/local/include/aossl/factory.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h
 BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
 TESTS = cli_test consul_test couchbase_test http_test logging_test redis_test uuid_test zmqio_test factory_test
@@ -42,10 +42,8 @@ uninstall: clean_install
 clean: clean_local clean_tests clean_benchmarks
 
 /usr/local/include/aossl:
-	mkdir $(INCL_DIR)
-
-/usr/local/include/aossl/factory:
 	mkdir $(BASE_DIR)
+	mkdir $(INCL_DIR)
 
 /usr/local/include/aossl/factory.h: lib/include/factory.h
 	cp lib/include/factory.h $@
