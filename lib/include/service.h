@@ -3,6 +3,9 @@
 #include <string.h>
 #include <vector>
 
+#ifndef AOSSL_FACTORY
+#define AOSSL_FACTORY
+
 //! A Service class which can be registered with Consul for each instance of a particular service
 
 //! An instance of this class can be instantiated by a service and is
@@ -73,3 +76,5 @@ public:
   //Add a check
   void set_check(std::string scr, int interval_seconds) {check.script = scr; check.interval = std::to_string(interval_seconds) + "s";}
 };
+
+#endif
