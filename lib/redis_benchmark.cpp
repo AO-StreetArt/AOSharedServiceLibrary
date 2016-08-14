@@ -96,7 +96,7 @@ std::vector<RedisConnChain> RedisConnectionList;
 //Read the Redis Configuration File
 //Open the file
 std::string line;
-std::ifstream file ("src/test/redis.properties");
+std::ifstream file ("test/redis.properties");
 
 if (file.is_open()) {
   while (getline (file, line) ) {
@@ -167,7 +167,7 @@ if (file.is_open()) {
 ServiceComponentFactory factory;
 
 //Read the Logging Configuration File
-std::string initFileName = "src/test/log4cpp_test.properties";
+std::string initFileName = "test/log4cpp_test.properties";
 logging = factory.get_logging_interface( initFileName );
 
 //Generate the UUID's for the benchmarks

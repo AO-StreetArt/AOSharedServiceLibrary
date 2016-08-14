@@ -126,7 +126,7 @@ ServiceComponentFactory factory;
 
 //Application Setup
 
-std::string initFileName = "src/test/log4cpp_test.properties";
+std::string initFileName = "test/log4cpp_test.properties";
 logging = factory.get_logging_interface(initFileName);
 
 //Generate the UUID's for the benchmarks

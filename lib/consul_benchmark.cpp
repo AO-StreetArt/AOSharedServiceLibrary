@@ -107,7 +107,7 @@ int main()
 ServiceComponentFactory factory;
 
 //Read the Logging Configuration File
-std::string initFileName = "src/test/log4cpp_test.properties";
+std::string initFileName = "test/log4cpp_test.properties";
 logging = factory.get_logging_interface( initFileName );
 //logging = new Logger(initFileName);
 
