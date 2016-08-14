@@ -87,7 +87,7 @@ couchbase_test: lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o lib/log
 	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o lib/logging_interface.o $(LIBS) -lcouchbase $(STD)
 
 # Create the object file couchbase_test.o
-lib/couchbase_test.o: lib/couchbase_test.cpp lib/include/couchbase_admin.h lib/include/logging.h lib/include/db_admin.h lib/include/writeable.h lib/include/factory/logging_interface.h
+lib/couchbase_test.o: lib/couchbase_test.cpp lib/include/couchbase_admin.h lib/include/logging.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_test.cpp $(STD)
 
 # Create the executable file http_test
