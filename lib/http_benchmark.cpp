@@ -67,7 +67,7 @@ BENCHMARK(HTTP, Get, 10, 100)
   writedata.clear();
 
   //Send the request
-  bool success = ha.get(GETURL, 5);
+  bool success = http->get(GETURL, 5);
   if (!success)
   {
     //We now have the full response
@@ -88,7 +88,7 @@ BENCHMARK(HTTP, Put, 10, 100)
   writedata.clear();
 
   //Send the request
-  bool success = ha.put(PUTURL, "123", 5);
+  bool success = http->put(PUTURL, "123", 5);
   if (!success)
   {
     //We now have the full response
@@ -109,7 +109,7 @@ BENCHMARK(HTTP, Post, 10, 100)
   writedata.clear();
 
   //Send the request
-  bool success = ha.post(POSTURL, "CLYMAN", 5);
+  bool success = http->post(POSTURL, "CLYMAN", 5);
   if (!success)
   {
     //We now have the full response
@@ -130,7 +130,7 @@ BENCHMARK(HTTP, Delete, 10, 100)
   writedata.clear();
 
   //Send the request
-  bool success = ha.del(DELETEURL, 5);
+  bool success = http->del(DELETEURL, 5);
   if (!success)
   {
     //We now have the full response
@@ -182,7 +182,7 @@ hayai::Benchmarker::RunAllTests();
 //-------------------------Post-Test Teardown---------------------------------//
 //----------------------------------------------------------------------------//
 
-delete uuid
+delete http
 delete logging;
 
 return 0;
