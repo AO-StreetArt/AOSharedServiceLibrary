@@ -8,6 +8,7 @@
 #include <cstdlib>
 
 #include "include/factory/logging_interface.h"
+#include "include/logging.h"
 
 #include "include/xredis_admin.h"
 

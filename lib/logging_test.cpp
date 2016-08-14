@@ -1,4 +1,5 @@
 #include "include/logging.h"
+#include "include/factory/logging_interface.h"
 #include <string>
 #include <string.h>
 

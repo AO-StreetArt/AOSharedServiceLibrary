@@ -1,6 +1,7 @@
 //Consul Admin Tests
 
 #include "include/factory/logging_interface.h"
+#include "include/logging.h"
 #include "include/consul_admin.h"
 #include <string>
 #include <string.h>

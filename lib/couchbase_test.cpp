@@ -5,6 +5,7 @@
 #include "include/couchbase_admin.h"
 
 #include "include/factory/logging_interface.h"
+#include "include/logging.h"
 #include "include/factory/writeable.h"
 
 //Test Data Class with to_json method
