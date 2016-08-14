@@ -24,7 +24,7 @@ class ServiceInterface
 {
 public:
 
-  virtual ~ServiceInterface() = 0;
+  virtual ~ServiceInterface() {}
   //! Convert the Service into a JSON Message
 
   //! Method that allows the service to be transformed into a json message
@@ -81,7 +81,7 @@ class ConsulInterface
 {
 public:
 
-  virtual ~ConsulInterface() = 0;
+  virtual ~ConsulInterface() {}
 
   //------------------Service Registry Functions------------------------------//
 

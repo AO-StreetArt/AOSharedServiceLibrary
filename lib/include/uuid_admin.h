@@ -17,6 +17,7 @@
 class uuidAdmin: public uuidInterface
 {
 public:
+	~uuidAdmin() {}
 	//! Generate a new UUID
 
 	//! The method will generate on the means of generation present on your system

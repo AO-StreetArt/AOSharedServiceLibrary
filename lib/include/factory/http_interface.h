@@ -19,7 +19,7 @@ public:
   //! Shutdown the admin
   virtual void shutdown() = 0;
 
-  virtual ~HttpInterface() = 0;
+  virtual ~HttpInterface() {}
 
   //! Bind Callback
   virtual void bind_get_callback(WriteCallback) = 0;

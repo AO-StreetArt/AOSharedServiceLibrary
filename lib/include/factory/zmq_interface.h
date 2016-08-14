@@ -10,7 +10,7 @@
 class Zmqio
 {
 public:
-  virtual ~Zmqio() = 0;
+  virtual ~Zmqio() {}
   //! Recieve a message on the port
   virtual std::string recv() = 0;
 
@@ -29,7 +29,7 @@ class ZmqOut: public Zmqio
 {
 public:
 
-  virtual ~ZmqOut() = 0;
+  virtual ~ZmqOut() {}
 
   //! Connect to the given conn_str
   virtual void connect(std::string conn_str) = 0;
@@ -52,7 +52,7 @@ class ZmqIn: public Zmqio
 {
 public:
 
-  virtual ~ZmqIn() = 0;
+  virtual ~ZmqIn() {}
 
   //! Bind on the given conn_str
   virtual void bind(std::string conn_str) = 0;
