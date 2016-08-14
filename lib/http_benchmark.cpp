@@ -36,23 +36,10 @@ return size*nmemb;
 //--------------------------------Globals-------------------------------------//
 //----------------------------------------------------------------------------//
 
-//Variables to store URL's
-std::string post = "http://httpbin.org/post";
-std::string put = "http://httpbin.org/put";
-std::string get = "http://httpbin.org/get";
-std::string del = "http://httpbin.org/delete";
-
-char *POSTURL = new char[post.length() + 1];
-strcpy(POSTURL, post.c_str());
-
-char *PUTURL = new char[put.length() + 1];
-strcpy(PUTURL, put.c_str());
-
-char *GETURL = new char[get.length() + 1];
-strcpy(GETURL, get.c_str());
-
-char *DELETEURL = new char[del.length() + 1];
-strcpy(DELETEURL, del.c_str());
+char *POSTURL;
+char *PUTURL;
+char *GETURL;
+char *DELETEURL;
 
 HttpInterface *http;
 
@@ -150,6 +137,22 @@ BENCHMARK(HTTP, Delete, 10, 100)
 
 int main()
 {
+
+  POSTURL = new char[post.length() + 1];
+  PUTURL = new char[put.length() + 1];
+  GETURL = new char[get.length() + 1];
+  DELETEURL = new char[del.length() + 1];
+
+  //Variables to store URL's
+  std::string post = "http://httpbin.org/post";
+  std::string put = "http://httpbin.org/put";
+  std::string get = "http://httpbin.org/get";
+  std::string del = "http://httpbin.org/delete";
+
+  strcpy(POSTURL, post.c_str());
+  strcpy(PUTURL, put.c_str());
+  strcpy(GETURL, get.c_str());
+  strcpy(DELETEURL, del.c_str());
 
 ServiceComponentFactory factory;
 
