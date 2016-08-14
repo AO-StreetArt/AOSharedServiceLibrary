@@ -66,7 +66,7 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/include/aossl/factory/logging_interface.h: lib/include/factory/logging_interface.h
 	cp lib/include/factory/logging_interface.h $@
 
-/usr/local/include/aossl/factory/uuid_inteface.h: lib/include/factory/uuid_inteface.h
+/usr/local/include/aossl/factory/uuid_interface.h: lib/include/factory/uuid_inteface.h
 	cp lib/include/factory/uuid_inteface.h $@
 
 /usr/local/include/aossl/factory/writeable.h: lib/include/factory/writeable.h
