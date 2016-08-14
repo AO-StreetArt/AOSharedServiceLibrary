@@ -115,10 +115,10 @@ for (int y = 0; y < conn_list_size; ++y)
   RedisConnChain redis_chain = RedisConnectionList[y];
   redis_n.host = redis_chain.ip.c_str();
   redis_n.port = redis_chain.port;
-  redis_n.passwd = redis_chain.elt4.c_str();
-  redis_n.poolsize = redis_chain.elt5;
-  redis_n.timeout = redis_chain.elt6;
-  redis_n.role = redis_chain.elt7;
+  redis_n.passwd = redis_chain.password.c_str();
+  redis_n.poolsize = redis_chain.pool_size;
+  redis_n.timeout = redis_chain.timeout;
+  redis_n.role = redis_chain.role;
   logging->debug("Line added to Redis Configuration List with IP:");
   logging->debug(redis_n.host);
 
