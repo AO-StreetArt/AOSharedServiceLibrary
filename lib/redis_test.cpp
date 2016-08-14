@@ -8,6 +8,7 @@
 #include <cstdlib>
 
 #include "include/factory/logging_interface.h"
+#include "include/factory/redis_interface.h"
 #include "include/logging.h"
 
 #include "include/xredis_admin.h"
@@ -15,16 +16,6 @@
 #include <assert.h>
 
 //Main Method
-
-struct RedisConnChain
-{
-  std::string ip;
-  int port;
-  std::string elt4;
-  int elt5;
-  int elt6;
-  int elt7;
-};
 
 std::vector<RedisConnChain> RedisConnectionList;
 
@@ -76,25 +67,25 @@ if (file.is_open()) {
         new_value = new_value.substr(spacer_position+2, new_value.length() - 1);
         spacer_position = new_value.find("--", 0);
         str1 = new_value.substr(0, spacer_position);
-        chain.elt4 = str1;
+        chain.password = str1;
 
         //Retrieve the fourth value
         new_value = new_value.substr(spacer_position+2, new_value.length() - 1);
         spacer_position = new_value.find("--", 0);
         str1 = new_value.substr(0, spacer_position);
-        chain.elt5 = std::stoi(str1);
+        chain.pool_size = std::stoi(str1);
 
         //Retrieve the fifth value
         new_value = new_value.substr(spacer_position+2, new_value.length() - 1);
           spacer_position = new_value.find("--", 0);
           str1 = new_value.substr(0, spacer_position);
-        chain.elt6 = std::stoi(str1);
+        chain.timeout = std::stoi(str1);
 
         //Retrieve the final value
         new_value = new_value.substr(spacer_position+2, new_value.length() - 1);
         spacer_position = new_value.find("--", 0);
         str1 = new_value.substr(0, spacer_position);
-        chain.elt7 = std::stoi(str1);
+        chain.role = std::stoi(str1);
 
         RedisConnectionList.push_back(chain);
       }
