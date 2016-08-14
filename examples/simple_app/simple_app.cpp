@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <exception>
+#include <signal.h>
 
 #include "aossl/factory.h"
 
@@ -11,6 +13,16 @@
 #include "aossl/factory/redis_interface.h"
 #include "aossl/factory/uuid_interface.h"
 #include "aossl/factory/zmq_interface.h"
+
+CommandLineInterface *cli;
+uuidInterface *uuid;
+HttpInterface *ha;
+ServiceInterface *s;
+ConsulInterface *consul;
+CouchbaseInterface *ca;
+RedisInterface *ra;
+Zmqio *zmqo;
+Zmqio *zmqi;
 
 //Shutdown the application
 void shutdown()
@@ -52,7 +64,7 @@ sigaction(SIGINT, &sigIntHandler, NULL);
 ServiceComponentFactory factory;
 
 //Retrieve a new command line interface
-CommandLineInterface *cli = factory.get_command_line_interface(argc, argv);
+cli = factory.get_command_line_interface(argc, argv);
 
 std::string initFileName;
 
@@ -69,19 +81,19 @@ else
 logging = factory.get_logging_interface( initFileName );
 
 // Get a UUID Generator
-uuidInterface *uuid = factory.get_uuid_interface();
+uuid = factory.get_uuid_interface();
 
 //! Get the HTTP Interface instance
-HttpInterface *ha = factory.get_http_interface();
+ha = factory.get_http_interface();
 
 //! Get a Service Interface instance
-ServiceInterface *s = factory.get_service_interface();
+s = factory.get_service_interface();
 
 //! Get a Consul Interface instance
-ConsulInterface *consul = factory.get_consul_interface( "localhost:8500" );
+consul = factory.get_consul_interface( "localhost:8500" );
 
 //! Get a Couchbase Interface instance
-CouchbaseInterface *ca = factory.get_couchbase_interface( "couchbase://localhost/default" );
+ca = factory.get_couchbase_interface( "couchbase://localhost/default" );
 
 //! Get a Redis Cluster Interface instance
 std::vector<RedisConnChain> RedisConnectionList;
@@ -93,13 +105,13 @@ r.pool_size = 2;
 r.timeout = 5;
 r.role = 0;
 RedisConnectionList.push_back(r);
-RedisInterface *ra = factory.get_redis_cluster_interface( RedisConnectionList );
+ra = factory.get_redis_cluster_interface( RedisConnectionList );
 
 //! Get a ZMQ Outbound Interface instance
-Zmqio *zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
+zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
 
 //! Get a ZMQ Inbound Interface instance
-Zmqio *zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
+zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
 
 //Here we have the core of the application
 logging->error("Hello world!");
