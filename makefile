@@ -75,63 +75,63 @@ lib/cli_test.o: lib/cli_test.cpp lib/include/cli.h
 	$(CC) $(CFLAGS) -o $@ -c lib/cli_test.cpp $(STD)
 
 # Create the executable file consul_test
-consul_test: lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o
-	$(CC) $(CFLAGS) -o $@ -o $@ lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o $(LIBS) -lcurl $(STD)
+consul_test: lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ -o $@ lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o $(LIBS) -lcurl $(STD)
 
 # Create the object file consul_test.o
 lib/consul_test.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_test.cpp $(STD)
 
 # Create the executable file couchbase_test
-couchbase_test: lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o $(LIBS) -lcouchbase $(STD)
+couchbase_test: lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o lib/logging_interface.o $(LIBS) -lcouchbase $(STD)
 
 # Create the object file couchbase_test.o
 lib/couchbase_test.o: lib/couchbase_test.cpp lib/include/couchbase_admin.h lib/include/logging.h lib/include/db_admin.h lib/include/writeable.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_test.cpp $(STD)
 
 # Create the executable file http_test
-http_test: lib/logging.o lib/http_admin.o lib/http_test.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/http_test.o lib/http_admin.o $(LIBS) -lcurl $(STD)
+http_test: lib/logging.o lib/http_admin.o lib/http_test.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/http_test.o lib/http_admin.o lib/logging_interface.o $(LIBS) -lcurl $(STD)
 
 # Create the object file http_test.o
 lib/http_test.o: lib/http_test.cpp lib/include/http_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/http_test.cpp $(STD)
 
 # Create the executable file logging_test
-logging_test: lib/logging.o lib/logging_test.o
-	$(CC) $(CFLAGS) -o $@ lib/logging_test.o lib/logging.o $(LIBS) $(STD)
+logging_test: lib/logging.o lib/logging_test.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ lib/logging_test.o lib/logging.o lib/logging_interface.o $(LIBS) $(STD)
 
 # Create the object file logging_test.o
 lib/logging_test.o: lib/logging_test.cpp lib/include/logging.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_test.cpp $(STD)
 
 # Create the executable file redis_test
-redis_test: lib/logging.o lib/xredis_admin.o lib/redis_test.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/xredis_admin.o lib/redis_test.o $(LIBS) -lxredis `pkg-config --cflags --libs hiredis` $(STD)
+redis_test: lib/logging.o lib/xredis_admin.o lib/redis_test.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/xredis_admin.o lib/redis_test.o lib/logging_interface.o $(LIBS) -lxredis `pkg-config --cflags --libs hiredis` $(STD)
 
 # Create the object file redis_test.o
 lib/redis_test.o: lib/redis_test.cpp lib/include/xredis_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/redis_test.cpp $(STD)
 
 # Create the executable file uuid_test
-uuid_test: lib/logging.o lib/uuid_admin.o lib/uuid_test.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/uuid_admin.o lib/uuid_test.o $(LIBS) -luuid $(STD)
+uuid_test: lib/logging.o lib/uuid_admin.o lib/uuid_test.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/uuid_admin.o lib/uuid_test.o lib/logging_interface.o $(LIBS) -luuid $(STD)
 
 # Create the object file uuid_test.o
 lib/uuid_test.o: lib/uuid_test.cpp lib/include/uuid_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/uuid_test.cpp $(STD)
 
 # Create the executable file zmqio_test
-zmqio_test: lib/logging.o lib/zmqio.o lib/zmqio_test.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/zmqio.o lib/zmqio_test.o $(LIBS) -lzmq $(STD)
+zmqio_test: lib/logging.o lib/zmqio.o lib/zmqio_test.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/zmqio.o lib/zmqio_test.o lib/logging_interface.o $(LIBS) -lzmq $(STD)
 
 # Create the object file zmqio_test.o
 lib/zmqio_test.o: lib/zmqio_test.cpp lib/include/zmqio.h lib/include/logging.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_test.cpp $(STD)
 
-factory_test: lib/factory_test.o lib/factory.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/zmqio.o lib/zmqio_test.o $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase $(STD)
+factory_test: lib/factory_test.o $(OBJS)
+	$(CC) $(CFLAGS) -o $@ lib/factory_test.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase $(STD)
 
 lib/factory_test.o: lib/factory_test.cpp lib/factory.cpp lib/include/factory.h
 	$(CC) $(CFLAGS) -o $@ -c lib/factory_test.cpp $(STD)
