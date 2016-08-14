@@ -138,16 +138,16 @@ BENCHMARK(HTTP, Delete, 10, 100)
 int main()
 {
 
-  POSTURL = new char[post.length() + 1];
-  PUTURL = new char[put.length() + 1];
-  GETURL = new char[get.length() + 1];
-  DELETEURL = new char[del.length() + 1];
-
   //Variables to store URL's
   std::string post = "http://httpbin.org/post";
   std::string put = "http://httpbin.org/put";
   std::string get = "http://httpbin.org/get";
   std::string del = "http://httpbin.org/delete";
+
+  POSTURL = new char[post.length() + 1];
+  PUTURL = new char[put.length() + 1];
+  GETURL = new char[get.length() + 1];
+  DELETEURL = new char[del.length() + 1];
 
   strcpy(POSTURL, post.c_str());
   strcpy(PUTURL, put.c_str());
@@ -172,7 +172,7 @@ logging->info("HTTP Outbound Interface Created");
 //We set up the structure to store the return data
 writedata.clear();
 
-http.bind_get_callback(writeCallback);
+http->bind_get_callback(writeCallback);
 
 //------------------------------Run Tests-------------------------------------//
 //----------------------------------------------------------------------------//
@@ -185,7 +185,7 @@ hayai::Benchmarker::RunAllTests();
 //-------------------------Post-Test Teardown---------------------------------//
 //----------------------------------------------------------------------------//
 
-delete http
+delete http;
 delete logging;
 
 return 0;
