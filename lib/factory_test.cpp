@@ -72,7 +72,7 @@ delete ha;
 delete s;
 delete consul;
 delete ca;
-delete ca2;
+//delete ca2;
 delete ra;
 delete logging;
 delete zmqo;
