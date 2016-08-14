@@ -198,7 +198,7 @@ libaossl.a:  $(OBJS)
 	$(SLC) $@ $(OBJS)
 
 # Create the object file consul_admin.o
-lib/consul_admin.o:  lib/consul_admin.cpp lib/include/factory/logging_interface.h lib/include/http_admin.h lib/include/service.h lib/include/consul_interface.h
+lib/consul_admin.o:  lib/consul_admin.cpp lib/include/factory/logging_interface.h lib/include/http_admin.h lib/include/service.h lib/include/factory/consul_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_admin.cpp $(STD)
 
 lib/service.o: lib/service.cpp lib/include/service.h lib/include/factory/consul_interface.h
