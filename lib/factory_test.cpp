@@ -1,16 +1,16 @@
 #include <iostream>
 #include <string>
 
-#include "lib/include/factory.h"
+#include "include/factory.h"
 
-#include "lib/include/factory/commandline_interface.h"
-#include "lib/include/factory/consul_interface.h"
-#include "lib/include/factory/couchbase_interface.h"
-#include "lib/include/factory/http_interface.h"
-#include "lib/include/factory/logging_interface.h"
-#include "lib/include/factory/redis_interface.h"
-#include "lib/include/factory/uuid_interface.h"
-#include "lib/include/factory/zmq_interface.h"
+#include "include/factory/commandline_interface.h"
+#include "include/factory/consul_interface.h"
+#include "include/factory/couchbase_interface.h"
+#include "include/factory/http_interface.h"
+#include "include/factory/logging_interface.h"
+#include "include/factory/redis_interface.h"
+#include "include/factory/uuid_interface.h"
+#include "include/factory/zmq_interface.h"
 
 int main( int argc, char** argv )
 {
