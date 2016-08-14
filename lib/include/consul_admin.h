@@ -5,7 +5,7 @@
 #include "factory/logging_interface.h"
 
 #include "factory/consul_interface.h"
-#include "factory/service.h"
+#include "service.h"
 
 #include <string>
 #include <string.h>
