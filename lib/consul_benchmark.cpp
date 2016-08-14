@@ -91,7 +91,7 @@ BENCHMARK(CONSUL, DeleteConfigurationValue, 10, 100)
 {
 
   std::string uuid_str = uuid_list[delete_counter];
-  bool success = ca.del_config_value(uuid_str);
+  bool success = consul->del_config_value(uuid_str);
 
   delete_counter = delete_counter + 1;
 
