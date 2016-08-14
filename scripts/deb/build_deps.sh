@@ -76,6 +76,13 @@ if [ ! -f ./couchbase-release-1.0-2-amd64.deb ]; then
 
 fi
 
+printf "Building Hayai, optional, for benchmarks"
+
+#Install hayai, for compiling benchmarks
+sudo apt-add-repository -y ppa:bruun/hayai
+sudo apt-get update -y
+sudo apt-get install -y libhayai-dev
+
 printf "Building Couchbase Client"
 
 sudo dpkg -i ./couchbase-release-1.0-2-amd64.deb
@@ -86,6 +93,6 @@ printf "Update cache and install final dependencies through apt-get"
 sudo apt-get -y update
 
 #Install the dependencies
-sudo apt-get -y install libcouchbase-dev libcouchbase2-bin libprotobuf-dev protobuf-compiler liblog4cpp5-dev
+sudo apt-get -y install libcouchbase-dev libcouchbase2-bin liblog4cpp5-dev
 
 printf "Finished installing dependencies"

@@ -11,6 +11,7 @@
 #include "factory/uuid_interface.h"
 #include "factory/zmq_interface.h"
 
+#include "service.h"
 #include "cli.h"
 #include "consul_admin.h"
 #include "couchbase_admin.h"

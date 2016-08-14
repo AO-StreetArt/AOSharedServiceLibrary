@@ -3,6 +3,7 @@
 #include "include/factory/logging_interface.h"
 #include "include/logging.h"
 #include "include/consul_admin.h"
+#include "include/service.h"
 #include <string>
 #include <string.h>
 #include <assert.h>

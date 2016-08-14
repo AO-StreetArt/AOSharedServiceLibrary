@@ -8,10 +8,11 @@ CC = g++
 SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
-OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/factory.o lib/logging_interface.o lib/uuid_admin.o
+OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/factory.o lib/logging_interface.o lib/uuid_admin.o lib/service.o
 INCL = usr/local/include/aossl usr/local/include/aossl/factory.h usr/local/include/aossl/commandline_interface.h usr/local/include/aossl/consul_interface.h usr/local/include/aossl/couchbase_interface.h usr/local/include/aossl/db_admin.h usr/local/include/aossl/http_interface.h usr/local/include/aossl/logging_interface.h usr/local/include/aossl/uuid_interface.h usr/local/include/aossl/writeable.h usr/local/include/aossl/redis_interface.h usr/local/include/aossl/zmq_interface.h
 INCL_DIR = /usr/local/include/aossl
 TESTS = cli_test consul_test couchbase_test http_test logging_test redis_test uuid_test zmqio_test factory_test
+BENCHMARKS = consul_benchmark couchbase_benchmark http_benchmark logging_benchmark redis_benchmark uuid_benchmark zmqio_benchmark
 LIBS = -lpthread -llog4cpp
 
 # typing 'make' will invoke the first target entry in the file
@@ -24,8 +25,19 @@ default: libaossl.a
 # typing 'make test' will build the tests
 test: $(TESTS)
 
+# typing 'make benchmarks' will build the benchmarks
+benchmarks: $(BENCHMARKS)
+
 # typing 'sudo make install' will install the libraries into system paths
 install: /usr/local/lib/libaossl.a $(INCL)
+
+# To start over from scratch, type 'make clean', then 'sudo make uninstall'.  This
+# removes the executable file, as well as old .o object
+# files and *~ backup files:
+#
+uninstall: clean_install
+
+clean: clean_local clean_tests clean_benchmarks
 
 usr/local/include/aossl:
 	mkdir $(INCL_DIR)
@@ -66,6 +78,49 @@ usr/local/include/aossl/zmq_interface.h: lib/include/factory/zmq_interface.h
 /usr/local/lib/libaossl.a: libaossl.a
 	cp libaossl.a /usr/local/lib/libaossl.a
 
+# Generate Benchmarks
+consul_benchmark: lib/consul_benchmark.o $(OBJS)
+	$(CC) $(CFLAGS) -o $@ lib/consul_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+
+lib/consul_benchmark.o: lib/consul_benchmark.cpp lib/include/factory/consul_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/consul_benchmark.cpp $(STD)
+
+couchbase_benchmark: lib/couchbase_benchmark.o $(OBJS)
+	$(CC) $(CFLAGS) -o $@ lib/couchbase_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+
+lib/couchbase_benchmark.o: lib/couchbase_benchmark.cpp lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_benchmark.cpp $(STD)
+
+http_benchmark: lib/http_benchmark.o $(OBJS)
+	$(CC) $(CFLAGS) -o $@ lib/http_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+
+lib/http_benchmark.o: lib/http_benchmark.cpp lib/include/factory/http_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/http_benchmark.cpp $(STD)
+
+logging_benchmark: lib/logging_benchmark.o $(OBJS)
+	$(CC) $(CFLAGS) -o $@ lib/logging_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+
+lib/logging_benchmark.o: lib/logging_benchmark.cpp lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/logging_benchmark.cpp $(STD)
+
+redis_benchmark: lib/redis_benchmark.o $(OBJS)
+	$(CC) $(CFLAGS) -o $@ lib/redis_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+
+lib/redis_benchmark.o: lib/redis_benchmark.cpp lib/include/factory/redis_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/redis_benchmark.cpp $(STD)
+
+uuid_benchmark: lib/uuid_benchmark.o $(OBJS)
+	$(CC) $(CFLAGS) -o $@ lib/uuid_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+
+lib/uuid_benchmark.o: lib/uuid_benchmark.cpp lib/include/factory/uuid_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/uuid_benchmark.cpp $(STD)
+
+zmqio_benchmark: lib/zmqio_benchmark.o $(OBJS)
+	$(CC) $(CFLAGS) -o $@ lib/zmqio_benchmark.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
+
+lib/zmqio_benchmark.o: lib/zmqio_benchmark.cpp lib/include/factory/zmq_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_benchmark.cpp $(STD)
+
 # Create the executable file cli_test
 cli_test: lib/cli_test.o lib/cli.o
 	$(CC) $(CFLAGS) -o $@ lib/cli_test.o lib/cli.o $(STD)
@@ -75,11 +130,11 @@ lib/cli_test.o: lib/cli_test.cpp lib/include/cli.h
 	$(CC) $(CFLAGS) -o $@ -c lib/cli_test.cpp $(STD)
 
 # Create the executable file consul_test
-consul_test: lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o
+consul_test: lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o lib/service.o
 	$(CC) $(CFLAGS) -o $@ -o $@ lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o $(LIBS) -lcurl $(STD)
 
 # Create the object file consul_test.o
-lib/consul_test.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/factory/logging_interface.h
+lib/consul_test.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/factory/logging_interface.h lib/include/service.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_test.cpp $(STD)
 
 # Create the executable file couchbase_test
@@ -143,8 +198,11 @@ libaossl.a:  $(OBJS)
 	$(SLC) $@ $(OBJS)
 
 # Create the object file consul_admin.o
-lib/consul_admin.o:  lib/consul_admin.cpp lib/include/factory/logging_interface.h lib/include/http_admin.h
+lib/consul_admin.o:  lib/consul_admin.cpp lib/include/factory/logging_interface.h lib/include/http_admin.h lib/include/service.h lib/include/consul_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_admin.cpp $(STD)
+
+lib/service.o: lib/service.cpp lib/include/service.h lib/include/factory/consul_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/service.cpp $(STD)
 
 # Create the object file xredis_admin.o
 lib/xredis_admin.o:  lib/xredis_admin.cpp lib/include/factory/logging_interface.h
@@ -180,19 +238,14 @@ lib/factory.o: lib/factory.cpp lib/include/factory.h lib/include/zmqio.h lib/inc
 lib/logging_interface.o: lib/logging_interface.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_interface.cpp $(STD)
 
-# To start over from scratch, type 'make clean', then 'sudo make uninstall'.  This
-# removes the executable file, as well as old .o object
-# files and *~ backup files:
-#
-uninstall: clean_install
-
-clean: clean_local clean_tests
-
 clean_local:
 	$(RM) libaossl.a lib/*.o *~
 
 clean_tests:
 	$(RM) *_test
+
+clean_benchmarks:
+	$(RM) *_benchmark
 
 clean_install:
 	$(RM) -r /usr/local/include/aossl
