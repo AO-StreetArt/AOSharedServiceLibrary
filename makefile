@@ -57,7 +57,7 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/include/aossl/couchbase_admin.h: lib/include/couchbase_admin.h
 	cp $< $@
 
-/usr/local/include/aossl/http_admin.h: lib/include/http_admin
+/usr/local/include/aossl/http_admin.h: lib/include/http_admin.h
 	cp $< $@
 
 /usr/local/include/aossl/logging.h: lib/include/logging.h
