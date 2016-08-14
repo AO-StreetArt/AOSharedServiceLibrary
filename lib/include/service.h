@@ -3,8 +3,8 @@
 #include <string.h>
 #include <vector>
 
-#ifndef AOSSL_FACTORY
-#define AOSSL_FACTORY
+#ifndef AOSSL_SERVICE
+#define AOSSL_SERVICE
 
 //! A Service class which can be registered with Consul for each instance of a particular service
 
