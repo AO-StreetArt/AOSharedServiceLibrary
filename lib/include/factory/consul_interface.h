@@ -23,6 +23,8 @@ struct HealthCheck
 class ServiceInterface
 {
 public:
+
+  virtual ~ServiceInterface() = 0;
   //! Convert the Service into a JSON Message
 
   //! Method that allows the service to be transformed into a json message
@@ -78,6 +80,8 @@ public:
 class ConsulInterface
 {
 public:
+
+  virtual ~ConsulInterface() = 0;
 
   //------------------Service Registry Functions------------------------------//
 

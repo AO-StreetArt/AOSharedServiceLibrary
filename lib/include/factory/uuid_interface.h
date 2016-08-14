@@ -13,6 +13,8 @@
 class uuidInterface
 {
 public:
+
+	virtual ~uuidInterface() = 0;
 	//! Generate a new UUID
 
 	//! The method will generate on the means of generation present on your system

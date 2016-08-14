@@ -37,6 +37,8 @@ typedef void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_re
 class CouchbaseInterface: public DBAdmin {
 public:
 
+	virtual ~CouchbaseInterface() = 0;
+
 	//Object CRUD Operations
 
 	//! Load a JSON Object from the Couchbase DB

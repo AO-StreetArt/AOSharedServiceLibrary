@@ -15,6 +15,8 @@ class Writeable
 {
 public:
 
+  virtual ~Writeable() = 0;
+
   //! Get the Object Key
   virtual std::string get_key() = 0;
 

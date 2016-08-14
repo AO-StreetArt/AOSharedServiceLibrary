@@ -12,6 +12,8 @@ class CommandLineInterface
 {
 public:
 
+  virtual ~CommandLineInterface() = 0;
+
   //! Does a key exist?
   virtual bool opt_exist( std::string key ) = 0;
 

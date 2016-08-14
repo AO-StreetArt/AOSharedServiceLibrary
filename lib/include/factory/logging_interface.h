@@ -8,6 +8,8 @@ class LoggingInterface
 {
 public:
 
+  virtual ~LoggingInterface() = 0;
+
   //Exposures that log to the root category
 
   //! Log at a debug level to the root category

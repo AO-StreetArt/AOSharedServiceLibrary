@@ -25,6 +25,8 @@ class RedisInterface
 {
 public:
 
+  virtual ~RedisInterface() = 0;
+
 	//! Load a value from Redis
 	virtual std::string load ( const char * key ) = 0;
 
