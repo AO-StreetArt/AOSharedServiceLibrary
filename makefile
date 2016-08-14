@@ -131,7 +131,7 @@ lib/zmqio_test.o: lib/zmqio_test.cpp lib/include/zmqio.h lib/include/logging.h l
 	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_test.cpp $(STD)
 
 factory_test: lib/factory_test.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/factory_test.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase $(STD)
+	$(CC) $(CFLAGS) -o $@ lib/factory_test.o $(OBJS) $(LIBS) -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis` $(STD)
 
 lib/factory_test.o: lib/factory_test.cpp lib/factory.cpp lib/include/factory.h
 	$(CC) $(CFLAGS) -o $@ -c lib/factory_test.cpp $(STD)
