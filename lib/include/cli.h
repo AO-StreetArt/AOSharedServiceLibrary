@@ -21,6 +21,8 @@ public:
   //! -arg_key=arg_val
   CommandLineInterpreter(int argc, char* argv[]);
 
+  ~CommandLineInterpreter() {}
+
   //! Does a key exist?
   bool opt_exist( std::string key );
 
