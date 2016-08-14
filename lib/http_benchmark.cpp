@@ -14,11 +14,11 @@
 //----------------------------HTTP Callbacks----------------------------------//
 
 //A String to store response data
-std::string writedata;
+std::string write_data;
 
 //This is the callback that gets called when we recieve the response to the
 //Get Curl Request
-size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up)
+size_t write_Callback(char * buf, size_t size, size_t nmemb, void* up)
 {
 
   logging->debug("Callback Triggered");
@@ -26,7 +26,7 @@ size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up)
 //Put the response into a string
 for (int c = 0; c<size*nmemb; c++)
 {
-	writedata.push_back(buf[c]);
+	write_data.push_back(buf[c]);
 }
 
 return size*nmemb;
@@ -51,7 +51,7 @@ BENCHMARK(HTTP, Get, 10, 100)
 {
 
   //Clear the return string
-  writedata.clear();
+  write_data.clear();
 
   //Send the request
   bool success = http->get(GETURL, 5);
@@ -63,7 +63,7 @@ BENCHMARK(HTTP, Get, 10, 100)
   else
   {
     logging->debug("Retrieved:");
-    logging->debug(writedata);
+    logging->debug(write_data);
   }
 
 }
@@ -72,7 +72,7 @@ BENCHMARK(HTTP, Put, 10, 100)
 {
 
   //Clear the return string
-  writedata.clear();
+  write_data.clear();
 
   //Send the request
   bool success = http->put(PUTURL, "123", 5);
@@ -84,7 +84,7 @@ BENCHMARK(HTTP, Put, 10, 100)
   else
   {
     logging->debug("Retrieved:");
-    logging->debug(writedata);
+    logging->debug(write_data);
   }
 
 }
@@ -93,7 +93,7 @@ BENCHMARK(HTTP, Post, 10, 100)
 {
 
   //Clear the return string
-  writedata.clear();
+  write_data.clear();
 
   //Send the request
   bool success = http->post(POSTURL, "CLYMAN", 5);
@@ -105,7 +105,7 @@ BENCHMARK(HTTP, Post, 10, 100)
   else
   {
     logging->debug("Retrieved:");
-    logging->debug(writedata);
+    logging->debug(write_data);
   }
 
 }
@@ -114,7 +114,7 @@ BENCHMARK(HTTP, Delete, 10, 100)
 {
 
   //Clear the return string
-  writedata.clear();
+  write_data.clear();
 
   //Send the request
   bool success = http->del(DELETEURL, 5);
@@ -126,7 +126,7 @@ BENCHMARK(HTTP, Delete, 10, 100)
   else
   {
     logging->debug("Retrieved:");
-    logging->debug(writedata);
+    logging->debug(write_data);
   }
 
 }
@@ -170,9 +170,9 @@ http = factory.get_http_interface();
 logging->info("HTTP Outbound Interface Created");
 
 //We set up the structure to store the return data
-writedata.clear();
+write_data.clear();
 
-http->bind_get_callback(writeCallback);
+http->bind_get_callback(write_Callback);
 
 //------------------------------Run Tests-------------------------------------//
 //----------------------------------------------------------------------------//
