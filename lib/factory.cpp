@@ -77,7 +77,6 @@ RedisInterface* ServiceComponentFactory::get_redis_cluster_interface( std::vecto
   //Set up our Redis Connection List
   int conn_list_size = RedisConnectionList.size();
   RedisNode RedisList1[conn_list_size];
-  int y = 0;
   for (int y = 0; y < conn_list_size; ++y)
   {
     //Pull the values from RedisConnectionList
@@ -87,9 +86,9 @@ RedisInterface* ServiceComponentFactory::get_redis_cluster_interface( std::vecto
     redis_n.host = redis_chain.ip.c_str();
     redis_n.port = redis_chain.port;
     redis_n.passwd = redis_chain.password.c_str();
-    redis_n.poolsize = redis_chain.elt5;
-    redis_n.timeout = redis_chain.elt6;
-    redis_n.role = redis_chain.elt7;
+    redis_n.poolsize = redis_chain.poopl_size;
+    redis_n.timeout = redis_chain.timeout;
+    redis_n.role = redis_chain.role;
     logging->debug("Line added to Redis Configuration List with IP:");
     logging->debug(redis_n.host);
 

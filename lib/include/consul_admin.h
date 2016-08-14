@@ -116,10 +116,10 @@ public:
   //------------------Service Registry Functions------------------------------//
 
   //! Register the Service
-  bool register_service(Service& s);
+  bool register_service(ServiceInterface& s);
 
   //! Deregister the Service
-  bool deregister_service(Service& s);
+  bool deregister_service(ServiceInterface& s);
 
   //-------------Configuration Key-Value Storage Functions--------------------//
 

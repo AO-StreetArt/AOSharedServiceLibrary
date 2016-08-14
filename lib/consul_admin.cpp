@@ -145,7 +145,7 @@ std::string ConsulAdmin::query(std::string query_url)
 
 //-------------------Service Registry Functions-------------------------------//
 
-bool ConsulAdmin::register_service(Service& s)
+bool ConsulAdmin::register_service(ServiceInterface& s)
 {
   logging->debug("CONSUL: Registering Service");
   //Get the URL
@@ -175,7 +175,7 @@ bool ConsulAdmin::register_service(Service& s)
   return success;
 }
 
-bool ConsulAdmin::deregister_service(Service& s)
+bool ConsulAdmin::deregister_service(ServiceInterface& s)
 {
   //Get the URL
   std::string url_string = "/v1/agent/service/deregister/";
