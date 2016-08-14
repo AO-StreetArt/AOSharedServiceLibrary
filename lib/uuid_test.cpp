@@ -1,5 +1,5 @@
 #include "include/uuid_admin.h"
-#include "include/logging.h"
+#include "include/factory/logging_interface.h"
 
 int main()
 {

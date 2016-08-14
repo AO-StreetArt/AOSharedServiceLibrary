@@ -2,6 +2,8 @@
 
 #include "include/zmqio.h"
 
+#include "include/factory/logging_interface.h"
+
 int main()
 {
   //Set up logging

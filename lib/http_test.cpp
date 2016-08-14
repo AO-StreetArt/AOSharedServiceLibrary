@@ -1,4 +1,6 @@
 #include "include/http_admin.h"
+#include "include/factory/logging_interface.h"
+
 #include <string>
 #include <string.h>
 #include <stdlib.h>

@@ -8,7 +8,7 @@ CC = g++
 SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
-OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/factory.o
+OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/factory.o lib/logging_interface.o
 INCL = usr/local/include/aossl usr/local/include/aossl/factory.h usr/local/include/aossl/commandline_interface.h usr/local/include/aossl/consul_interface.h usr/local/include/aossl/couchbase_interface.h usr/local/include/aossl/db_admin.h usr/local/include/aossl/http_interface.h usr/local/include/aossl/logging_interface.h usr/local/include/aossl/uuid_interface.h usr/local/include/aossl/writeable.h usr/local/include/aossl/redis_interface.h usr/local/include/aossl/zmq_interface.h
 INCL_DIR = /usr/local/include/aossl
 TESTS = cli_test consul_test couchbase_test http_test logging_test redis_test uuid_test zmqio_test factory_test
@@ -176,6 +176,9 @@ lib/cli.o:  lib/cli.cpp lib/include/cli.h
 
 lib/factory.o: lib/factory.cpp lib/include/factory.h lib/include/zmqio.h lib/include/couchbase_admin.h lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/uuid_admin.h lib/include/xredis_admin.h lib/include/cli.h lib/include/factory/commandline_interface.h lib/include/factory/consul_interface.h lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/http_interface.h lib/include/factory/logging_interface.h lib/include/factory/redis_interface.h lib/include/factory/uuid_interface.h lib/include/factory/writeable.h lib/include/factory/zmq_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/factory.cpp $(STD)
+
+lib/logging_interface.o: lib/logging_interface.cpp lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/logging_interface.cpp $(STD)
 
 # To start over from scratch, type 'make clean', then 'sudo make uninstall'.  This
 # removes the executable file, as well as old .o object

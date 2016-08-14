@@ -7,7 +7,7 @@
 #include <fstream>
 #include <cstdlib>
 
-#include "include/logging.h"
+#include "include/factory/logging_interface.h"
 
 #include "include/xredis_admin.h"
 
