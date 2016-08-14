@@ -41,8 +41,6 @@ Service::Service(std::string new_id, std::string new_name, std::string new_addre
 
 std::string Service::to_json()
 {
-  logging->debug("CONSUL: Service to JSON method Called:");
-  logging->debug(id);
 
   std::string id_key = "ID";
   std::string name_key = "Name";
@@ -75,8 +73,6 @@ std::string Service::to_json()
   }
 
   json_str = json_str + "}";
-
-  logging->debug(json_str);
 
   return json_str;
 
