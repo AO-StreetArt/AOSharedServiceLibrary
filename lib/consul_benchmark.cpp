@@ -33,7 +33,7 @@ std::string uuid_str = uuid_list[register_counter];
 service->set_id(uuid_str);
 
 //Register the service
-consul->register_service(service);
+consul->register_service(*service);
 
 //Update the register counter
 register_counter = register_counter + 1;
@@ -49,7 +49,7 @@ std::string uuid_str = uuid_list[deregister_counter];
 service->set_id(uuid_str);
 
 //Register the service
-consul->deregister_service(service);
+consul->deregister_service(*service);
 
 //Update the register counter
 deregister_counter = deregister_counter + 1;
@@ -76,7 +76,7 @@ BENCHMARK(CONSUL, UpdateConfigurationValue, 10, 100)
 }
 
 //Configuration Value Create
-BENCHMARK(CONSUL, UpdateConfigurationValue, 10, 100)
+BENCHMARK(CONSUL, CreateConfigurationValue, 10, 100)
 {
 
   std::string uuid_str = uuid_list[create_counter];
@@ -87,7 +87,7 @@ BENCHMARK(CONSUL, UpdateConfigurationValue, 10, 100)
 }
 
 //Configuration Value Delete
-BENCHMARK(CONSUL, UpdateConfigurationValue, 10, 100)
+BENCHMARK(CONSUL, DeleteConfigurationValue, 10, 100)
 {
 
   std::string uuid_str = uuid_list[delete_counter];
