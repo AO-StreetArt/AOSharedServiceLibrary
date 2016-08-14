@@ -33,8 +33,7 @@ typedef void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_re
 
 //! This binds a number of callbacks for major operations, and supports full CRUD operations
 //! on JSON documents stored in the Couchbase DB
-class CouchbaseInterface: public DBAdmin
-{
+class CouchbaseInterface: public DBAdmin {
 public:
 
 	//Object CRUD Operations
@@ -84,7 +83,7 @@ public:
 	virtual void bind_delete_callback(DelCallback) = 0;
 
 	//! Blocking call until the transaction stack is empty
-	void wait () = 0;
+	virtual void wait () = 0;
 };
 
 #endif
