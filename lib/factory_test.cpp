@@ -53,10 +53,10 @@ RedisConnectionList.push_back(r);
 RedisInterface *ra = factory.get_redis_cluster_interface( RedisConnectionList );
 
 //! Get a ZMQ Outbound Interface instance
-ZmqOut *zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
+Zmqio *zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
 
 //! Get a ZMQ Inbound Interface instance
-ZmqIn *zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" )
+Zmqio *zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
 
 //Run our tests
 
