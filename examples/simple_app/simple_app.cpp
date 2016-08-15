@@ -114,7 +114,33 @@ zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
 zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
 
 //Here we have the core of the application
-logging->error("Hello world!");
+logging->info("Sending a message");
+
+//Send a Message
+std::string msg = "Test";
+zmqo->send(msg);
+bool keep_going = true;
+
+while (keep_going) {
+
+  //Convert the OMQ message into a string to be passed on the event
+  std::string req_string = zmqi->recv();
+
+  std::string resp = "success";
+  logging->debug("Object Update Event Emitted, response:");
+  logging->debug(resp);
+
+  //  Send reply back to client
+  zmqi->send(resp);
+  logging->debug("Response Sent");
+
+  keep_going = false;
+
+}
+
+std::string response = zmqo->recv();
+logging->debug("Response Recieved");
+logging->debug(response);
 
 //Finally, we cleanup the app
 

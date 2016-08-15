@@ -6,7 +6,7 @@ Before we begin, we need to build our dependencies and then build the project.
 
 ### Dependencies
 
-#### Ubuntu 14.04
+#### Ubuntu 14.04/Debian 7
 The build_deps.sh script should allow for automatic resolution of dependencies.  Run the following commands from within the main folder
 
 `mkdir ../aossl_deps`
@@ -28,7 +28,19 @@ The project and tests can be built with make on most linux systems.
 
 `make test`
 
+We can clean the build and remove all generated files with:
+
+`make clean`
+
+### Install and Uninstall the Project
+
+The project can be installed on most linux systems with:
+
 `sudo make install`
+
+We can uninstall the libraries with:
+
+`sudo make uninstall`
 
 ## Use
 Please continue on to the [Use] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use) section of the documentation to see example uses of the library.
