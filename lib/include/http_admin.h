@@ -7,15 +7,15 @@
 #include <string>
 #include <sstream>
 #include <curl/curl.h>
-#include "logging.h"
 
-typedef size_t (*WriteCallback)(char *, size_t, size_t, void*);
+#include "factory/logging_interface.h"
+#include "factory/http_interface.h"
 
 //! The HTTP Requests Administrators
 
 //! This class is in charge of making HTTP Requests
 //! Support for put, get post, and delete
-class HttpAdmin
+class HttpAdmin: public HttpInterface
 {
 CURL* curl;
 bool send(char * url, int timeout);
@@ -26,6 +26,8 @@ public:
 
   //! Shutdown the admin
   void shutdown() {curl_global_cleanup();}
+
+  ~HttpAdmin() {shutdown();}
 
   //! Bind Callback
   void bind_get_callback(WriteCallback);

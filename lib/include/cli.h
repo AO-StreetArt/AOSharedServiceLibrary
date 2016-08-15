@@ -2,10 +2,12 @@
 #include <string>
 #include <iterator>
 
+#include "factory/commandline_interface.h"
+
 #ifndef COMMAND_LINE
 #define COMMAND_LINE
 
-class CommandLineInterpreter
+class CommandLineInterpreter: public CommandLineInterface
 {
 //An unordered map of options from the command line
 std::unordered_map<std::string, std::string> opts;
@@ -18,6 +20,8 @@ public:
   //! int argc & char* argv[].  This parses arguments passed in the form:
   //! -arg_key=arg_val
   CommandLineInterpreter(int argc, char* argv[]);
+
+  ~CommandLineInterpreter() {}
 
   //! Does a key exist?
   bool opt_exist( std::string key );

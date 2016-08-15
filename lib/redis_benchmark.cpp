@@ -1,28 +1,97 @@
-//Tests for Redis Admin
-
+#include <hayai/hayai.hpp>
 #include <string>
 #include <iostream>
 #include <sstream>
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <uuid/uuid.h>
 
 #include "include/factory/logging_interface.h"
 #include "include/factory/redis_interface.h"
-#include "include/logging.h"
+#include "include/factory.h"
 
-#include "include/xredis_admin.h"
+RedisInterface *xRedis;
+std::vector<std::string> uuid_list;
+int savecounter = 0;
+int getcounter = 0;
+int delcounter = 0;
+int existcounter = 0;
 
-#include <assert.h>
+//----------------------------------------------------------------------------//
+//------------------------------Benchmarks------------------------------------//
+//----------------------------------------------------------------------------//
 
-//Main Method
+BENCHMARK(Redis, Save, 10, 100)
+{
 
-std::vector<RedisConnChain> RedisConnectionList;
+std::string uuid_str = uuid_list[savecounter];
 
-xRedisAdmin *xRedis;
+//save
+bool bRet = xRedis->save( uuid_str.c_str(), "123");
+if (!bRet) {
+logging->error("Error putting object to Redis Smart Update Buffer");
+}
+
+savecounter=savecounter+1;
+
+}
+
+BENCHMARK(Redis, ExistsTrue, 10, 100)
+{
+
+std::string uuid_str = uuid_list[existcounter];
+
+//exists
+bool eRet = xRedis->exists( uuid_str.c_str() );
+
+existcounter=existcounter+1;
+
+}
+
+BENCHMARK(Redis, ExistsFalse, 10, 100)
+{
+
+std::string uuid_str = "TEST";
+
+//exists
+bool eRet = xRedis->exists( uuid_str.c_str() );
+
+}
+
+BENCHMARK(Redis, Load, 10, 100)
+{
+
+std::string uuid_str = uuid_list[getcounter];
+
+//load
+std::string strValue = xRedis->load( uuid_str.c_str() );
+
+getcounter=getcounter+1;
+
+}
+
+BENCHMARK(Redis, Delete, 10, 100)
+{
+
+std::string uuid_str = uuid_list[delcounter];
+
+//Delete
+xRedis->del( uuid_str.c_str() );
+
+delcounter=delcounter+1;
+
+}
+
+//----------------------------------------------------------------------------//
+//------------------------------Main Method-----------------------------------//
+//----------------------------------------------------------------------------//
 
 int main()
 {
+
+//Application Setup
+std::vector<RedisConnChain> RedisConnectionList;
 
 //Read the Redis Configuration File
 //Open the file
@@ -94,65 +163,39 @@ if (file.is_open()) {
   file.close();
 }
 
+//Set up the Service Factory
+ServiceComponentFactory factory;
 
 //Read the Logging Configuration File
-std::string initFileName = "test/logging.properties";
-logging = new Logger(initFileName);
+std::string initFileName = "test/log4cpp_test.properties";
+logging = factory.get_logging_interface( initFileName );
 
-//Set up internal variables
-logging->info("Internal Variables Intialized");
-
-//Set up the Redis Admin
-//Set up our Redis Connection List
-int conn_list_size = RedisConnectionList.size();
-RedisNode RedisList1[conn_list_size];
-for (int y = 0; y < conn_list_size; ++y)
-{
-  //Pull the values from RedisConnectionList
-  RedisNode redis_n;
-  redis_n.dbindex = y;
-  RedisConnChain redis_chain = RedisConnectionList[y];
-  redis_n.host = redis_chain.ip.c_str();
-  redis_n.port = redis_chain.port;
-  redis_n.passwd = redis_chain.password.c_str();
-  redis_n.poolsize = redis_chain.pool_size;
-  redis_n.timeout = redis_chain.timeout;
-  redis_n.role = redis_chain.role;
-  logging->debug("Line added to Redis Configuration List with IP:");
-  logging->debug(redis_n.host);
-
-  RedisList1[y] = redis_n;
+//Generate the UUID's for the benchmarks
+int i=0;
+for (i=0; i< 1001; i++) {
+  //Generate a new key for the object
+  std::string uuid_str = std::to_string(i);
+  uuid_list.push_back(uuid_str);
 }
-logging->info("Redis Connection List Built");
 
 //Set up Redis Connection
-xRedis = new xRedisAdmin (RedisList1, conn_list_size);
+xRedis = factory.get_redis_cluster_interface(RedisConnectionList);
 logging->info("Connected to Redis");
 
-//save
-bool bRet = xRedis->save("Test", "123");
-if (!bRet) {
-logging->error("Error putting object to Redis Smart Update Buffer");
-assert(bRet);
-}
+//------------------------------Run Tests-------------------------------------//
+//----------------------------------------------------------------------------//
 
-//exists
-bool eRet = xRedis->exists("Test");
-if (!eRet) {
-logging->error("Test not found in buffer");
-assert(eRet);
-}
+hayai::ConsoleOutputter consoleOutputter;
 
-//load
-std::string strValue = xRedis->load("Test");
-assert(strValue == "123");
-logging->debug(strValue);
+hayai::Benchmarker::AddOutputter(consoleOutputter);
+hayai::Benchmarker::RunAllTests();
 
-//Delete
-xRedis->del("Test");
+//-------------------------Post-Test Teardown---------------------------------//
+//----------------------------------------------------------------------------//
 
 delete xRedis;
 delete logging;
 
 return 0;
+
 }

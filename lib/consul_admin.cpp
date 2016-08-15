@@ -21,88 +21,6 @@ for (int c = 0; c<size*nmemb; c++)
 return size*nmemb;
 }
 
-//--------------------------------Service-------------------------------------//
-
-Service::Service()
-{
-  id="";
-  name="";
-  address="";
-  port="";
-  check.script = "";
-}
-
-Service::Service(std::string new_id, std::string new_name)
-{
-  id=new_id;
-  name=new_name;
-  address="";
-  port="";
-  check.script = "";
-}
-
-Service::Service(std::string new_id, std::string new_name, std::string new_address, std::string new_port)
-{
-  id=new_id;
-  name=new_name;
-  address=new_address;
-  port=new_port;
-  check.script = "";
-}
-
-Service::Service(std::string new_id, std::string new_name, std::string new_address, std::string new_port, std::vector<std::string> new_tags)
-{
-  id=new_id;
-  name=new_name;
-  address=new_address;
-  port=new_port;
-  tags=new_tags;
-  check.script = "";
-}
-
-std::string Service::to_json()
-{
-  logging->debug("CONSUL: Service to JSON method Called:");
-  logging->debug(id);
-
-  std::string id_key = "ID";
-  std::string name_key = "Name";
-  std::string tags_key = "Tags";
-  std::string addr_key = "Address";
-  std::string port_key = "Port";
-
-  //Build the base JSON String
-  std::string json_str = "{\"" + id_key + "\": \"" + id + "\", \"" +
-    name_key + "\": \"" + name + "\", \"";
-
-  //Add in any service tags
-  if (num_tags() > 0) {
-    json_str = json_str + tags_key + "\": [\"" + tags[0] + "\"";
-
-    for (int i=1; i<num_tags(); i++) {
-      json_str = json_str + ", \"" + tags[i] + "\"";
-    }
-
-    json_str = json_str + "], \"";
-  }
-
-  //Finish the base json string
-  json_str = json_str + addr_key + "\": \"" + address + "\"" +
-    ", \"" + port_key + "\": " + port;
-
-  //Add the Health Check
-  if (!check.script.empty()) {
-    json_str = json_str + ", \"check\": {\"script\": \"" + check.script + "\", \"interval\": \"" + check.interval + "\"}";
-  }
-
-  json_str = json_str + "}";
-
-  logging->debug(json_str);
-
-  return json_str;
-
-}
-
 //------------------------Consul Administrator--------------------------------//
 
 //Put together a url query segment with the consul address provided at initialization
@@ -145,7 +63,7 @@ std::string ConsulAdmin::query(std::string query_url)
 
 //-------------------Service Registry Functions-------------------------------//
 
-bool ConsulAdmin::register_service(Service& s)
+bool ConsulAdmin::register_service(ServiceInterface& s)
 {
   logging->debug("CONSUL: Registering Service");
   //Get the URL
@@ -175,7 +93,7 @@ bool ConsulAdmin::register_service(Service& s)
   return success;
 }
 
-bool ConsulAdmin::deregister_service(Service& s)
+bool ConsulAdmin::deregister_service(ServiceInterface& s)
 {
   //Get the URL
   std::string url_string = "/v1/agent/service/deregister/";

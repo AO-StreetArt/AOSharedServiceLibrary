@@ -15,8 +15,7 @@
 class DBAdmin
 {
 public:
-	DBAdmin() {}
-	~DBAdmin() {}
+	virtual ~DBAdmin() {}
 	//Basic CRUD Operations
 
 	//! Load a JSON Object from the DB

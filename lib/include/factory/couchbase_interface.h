@@ -6,53 +6,38 @@
 //the couchbase engine, which are called upon
 //completion of the asynchronous threads
 
-#include "factory/db_admin.h"
-#include "factory/writeable.h"
-#include "factory/couchbase_interface.h"
+#include "writeable.h"
+#include "db_admin.h"
 
-#include <sstream>
 #include <string>
 #include <string.h>
 #include <cstring>
-#include <fstream>
-#include <cstdlib>
-#include <stdlib.h>
-#include <exception>
-
-#include "factory/logging_interface.h"
 
 extern "C"
 {
 	#include <libcouchbase/couchbase.h>
 }
 
-#ifndef COUCHBASE_ADMIN
-#define COUCHBASE_ADMIN
+#ifndef COUCHBASE_INTERFACE
+#define COUCHBASE_INTERFACE
 
-//Define the callbacks that will get passed to Couchbase
+//! Define the storage callback that will get passed to Couchbase
 typedef void (*StorageCallback)(lcb_t, const void*, lcb_storage_t, lcb_error_t, const lcb_store_resp_t*);
+
+//! Define the get callback that will get passed to Couchbase
 typedef void (*GetCallback)(lcb_t, const void*, lcb_error_t, const lcb_get_resp_t*);
+
+//! Define the delete callback that will get passed to Couchbase
 typedef void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_resp_t*);
 
 //! The Couchbase Administrator handles interactions with the Couchbase DB
 
 //! This binds a number of callbacks for major operations, and supports full CRUD operations
 //! on JSON documents stored in the Couchbase DB
-class CouchbaseAdmin: public CouchbaseInterface
-{
-lcb_t private_instance;
-bool authentication_active;
-const char * password;
-void initialize (const char * conn);
+class CouchbaseInterface: public DBAdmin {
 public:
-	//! Create a new Couchbase Admin, without a password
-	CouchbaseAdmin ( const char * conn );
 
-	//! Create a new Couchbase Admin, with a password
-	CouchbaseAdmin ( const char * conn, const char * pswd );
-
-	//! Delete the Couchbase Admin
-	~CouchbaseAdmin ();
+	virtual ~CouchbaseInterface() {}
 
 	//Object CRUD Operations
 
@@ -60,25 +45,25 @@ public:
 
 	//! The requested object is loaded and, when ready,
 	//! the method bound with bind_get_callback will be executed
-	void load_object ( const char * key );
+	virtual void load_object ( const char * key ) = 0;
 
 	//! Save a JSON Object to the Couchbase DB
 
 	//! The requested object is saved and, when complete,
 	//! the method bound with bind_storage_callback will be executed
-	void save_object ( Writeable *obj );
+	virtual void save_object ( Writeable *obj ) = 0;
 
 	//! Create a JSON Object in the Couchbase DB
 
 	//! The requested object is saved and, when complete,
 	//! the method bound with bind_storage_callback will be executed
-	void create_object ( Writeable *obj );
+	virtual void create_object ( Writeable *obj ) = 0;
 
 	//! Delete a JSON Object from the Couchbase DB
 
 	//! The requested object is deleted and, when complete,
 	//! the method bound with bind_delete_callback will be executed
-	void delete_object ( const char * key );
+	virtual void delete_object ( const char * key ) = 0;
 
 	//Bind Callbacks
 
@@ -86,25 +71,22 @@ public:
 
 	//! When the requested object is loaded, the method bound with
 	//! bind_get_callback will be executed
-	void bind_get_callback(GetCallback);
+	virtual void bind_get_callback(GetCallback) = 0;
 
 	//! Bind the Storage Callback
 
 	//! When the requested object is saved or created, the method bound with
 	//! bind_storage_callback will be executed
-	void bind_storage_callback(StorageCallback);
+	virtual void bind_storage_callback(StorageCallback) = 0;
 
 	//! Bind the Removal Callback
 
 	//! When the requested object is deleted, the method bound with
 	//! bind_delete_callback will be executed
-	void bind_delete_callback(DelCallback);
-
-	//! Get the instance, for advanced operations if necessary.  Not advised
-	lcb_t get_instance ();
+	virtual void bind_delete_callback(DelCallback) = 0;
 
 	//! Blocking call until the transaction stack is empty
-	void wait ();
+	virtual void wait () = 0;
 };
 
 #endif

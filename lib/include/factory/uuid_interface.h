@@ -1,23 +1,20 @@
 //An admin for generating UUID's
 
-#ifndef UUID_ADMIN
-#define UUID_ADMIN
+#ifndef UUID_INTERFACE
+#define UUID_INTERFACE
 
 #include <string>
 #include <string.h>
-#include <uuid/uuid.h>
-
-#include "factory/logging_interface.h"
-#include "factory/uuid_interface.h"
 
 //! UUID Admin
 
 //! The UUID Admin is in charge of generating any Universally Unique
 //! ID's that are required throughout program execution
-class uuidAdmin: public uuidInterface
+class uuidInterface
 {
 public:
-	~uuidAdmin() {}
+
+	virtual ~uuidInterface() {}
 	//! Generate a new UUID
 
 	//! The method will generate on the means of generation present on your system
@@ -25,7 +22,7 @@ public:
 	//! risk.  In this case, that fact will be clearly called out in the logs, and
 	//! it is recommended that production systems are tested to ensure that UUID's are
 	//! generated in a safe manner
-	std::string generate();
+	virtual std::string generate() = 0;
 };
 
 #endif
