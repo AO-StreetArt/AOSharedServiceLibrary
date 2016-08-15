@@ -119,6 +119,114 @@ void Logger::info(const char * msg)
   }
 }
 
+void Logger::debug(int msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->debug(std::to_string(msg));
+  }
+}
+
+void Logger::error(int msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->error(std::to_string(msg));
+  }
+}
+
+void Logger::info(int msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->info(std::to_string(msg));
+  }
+}
+
+void Logger::debug(float msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->debug(std::to_string(msg));
+  }
+}
+
+void Logger::error(float msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->error(std::to_string(msg));
+  }
+}
+
+void Logger::info(float msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->info(std::to_string(msg));
+  }
+}
+
+void Logger::debug(double msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->debug(std::to_string(msg));
+  }
+}
+
+void Logger::error(double msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->error(std::to_string(msg));
+  }
+}
+
+void Logger::info(double msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->info(std::to_string(msg));
+  }
+}
+
 //Pull down different categories by name
 log4cpp::Category& Logger::get_category(std::string name)
 {

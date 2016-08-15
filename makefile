@@ -12,8 +12,6 @@ OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.
 INCL = /usr/local/include/aossl /usr/local/include/aossl/factory.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/http_admin.h /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/xredis_admin.h /usr/local/include/aossl/zmqio.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h
 BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
-TESTS = cli_test consul_test couchbase_test http_test logging_test redis_test uuid_test zmqio_test factory_test
-BENCHMARKS = consul_benchmark couchbase_benchmark http_benchmark logging_benchmark redis_benchmark uuid_benchmark zmqio_benchmark
 LIBS = -lpthread -llog4cpp
 FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis`
 
@@ -262,11 +260,21 @@ lib/logging.o:  lib/logging.cpp lib/include/factory/logging_interface.h
 lib/cli.o:  lib/cli.cpp lib/include/cli.h
 	$(CC) $(CFLAGS) -o $@ -c lib/cli.cpp $(STD)
 
+<<<<<<< HEAD
 lib/factory.o: lib/factory.cpp lib/include/factory.h lib/include/zmqio.h lib/include/couchbase_admin.h lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/uuid_admin.h lib/include/xredis_admin.h lib/include/cli.h lib/include/factory/commandline_interface.h lib/include/factory/consul_interface.h lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/http_interface.h lib/include/factory/logging_interface.h lib/include/factory/redis_interface.h lib/include/factory/uuid_interface.h lib/include/factory/writeable.h lib/include/factory/zmq_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/factory.cpp $(STD)
 
 lib/logging_interface.o: lib/logging_interface.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_interface.cpp $(STD)
+=======
+# To start over from scratch, type 'make clean'.  This
+# removes the executable file, as well as old .o object
+# files and *~ backup files:
+#
+clean: clean_local clean_tests
+
+uninstall: clean_install
+>>>>>>> a633629ac67fb74a053ce09dce160465250c4807
 
 clean_local:
 	$(RM) libaossl.a lib/*.o *~

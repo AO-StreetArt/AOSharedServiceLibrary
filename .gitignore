@@ -6,4 +6,4 @@
 *.pb.*
 *_test
 *_benchmark
-*.a.*
+*.a
