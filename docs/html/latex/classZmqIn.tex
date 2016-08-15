@@ -1,0 +1,43 @@
+\hypertarget{classZmqIn}{\section{Zmq\-In Class Reference}
+\label{classZmqIn}\index{Zmq\-In@{Zmq\-In}}
+}
+
+
+An Inbound Z\-M\-Q Manager.  
+
+
+
+
+{\ttfamily \#include $<$zmq\-\_\-interface.\-h$>$}
+
+Inheritance diagram for Zmq\-In\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classZmqIn}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classZmqIn_ad6037a187635f7d46bab5da961156751}{virtual void \hyperlink{classZmqIn_ad6037a187635f7d46bab5da961156751}{bind} (std\-::string conn\-\_\-str)=0}\label{classZmqIn_ad6037a187635f7d46bab5da961156751}
+
+\begin{DoxyCompactList}\small\item\em Bind on the given conn\-\_\-str. \end{DoxyCompactList}\item 
+\hypertarget{classZmqIn_a375de593defd4c2cf3adebad063950fe}{virtual std\-::string \hyperlink{classZmqIn_a375de593defd4c2cf3adebad063950fe}{recv} ()=0}\label{classZmqIn_a375de593defd4c2cf3adebad063950fe}
+
+\begin{DoxyCompactList}\small\item\em Recieve a message on the port. \end{DoxyCompactList}\item 
+\hypertarget{classZmqIn_ad2a35cc76a5b0b2412fda5418f708e60}{virtual void \hyperlink{classZmqIn_ad2a35cc76a5b0b2412fda5418f708e60}{send} (const char $\ast$msg, int msg\-\_\-size)=0}\label{classZmqIn_ad2a35cc76a5b0b2412fda5418f708e60}
+
+\begin{DoxyCompactList}\small\item\em Send a message on the port. \end{DoxyCompactList}\item 
+\hypertarget{classZmqIn_adf4165c263ddc5b68099b93b9f37f592}{virtual void \hyperlink{classZmqIn_adf4165c263ddc5b68099b93b9f37f592}{send} (std\-::string msg)=0}\label{classZmqIn_adf4165c263ddc5b68099b93b9f37f592}
+
+\begin{DoxyCompactList}\small\item\em Send a string on the port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+An Inbound Z\-M\-Q Manager. 
+
+Acts as the Responder (Server) in the Z\-M\-Q Sockets Recieve, then Send 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+lib/include/factory/zmq\-\_\-interface.\-h\end{DoxyCompactItemize}

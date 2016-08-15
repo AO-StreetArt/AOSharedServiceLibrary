@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>AoSharedServiceLibrary: lib/include/db_admin.h Source File</title>
+<title>AoSharedServiceLibrary: lib/include/factory/db_admin.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -40,7 +40,7 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_5a30104352ef4255dc24354b02eb2d20.html">include</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="dir_5a30104352ef4255dc24354b02eb2d20.html">include</a></li><li class="navelem"><a class="el" href="dir_0c1523f44ec2c5bf72bb0e5296576abe.html">factory</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -62,27 +62,26 @@
 <div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classDBAdmin.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDBAdmin.html">DBAdmin</a></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="classDBAdmin.html">DBAdmin</a>() {}</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    ~<a class="code" href="classDBAdmin.html">DBAdmin</a>() {}</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="comment">//Basic CRUD Operations</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDBAdmin.html#a48ebd30b2e5bb44d23359baa86fe42b9">load_object</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key ) = 0;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDBAdmin.html#a29372700a0be4c34ef7ffb956927d9cd">save_object</a> ( <a class="code" href="classWriteable.html">Writeable</a> *obj ) = 0;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDBAdmin.html#aa8915761b88c5ef2df51171ff425c963">create_object</a> (<a class="code" href="classWriteable.html">Writeable</a> *obj ) = 0;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDBAdmin.html#a6fffd56ad4f9db9cd951a91ecb41373b">delete_object</a> (<span class="keyword">const</span> <span class="keywordtype">char</span> * key) = 0;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">//If the engine is asynchronous, wait for the</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="comment">//active threads to complete.  Otherwise, do nothing</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> wait () = 0;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">//Methods to prevent duplication of singleton</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="comment">//intentionally deleted</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classDBAdmin.html">DBAdmin</a>() {}</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">//Basic CRUD Operations</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDBAdmin.html#a48ebd30b2e5bb44d23359baa86fe42b9">load_object</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key ) = 0;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDBAdmin.html#a29372700a0be4c34ef7ffb956927d9cd">save_object</a> ( <a class="code" href="classWriteable.html">Writeable</a> *obj ) = 0;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDBAdmin.html#aa8915761b88c5ef2df51171ff425c963">create_object</a> (<a class="code" href="classWriteable.html">Writeable</a> *obj ) = 0;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDBAdmin.html#a6fffd56ad4f9db9cd951a91ecb41373b">delete_object</a> (<span class="keyword">const</span> <span class="keywordtype">char</span> * key) = 0;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="comment">//If the engine is asynchronous, wait for the</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">//active threads to complete.  Otherwise, do nothing</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> wait () = 0;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">//Methods to prevent duplication of singleton</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="comment">//intentionally deleted</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;};</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classDBAdmin_html"><div class="ttname"><a href="classDBAdmin.html">DBAdmin</a></div><div class="ttdoc">Database Administrator Interface. </div><div class="ttdef"><b>Definition:</b> db_admin.h:15</div></div>
 <div class="ttc" id="classDBAdmin_html_a29372700a0be4c34ef7ffb956927d9cd"><div class="ttname"><a href="classDBAdmin.html#a29372700a0be4c34ef7ffb956927d9cd">DBAdmin::save_object</a></div><div class="ttdeci">virtual void save_object(Writeable *obj)=0</div><div class="ttdoc">Save a JSON Object to the DB. </div></div>
 <div class="ttc" id="classWriteable_html"><div class="ttname"><a href="classWriteable.html">Writeable</a></div><div class="ttdoc">The Writeable Interface. </div><div class="ttdef"><b>Definition:</b> writeable.h:14</div></div>
@@ -92,7 +91,7 @@
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 7 2016 21:41:21 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Aug 14 2016 21:47:27 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -1,0 +1,46 @@
+\hypertarget{classRedisInterface}{\section{Redis\-Interface Class Reference}
+\label{classRedisInterface}\index{Redis\-Interface@{Redis\-Interface}}
+}
+
+
+The X\-Redis Admin.  
+
+
+
+
+{\ttfamily \#include $<$redis\-\_\-interface.\-h$>$}
+
+Inheritance diagram for Redis\-Interface\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classRedisInterface}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classRedisInterface_afd325866fd98ca6e002b2702e5566ee5}{virtual std\-::string \hyperlink{classRedisInterface_afd325866fd98ca6e002b2702e5566ee5}{load} (const char $\ast$key)=0}\label{classRedisInterface_afd325866fd98ca6e002b2702e5566ee5}
+
+\begin{DoxyCompactList}\small\item\em Load a value from Redis. \end{DoxyCompactList}\item 
+\hypertarget{classRedisInterface_adb0d6e3f8a0848cbb6b346e57aeb3ad5}{virtual bool \hyperlink{classRedisInterface_adb0d6e3f8a0848cbb6b346e57aeb3ad5}{save} (const char $\ast$key, std\-::string msg)=0}\label{classRedisInterface_adb0d6e3f8a0848cbb6b346e57aeb3ad5}
+
+\begin{DoxyCompactList}\small\item\em Save a value to Redis. \end{DoxyCompactList}\item 
+\hypertarget{classRedisInterface_a3881f54b919852b7aaa231015775544e}{virtual bool \hyperlink{classRedisInterface_a3881f54b919852b7aaa231015775544e}{exists} (const char $\ast$key)=0}\label{classRedisInterface_a3881f54b919852b7aaa231015775544e}
+
+\begin{DoxyCompactList}\small\item\em Does a key exist in Redis? \end{DoxyCompactList}\item 
+\hypertarget{classRedisInterface_abb9b1fe2c11911648d62d431968fa04e}{virtual bool \hyperlink{classRedisInterface_abb9b1fe2c11911648d62d431968fa04e}{del} (const char $\ast$key)=0}\label{classRedisInterface_abb9b1fe2c11911648d62d431968fa04e}
+
+\begin{DoxyCompactList}\small\item\em Delete a value from Redis. \end{DoxyCompactList}\item 
+\hypertarget{classRedisInterface_ac327841b5c3d227be88f164495e32dd0}{virtual bool \hyperlink{classRedisInterface_ac327841b5c3d227be88f164495e32dd0}{expire} (const char $\ast$key, unsigned int second)=0}\label{classRedisInterface_ac327841b5c3d227be88f164495e32dd0}
+
+\begin{DoxyCompactList}\small\item\em Expire a value in Redis after a specified number of seconds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The X\-Redis Admin. 
+
+The X\-Redis Admin is responsible for all interactions with the Redis Key-\/\-Value Store. This is capable of connecting to single Redis instances or Clusters 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+lib/include/factory/redis\-\_\-interface.\-h\end{DoxyCompactItemize}
