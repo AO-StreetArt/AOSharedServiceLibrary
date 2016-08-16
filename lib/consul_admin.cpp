@@ -108,7 +108,7 @@ bool ConsulAdmin::deregister_service(ServiceInterface& s)
   const char * empty_cstr = empty_str.c_str();
   char *empty_arr = new char[empty_str.length() + 1];
   strcpy(empty_arr, empty_cstr);
-  bool success = ha->put(empty_arr, empty_cstr, timeout);
+  bool success = ha->put(url, empty_arr, timeout);
   delete empty_arr;
   delete url;
   if (success)
