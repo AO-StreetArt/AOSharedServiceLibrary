@@ -74,9 +74,9 @@ delete consul;
 delete ca;
 //delete ca2;
 delete ra;
-delete logging;
 delete zmqo;
 delete zmqi;
+delete logging;
 
 return 0;
 }
