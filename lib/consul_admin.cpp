@@ -13,7 +13,7 @@ size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up)
   logging->debug("CONSUL: HTTP Query Callback Triggered");
 
 //Put the response into a string
-for (int c = 0; c<size*nmemb; c++)
+for (size_t c = 0; c<size*nmemb; c++)
 {
 	writedata.push_back(buf[c]);
 }
@@ -104,7 +104,8 @@ bool ConsulAdmin::deregister_service(ServiceInterface& s)
   strcpy(url, url_cstr);
 
   //Send the HTTP Request
-  bool success = ha->put(url, "", timeout);
+  std::string empty_str = "";
+  bool success = ha->put(url, empty_str, timeout);
   delete url;
   if (success)
   {

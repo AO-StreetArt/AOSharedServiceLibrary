@@ -14,8 +14,7 @@ void CouchbaseAdmin::initialize (const char * conn)
 	}
 
         lcb_error_t err;
-        lcb_t instance;
-        private_instance=instance;
+        lcb_t private_instance;
         err = lcb_create(&private_instance, &cropts);
         if (err != LCB_SUCCESS) {
                 logging->error("CB_Admin:DB: Couldn't create instance!");
