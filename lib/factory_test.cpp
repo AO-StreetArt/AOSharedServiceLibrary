@@ -72,7 +72,6 @@ delete ha;
 delete s;
 delete consul;
 delete ca;
-//delete ca2;
 delete ra;
 delete zmqo;
 delete zmqi;
