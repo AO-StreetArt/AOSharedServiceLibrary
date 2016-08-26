@@ -8,7 +8,6 @@
 class HttpServer: public HttpServerInterface
 {
 struct event_base *base;
-std::vector<struct *evhttp> http_addresses;
 public:
   HttpServer();
   ~HttpServer();
