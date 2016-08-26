@@ -12,7 +12,7 @@ public:
   HttpServer();
   ~HttpServer();
   bool bind_callback(std::string url, int port, HttpCallback func);
-  std::string recv();
+  void recv();
 };
 
 #endif
