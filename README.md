@@ -12,10 +12,10 @@ Features:
 * Couchbase Administrator with cluster support
 * Redis Administrator with cluster support
 * Consul Administrator
-* HTTP Request Administrator
+* Inbound & Outbound HTTP Socket managers
+* Inbound & Outbound Request/Response ZeroMQ Socket managers
 * Asynchronous Logging Module
 * Universally Unique ID Generator
-* Inbound & Outbound Request/Response ZeroMQ Socket managers
 * A Command Line Argument Parser
 
 In order to use the respective administrators, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Couchbase] (http://www.couchbase.com/) and [Redis] (http://redis.io/) to connect to.

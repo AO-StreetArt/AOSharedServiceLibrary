@@ -167,6 +167,37 @@ We can get and set key-value storage elements:
 
 It also has some limited query capabilities, please see API for further details.
 
+## HTTP Server
+
+The HTTP Server binds callbacks to URL's and allows for distinguishing between types of requests.
+
+    //Set up the HTTP Server
+    HttpServer http;
+    http.bind_callback("0.0.0.0", 12345, process_request);
+
+Here, we bind the specified URL and port to a particular callback function, process_request()
+
+    //Process a request
+    void process_request(struct evhttp_request *req, void *arg){
+    	std::cout << req->type << std::endl;
+    	if (req->type == 1)
+    	{
+    	std::cout << "Get Detected" << std::endl;
+    	}
+    	else if (req->type == 2)
+    	{
+    	std::cout << "Post Detected" << std::endl;
+    	}
+    	else if (req->type == 8)
+    	{
+    	std::cout << "Put Detected" << std::endl;
+    	}
+    	else if (req->type == 16)
+    	{
+    	std::cout << "Delete Detected" << std::endl;
+    	}
+
+
 ## HTTP Administrator
 
 The HTTP Admin allows quick and easy HTTP Requests by exposing:

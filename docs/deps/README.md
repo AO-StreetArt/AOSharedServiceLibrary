@@ -11,6 +11,7 @@ You will need Couchbase drivers installed.  Couchbase drivers can be found [here
 We rely also on a set of base libraries which are installable via Ubuntu/Debian package managers:
 * libuuid
 * libcurl
+* libevent
 
 You will need [Hayai] (https://github.com/nickbruun/hayai) to run the benchmarks.
 
