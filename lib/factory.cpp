@@ -119,7 +119,7 @@ Zmqio* ServiceComponentFactory::get_zmq_inbound_interface( std::string conn_str 
   return zmqi;
 }
 
-HttpServerInterface* ServiceComponentFactory::get_http_server_interface();
+HttpServerInterface* ServiceComponentFactory::get_http_server_interface()
 {
   return new HTTPServer();
 }
