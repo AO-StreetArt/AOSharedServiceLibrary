@@ -8,14 +8,14 @@ CC = g++
 SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
-OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/factory.o lib/logging_interface.o lib/uuid_admin.o lib/service.o
-TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_test factory_test
+OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/factory.o lib/logging_interface.o lib/uuid_admin.o lib/service.o lib/http_server.o
+TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_test factory_test http_server_test
 BENCHMARKS = consul_benchmark logging_benchmark http_benchmark couchbase_benchmark redis_benchmark
-INCL = /usr/local/include/aossl /usr/local/include/aossl/factory.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/http_admin.h /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/xredis_admin.h /usr/local/include/aossl/zmqio.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h
+INCL = /usr/local/include/aossl /usr/local/include/aossl/factory.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/http_admin.h /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/xredis_admin.h /usr/local/include/aossl/zmqio.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h /usr/local/include/aossl/factory/http_server_interface.h
 BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
 LIBS = -lpthread -llog4cpp
-FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis`
+FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lxredis -lcurl -lcouchbase -levent `pkg-config --cflags --libs hiredis`
 
 # typing 'make' will invoke the first target entry in the file
 # (in this case the default target entry)
@@ -75,6 +75,9 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/include/aossl/zmqio.h: lib/include/zmqio.h
 	cp $< $@
 
+/usr/local/include/aossl/http_server.h: lib/include/http_server.h
+		cp $< $@
+
 /usr/local/include/aossl/factory/commandline_interface.h: lib/include/factory/commandline_interface.h
 	cp $< $@
 
@@ -103,6 +106,9 @@ clean: clean_local clean_tests clean_benchmarks
 	cp $< $@
 
 /usr/local/include/aossl/factory/zmq_interface.h: lib/include/factory/zmq_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/http_server_interface.h: lib/include/factory/http_server_interface.h
 	cp $< $@
 
 /usr/local/lib/libaossl.a: libaossl.a
@@ -150,6 +156,13 @@ zmqio_benchmark: lib/zmqio_benchmark.o $(OBJS)
 
 lib/zmqio_benchmark.o: lib/zmqio_benchmark.cpp lib/include/factory/zmq_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_benchmark.cpp $(STD)
+
+# Create the executable http_server_test
+http_server_test: lib/http_server_test.o $(OBJS)
+	$(CC) $(CFLAGS) -o $@ lib/http_server_test.o $(OBJS) $(FULL_LIBS) $(STD)
+
+lib/http_server_test.o: lib/http_server_test.cpp lib/include/factory/http_server.h
+	$(CC) $(CFLAGS) -o $@ -c lib/http_server_test.cpp $(STD)
 
 # Create the executable file cli_test
 cli_test: lib/cli_test.o lib/cli.o
@@ -233,6 +246,10 @@ lib/consul_admin.o:  lib/consul_admin.cpp lib/include/factory/logging_interface.
 
 lib/service.o: lib/service.cpp lib/include/service.h lib/include/factory/consul_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/service.cpp $(STD)
+
+# Create the object file http_server.o
+lib/http_server.o: lib/http_server.cpp lib/include/http_server.h lib/include/factory/http_server_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/http_server.cpp $(STD)
 
 # Create the object file xredis_admin.o
 lib/xredis_admin.o:  lib/xredis_admin.cpp lib/include/factory/logging_interface.h

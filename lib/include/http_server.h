@@ -2,6 +2,9 @@
 #include <vector>
 #include <string>
 
+#ifndef AOSSL_HTTP_SERVER
+#define AOSSL_HTTP_SERVER
+
 class HttpServer: public HttpServerInterface
 {
 struct event_base *base;
@@ -12,3 +15,5 @@ public:
   bool bind_callback(std::string url, int port, HttpCallback func);
   std::string recv();
 };
+
+#endif

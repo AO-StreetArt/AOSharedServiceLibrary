@@ -10,6 +10,7 @@
 #include "factory/redis_interface.h"
 #include "factory/uuid_interface.h"
 #include "factory/zmq_interface.h"
+#include "factory/http_server_interface.h"
 
 #include "service.h"
 #include "cli.h"
@@ -20,6 +21,7 @@
 #include "uuid_admin.h"
 #include "xredis_admin.h"
 #include "zmqio.h"
+#include "http_server.h"
 
 #ifndef AOSSL_FACTORY
 #define AOSSL_FACTORY
@@ -82,6 +84,9 @@ public:
 
   //! Get a ZMQ Inbound Interface instance
   Zmqio* get_zmq_inbound_interface( std::string conn_str );
+
+  //! Get an HTTP Server Interface Instance
+  HttpServerInterface* get_http_server_interface();
 };
 
 #endif

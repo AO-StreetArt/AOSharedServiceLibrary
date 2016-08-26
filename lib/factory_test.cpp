@@ -11,6 +11,7 @@
 #include "include/factory/redis_interface.h"
 #include "include/factory/uuid_interface.h"
 #include "include/factory/zmq_interface.h"
+#include "include/factory/http_server_interface.h"
 
 int main( int argc, char** argv )
 {
@@ -58,6 +59,9 @@ Zmqio *zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
 //! Get a ZMQ Inbound Interface instance
 Zmqio *zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
 
+//! Get an HTTP Server Interface instance
+HttpServerInterface *http = factory.get_http_server_interface();
+
 //Run our tests
 
 //Command Line Tests
@@ -76,6 +80,7 @@ delete ra;
 delete zmqo;
 delete zmqi;
 delete logging;
+delete http;
 
 return 0;
 }
