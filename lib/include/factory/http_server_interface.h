@@ -1,6 +1,7 @@
 //Interface for HTTP Server Objects
 
 #include <evhttp.h>
+#include <string>
 
 #ifndef HTTP_SERVER_INTERFACE
 #define HTTP_SERVER_INTERFACE
