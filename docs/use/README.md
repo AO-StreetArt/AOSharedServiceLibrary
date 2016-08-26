@@ -197,6 +197,7 @@ Here, we bind the specified URL and port to a particular callback function, proc
     	std::cout << "Delete Detected" << std::endl;
     	}
 
+And we distinguish between the types via the req pointer, as above.
 
 ## HTTP Administrator
 
