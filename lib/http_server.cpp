@@ -4,12 +4,11 @@ HttpServer::HttpServer()
 {
   base = NULL;
   base = event_init();
-  if (base == NULL) return -1;
 }
 
 HttpServer::~HttpServer()
 {
-  if (base != NULL) delete base;
+  // if (base != NULL) delete base;
 }
 
 bool HttpServer::bind_callback(std::string url, int port, HttpCallback func)
