@@ -51,18 +51,17 @@ void process_request(struct evhttp_request *req, void *arg){
 }
 
 //Shutdown the application
-void shutdown()
-{
-  //Delete objects off the heap
-  delete http;
-}
+// void shutdown()
+// {
+//
+// }
 
 //Catch a Signal (for example, keyboard interrupt)
 void my_signal_handler(int s){
    std::cout << ("Caught signal") << std::endl;
    std::string signal_type = std::to_string(s);
    std::cout << (signal_type) << std::endl;
-   shutdown();
+   //shutdown();
    exit(1);
 }
 
