@@ -161,7 +161,7 @@ lib/zmqio_benchmark.o: lib/zmqio_benchmark.cpp lib/include/factory/zmq_interface
 http_server_test: lib/http_server_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o $@ lib/http_server_test.o $(OBJS) $(FULL_LIBS) $(STD)
 
-lib/http_server_test.o: lib/http_server_test.cpp lib/include/factory/http_server.h
+lib/http_server_test.o: lib/http_server_test.cpp lib/include/http_server.h
 	$(CC) $(CFLAGS) -o $@ -c lib/http_server_test.cpp $(STD)
 
 # Create the executable file cli_test
