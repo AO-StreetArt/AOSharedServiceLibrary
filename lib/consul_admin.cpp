@@ -51,12 +51,13 @@ bool ConsulAdmin::register_service(ServiceInterface& s)
   if (!success.empty())
   {
     logging->debug("CONSUL: Registration Successful");
+    return true;
   }
   else
   {
     logging->debug("CONSUL: Registration Unsuccessful");
+    return false;
   }
-  return success;
 }
 
 bool ConsulAdmin::deregister_service(ServiceInterface& s)
@@ -80,12 +81,13 @@ bool ConsulAdmin::deregister_service(ServiceInterface& s)
   if (!success.empty())
   {
     logging->debug("CONSUL: Deregistration Successful");
+    return true;
   }
   else
   {
     logging->debug("CONSUL: Deregistration Unsuccessful");
+    return false;
   }
-  return success;
 }
 
 //----------------------------Basic Queries-----------------------------------//
@@ -137,12 +139,13 @@ bool ConsulAdmin::set_config_value(std::string key, std::string val)
   if (!success.empty())
   {
     logging->debug("CONSUL: Config Value Set Successful");
+    return true;
   }
   else
   {
     logging->debug("CONSUL: Config Value Set Unsuccessful");
+    return false;
   }
-  return success;
 }
 
 std::string ConsulAdmin::get_config_value(std::string key)
@@ -169,12 +172,13 @@ bool ConsulAdmin::del_config_value(std::string key)
   if (!success.empty())
   {
     logging->debug("CONSUL: Config Value Delete Successful");
+    return true;
   }
   else
   {
     logging->debug("CONSUL: Config Value Delete Unsuccessful");
+    return false;
   }
-  return success;
 }
 
 std::string ConsulAdmin::datacenters()
