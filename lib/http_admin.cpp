@@ -26,6 +26,7 @@ std::string HttpAdmin::send(char * url, int timeout)
   logging->debug("HTTP: Sending HTTP Request");
   logging->debug(url);
   writedata.clear();
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
   curl_easy_setopt(curl, CURLOPT_URL, url);
   curl_easy_setopt(curl, CURLOPT_TIMEOUT, timeout);
   CURLcode res = curl_easy_perform(curl);

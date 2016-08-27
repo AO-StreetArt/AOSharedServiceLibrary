@@ -30,7 +30,7 @@ std::string send(char * url, int timeout);
 public:
 
   //! Start a new HTTP Requests Admin
-  HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);}
+  HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();}
 
   //! Shutdown the admin
   void shutdown() {curl_global_cleanup();}
