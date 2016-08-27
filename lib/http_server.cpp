@@ -60,11 +60,16 @@ void process_request(struct evhttp_request *req, void *arg){
   }
 
   std::string resp = "";
+  CallbackInterface cb;
 
   //Call the callback, store the return value in a string that's sent in a response
   try
   {
-    CallbackInterface cb = callback_map[uri];
+    std::string url = internal_url + std::to_string(internal_port) + uri;
+    auto search = callback_map.find(url);
+    if(search != callback_map.end()) {
+        cb = callback_map[url];
+    }
 
     try
     {
@@ -94,7 +99,7 @@ void process_request(struct evhttp_request *req, void *arg){
     //Send a failure response
     else
     {
-      evhttp_send_reply(req, err->err_code, err->err_message, buf);
+      evhttp_send_reply(req, err->err_code.c_str(), err->err_message, buf);
     }
   }
 
@@ -127,7 +132,8 @@ HttpServer::~HttpServer()
 bool HttpServer::bind_callback(std::string uri, CallbackInterface func)
 {
   //Add the address & Callback to the function pointer map
-  callback_map.emplace(uri, func);
+  std::string url = internal_url + std::to_string(internal_port) + uri;
+  callback_map.emplace(url, func);
   return true;
 }
 

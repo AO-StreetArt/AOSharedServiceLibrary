@@ -9,6 +9,8 @@
 #ifndef AOSSL_HTTP_SERVER
 #define AOSSL_HTTP_SERVER
 
+std::unordered_map<std::string, CallbackInterface> callback_map;
+
 typedef void (*HttpCallback)(struct evhttp_request*, void*);
 
 void process_request(struct evhttp_request *req, void *arg);
@@ -16,7 +18,6 @@ void process_request(struct evhttp_request *req, void *arg);
 class HttpServer: public HttpServerInterface
 {
 struct event_base *base;
-std::unordered_map<std::string, CallbackInterface> callback_map;
 std::string internal_url;
 int internal_port;
 public:
