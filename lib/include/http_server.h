@@ -9,7 +9,7 @@
 #ifndef AOSSL_HTTP_SERVER
 #define AOSSL_HTTP_SERVER
 
-std::unordered_map<std::string, CallbackInterface> callback_map;
+extern std::unordered_map<std::string, CallbackInterface> callback_map;
 
 typedef void (*HttpCallback)(struct evhttp_request*, void*);
 

@@ -29,11 +29,9 @@ std::string HttpAdmin::send(char * url, int timeout)
   curl_easy_setopt(curl, CURLOPT_URL, url);
   curl_easy_setopt(curl, CURLOPT_TIMEOUT, timeout);
   CURLcode res = curl_easy_perform(curl);
-  bool ret = false;
   if (CURLE_OK == res)
   {
   //Successful request performed
-  ret = true;
   logging->debug("HTTP: Sent HTTP Request");
   }
   else

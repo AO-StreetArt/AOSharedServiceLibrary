@@ -1,5 +1,7 @@
 #include "include/http_server.h"
 
+std::unordered_map<std::string, CallbackInterface> callback_map;
+
 //Process a request
 void process_request(struct evhttp_request *req, void *arg){
 
