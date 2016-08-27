@@ -60,7 +60,7 @@ Zmqio *zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
 Zmqio *zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
 
 //! Get an HTTP Server Interface instance
-HttpServerInterface *http = factory.get_http_server_interface();
+HttpServerInterface *http = factory.get_http_server_interface("0.0.0.0", 12345);
 
 //Run our tests
 
