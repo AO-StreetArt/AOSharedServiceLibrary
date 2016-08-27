@@ -45,10 +45,10 @@ bool ConsulAdmin::register_service(ServiceInterface& s)
   strcpy(body, body_cstr);
 
   //Send the HTTP Request
-  bool success = ha->put(url, body, timeout);
+  std::string success = ha->put(url, body, timeout);
   delete body;
   delete url;
-  if (success)
+  if (!success.empty())
   {
     logging->debug("CONSUL: Registration Successful");
   }
@@ -74,10 +74,10 @@ bool ConsulAdmin::deregister_service(ServiceInterface& s)
   const char * empty_cstr = empty_str.c_str();
   char *empty_arr = new char[empty_str.length() + 1];
   strcpy(empty_arr, empty_cstr);
-  bool success = ha->put(url, empty_arr, timeout);
+  std::string success = ha->put(url, empty_arr, timeout);
   delete empty_arr;
   delete url;
-  if (success)
+  if (!success.empty())
   {
     logging->debug("CONSUL: Deregistration Successful");
   }
@@ -131,10 +131,10 @@ bool ConsulAdmin::set_config_value(std::string key, std::string val)
   strcpy(body, body_cstr);
 
   //Send the HTTP Request
-  bool success = ha->put(url, body, timeout);
+  std::string success = ha->put(url, body, timeout);
   delete body;
   delete url;
-  if (success)
+  if (!success.empty())
   {
     logging->debug("CONSUL: Config Value Set Successful");
   }
@@ -164,9 +164,9 @@ bool ConsulAdmin::del_config_value(std::string key)
   strcpy(url, url_cstr);
 
   //Send the HTTP Request
-  bool success = ha->del(url, timeout);
+  std::string success = ha->del(url, timeout);
   delete url;
-  if (success)
+  if (!success.empty())
   {
     logging->debug("CONSUL: Config Value Delete Successful");
   }
