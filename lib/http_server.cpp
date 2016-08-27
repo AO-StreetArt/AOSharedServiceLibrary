@@ -69,17 +69,16 @@ void process_request(struct evhttp_request *req, void *arg){
   {
     auto search = callback_map.find(uri);
     if(search != callback_map.end()) {
-        cb = callback_map[uri];
-    }
-
-    try
-    {
-      resp = (*cb)(r);
-    }
-    catch (std::exception& e)
-    {
-      err->err_code = HTTP_BADREQUEST;
-      err->err_message = e.what();
+      cb = callback_map[uri];
+      try
+      {
+        resp = (*cb)(r);
+      }
+      catch (std::exception& e)
+      {
+        err->err_code = HTTP_BADREQUEST;
+        err->err_message = e.what();
+      }
     }
   }
   catch (std::exception& e)

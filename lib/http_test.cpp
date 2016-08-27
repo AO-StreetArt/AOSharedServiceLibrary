@@ -58,12 +58,12 @@ int main()
     if (!get_response.empty())
     {
       //We now have the full response
-      assert(false);
+      //assert(false);
     }
     else
     {
       logging->debug("Retrieved:");
-      logging->debug(writedata);
+      logging->debug(get_response);
     }
 
     //-------------------------------PUT--------------------------------------//
