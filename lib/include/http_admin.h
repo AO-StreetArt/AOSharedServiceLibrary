@@ -26,7 +26,7 @@ size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
 class HttpAdmin: public HttpInterface
 {
 CURL* curl;
-bool send(char * url, int timeout);
+std::string send(char * url, int timeout);
 public:
 
   //! Start a new HTTP Requests Admin
@@ -36,7 +36,7 @@ public:
   void shutdown() {curl_global_cleanup();}
 
   ~HttpAdmin() {shutdown();}
-  
+
   //! Return the instance to bind callbacks against.  Not advised
   CURL* get_instance() {return curl;}
 
