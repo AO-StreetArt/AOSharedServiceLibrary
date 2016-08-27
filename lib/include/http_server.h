@@ -4,6 +4,7 @@
 #include <exception>
 #include "factory/callbacks.h"
 #include <iostream>
+#include <unordered_map>
 
 #ifndef AOSSL_HTTP_SERVER
 #define AOSSL_HTTP_SERVER

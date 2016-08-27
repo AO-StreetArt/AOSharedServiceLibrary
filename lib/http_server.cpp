@@ -59,6 +59,8 @@ void process_request(struct evhttp_request *req, void *arg){
     r->req_type = UNKNOWN;
   }
 
+  std::string resp = "";
+
   //Call the callback, store the return value in a string that's sent in a response
   try
   {
@@ -66,7 +68,7 @@ void process_request(struct evhttp_request *req, void *arg){
 
     try
     {
-      std::string resp = (*cb)(r);
+      resp = (*cb)(r);
     }
     catch (std::exception& e)
     {
@@ -85,7 +87,7 @@ void process_request(struct evhttp_request *req, void *arg){
 	  evbuffer_add_printf(buf, resp.c_str(), uri_cstr);
 
     //Send a success response if no error is detected
-    if (req_ptr->req_err->err_code == NOERROR)
+    if (r->req_err->err_code == NOERROR)
     {
   	   evhttp_send_reply(req, HTTP_OK, "OK", buf);
     }
