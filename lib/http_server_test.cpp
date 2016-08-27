@@ -84,11 +84,11 @@ sigaction(SIGINT, &sigIntHandler, NULL);
 
 //Set up the HTTP Server
 http = new HttpServer("0.0.0.0", 12345);
-http.bind_callback("/", process_request);
-http.bind_callback("/test", process_test_request);
+http->bind_callback("/", process_request);
+http->bind_callback("/test", process_test_request);
 
 //Listen for Requests
-http.recv();
+http->recv();
 
 return 0;
 }
