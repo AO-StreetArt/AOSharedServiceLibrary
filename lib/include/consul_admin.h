@@ -11,14 +11,6 @@
 #include <string.h>
 #include <vector>
 
-//HTTP Callbacks
-//A String to store response data
-extern std::string writedata;
-
-//This is the callback that gets called when we recieve the response to the
-//Get Curl Request
-size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
-
 //------------------------------Consul Admin-----------------------------------//
 
 //! The Consul Administrator, who handles distributed configuration & service discovery

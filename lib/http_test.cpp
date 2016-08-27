@@ -9,27 +9,6 @@
 #include <fstream>
 #include <assert.h>
 
-//----------------------------HTTP Callbacks----------------------------------//
-
-//A String to store response data
-std::string writedata;
-
-//This is the callback that gets called when we recieve the response to the
-//Get Curl Request
-size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up)
-{
-
-  logging->debug("Callback Triggered");
-
-//Put the response into a string
-for (int c = 0; c<size*nmemb; c++)
-{
-	writedata.push_back(buf[c]);
-}
-
-return size*nmemb;
-}
-
 //-----------------------------MAIN METHOD------------------------------------//
 
 int main()
@@ -74,14 +53,9 @@ int main()
 
     //-------------------------------GET--------------------------------------//
 
-    //We set up the structure to store the return data
-    writedata.clear();
-
-    ha.bind_get_callback(writeCallback);
-
     //Send the request
-    bool success = ha.get(GETURL, 5);
-    if (!success)
+    std::string get_response = ha.get(GETURL, 5);
+    if (!get_response.empty())
     {
       //We now have the full response
       assert(false);
@@ -94,30 +68,15 @@ int main()
 
     //-------------------------------PUT--------------------------------------//
 
-    success = ha.put(PUTURL, "123", 5);
-    if (!success)
-    {
-      //We now have the full response
-      assert(false);
-    }
+    std::string success = ha.put(PUTURL, "123", 5);
 
     //-------------------------------POST-------------------------------------//
 
     success = ha.post(POSTURL, "CLYMAN", 5);
-    if (!success)
-    {
-      //We now have the full response
-      assert(false);
-    }
 
     //------------------------------DELETE------------------------------------//
 
     success = ha.del(DELETEURL, 5);
-    if (!success)
-    {
-      //We now have the full response
-      assert(false);
-    }
 
     logging->debug("Tests completed");
 

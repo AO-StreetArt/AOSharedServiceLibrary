@@ -1,26 +1,5 @@
 #include "include/consul_admin.h"
 
-//Global writedata instantiation to store HTTP Callbacks
-std::string writedata;
-
-//----------------------------HTTP Callbacks----------------------------------//
-
-//This is the callback that gets called when we recieve the response to the
-//Get Curl Request
-size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up)
-{
-
-  logging->debug("CONSUL: HTTP Query Callback Triggered");
-
-//Put the response into a string
-for (size_t c = 0; c<size*nmemb; c++)
-{
-	writedata.push_back(buf[c]);
-}
-
-return size*nmemb;
-}
-
 //------------------------Consul Administrator--------------------------------//
 
 //Put together a url query segment with the consul address provided at initialization
@@ -36,29 +15,16 @@ std::string ConsulAdmin::query(std::string query_url)
 {
   logging->info("CONSUL: Firing Query");
   logging->debug(query_url);
-  //Clear the string that will hold the response data.
-  writedata.clear();
   //Get the URL
   std::string url_string = build_url(query_url);
   const char * url_cstr = url_string.c_str();
   char *url = new char[url_string.length() + 1];
   strcpy(url, url_cstr);
 
-  ha->bind_get_callback(writeCallback);
-
   //Send the HTTP Request
-  bool success = ha->get(url, timeout);
+  std::string result = ha->get(url, timeout);
   delete url;
-  if (success)
-  {
-    logging->debug("CONSUL: Query Successful");
-    return writedata;
-  }
-  else
-  {
-    logging->debug("CONSUL: Query Failed");
-    return "";
-  }
+  return result;
 }
 
 //-------------------Service Registry Functions-------------------------------//

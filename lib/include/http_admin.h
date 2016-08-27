@@ -11,6 +11,14 @@
 #include "factory/logging_interface.h"
 #include "factory/http_interface.h"
 
+//HTTP Callbacks
+//A String to store response data
+extern std::string writedata;
+
+//This is the callback that gets called when we recieve the response to the
+//Get Curl Request
+size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
+
 //! The HTTP Requests Administrators
 
 //! This class is in charge of making HTTP Requests
@@ -22,16 +30,13 @@ bool send(char * url, int timeout);
 public:
 
   //! Start a new HTTP Requests Admin
-  HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();}
+  HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);}
 
   //! Shutdown the admin
   void shutdown() {curl_global_cleanup();}
 
   ~HttpAdmin() {shutdown();}
-
-  //! Bind Callback
-  void bind_get_callback(WriteCallback);
-
+  
   //! Return the instance to bind callbacks against.  Not advised
   CURL* get_instance() {return curl;}
 
@@ -41,25 +46,25 @@ public:
 
   //! Put to the given URL the supplied data
   //! with the specified timeout
-  bool put(char * url, char * data, int timeout);
+  std::string put(char * url, char * data, int timeout);
 
   //! Get
 
   //! Get from the given URL
   //! with the specified timeout
-  bool get(char * url, int timeout);
+  std::string get(char * url, int timeout);
 
   //! Post
 
   //! Post to the given URL the supplied data
   //! with the specified timeout
-  bool post(char * url, char * data, int timeout);
+  std::string post(char * url, char * data, int timeout);
 
   //! Delete
 
   //! Delete from the given URL
   //! with the specified timeout
-  bool del(char * url, int timeout);
+  std::string del(char * url, int timeout);
 };
 
 #endif
