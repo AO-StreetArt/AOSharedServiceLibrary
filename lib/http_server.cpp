@@ -98,7 +98,7 @@ void process_request(struct evhttp_request *req, void *arg){
     //Send a failure response
     else
     {
-      evhttp_send_reply(req, err->err_code.c_str(), err->err_message, buf);
+      evhttp_send_reply(req, err->err_code, err->err_message.c_str(), buf);
     }
   }
 
