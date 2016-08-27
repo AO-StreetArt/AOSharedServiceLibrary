@@ -12,40 +12,37 @@
 
 std::string process_request(struct Request *req)
 {
+	std::string resp = "";
 	if (req->req_err->err_code == NOERROR)
 	{
 		if (req->req_type == HTTP_GET)
 		{
-			std::string resp = "Get Request";
+			resp = "Get Request";
 			std::cout << resp << std::endl;
-			return resp;
 		}
 		else if (req->req_type == HTTP_PUT)
 		{
-			std::string resp = "Put Request";
+			resp = "Put Request";
 			std::cout << resp << std::endl;
-			return resp;
 		}
 		else if (req->req_type == HTTP_POST)
 		{
-			std::string resp = "Post Request";
+			resp = "Post Request";
 			std::cout << resp << std::endl;
 			std::cout << req->req_data << std::endl;
-			return resp;
 		}
 		else if (req->req_type == HTTP_DELETE)
 		{
-			std::string resp = "Delete Request";
+			resp = "Delete Request";
 			std::cout << resp << std::endl;
-			return resp;
 		}
 		else
 		{
-			std::string resp = "Unknown Request Type";
+			resp = "Unknown Request Type";
 			std::cout << resp << req->req_type << std::endl;
-			return resp;
 		}
 	}
+	return resp;
 }
 
 std::string process_test_request(struct Request *req)
