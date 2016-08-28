@@ -6,14 +6,39 @@
 
 ## Overview
 
-This is a C++ Framework for Constructing Microservices.  It is meant to provide a number of objects designed to make constructing a service easier.  It is meant to be deployed as a static library within different projects.
+Welcome to the AO Shared Service Library.  This is a framework for constructing C++ Microservices.
+This means smaller, more focused programs that perform a single function well and rely on inter-process
+communications.  
 
-Features:
+### Why use AOSSL?
+
+Over the last twenty years, most enterprise scale applications have been built as 'monoliths', a single,
+large piece of software that must be deployed all at once.  This has a host of limitations, such as scalability
+and difficulty of highly-available systems.
+
+Microservices offer a different design, instead relying on many different programs that all communicate
+in order to provide all of the services once provided by the monolithic application.  This lets us
+scale by starting up more instances of programs, and introduces a system with no single point of failure.
+
+The AO Shared Service Library provides frameworks for microservices, ranging from communications protocols to
+useful tools all services need.  This is designed to reduce time-to-market on C++ Services, and is designed
+to be reliable and robust while maintaining high performance standards.
+
+It also provides a plug-and-play architecture, allowing users to pick elements of the framework they would
+like to use and exclude others.  This also promotes extensibility, as careful interface design allows for
+rapid development of new capabilities.
+
+### Features:
+#### Core Frameworks revolving around inter-service messaging protocols
+* HTTP Service Framework
+* ZeroMQ Service Framework
+
+#### Connections to Critical External Tools
 * Couchbase Administrator with cluster support
 * Redis Administrator with cluster support
 * Consul Administrator
-* Inbound & Outbound HTTP Socket managers
-* Inbound & Outbound Request/Response ZeroMQ Socket managers
+
+#### Basic Tools that all good services need
 * Asynchronous Logging Module
 * Universally Unique ID Generator
 * A Command Line Argument Parser
