@@ -81,6 +81,20 @@ void process_request(struct evhttp_request *req, void *arg){
         err->err_message = e.what();
       }
     }
+    else
+    {
+      //Not found, call default callback
+      cb = callback_map["default"];
+      try
+      {
+        resp = (*cb)(r);
+      }
+      catch (std::exception& e)
+      {
+        err->err_code = HTTP_BADREQUEST;
+        err->err_message = e.what();
+      }
+    }
   }
   catch (std::exception& e)
   {

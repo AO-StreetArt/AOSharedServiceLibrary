@@ -79,6 +79,9 @@ Note that a string is returned from the method with the value being sent back to
 
 And we distinguish between the types via the req_type pointer, as above.
 
+We can also bind a default callback, which get's called whenever a bound URI is not found.
+This can be particular useful for allowing access to things like key-value stores
+
 ### ZeroMQ Sockets
 
 ZeroMQ is a permanent-connection alternative that provides high-speed, distributed messaging.
