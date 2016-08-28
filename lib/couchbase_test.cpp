@@ -7,6 +7,7 @@
 #include "include/factory/logging_interface.h"
 #include "include/logging.h"
 #include "include/factory/writeable.h"
+#include "include/factory/callbacks.h"
 
 //Test Data Class with to_json method
 class TestData: public Writeable
@@ -38,7 +39,7 @@ public:
 };
 
 //Couchbase Callbacks
-std::string my_storage_callback (Request *req)
+std::string my_storage_callback (Request *r)
 {
   if (r->err->err_code == NOERROR)
   {
@@ -51,7 +52,7 @@ std::string my_storage_callback (Request *req)
   }
 }
 
-std::string my_retrieval_callback (Request *req)
+std::string my_retrieval_callback (Request *r)
 {
   if (r->err->err_code == NOERROR)
   {
@@ -65,7 +66,7 @@ std::string my_retrieval_callback (Request *req)
   }
 }
 
-std::string my_delete_callback (Request *req)
+std::string my_delete_callback (Request *r)
 {
   if (r->err->err_code == NOERROR)
   {
