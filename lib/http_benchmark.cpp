@@ -34,8 +34,8 @@ BENCHMARK(HTTP, Get, 10, 100)
   write_data.clear();
 
   //Send the request
-  std::string success = http->get(GETURL, 5);
-  if (!success.empty())
+  bool success = http->get(GETURL, 5);
+  if (!success)
   {
     //We now have the full response
     logging->error("Get Request Failed");
@@ -55,7 +55,7 @@ BENCHMARK(HTTP, Put, 10, 100)
   write_data.clear();
 
   //Send the request
-  std::string success = http->put(PUTURL, "123", 5);
+  bool success = http->put(PUTURL, "123", 5);
 
 }
 
@@ -66,7 +66,7 @@ BENCHMARK(HTTP, Post, 10, 100)
   write_data.clear();
 
   //Send the request
-  std::string success = http->post(POSTURL, "CLYMAN", 5);
+  bool success = http->post(POSTURL, "CLYMAN", 5);
 
 }
 
@@ -77,7 +77,7 @@ BENCHMARK(HTTP, Delete, 10, 100)
   write_data.clear();
 
   //Send the request
-  bool std::string = http->del(DELETEURL, 5);
+  bool success = http->del(DELETEURL, 5);
 
 }
 
