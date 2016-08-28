@@ -1,9 +1,9 @@
 //This is the Couchbase DB Admin
 //This implements the DB Admin interface
 
-//However, it also requires you to implement
-//Additional callback functions unique to
-//the couchbase engine, which are called upon
+//It requires you to implement
+//Additional callback functions using the
+//universal callbacks, which are called upon
 //completion of the asynchronous threads
 
 #include "factory/db_admin.h"
@@ -28,15 +28,6 @@ extern "C"
 
 #ifndef COUCHBASE_ADMIN
 #define COUCHBASE_ADMIN
-
-//! Define the storage callback that will get passed to Couchbase
-//typedef void (*StorageCallback)(lcb_t, const void*, lcb_storage_t, lcb_error_t, const lcb_store_resp_t*);
-
-//! Define the get callback that will get passed to Couchbase
-//typedef void (*GetCallback)(lcb_t, const void*, lcb_error_t, const lcb_get_resp_t*);
-
-//! Define the delete callback that will get passed to Couchbase
-//typedef void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_resp_t*);
 
 extern CallbackInterface storage;
 extern CallbackInterface retrieval;
@@ -65,7 +56,7 @@ static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t o
 
 	//Call the registered callback function
 	std::string rresp = (*storage)(r);
-
+	delete r;
 }
 
 static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
@@ -93,6 +84,7 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
 
 	//Call the registered callback function
 	std::string rresp = (*retrieval)(r);
+	delete r;
 }
 
 static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp)
@@ -116,6 +108,7 @@ static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, co
 
 	//Call the registered callback function
 	std::string rresp = (*deletion)(r);
+	delete r;
 }
 
 //! The Couchbase Administrator handles interactions with the Couchbase DB
