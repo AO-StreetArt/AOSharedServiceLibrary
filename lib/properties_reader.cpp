@@ -15,7 +15,6 @@ PropertiesReader::PropertiesReader(std::string file_path) {
         //Read a line from the property file
 
         //Figure out if we have a blank or comment line
-        bool keep_going = true;
         if (line.length() > 0) {
           if (line[0] != '/' || line[1] != '/') {
             int eq_pos = line.find("=", 0);
@@ -28,12 +27,6 @@ PropertiesReader::PropertiesReader(std::string file_path) {
       file.close();
     }
   }
-  else
-  {
-    logging->error("CONFIGURE: Configuration File not found");
-    return false;
-  }
-return true;
 }
 
   //Does a key exist?
