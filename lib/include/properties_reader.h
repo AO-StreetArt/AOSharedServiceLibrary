@@ -2,6 +2,10 @@
 #include <string>
 #include <iterator>
 
+#include <sys/stat.h>
+#include <sstream>
+#include <fstream>
+
 #include "factory/properties_reader_interface.h"
 
 #ifndef PROPS_READER
