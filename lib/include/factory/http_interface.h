@@ -21,31 +21,34 @@ public:
 
   virtual ~HttpInterface() {}
 
+  //! Bind Callback
+  virtual void bind_get_callback(WriteCallback) = 0;
+
   //HTTP Methods
 
   //! Put
 
   //! Put to the given URL the supplied data
   //! with the specified timeout
-  virtual std::string put(char * url, char * data, int timeout) = 0;
+  virtual bool put(char * url, char * data, int timeout) = 0;
 
   //! Get
 
   //! Get from the given URL
   //! with the specified timeout
-  virtual std::string get(char * url, int timeout) = 0;
+  virtual bool get(char * url, int timeout) = 0;
 
   //! Post
 
   //! Post to the given URL the supplied data
   //! with the specified timeout
-  virtual std::string post(char * url, char * data, int timeout) = 0;
+  virtual bool post(char * url, char * data, int timeout) = 0;
 
   //! Delete
 
   //! Delete from the given URL
   //! with the specified timeout
-  virtual std::string del(char * url, int timeout) = 0;
+  virtual bool del(char * url, int timeout) = 0;
 };
 
 #endif

@@ -1,5 +1,26 @@
 #include "include/consul_admin.h"
 
+//Global writedata instantiation to store HTTP Callbacks
+std::string writedata;
+
+//----------------------------HTTP Callbacks----------------------------------//
+
+//This is the callback that gets called when we recieve the response to the
+//Get Curl Request
+size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up)
+{
+
+  logging->debug("CONSUL: HTTP Query Callback Triggered");
+
+//Put the response into a string
+for (size_t c = 0; c<size*nmemb; c++)
+{
+	writedata.push_back(buf[c]);
+}
+
+return size*nmemb;
+}
+
 //------------------------Consul Administrator--------------------------------//
 
 //Put together a url query segment with the consul address provided at initialization
@@ -15,16 +36,29 @@ std::string ConsulAdmin::query(std::string query_url)
 {
   logging->info("CONSUL: Firing Query");
   logging->debug(query_url);
+  //Clear the string that will hold the response data.
+  writedata.clear();
   //Get the URL
   std::string url_string = build_url(query_url);
   const char * url_cstr = url_string.c_str();
   char *url = new char[url_string.length() + 1];
   strcpy(url, url_cstr);
 
+  ha->bind_get_callback(writeCallback);
+
   //Send the HTTP Request
-  std::string result = ha->get(url, timeout);
+  bool success = ha->get(url, timeout);
   delete url;
-  return result;
+  if (success)
+  {
+    logging->debug("CONSUL: Query Successful");
+    return writedata;
+  }
+  else
+  {
+    logging->debug("CONSUL: Query Failed");
+    return "";
+  }
 }
 
 //-------------------Service Registry Functions-------------------------------//
@@ -45,19 +79,18 @@ bool ConsulAdmin::register_service(ServiceInterface& s)
   strcpy(body, body_cstr);
 
   //Send the HTTP Request
-  std::string success = ha->put(url, body, timeout);
+  bool success = ha->put(url, body, timeout);
   delete body;
   delete url;
-  if (!success.empty())
+  if (success)
   {
     logging->debug("CONSUL: Registration Successful");
-    return true;
   }
   else
   {
     logging->debug("CONSUL: Registration Unsuccessful");
-    return false;
   }
+  return success;
 }
 
 bool ConsulAdmin::deregister_service(ServiceInterface& s)
@@ -75,19 +108,18 @@ bool ConsulAdmin::deregister_service(ServiceInterface& s)
   const char * empty_cstr = empty_str.c_str();
   char *empty_arr = new char[empty_str.length() + 1];
   strcpy(empty_arr, empty_cstr);
-  std::string success = ha->put(url, empty_arr, timeout);
+  bool success = ha->put(url, empty_arr, timeout);
   delete empty_arr;
   delete url;
-  if (!success.empty())
+  if (success)
   {
     logging->debug("CONSUL: Deregistration Successful");
-    return true;
   }
   else
   {
     logging->debug("CONSUL: Deregistration Unsuccessful");
-    return false;
   }
+  return success;
 }
 
 //----------------------------Basic Queries-----------------------------------//
@@ -133,19 +165,18 @@ bool ConsulAdmin::set_config_value(std::string key, std::string val)
   strcpy(body, body_cstr);
 
   //Send the HTTP Request
-  std::string success = ha->put(url, body, timeout);
+  bool success = ha->put(url, body, timeout);
   delete body;
   delete url;
-  if (!success.empty())
+  if (success)
   {
     logging->debug("CONSUL: Config Value Set Successful");
-    return true;
   }
   else
   {
     logging->debug("CONSUL: Config Value Set Unsuccessful");
-    return false;
   }
+  return success;
 }
 
 std::string ConsulAdmin::get_config_value(std::string key)
@@ -167,18 +198,17 @@ bool ConsulAdmin::del_config_value(std::string key)
   strcpy(url, url_cstr);
 
   //Send the HTTP Request
-  std::string success = ha->del(url, timeout);
+  bool success = ha->del(url, timeout);
   delete url;
-  if (!success.empty())
+  if (success)
   {
     logging->debug("CONSUL: Config Value Delete Successful");
-    return true;
   }
   else
   {
     logging->debug("CONSUL: Config Value Delete Unsuccessful");
-    return false;
   }
+  return success;
 }
 
 std::string ConsulAdmin::datacenters()
