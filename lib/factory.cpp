@@ -125,7 +125,7 @@ HttpServerInterface* ServiceComponentFactory::get_http_server_interface(std::str
 }
 
 //! Get a Properties File Interface Instance
-PropertiesReaderInterface* get_properties_reader_interface(std::string filename)
+PropertiesReaderInterface* ServiceComponentFactory::get_properties_reader_interface(std::string filename)
 {
   return new PropertiesReader(filename);
 }

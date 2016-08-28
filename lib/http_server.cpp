@@ -146,7 +146,7 @@ HttpServer::~HttpServer()
   // if (base != NULL) delete base;
 }
 
-bool bind_default_callback(CallbackInterface func)
+bool HttpServer::bind_default_callback(CallbackInterface func)
 {
   //Add the Callback to the function pointer map
   callback_map.emplace("default", func);
