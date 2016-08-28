@@ -86,7 +86,7 @@ public:
   Zmqio* get_zmq_inbound_interface( std::string conn_str );
 
   //! Get an HTTP Server Interface Instance
-  HttpServerInterface* get_http_server_interface();
+  HttpServerInterface* get_http_server_interface(std::string base_addr, int base_port);
 };
 
 #endif

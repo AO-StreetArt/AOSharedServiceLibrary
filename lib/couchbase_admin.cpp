@@ -1,5 +1,9 @@
 #include "include/couchbase_admin.h"
 
+CallbackInterface storage;
+CallbackInterface retrieval;
+CallbackInterface deletion;
+
 void CouchbaseAdmin::initialize (const char * conn)
 {
 	//Initializing
@@ -27,6 +31,10 @@ void CouchbaseAdmin::initialize (const char * conn)
         if ( (err = lcb_get_bootstrap_status(private_instance)) != LCB_SUCCESS ) {
                 logging->error("CB_Admin:DB: Couldn't bootstrap!");
         }
+
+    lcb_set_remove_callback(private_instance, del_callback);
+    lcb_set_store_callback(private_instance, storage_callback);
+    lcb_set_get_callback(private_instance, get_callback);
 }
 
 CouchbaseAdmin::CouchbaseAdmin( const char * conn )
@@ -121,21 +129,21 @@ void CouchbaseAdmin::delete_object ( const char * key ) {
 }
 
 //Bind the Get Callback for the couchbase calls
-void CouchbaseAdmin::bind_get_callback(GetCallback gc)
+void CouchbaseAdmin::bind_get_callback(CallbackInterface gc)
 {
-lcb_set_get_callback(private_instance, gc);
+  retrieval = gc;
 }
 
 //Bind the Storage Callback for the couchbase calls
-void CouchbaseAdmin::bind_storage_callback(StorageCallback sc)
+void CouchbaseAdmin::bind_storage_callback(CallbackInterface sc)
 {
-lcb_set_store_callback(private_instance, sc);
+  storage = sc;
 }
 
 //Bind the Delete Callback for the couchbase calls
-void CouchbaseAdmin::bind_delete_callback(DelCallback dc)
+void CouchbaseAdmin::bind_delete_callback(CallbackInterface dc)
 {
-lcb_set_remove_callback(private_instance, dc);
+  deletion = dc;
 }
 
 lcb_t CouchbaseAdmin::get_instance ()
