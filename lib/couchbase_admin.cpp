@@ -10,23 +10,23 @@ static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t o
 {
 	//Build the request
 	Request *r = new Request();
-  RequestError *err = r->req_err;
+  RequestError *rerr = r->req_err;
 
 	//Get the Key
 	std::string key ((char*)resp->v.v0.key), (int)resp->v.v0.nkey);
 	r->req_addr = key;
 
 	//Retrieve any errors
-  if (err == LCB_SUCCESS) {
-		err->err_code = NOERROR;
+  if (err != LCB_SUCCESS) {
+    rerr->err_code = COUCHBASE_BADREQUEST;
+		rerr->err_message = lcb_strerror(instance, err);
   }
   else {
-		err->err_code = COUCHBASE_BADREQUEST;
-		err->err_message = lcb_strerror(instance, err);
+    rerr->err_code = NOERROR;
   }
 
 	//Call the registered callback function
-	std::string resp = (*storage)(r);
+	std::string rresp = (*storage)(r);
 
 }
 
@@ -35,49 +35,49 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
 {
 	//Build the request
 	Request *r = new Request();
-  RequestError *err = r->req_err;
+  RequestError *rerr = r->req_err;
 
 	//Get the Key
 	std::string key ((char*)resp->v.v0.key), (int)resp->v.v0.nkey);
 	r->req_addr = key;
 
 	//Get the retrieved value
-	std::string val ((int)resp->v.v0.nbytes, (char*)resp->v.v0.bytes);
+	std::string val ((char*)resp->v.v0.bytes, (int)resp->v.v0.nbytes);
 
 	//Retrieve any errors
-  if (err == LCB_SUCCESS) {
-		err->err_code = NOERROR;
+  if (err != LCB_SUCCESS) {
+    rerr->err_code = COUCHBASE_BADREQUEST;
+		rerr->err_message = lcb_strerror(instance, err);
   }
   else {
-		err->err_code = COUCHBASE_BADREQUEST;
-		err->err_message = lcb_strerror(instance, err);
+    rerr->err_code = NOERROR;
   }
 
 	//Call the registered callback function
-	std::string resp = (*retrieval)(r);
+	std::string rresp = (*retrieval)(r);
 }
 
 static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp)
 {
 	//Build the request
 	Request *r = new Request();
-  RequestError *err = r->req_err;
+  RequestError *rerr = r->req_err;
 
 	//Get the Key
 	std::string key ((char*)resp->v.v0.key), (int)resp->v.v0.nkey);
 	r->req_addr = key;
 
 	//Retrieve any errors
-  if (err == LCB_SUCCESS) {
-		err->err_code = NOERROR;
+  if (err != LCB_SUCCESS) {
+    rerr->err_code = COUCHBASE_BADREQUEST;
+		rerr->err_message = lcb_strerror(instance, err);
   }
   else {
-		err->err_code = COUCHBASE_BADREQUEST;
-		err->err_message = lcb_strerror(instance, err);
+		rerr->err_code = NOERROR;
   }
 
 	//Call the registered callback function
-	std::string resp = (*deletion)(r);
+	std::string rresp = (*deletion)(r);
 }
 
 void CouchbaseAdmin::initialize (const char * conn)
