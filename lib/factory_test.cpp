@@ -62,6 +62,9 @@ Zmqio *zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
 //! Get an HTTP Server Interface instance
 HttpServerInterface *http = factory.get_http_server_interface("0.0.0.0", 12345);
 
+//! Get a Properties File Reader Instance
+PropertiesReaderInterface *props = factory.get_properties_reader_interface("test/test.properties");
+
 //Run our tests
 
 //Command Line Tests
@@ -70,6 +73,8 @@ if ( cli->opt_exist("name") ) {
   std::cout << cli->get_opt("name") << std::endl;
 }
 
+delete props;
+delete http;
 delete cli;
 delete uuid;
 delete ha;
@@ -80,7 +85,6 @@ delete ra;
 delete zmqo;
 delete zmqi;
 delete logging;
-delete http;
 
 return 0;
 }

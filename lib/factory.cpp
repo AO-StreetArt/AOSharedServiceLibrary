@@ -123,3 +123,9 @@ HttpServerInterface* ServiceComponentFactory::get_http_server_interface(std::str
 {
   return new HttpServer(base_addr, base_port);
 }
+
+//! Get a Properties File Interface Instance
+PropertiesReaderInterface* get_properties_reader_interface(std::string filename)
+{
+  return new PropertiesReader(filename);
+}

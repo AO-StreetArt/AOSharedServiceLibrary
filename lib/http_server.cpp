@@ -3,6 +3,7 @@
 std::unordered_map<std::string, CallbackInterface> callback_map;
 
 //Process a request
+//TO-DO: Call the default callback when a uri isn't found
 void process_request(struct evhttp_request *req, void *arg){
 
   //Form a Request object from the evhttp request data, and call the appropriate callback
@@ -129,6 +130,13 @@ HttpServer::HttpServer(std::string base_addr, int base_port)
 HttpServer::~HttpServer()
 {
   // if (base != NULL) delete base;
+}
+
+bool bind_default_callback(CallbackInterface func)
+{
+  //Add the Callback to the function pointer map
+  callback_map.emplace("default", func);
+  return true;
 }
 
 bool HttpServer::bind_callback(std::string uri, CallbackInterface func)

@@ -11,6 +11,7 @@ class HttpServerInterface
 {
 public:
   virtual bool bind_callback(std::string uri, CallbackInterface func) = 0;
+  virtual bool bind_default_callback(CallbackInterface func) = 0;
   virtual void recv() = 0;
   virtual ~HttpServerInterface() {}
 };

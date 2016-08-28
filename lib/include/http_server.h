@@ -24,6 +24,7 @@ public:
   HttpServer(std::string base_addr, int base_port);
   ~HttpServer();
   bool bind_callback(std::string uri, CallbackInterface func);
+  bool bind_default_callback(CallbackInterface func);
   void recv();
 };
 
