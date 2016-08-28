@@ -41,20 +41,21 @@ public:
 //Couchbase Callbacks
 std::string my_storage_callback (Request *r)
 {
-  if (r->err->err_code == NOERROR)
+  if (r->req_err->err_code == NOERROR)
   {
     std::cout << "stored: " << r->req_addr << std::endl;
   }
   else
   {
     std::cout << "Failed to Store: " << r->req_addr << std::endl;
-    std::cout << r->err->err_message << std::endl;
+    std::cout << r->req_err->err_message << std::endl;
   }
+  return r->req_addr;
 }
 
 std::string my_retrieval_callback (Request *r)
 {
-  if (r->err->err_code == NOERROR)
+  if (r->req_err->err_code == NOERROR)
   {
     std::cout << "retrieved: " << r->req_addr << std::endl;
     std::cout << "value: " << r->req_data << std::endl;
@@ -62,21 +63,23 @@ std::string my_retrieval_callback (Request *r)
   else
   {
     std::cout << "Failed to Store: " << r->req_addr << std::endl;
-    std::cout << r->err->err_message << std::endl;
+    std::cout << r->req_err->err_message << std::endl;
   }
+  return r->req_addr;
 }
 
 std::string my_delete_callback (Request *r)
 {
-  if (r->err->err_code == NOERROR)
+  if (r->req_err->err_code == NOERROR)
   {
     std::cout << "removed: " << r->req_addr << std::endl;
   }
   else
   {
     std::cout << "Failed to Delete: " << r->req_addr << std::endl;
-    std::cout << r->err->err_message << std::endl;
+    std::cout << r->req_err->err_message << std::endl;
   }
+  return r->req_addr;
 }
 
 int main ()
