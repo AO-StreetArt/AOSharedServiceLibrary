@@ -11,6 +11,26 @@
 #include "include/factory/http_interface.h"
 #include "include/factory.h"
 
+//----------------------------HTTP Callbacks----------------------------------//
+
+//A String to store response data
+std::string write_data;
+
+//This is the callback that gets called when we recieve the response to the
+//Get Curl Request
+size_t write_Callback(char * buf, size_t size, size_t nmemb, void* up)
+{
+
+  logging->debug("Callback Triggered");
+
+//Put the response into a string
+for (int c = 0; c<size*nmemb; c++)
+{
+	write_data.push_back(buf[c]);
+}
+
+return size*nmemb;
+}
 
 //----------------------------------------------------------------------------//
 //--------------------------------Globals-------------------------------------//
@@ -56,6 +76,16 @@ BENCHMARK(HTTP, Put, 10, 100)
 
   //Send the request
   bool success = http->put(PUTURL, "123", 5);
+  if (!success)
+  {
+    //We now have the full response
+    logging->error("Put Request Failed");
+  }
+  else
+  {
+    logging->debug("Retrieved:");
+    logging->debug(write_data);
+  }
 
 }
 
@@ -67,6 +97,16 @@ BENCHMARK(HTTP, Post, 10, 100)
 
   //Send the request
   bool success = http->post(POSTURL, "CLYMAN", 5);
+  if (!success)
+  {
+    //We now have the full response
+    logging->error("Get Request Failed");
+  }
+  else
+  {
+    logging->debug("Retrieved:");
+    logging->debug(write_data);
+  }
 
 }
 
@@ -78,6 +118,16 @@ BENCHMARK(HTTP, Delete, 10, 100)
 
   //Send the request
   bool success = http->del(DELETEURL, 5);
+  if (!success)
+  {
+    //We now have the full response
+    logging->error("Get Request Failed");
+  }
+  else
+  {
+    logging->debug("Retrieved:");
+    logging->debug(write_data);
+  }
 
 }
 
@@ -118,6 +168,11 @@ logging->info("Internal Logging Intialized");
 http = factory.get_http_interface();
 //uuid = new uuidAdmin;
 logging->info("HTTP Outbound Interface Created");
+
+//We set up the structure to store the return data
+write_data.clear();
+
+http->bind_get_callback(write_Callback);
 
 //------------------------------Run Tests-------------------------------------//
 //----------------------------------------------------------------------------//
