@@ -1,4 +1,4 @@
-#include "include/cli.h"
+#include "include/properties_reader.h"
 
 //Constructor
 PropertiesReader::PropertiesReader(std::string file_path) {
@@ -44,8 +44,5 @@ bool PropertiesReader::opt_exist( std::string key )
   {
     return true;
   }
-  else
-  {
-    return false;
-  }
+  return false;
 }
