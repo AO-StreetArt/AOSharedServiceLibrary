@@ -23,6 +23,7 @@ const int DB_DELETE = 22;
 
 //Constants defining error codes
 const int NOERROR = 0;
+const int COUCHBASE_BADREQUEST = 801;
 
 //! A struct that gets passed to callbacks to transmit errors
 struct RequestError

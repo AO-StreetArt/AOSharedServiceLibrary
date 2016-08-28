@@ -29,10 +29,25 @@ extern "C"
 #ifndef COUCHBASE_ADMIN
 #define COUCHBASE_ADMIN
 
-//Define the callbacks that will get passed to Couchbase
-typedef void (*StorageCallback)(lcb_t, const void*, lcb_storage_t, lcb_error_t, const lcb_store_resp_t*);
-typedef void (*GetCallback)(lcb_t, const void*, lcb_error_t, const lcb_get_resp_t*);
-typedef void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_resp_t*);
+//! Define the storage callback that will get passed to Couchbase
+//typedef void (*StorageCallback)(lcb_t, const void*, lcb_storage_t, lcb_error_t, const lcb_store_resp_t*);
+
+//! Define the get callback that will get passed to Couchbase
+//typedef void (*GetCallback)(lcb_t, const void*, lcb_error_t, const lcb_get_resp_t*);
+
+//! Define the delete callback that will get passed to Couchbase
+//typedef void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_resp_t*);
+
+extern CallbackInterface storage;
+extern CallbackInterface retrieval;
+extern CallbackInterface deletion;
+
+//Transfer the callback information into a Request and call the registered callback
+static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t op, lcb_error_t err, const lcb_store_resp_t *resp);
+
+static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_get_resp_t *resp);
+
+static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp);
 
 //! The Couchbase Administrator handles interactions with the Couchbase DB
 
@@ -86,19 +101,19 @@ public:
 
 	//! When the requested object is loaded, the method bound with
 	//! bind_get_callback will be executed
-	void bind_get_callback(GetCallback);
+	void bind_get_callback(CallbackInterface);
 
 	//! Bind the Storage Callback
 
 	//! When the requested object is saved or created, the method bound with
 	//! bind_storage_callback will be executed
-	void bind_storage_callback(StorageCallback);
+	void bind_storage_callback(CallbackInterface);
 
 	//! Bind the Removal Callback
 
 	//! When the requested object is deleted, the method bound with
 	//! bind_delete_callback will be executed
-	void bind_delete_callback(DelCallback);
+	void bind_delete_callback(CallbackInterface);
 
 	//! Get the instance, for advanced operations if necessary.  Not advised
 	lcb_t get_instance ();

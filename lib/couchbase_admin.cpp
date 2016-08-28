@@ -1,5 +1,85 @@
 #include "include/couchbase_admin.h"
 
+CallbackInterface storage;
+CallbackInterface retrieval;
+CallbackInterface deletion;
+
+//Transfer the callback information into a Request and call the registered callback
+static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t op,
+   lcb_error_t err, const lcb_store_resp_t *resp)
+{
+	//Build the request
+	Request *r = new Request();
+  RequestError *err = r->req_err;
+
+	//Get the Key
+	std::string key ((char*)resp->v.v0.key), (int)resp->v.v0.nkey);
+	r->req_addr = key;
+
+	//Retrieve any errors
+  if (err == LCB_SUCCESS) {
+		err->err_code = NOERROR;
+  }
+  else {
+		err->err_code = COUCHBASE_BADREQUEST;
+		err->err_message = lcb_strerror(instance, err);
+  }
+
+	//Call the registered callback function
+	std::string resp = (*storage)(r);
+
+}
+
+static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
+   const lcb_get_resp_t *resp)
+{
+	//Build the request
+	Request *r = new Request();
+  RequestError *err = r->req_err;
+
+	//Get the Key
+	std::string key ((char*)resp->v.v0.key), (int)resp->v.v0.nkey);
+	r->req_addr = key;
+
+	//Get the retrieved value
+	std::string val ((int)resp->v.v0.nbytes, (char*)resp->v.v0.bytes);
+
+	//Retrieve any errors
+  if (err == LCB_SUCCESS) {
+		err->err_code = NOERROR;
+  }
+  else {
+		err->err_code = COUCHBASE_BADREQUEST;
+		err->err_message = lcb_strerror(instance, err);
+  }
+
+	//Call the registered callback function
+	std::string resp = (*retrieval)(r);
+}
+
+static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp)
+{
+	//Build the request
+	Request *r = new Request();
+  RequestError *err = r->req_err;
+
+	//Get the Key
+	std::string key ((char*)resp->v.v0.key), (int)resp->v.v0.nkey);
+	r->req_addr = key;
+
+	//Retrieve any errors
+  if (err == LCB_SUCCESS) {
+		err->err_code = NOERROR;
+  }
+  else {
+		err->err_code = COUCHBASE_BADREQUEST;
+		err->err_message = lcb_strerror(instance, err);
+  }
+
+	//Call the registered callback function
+	std::string resp = (*deletion)(r);
+}
+
 void CouchbaseAdmin::initialize (const char * conn)
 {
 	//Initializing
@@ -27,6 +107,10 @@ void CouchbaseAdmin::initialize (const char * conn)
         if ( (err = lcb_get_bootstrap_status(private_instance)) != LCB_SUCCESS ) {
                 logging->error("CB_Admin:DB: Couldn't bootstrap!");
         }
+
+    lcb_set_remove_callback(private_instance, del_callback);
+    lcb_set_store_callback(private_instance, storage_callback);
+    lcb_set_get_callback(private_instance, get_callback);
 }
 
 CouchbaseAdmin::CouchbaseAdmin( const char * conn )
@@ -121,21 +205,21 @@ void CouchbaseAdmin::delete_object ( const char * key ) {
 }
 
 //Bind the Get Callback for the couchbase calls
-void CouchbaseAdmin::bind_get_callback(GetCallback gc)
+void CouchbaseAdmin::bind_get_callback(CallbackInterface gc)
 {
-lcb_set_get_callback(private_instance, gc);
+  retrieval = gc;
 }
 
 //Bind the Storage Callback for the couchbase calls
-void CouchbaseAdmin::bind_storage_callback(StorageCallback sc)
+void CouchbaseAdmin::bind_storage_callback(CallbackInterface sc)
 {
-lcb_set_store_callback(private_instance, sc);
+  storage = sc;
 }
 
 //Bind the Delete Callback for the couchbase calls
-void CouchbaseAdmin::bind_delete_callback(DelCallback dc)
+void CouchbaseAdmin::bind_delete_callback(CallbackInterface dc)
 {
-lcb_set_remove_callback(private_instance, dc);
+  deletion = dc;
 }
 
 lcb_t CouchbaseAdmin::get_instance ()

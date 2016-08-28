@@ -103,6 +103,8 @@ void process_request(struct evhttp_request *req, void *arg){
     }
   }
 
+  delete r;
+
 }
 
 //HTTP Server Methods
