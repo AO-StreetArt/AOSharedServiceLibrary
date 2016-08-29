@@ -35,6 +35,8 @@ std::string build_url(std::string request_url_segment);
 std::string query(std::string query_url);
 public:
 
+  std::string base64_decode(std::string const& encoded_string);
+
   //! Construct a consul admin, passing in the connection string
   ConsulAdmin(std::string caddr) {ha = new HttpAdmin; consul_addr = caddr;timeout=5;}
 
