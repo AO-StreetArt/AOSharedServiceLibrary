@@ -67,11 +67,19 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
   RequestError *rerr = r->req_err;
 
 	//Get the Key
-	std::string key ((char*)resp->v.v0.key);
-	r->req_addr = key;
+	char *key_data = (char*)resp->v.v0.key;
+	if (key_data)
+	{
+		std::string key (key_data);
+		r->req_addr = key;
+	}
 
 	//Get the retrieved value
-	std::string val ((char*)resp->v.v0.bytes);
+	char *data = (char*)resp->v.v0.bytes;
+	if (data)
+	{
+		std::string val (data);
+	}
 
 	//Retrieve any errors
   if (err != LCB_SUCCESS) {

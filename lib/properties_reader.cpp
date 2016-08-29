@@ -17,7 +17,7 @@ PropertiesReader::PropertiesReader(std::string file_path) {
 
         //Figure out if we have a blank or comment line
         if (line.length() > 0) {
-          if (line[0] != '/' || line[1] != '/') {
+          if (!(line[0] == '/' && line[1] == '/')) {
             std::size_t eq_pos = line.find("=", 0);
             if (eq_pos != std::string::npos) {
               std::string var_name = line.substr(0, eq_pos);
