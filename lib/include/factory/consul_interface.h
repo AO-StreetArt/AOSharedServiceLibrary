@@ -24,13 +24,6 @@ class ServiceInterface
 {
 public:
 
-  //! Convinience Method for base64 decoding
-
-  //! This is needed as all configuration values are returned
-  //! from Consul in base64, and need to be decoded after the json
-  //! is parsed.
-  virtual std::string base64_decode(std::string const& encoded_string) = 0;
-
   virtual ~ServiceInterface() {}
   //! Convert the Service into a JSON Message
 
@@ -87,6 +80,13 @@ public:
 class ConsulInterface
 {
 public:
+
+  //! Convinience Method for base64 decoding
+
+  //! This is needed as all configuration values are returned
+  //! from Consul in base64, and need to be decoded after the json
+  //! is parsed.
+  virtual std::string base64_decode(std::string const& encoded_string) = 0;
 
   virtual ~ConsulInterface() {}
 
