@@ -33,6 +33,9 @@ std::string consul_addr;
 int timeout;
 std::string build_url(std::string request_url_segment);
 std::string query(std::string query_url);
+static bool is_base64(unsigned char c) {
+  return (isalnum(c) || (c == '+') || (c == '/'));
+}
 public:
 
   std::string base64_decode(std::string const& encoded_string);
