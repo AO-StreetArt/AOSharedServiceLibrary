@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 
 #include "factory/properties_reader_interface.h"
 
