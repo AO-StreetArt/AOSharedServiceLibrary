@@ -15,6 +15,7 @@ class PropertiesReader: public PropertiesReaderInterface
 {
 //An unordered map of options from the command line
 std::unordered_map<std::string, std::string> opts;
+std::unordered_map<std::string, std::vector<std::string>> opt_lists;
 std::string name;
 public:
 
@@ -31,6 +32,12 @@ public:
 
   //! Get an option by key
   std::string get_opt( std::string key ) {return opts[key];}
+
+  //! Check if a parameter list exists
+  bool list_exist( std::string key );
+
+  //! Get a parameter list
+  std::vector<std::string> get_list( std::string key ) {return opt_lists[key];}
 
 };
 
