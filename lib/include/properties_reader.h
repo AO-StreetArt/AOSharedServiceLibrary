@@ -39,6 +39,9 @@ public:
   //! Get a parameter list
   std::vector<std::string> get_list( std::string key ) {return opt_lists[key];}
 
+  //Get the option list
+  std::unordered_map<std::string, std::string> get_opts() {return opts;}
+
 };
 
 #endif

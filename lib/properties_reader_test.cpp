@@ -24,5 +24,22 @@ else
   assert(false);
 }
 
+std::unordered_map<std::string, std::string> map = reader.get_opts();
+
+std::vector<std::string> keys;
+keys.reserve(map.size());
+std::vector<std::string> vals;
+vals.reserve(map.size());
+
+for(auto kv : map) {
+    keys.push_back(kv.first);
+    vals.push_back(kv.second);
+}
+
+for (size_t i = 0; i < keys.size(); i++)
+{
+  std::cout << keys[i] << ":" << vals[i] << std::endl;
+}
+
 return 0;
 }
