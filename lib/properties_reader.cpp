@@ -31,7 +31,7 @@ PropertiesReader::PropertiesReader(std::string file_path) {
               std::cout << "list case encountered: " << line << std::endl;
               std::size_t eq_pos = line.find("-", 1);
               if (eq_pos != std::string::npos) {
-                std::string list_name = line.substr(0, eq_pos);
+                std::string list_name = line.substr(1, eq_pos);
                 std::string list_value = line.substr(eq_pos+1, line.length() - eq_pos);
                 if (!list_exist(list_name))
                 {
