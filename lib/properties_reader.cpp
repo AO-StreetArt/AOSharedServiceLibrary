@@ -28,7 +28,6 @@ PropertiesReader::PropertiesReader(std::string file_path) {
             {
               //We have a line that's non-blank and not a comment, as well as not a key-value pair
               //In this case, we assume that we have a list, which uses the syntax -list_name-list_value
-              std::cout << "list case encountered: " << line << std::endl;
               std::size_t eq_pos = line.find("-", 1);
               if (eq_pos != std::string::npos) {
                 std::string list_name = line.substr(1, eq_pos - 1);
@@ -39,7 +38,6 @@ PropertiesReader::PropertiesReader(std::string file_path) {
                   std::vector<std::string> val_list;
                   val_list.push_back(list_value);
                   opt_lists.emplace(list_name, val_list);
-                  std::cout << "New List Created: " << list_name << std::endl;
                 }
                 else
                 {
@@ -48,7 +46,6 @@ PropertiesReader::PropertiesReader(std::string file_path) {
                   val_list = get_list(list_name);
                   val_list.push_back(list_value);
                   opt_lists[list_name] = val_list;
-                  std::cout << "List Updated: " << list_name << std::endl;
                 }
               }
             }
