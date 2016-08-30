@@ -90,9 +90,9 @@ logging = new Logger(initFileName);
 
 //Create an object
 std::string name = "TestObject";
-TestData data (1, 2);
-data.set_key(name);
-const char* obj_key = data.get_key().c_str();
+TestData *obj_ptr = new TestData (1, 2);
+obj_ptr->set_key(name);
+const char* obj_key = obj_ptr->get_key().c_str();
 
 //Build the Couchbase Admin (which will automatically connect to the DB)
 CouchbaseAdmin cb ("couchbase://localhost/default");
@@ -105,7 +105,6 @@ cb.bind_storage_callback(my_storage_callback);
 cb.bind_delete_callback(my_delete_callback);
 printf("Callbacks bound");
 //Write the object to the DB
-TestData *obj_ptr = &data;
 cb.create_object ( obj_ptr );
 cb.wait();
 printf("Create Object Tested");
@@ -114,7 +113,7 @@ cb.load_object ( obj_key );
 cb.wait();
 printf("Load Object Tested");
 //Update the object in the DB
-data.set_i ( 10 );
+obj_ptr->set_i ( 10 );
 cb.save_object ( obj_ptr );
 cb.wait();
 printf("Save Object Tested");
