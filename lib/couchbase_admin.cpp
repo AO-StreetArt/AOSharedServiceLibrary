@@ -9,6 +9,7 @@ void CouchbaseAdmin::initialize (const char * conn)
 	//Initializing
         logging->info("CB_Admin:DB: Couchbase Admin Initializing");
         struct lcb_create_st cropts;
+        memset(&options, 0, sizeof options);
         cropts.version = 3;
         cropts.v.v3.connstr = conn;
 
@@ -20,11 +21,10 @@ void CouchbaseAdmin::initialize (const char * conn)
         //Couchbase Connection Creation
 
         //Create an error and instance
-        lcb_error_t err;
-        lcb_t private_instance;
+        lcb_t private_instance = NULL;
 
         //Schedule Bootstrap Creation
-        err = lcb_create(&private_instance, &cropts);
+        lcb_error_t err = lcb_create(&private_instance, &cropts);
         if (err != LCB_SUCCESS) {
                 logging->error("CB_Admin:DB: Couldn't create instance!");
                 logging->error(lcb_strerror(NULL, err));
