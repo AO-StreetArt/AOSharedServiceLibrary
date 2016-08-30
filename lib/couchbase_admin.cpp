@@ -9,7 +9,7 @@ void CouchbaseAdmin::initialize (const char * conn)
 	//Initializing
         logging->info("CB_Admin:DB: Couchbase Admin Initializing");
         struct lcb_create_st cropts;
-        memset(&options, 0, sizeof options);
+        memset(&cropts, 0, sizeof cropts);
         cropts.version = 3;
         cropts.v.v3.connstr = conn;
 
