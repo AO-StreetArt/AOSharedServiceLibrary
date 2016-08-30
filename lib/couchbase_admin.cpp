@@ -40,7 +40,6 @@ void CouchbaseAdmin::initialize (const char * conn)
   if (err != LCB_SUCCESS) {
       logging->error("CB Admin:DB: Bootstrapping failed");
       logging->error(lcb_strerror(NULL, err));
-      lcb_destroy(private_instance);
   }
 
   lcb_set_remove_callback(private_instance, del_callback);
