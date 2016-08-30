@@ -7,48 +7,45 @@ CallbackInterface deletion;
 void CouchbaseAdmin::initialize (const char * conn)
 {
 	//Initializing
-        logging->info("CB_Admin:DB: Couchbase Admin Initializing");
-        struct lcb_create_st cropts;
-        memset(&cropts, 0, sizeof cropts);
-        cropts.version = 3;
-        cropts.v.v3.connstr = conn;
+  logging->info("CB_Admin:DB: Couchbase Admin Initializing");
+  struct lcb_create_st cropts;
+  memset(&cropts, 0, sizeof cropts);
+  cropts.version = 3;
+  cropts.v.v3.connstr = conn;
 
 	//Add a password if authentication is active
 	if (authentication_active == true) {
 		cropts.v.v3.passwd = password;
 	}
 
-        //Couchbase Connection Creation
+  //Couchbase Connection Creation
 
-        //Create an error and instance
-        lcb_t private_instance = NULL;
+  //Schedule Bootstrap Creation
+  lcb_error_t err = lcb_create(&private_instance, &cropts);
+  if (err != LCB_SUCCESS) {
+          logging->error("CB_Admin:DB: Couldn't create instance!");
+          logging->error(lcb_strerror(NULL, err));
+  }
 
-        //Schedule Bootstrap Creation
-        lcb_error_t err = lcb_create(&private_instance, &cropts);
-        if (err != LCB_SUCCESS) {
-                logging->error("CB_Admin:DB: Couldn't create instance!");
-                logging->error(lcb_strerror(NULL, err));
-        }
+  //Schedule Connection
+  err = lcb_connect(private_instance);
+  if (err != LCB_SUCCESS) {
+          logging->error("CB_Admin:DB: Couldn't schedule connection");
+          logging->error(lcb_strerror(NULL, err));
+  }
 
-        //Schedule Connection
-        err = lcb_connect(private_instance);
-        if (err != LCB_SUCCESS) {
-                logging->error("CB_Admin:DB: Couldn't schedule connection");
-                logging->error(lcb_strerror(NULL, err));
-        }
+  //Yield to IO
+  lcb_wait(private_instance);
+  err = lcb_get_bootstrap_status(private_instance);
+  if (err != LCB_SUCCESS) {
+      logging->error("CB Admin:DB: Bootstrapping failed");
+      logging->error(lcb_strerror(NULL, err));
+      lcb_destroy(private_instance);
+  }
 
-        //Yield to IO
-        lcb_wait(private_instance);
-        err = lcb_get_bootstrap_status(private_instance);
-        if (err != LCB_SUCCESS) {
-            logging->error("CB Admin:DB: Bootstrapping failed");
-            logging->error(lcb_strerror(NULL, err));
-            lcb_destroy(private_instance);
-        }
-
-    lcb_set_remove_callback(private_instance, del_callback);
-    lcb_set_store_callback(private_instance, storage_callback);
-    lcb_set_get_callback(private_instance, get_callback);
+  lcb_set_remove_callback(private_instance, del_callback);
+  lcb_set_store_callback(private_instance, storage_callback);
+  lcb_set_get_callback(private_instance, get_callback);
 }
 
 CouchbaseAdmin::CouchbaseAdmin( const char * conn )
