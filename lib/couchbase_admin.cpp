@@ -17,19 +17,33 @@ void CouchbaseAdmin::initialize (const char * conn)
 		cropts.v.v3.passwd = password;
 	}
 
+        //Couchbase Connection Creation
+
+        //Create an error and instance
         lcb_error_t err;
-        lcb_t instance;
-        private_instance = instance;
+        lcb_t private_instance;
+
+        //Schedule Bootstrap Creation
         err = lcb_create(&private_instance, &cropts);
         if (err != LCB_SUCCESS) {
                 logging->error("CB_Admin:DB: Couldn't create instance!");
+                logging->error(lcb_strerror(NULL, err));
         }
 
-        //Connecting
-        lcb_connect(private_instance);
+        //Schedule Connection
+        err = lcb_connect(private_instance);
+        if ( (err2 != LCB_SUCCESS ) {
+                logging->error("CB_Admin:DB: Couldn't schedule connection");
+                logging->error(lcb_strerror(NULL, err));
+        }
+
+        //Yield to IO
         lcb_wait(private_instance);
-        if ( (err = lcb_get_bootstrap_status(private_instance)) != LCB_SUCCESS ) {
-                logging->error("CB_Admin:DB: Couldn't bootstrap!");
+        err = lcb_get_bootstrap_status(instance);
+        if (rc != LCB_SUCCESS) {
+            logging->error("CB Admin:DB: Bootstrapping failed");
+            logging->error(lcb_strerror(NULL, err));
+            lcb_destroy(instance);
         }
 
     lcb_set_remove_callback(private_instance, del_callback);
