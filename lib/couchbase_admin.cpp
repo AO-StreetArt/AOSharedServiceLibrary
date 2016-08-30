@@ -32,7 +32,7 @@ void CouchbaseAdmin::initialize (const char * conn)
 
         //Schedule Connection
         err = lcb_connect(private_instance);
-        if ( (err2 != LCB_SUCCESS ) {
+        if (err != LCB_SUCCESS) {
                 logging->error("CB_Admin:DB: Couldn't schedule connection");
                 logging->error(lcb_strerror(NULL, err));
         }
@@ -40,7 +40,7 @@ void CouchbaseAdmin::initialize (const char * conn)
         //Yield to IO
         lcb_wait(private_instance);
         err = lcb_get_bootstrap_status(instance);
-        if (rc != LCB_SUCCESS) {
+        if (err != LCB_SUCCESS) {
             logging->error("CB Admin:DB: Bootstrapping failed");
             logging->error(lcb_strerror(NULL, err));
             lcb_destroy(instance);
