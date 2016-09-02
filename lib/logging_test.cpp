@@ -25,6 +25,9 @@ int main()
   third_category->debug("Testing");
   bad_category->debug("Testing");
 
+  delete sub_category;
+  delete third_category;
+  delete bad_category;
   delete logging;
 
 }
