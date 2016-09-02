@@ -24,6 +24,9 @@ public:
   //! Constructor
   ApplicationResponse() {error_code = NO_ERROR; err_message = ""; transaction_id = ""; object_id = "";}
 
+  //! Clear the data
+  void clear() {error_code = NO_ERROR; err_message = ""; transaction_id = ""; object_id = "";}
+
   //! Get Error Code
   int get_error_code() {return error_code;}
 

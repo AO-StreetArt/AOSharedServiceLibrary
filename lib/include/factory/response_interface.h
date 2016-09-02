@@ -42,6 +42,9 @@ public:
 
   //! To JSON Method
   virtual std::string to_json() = 0;
+
+  //! Clear the response
+  virtual void clear() = 0;
 };
 
 #endif
