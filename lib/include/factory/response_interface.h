@@ -12,7 +12,7 @@ const int TRANSLATION_ERROR = 130;
 const int BAD_SERVER_ERROR = 140;
 const int BAD_REQUEST_ERROR = 150;
 
-//! A struct that gets sent to clients to transmit errors, transaction ID's, and object ID's
+//! A class that gets sent to clients to transmit errors, transaction ID's, and object ID's
 class ApplicationResponseInterface
 {
 public:
