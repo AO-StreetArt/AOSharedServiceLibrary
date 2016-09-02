@@ -22,7 +22,7 @@ class ApplicationResponse: public ApplicationResponseInterface
 public:
 
   //! Constructor
-  ApplicationResponse() {err_code = NO_ERROR; err_message = ""; transaction_id = ""; object_id = "";}
+  ApplicationResponse() {error_code = NO_ERROR; err_message = ""; transaction_id = ""; object_id = "";}
 
   //! Get Error Code
   int get_error_code() {return error_code;}
