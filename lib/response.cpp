@@ -85,4 +85,5 @@ std::string ApplicationResponse::to_json(Writeable *obj)
 {
   //Build the base JSON String
   std::string json_string = create_base_json() + ", \"ObjectData\": {" + obj->to_json() + "}}";
+  return json_string;
 }
