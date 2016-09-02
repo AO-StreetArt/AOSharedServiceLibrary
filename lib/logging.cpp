@@ -415,9 +415,3 @@ void LoggingCategory::info(double msg)
     int_category->info(std::to_string(msg));
   }
 }
-
-//Pull down root category
-log4cpp::Category* Logger::get_root()
-{
-  return root_logger;
-}

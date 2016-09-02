@@ -28,10 +28,7 @@ public:
 
   //! Log at an info level to the root category
   virtual void info(const char * msg) = 0;
-
-  //! Pull down the root category
-  virtual LoggingInterface get_root() = 0;
-}
+};
 
 class LoggingInterface
 {
