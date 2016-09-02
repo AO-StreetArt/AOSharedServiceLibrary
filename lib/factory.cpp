@@ -129,3 +129,9 @@ PropertiesReaderInterface* ServiceComponentFactory::get_properties_reader_interf
 {
   return new PropertiesReader(filename);
 }
+
+//! Get an application response interface instance
+ApplicationResponseInterface* get_application_response_interface()
+{
+  return new ApplicationResponse;
+}

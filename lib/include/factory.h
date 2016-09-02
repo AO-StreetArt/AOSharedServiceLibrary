@@ -12,7 +12,9 @@
 #include "factory/zmq_interface.h"
 #include "factory/http_server_interface.h"
 #include "factory/properties_reader_interface.h"
+#include "factory/response_interface.h"
 
+#include "response.h"
 #include "service.h"
 #include "cli.h"
 #include "consul_admin.h"
@@ -92,6 +94,9 @@ public:
 
   //! Get a Properties File Interface Instance
   PropertiesReaderInterface* get_properties_reader_interface(std::string filename);
+
+  //! Get an Application Response Interface Instance
+  ApplicationResponseInterface* get_application_response_interface();
 };
 
 #endif
