@@ -6,7 +6,7 @@ int main()
 {
 
 ApplicationResponse response;
-assert(response.get_error_code == NO_ERROR);
+assert(response.get_error_code() == NO_ERROR);
 
 response.set_object_id("12345");
 response.set_transaction_id("56789");
