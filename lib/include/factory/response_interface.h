@@ -1,4 +1,5 @@
 #include <string>
+#include "writeable.h"
 
 #ifndef APPLICATION_RESPONSE_INTERFACE
 #define APPLICATION_RESPONSE_INTERFACE
@@ -11,7 +12,7 @@ const int TRANSLATION_ERROR = 130;
 const int BAD_SERVER_ERROR = 140;
 const int BAD_REQUEST_ERROR = 150;
 
-//! A struct that gets sent to clients to transmit errors, transaction ID's, and object ID's
+//! A class that gets sent to clients to transmit errors, transaction ID's, and object ID's
 class ApplicationResponseInterface
 {
 public:
@@ -42,6 +43,9 @@ public:
 
   //! To JSON Method
   virtual std::string to_json() = 0;
+
+  //! To JSON Method which includes a writeable object
+  virtual std::string to_json(Writeable *obj) = 0;
 
   //! Clear the response
   virtual void clear() = 0;

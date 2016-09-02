@@ -19,6 +19,8 @@ class ApplicationResponse: public ApplicationResponseInterface
   //! An Object ID
   std::string object_id;
 
+  std::string create_base_json();
+
 public:
 
   //! Constructor
@@ -51,6 +53,9 @@ public:
 
   //! To JSON Method
   std::string to_json();
+
+  //! To JSON Method which includes a writeable object
+  std::string to_json(Writeable *obj);
 };
 
 #endif
