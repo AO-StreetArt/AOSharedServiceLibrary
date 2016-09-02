@@ -66,10 +66,23 @@ void ApplicationResponse::set_error(int new_error_code)
   }
 }
 
+std::string ApplicationResponse::create_base_json()
+{
+  //Build the base JSON String
+  std::string json_string = "{\"ErrorCode\": " + std::to_string(error_code) + ", \"ErrorMessage\": \"" + err_message +
+    "\", \"TransactionID\": \"" + transaction_id + "\", \"ObjectID\": \"" + object_id + "\"";
+  return json_string;
+}
+
 std::string ApplicationResponse::to_json()
 {
   //Build the base JSON String
-  std::string json_string = "{\"Error Code\": " + std::to_string(error_code) + ", \"Error Message\": \"" + err_message +
-    "\", \"Transaction ID\": \"" + transaction_id + "\", \"Object ID\": \"" + object_id + "\"}";
+  std::string json_string = create_base_json() + "}";
   return json_string;
+}
+
+std::string ApplicationResponse::to_json(Writeable *obj)
+{
+  //Build the base JSON String
+  std::string json_string = create_base_json() + ", \"ObjectData\": {" + obj->to_json() + "}}";
 }

@@ -1,4 +1,5 @@
 #include <string>
+#include "writeable.h"
 
 #ifndef APPLICATION_RESPONSE_INTERFACE
 #define APPLICATION_RESPONSE_INTERFACE
@@ -42,6 +43,9 @@ public:
 
   //! To JSON Method
   virtual std::string to_json() = 0;
+
+  //! To JSON Method which includes a writeable object
+  virtual std::string to_json(Writeable *obj) = 0;
 
   //! Clear the response
   virtual void clear() = 0;
