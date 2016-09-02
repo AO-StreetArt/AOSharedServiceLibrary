@@ -69,7 +69,7 @@ void ApplicationResponse::set_error(int new_error_code)
 std::string ApplicationResponse::to_json()
 {
   //Build the base JSON String
-  std::string json_string = "{\"Error Code\": " + std::to_string(error_code) + ", \"Error Message\"": \"" + err_message +
+  std::string json_string = "{\"Error Code\": " + std::to_string(error_code) + ", \"Error Message\": \"" + err_message +
     "\", \"Transaction ID\": \"" + transaction_id + "\", \"Object ID\": \"" + object_id + "\"}";
   return json_string;
 }
