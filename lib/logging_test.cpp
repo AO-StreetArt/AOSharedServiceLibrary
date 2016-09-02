@@ -18,12 +18,13 @@ int main()
   LoggingCategoryInterface *bad_category = logging->get_category("incorrect_name");
 
   logging->debug("Testing");
+  logging->error("Testing");
   std::string test = "123";
   test_func(test);
 
-  sub_category->debug("Testing");
-  third_category->debug("Testing");
-  bad_category->debug("Testing");
+  sub_category->error("Testing");
+  third_category->error("Testing");
+  bad_category->error("Testing");
 
   delete sub_category;
   delete third_category;
