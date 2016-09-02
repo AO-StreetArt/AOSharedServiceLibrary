@@ -228,9 +228,9 @@ void Logger::info(double msg)
 }
 
 //Pull down different categories by name
-LoggingCategory* Logger::get_category(std::string name)
+LoggingCategoryInterface* Logger::get_category(std::string name)
 {
-  return log4cpp::Category::getInstance(name);
+  return new LoggingCategory(name);
 }
 
 //--------------------------Logging Category Methods---------------------------//
