@@ -1,4 +1,5 @@
 #include <string>
+#include "factory/response_interface.h"
 
 #ifndef APPLICATION_RESPONSE_OBJECT
 #define APPLICATION_RESPONSE_OBJECT
