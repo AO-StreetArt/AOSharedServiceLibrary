@@ -14,13 +14,12 @@ class LoggingCategory: public LoggingCategoryInterface
 {
 std::string name;
 log4cpp::Category *int_category;
-Logger *root_logger;
 void start_log_from_file(std::string initFileName);
 void end_log();
 public:
 
   //! Build a new Logger from the given configuration file
-  LoggingCategory(Logger *root, std::string iname) {root_logger = root;name=iname;int_category = log4cpp::Category::exists(name);}
+  LoggingCategory(std::string iname) {name=iname;int_category = log4cpp::Category::exists(name);}
 
   //! Delete the Logger
   ~LoggingCategory() {}
@@ -71,8 +70,6 @@ public:
 
   //! Log at an info level to the root category
   void info(double msg);
-  //! Pull down the root category directly
-  LoggingInterface* get_root();
 };
 
 class Logger: public LoggingInterface
