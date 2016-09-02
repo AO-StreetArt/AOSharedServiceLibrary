@@ -1,4 +1,5 @@
 #include <string>
+#include "interpreter.h"
 
 #ifndef COMMAND_LINE_INTERFACE
 #define COMMAND_LINE_INTERFACE
@@ -8,7 +9,7 @@
 //! Here we create a new interpreter by passing in the two arguments from the main method,
 //! int argc & char* argv[].  This parses arguments passed in the form:
 //! -arg_key=arg_val
-class CommandLineInterface
+class CommandLineInterface: public Interpreter
 {
 public:
 

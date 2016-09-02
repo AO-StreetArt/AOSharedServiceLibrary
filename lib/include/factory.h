@@ -11,7 +11,10 @@
 #include "factory/uuid_interface.h"
 #include "factory/zmq_interface.h"
 #include "factory/http_server_interface.h"
+#include "factory/properties_reader_interface.h"
+#include "factory/response_interface.h"
 
+#include "response.h"
 #include "service.h"
 #include "cli.h"
 #include "consul_admin.h"
@@ -22,6 +25,7 @@
 #include "xredis_admin.h"
 #include "zmqio.h"
 #include "http_server.h"
+#include "properties_reader.h"
 
 #ifndef AOSSL_FACTORY
 #define AOSSL_FACTORY
@@ -87,6 +91,12 @@ public:
 
   //! Get an HTTP Server Interface Instance
   HttpServerInterface* get_http_server_interface(std::string base_addr, int base_port);
+
+  //! Get a Properties File Interface Instance
+  PropertiesReaderInterface* get_properties_reader_interface(std::string filename);
+
+  //! Get an Application Response Interface Instance
+  ApplicationResponseInterface* get_application_response_interface();
 };
 
 #endif

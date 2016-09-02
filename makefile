@@ -8,10 +8,10 @@ CC = g++
 SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
-OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o lib/service.o lib/http_server.o lib/factory.o
-TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_test factory_test http_server_test
+OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/xredis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o lib/service.o lib/http_server.o lib/properties_reader.o lib/response.o lib/factory.o
+TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_test factory_test http_server_test properties_reader_test app_response_test
 BENCHMARKS = consul_benchmark logging_benchmark http_benchmark couchbase_benchmark redis_benchmark
-INCL = /usr/local/include/aossl /usr/local/include/aossl/factory.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/http_admin.h /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/xredis_admin.h /usr/local/include/aossl/zmqio.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h
+INCL = /usr/local/include/aossl /usr/local/include/aossl/factory.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/http_admin.h /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/xredis_admin.h /usr/local/include/aossl/zmqio.h /usr/local/include/aossl/http_server.h /usr/local/include/aossl/properties_reader.h /usr/local/include/aossl/factory/properties_reader_interface.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h /usr/local/include/aossl/response.h /usr/local/include/aossl/factory/response_interface.h
 BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
 LIBS = -lpthread -llog4cpp
@@ -78,6 +78,18 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/include/aossl/http_server.h: lib/include/http_server.h
 	cp $< $@
 
+/usr/local/include/aossl/properties_reader.h: lib/include/properties_reader.h
+	cp $< $@
+
+/usr/local/include/aossl/response.h: lib/include/response.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/response_interface.h: lib/include/factory/response_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/properties_reader_interface.h: lib/include/factory/properties_reader_interface.h
+	cp $< $@
+
 /usr/local/include/aossl/factory/callbacks.h: lib/include/factory/callbacks.h
 	cp $< $@
 
@@ -112,6 +124,9 @@ clean: clean_local clean_tests clean_benchmarks
 	cp $< $@
 
 /usr/local/include/aossl/factory/http_server_interface.h: lib/include/factory/http_server_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/interpreter.h: lib/include/factory/interpreter.h
 	cp $< $@
 
 /usr/local/lib/libaossl.a: libaossl.a
@@ -231,6 +246,22 @@ zmqio_test: lib/logging.o lib/zmqio.o lib/zmqio_test.o lib/logging_interface.o
 lib/zmqio_test.o: lib/zmqio_test.cpp lib/include/zmqio.h lib/include/logging.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_test.cpp $(STD)
 
+# Create the executable file properties_reader_test
+properties_reader_test: lib/properties_reader_test.o lib/properties_reader.o
+	$(CC) $(CFLAGS) -o $@ lib/properties_reader_test.o lib/properties_reader.o $(STD)
+
+# Create the object file properties_reader_test.o
+lib/properties_reader_test.o: lib/properties_reader_test.cpp lib/properties_reader.cpp lib/include/properties_reader.h
+	$(CC) $(CFLAGS) -o $@ -c lib/properties_reader_test.cpp $(STD)
+
+# Create the executable file app_response_test
+app_response_test: lib/response.o lib/app_response_test.o
+	$(CC) $(CFLAGS) -o $@ lib/response.o lib/app_response_test.o $(STD)
+
+# Create the object file app_response_test.o
+lib/app_response_test.o: lib/response.o lib/app_response_test.cpp
+	$(CC) $(CFLAGS) -o $@ -c lib/app_response_test.cpp $(STD)
+
 factory_test: lib/factory_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o $@ lib/factory_test.o $(OBJS) $(FULL_LIBS) $(STD)
 
@@ -279,9 +310,18 @@ lib/logging.o:  lib/logging.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging.cpp $(STD)
 
 # Create the object file cli.o
-lib/cli.o:  lib/cli.cpp lib/include/cli.h
+lib/cli.o:  lib/cli.cpp lib/include/cli.h lib/include/factory/commandline_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/cli.cpp $(STD)
 
+# Create the object file properties_reader.o
+lib/properties_reader.o: lib/properties_reader.cpp lib/include/properties_reader.h lib/include/factory/properties_reader_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/properties_reader.cpp $(STD)
+
+#Create the object file response.o
+lib/response.o: lib/response.cpp lib/include/response.h lib/include/factory/response_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/response.cpp $(STD)
+
+#Create the object file factory.o
 lib/factory.o: lib/factory.cpp lib/include/factory.h lib/include/zmqio.h lib/include/couchbase_admin.h lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/uuid_admin.h lib/include/xredis_admin.h lib/include/cli.h lib/include/factory/commandline_interface.h lib/include/factory/consul_interface.h lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/http_interface.h lib/include/factory/logging_interface.h lib/include/factory/redis_interface.h lib/include/factory/uuid_interface.h lib/include/factory/writeable.h lib/include/factory/zmq_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/factory.cpp $(STD)
 
