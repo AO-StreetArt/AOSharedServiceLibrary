@@ -17,6 +17,8 @@ class ApplicationResponseInterface
 {
 public:
 
+  virtual ~ApplicationResponseInterface() {}
+
   //! Get Error Code
   virtual int get_error_code() = 0;
 
