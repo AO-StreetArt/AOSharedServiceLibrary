@@ -22,7 +22,7 @@ bool send(char * url, int timeout);
 public:
 
   //! Start a new HTTP Requests Admin
-  HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();}
+  HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();if (!http_logging) {http_logging = logging->get_category("http");}}
 
   //! Shutdown the admin
   void shutdown() {curl_global_cleanup();}

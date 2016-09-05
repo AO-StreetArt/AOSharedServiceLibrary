@@ -10,7 +10,7 @@ std::string writedata;
 size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up)
 {
 
-  logging->debug("CONSUL: HTTP Query Callback Triggered");
+  consul_logging->debug("CONSUL: HTTP Query Callback Triggered");
 
 //Put the response into a string
 for (size_t c = 0; c<size*nmemb; c++)
@@ -81,8 +81,8 @@ std::string ConsulAdmin::build_url(std::string request_url_segment)
 //Post a query to consul
 std::string ConsulAdmin::query(std::string query_url)
 {
-  logging->info("CONSUL: Firing Query");
-  logging->debug(query_url);
+  consul_logging->info("CONSUL: Firing Query");
+  consul_logging->debug(query_url);
   //Clear the string that will hold the response data.
   writedata.clear();
   //Get the URL
@@ -98,12 +98,12 @@ std::string ConsulAdmin::query(std::string query_url)
   delete url;
   if (success)
   {
-    logging->debug("CONSUL: Query Successful");
+    consul_logging->debug("CONSUL: Query Successful");
     return writedata;
   }
   else
   {
-    logging->debug("CONSUL: Query Failed");
+    consul_logging->debug("CONSUL: Query Failed");
     return "";
   }
 }
@@ -112,7 +112,7 @@ std::string ConsulAdmin::query(std::string query_url)
 
 bool ConsulAdmin::register_service(ServiceInterface& s)
 {
-  logging->debug("CONSUL: Registering Service");
+  consul_logging->debug("CONSUL: Registering Service");
   //Get the URL
   std::string url_string = build_url("/v1/agent/service/register");
   const char * url_cstr = url_string.c_str();
@@ -131,11 +131,11 @@ bool ConsulAdmin::register_service(ServiceInterface& s)
   delete url;
   if (success)
   {
-    logging->debug("CONSUL: Registration Successful");
+    consul_logging->debug("CONSUL: Registration Successful");
   }
   else
   {
-    logging->debug("CONSUL: Registration Unsuccessful");
+    consul_logging->debug("CONSUL: Registration Unsuccessful");
   }
   return success;
 }
@@ -160,11 +160,11 @@ bool ConsulAdmin::deregister_service(ServiceInterface& s)
   delete url;
   if (success)
   {
-    logging->debug("CONSUL: Deregistration Successful");
+    consul_logging->debug("CONSUL: Deregistration Successful");
   }
   else
   {
-    logging->debug("CONSUL: Deregistration Unsuccessful");
+    consul_logging->debug("CONSUL: Deregistration Unsuccessful");
   }
   return success;
 }
@@ -196,9 +196,9 @@ std::string ConsulAdmin::healthy_services()
 
 bool ConsulAdmin::set_config_value(std::string key, std::string val)
 {
-  logging->info("CONSUL: Setting Configuration Value");
-  logging->debug(key);
-  logging->debug(val);
+  consul_logging->info("CONSUL: Setting Configuration Value");
+  consul_logging->debug(key);
+  consul_logging->debug(val);
   //Get the URL
   std::string url_string = build_url("/v1/kv/");
   url_string = url_string.append(key);
@@ -217,11 +217,11 @@ bool ConsulAdmin::set_config_value(std::string key, std::string val)
   delete url;
   if (success)
   {
-    logging->debug("CONSUL: Config Value Set Successful");
+    consul_logging->debug("CONSUL: Config Value Set Successful");
   }
   else
   {
-    logging->debug("CONSUL: Config Value Set Unsuccessful");
+    consul_logging->debug("CONSUL: Config Value Set Unsuccessful");
   }
   return success;
 }
@@ -235,8 +235,8 @@ std::string ConsulAdmin::get_config_value(std::string key)
 
 bool ConsulAdmin::del_config_value(std::string key)
 {
-  logging->info("CONSUL: Deleting Configuration Value");
-  logging->debug(key);
+  consul_logging->info("CONSUL: Deleting Configuration Value");
+  consul_logging->debug(key);
   //Get the URL
   std::string url_string = build_url("/v1/kv/");
   url_string = url_string.append(key);
@@ -249,11 +249,11 @@ bool ConsulAdmin::del_config_value(std::string key)
   delete url;
   if (success)
   {
-    logging->debug("CONSUL: Config Value Delete Successful");
+    consul_logging->debug("CONSUL: Config Value Delete Successful");
   }
   else
   {
-    logging->debug("CONSUL: Config Value Delete Unsuccessful");
+    consul_logging->debug("CONSUL: Config Value Delete Unsuccessful");
   }
   return success;
 }

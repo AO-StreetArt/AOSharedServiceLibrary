@@ -123,6 +123,7 @@ int main()
 
     ha.shutdown();
 
+  delete http_logging;
   delete logging;
 
   return 0;

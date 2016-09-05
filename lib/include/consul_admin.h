@@ -41,7 +41,7 @@ public:
   std::string base64_decode(std::string const& encoded_string);
 
   //! Construct a consul admin, passing in the connection string
-  ConsulAdmin(std::string caddr) {ha = new HttpAdmin; consul_addr = caddr;timeout=5;}
+  ConsulAdmin(std::string caddr) {ha = new HttpAdmin; consul_addr = caddr;timeout=5;if (!consul_logging) {consul_logging = logging->get_category("consul");}}
 
   //! Delete a consul admin
   ~ConsulAdmin() {delete ha;}

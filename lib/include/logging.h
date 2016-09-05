@@ -7,8 +7,8 @@
 
 #include "factory/logging_interface.h"
 
-#ifndef LYMAN_LOG
-#define LYMAN_LOG
+#ifndef AOSSL_LOG
+#define AOSSL_LOG
 
 class LoggingCategory: public LoggingCategoryInterface
 {

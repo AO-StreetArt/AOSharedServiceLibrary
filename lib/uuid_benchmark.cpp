@@ -57,6 +57,7 @@ hayai::Benchmarker::RunAllTests();
 //----------------------------------------------------------------------------//
 
 delete uuid;
+delete uuid_logging;
 delete logging;
 
 return 0;

@@ -175,6 +175,7 @@ hayai::Benchmarker::RunAllTests();
 
 delete obj;
 delete cb;
+delete cb_logging;
 delete logging;
 
 return 0;

@@ -186,6 +186,7 @@ hayai::Benchmarker::RunAllTests();
 //----------------------------------------------------------------------------//
 
 delete http;
+delete http_logging;
 delete logging;
 
 return 0;

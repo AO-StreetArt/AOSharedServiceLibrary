@@ -10,7 +10,7 @@ void test_func(std::string msg)
 
 int main()
 {
-  std::string initFileName = "test/log4cpp_test.properties";
+  std::string initFileName = "test/logging_test.properties";
   logging = new Logger(initFileName);
 
   LoggingCategoryInterface *sub_category = logging->get_category("tertiary");
