@@ -17,7 +17,7 @@
 class uuidAdmin: public uuidInterface
 {
 public:
-	uuidAdmin() {if (!uuid_logging) {if (!uuid_logging) {uuid_logging = logging->get_category("uuid");}}
+	uuidAdmin() {if (!uuid_logging) {uuid_logging = logging->get_category("uuid");}}
 	~uuidAdmin() {}
 	//! Generate a new UUID
 
