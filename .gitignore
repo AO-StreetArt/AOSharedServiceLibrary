@@ -1,5 +1,4 @@
 *.o
-*.properties
 *.log
 *.log.*
 *.cc
