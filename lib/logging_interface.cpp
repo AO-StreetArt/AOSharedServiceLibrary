@@ -22,6 +22,7 @@ void shutdown_framework_logging()
   }
   else
   {
+    logging->debug("Couchbase Logging Module delete called");
     delete cb_logging;
   }
   if (!zmq_logging)
@@ -30,6 +31,7 @@ void shutdown_framework_logging()
   }
   else
   {
+    logging->debug("ZMQ Logging Module delete called");
     delete zmq_logging;
   }
   if (!consul_logging)
@@ -38,6 +40,7 @@ void shutdown_framework_logging()
   }
   else
   {
+    logging->debug("Consul Logging Module delete called");
     delete consul_logging;
   }
   if (!http_logging)
@@ -46,6 +49,7 @@ void shutdown_framework_logging()
   }
   else
   {
+    logging->debug("HTTP Logging Module delete called");
     delete http_logging;
   }
   if (!uuid_logging)
@@ -54,6 +58,7 @@ void shutdown_framework_logging()
   }
   else
   {
+    logging->debug("UUID Logging Module delete called");
     delete uuid_logging;
   }
   if (!redis_logging)
@@ -62,6 +67,7 @@ void shutdown_framework_logging()
   }
   else
   {
+    logging->debug("Redis Logging Module delete called");
     delete redis_logging;
   }
 }
