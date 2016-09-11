@@ -244,7 +244,7 @@ void LoggingCategory::debug(std::string msg)
   }
   else
   {
-    int_category->debug(msg);
+    int_category->debug(name + "::" + msg);
   }
 }
 
@@ -256,7 +256,7 @@ void LoggingCategory::error(std::string msg)
   }
   else
   {
-    int_category->error(msg);
+    int_category->error(name + "::" + msg);
   }
 }
 
@@ -268,7 +268,7 @@ void LoggingCategory::info(std::string msg)
   }
   else
   {
-    int_category->info(msg);
+    int_category->info(name + "::" + msg);
   }
 }
 
@@ -280,7 +280,7 @@ void LoggingCategory::debug(const char * msg)
   }
   else
   {
-    int_category->debug(msg);
+    int_category->debug(name + "::" + msg);
   }
 }
 
@@ -292,7 +292,7 @@ void LoggingCategory::error(const char * msg)
   }
   else
   {
-    int_category->error(msg);
+    int_category->error(name + "::" + msg);
   }
 }
 
@@ -304,7 +304,7 @@ void LoggingCategory::info(const char * msg)
   }
   else
   {
-    int_category->info(msg);
+    int_category->info(name + "::" + msg);
   }
 }
 
@@ -316,7 +316,7 @@ void LoggingCategory::debug(int msg)
   }
   else
   {
-    int_category->debug(std::to_string(msg));
+    int_category->debug(name + "::" + std::to_string(msg));
   }
 }
 
@@ -328,7 +328,7 @@ void LoggingCategory::error(int msg)
   }
   else
   {
-    int_category->error(std::to_string(msg));
+    int_category->error(name + "::" + std::to_string(msg));
   }
 }
 
@@ -340,7 +340,7 @@ void LoggingCategory::info(int msg)
   }
   else
   {
-    int_category->info(std::to_string(msg));
+    int_category->info(name + "::" + std::to_string(msg));
   }
 }
 
@@ -352,7 +352,7 @@ void LoggingCategory::debug(float msg)
   }
   else
   {
-    int_category->debug(std::to_string(msg));
+    int_category->debug(name + "::" + std::to_string(msg));
   }
 }
 
@@ -364,7 +364,7 @@ void LoggingCategory::error(float msg)
   }
   else
   {
-    int_category->error(std::to_string(msg));
+    int_category->error(name + "::" + std::to_string(msg));
   }
 }
 
@@ -376,7 +376,7 @@ void LoggingCategory::info(float msg)
   }
   else
   {
-    int_category->info(std::to_string(msg));
+    int_category->info(name + "::" + std::to_string(msg));
   }
 }
 
@@ -388,7 +388,7 @@ void LoggingCategory::debug(double msg)
   }
   else
   {
-    int_category->debug(std::to_string(msg));
+    int_category->debug(name + "::" + std::to_string(msg));
   }
 }
 
@@ -400,7 +400,7 @@ void LoggingCategory::error(double msg)
   }
   else
   {
-    int_category->error(std::to_string(msg));
+    int_category->error(name + "::" + std::to_string(msg));
   }
 }
 
@@ -412,6 +412,6 @@ void LoggingCategory::info(double msg)
   }
   else
   {
-    int_category->info(std::to_string(msg));
+    int_category->info(name + "::" + std::to_string(msg));
   }
 }
