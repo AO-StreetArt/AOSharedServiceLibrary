@@ -79,6 +79,7 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
 	if (data)
 	{
 		std::string val (data);
+		r->req_data = val;
 	}
 
 	//Retrieve any errors
