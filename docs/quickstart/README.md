@@ -18,11 +18,9 @@ You can create a fully functional build environment for new micro services via D
 
 `docker run --name aossl-devel -d -P aostreetart/aossl`
 
-Then, take the ssh key from this repository and use it per below:
+Then, you can access the container with the following:
 
-    ssh-agent -s
-    ssh-add ssh/id_rsa
-    ssh root@localhost -p `sudo docker port ssh 22 | cut -d":" -f2`
+`sudo docker exec -i -t aossl-devel /bin/bash`
 
 ### Docker Images of External Tools
 
