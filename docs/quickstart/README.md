@@ -1,12 +1,74 @@
 # AO Shared Service Library Quick Start Guide
 
-## Setup
+## Docker
+
+The AO Shared Service Library is available as a docker image.  This allows developers to get a fully functional build environment with a single command, and offers a head-start on making production docker files.  Docker is the recommended method of deployment for Services, as it allows for easy horizontal scaling.
+
+### Setup
+
+Before we begin, we need to have a few things ready.
+
+#### Installing Docker
+
+If you do not already have Docker installed, please follow the instructions [here] (https://docs.docker.com/engine/installation).
+
+### Running the Docker Image
+
+You can create a fully functional build environment for new micro services via Docker, and ssh into that process.
+
+`docker run --name aossl-devel -d -P aostreetart/aossl`
+
+Then, take the ssh key from this repository and use it per below:
+
+    ssh-agent -s
+    ssh-add ssh/id_rsa
+    ssh root@localhost -p `sudo docker port ssh 22 | cut -d":" -f2`
+
+### Docker Images of External Tools
+
+Docker images are also available for many/all of the external tools connected to within the library. 
+
+These are great tools for development, but you should follow the guidelines of each respective service when deploying to production.
+
+#### Couchbase
+
+In times when you need to connect to an instance of [Couchbase] (http://www.couchbase.com/), you can use the docker image (full instructions can be found [here] (https://docs.docker.com/engine/examples/couchbase)).
+
+`docker run -d --name db -p 8091-8093:8091-8093 -p 11210:11210 couchbase`
+
+#### Redis
+
+In times when you need to connect to an instance of [Redis] (http://redis.io/), you can use the docker image (full instructions can be found [here] (https://hub.docker.com/_/redis/)).
+
+`docker run --name some-redis -d redis`
+
+#### Consul
+
+In times when you need to connect to an instance of [Consul] (https://www.consul.io/), you can use the docker image (full instructions can be found [here] (https://hub.docker.com/_/consul/))
+
+`docker run -d --name=dev-consul consul`
+
+### Connecting from Docker Images
+
+### Building the Docker Image
+
+From the main project folder, we can execute the following command to build the docker image:
+
+`docker pull aostreetart/clyman`
+`docker build -t aostreetart/clyman`
+`docker push aostreetart/clyman`
+
+## Build from Source
+
+While Docker is a faster alternative, we can also build from source.  Note that this is currently only recommended on Unix systems due to OS-level dependencies.
+
+### Setup
 
 Before we begin, we need to build our dependencies and then build the project.
 
-### Dependencies
+#### Dependencies
 
-#### Ubuntu 14.04/Debian 7
+##### Ubuntu 14.04/Debian 7
 The build_deps.sh script should allow for automatic resolution of dependencies.  Run the following commands from within the main folder
 
 `mkdir ../aossl_deps`
@@ -17,10 +79,10 @@ The build_deps.sh script should allow for automatic resolution of dependencies. 
 
 `sudo ./build_deps.sh`
 
-#### Other
+##### Other
 Please refer to the [Dependency Resolution] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps) section of the documentation.
 
-### Build the Project
+#### Build the Project
 
 The project and tests can be built with make on most linux systems.
 
@@ -32,7 +94,7 @@ We can clean the build and remove all generated files with:
 
 `make clean`
 
-### Install and Uninstall the Project
+#### Install and Uninstall the Project
 
 The project can be installed on most linux systems with:
 
