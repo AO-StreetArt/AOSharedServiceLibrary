@@ -11,12 +11,13 @@ FROM ubuntu:14.04
 #Set the Maintainer
 MAINTAINER Alex Barry
 
-#Set up SSH to allow configuration, starting, & stopping of service
+#Set up front end
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update; \
-	apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ssh; \
-	apt-get clean; \
+#Ensure that base level build requirements are satisfied
+RUN apt-get update
+RUN	apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ssh
+RUN	apt-get clean
 
 #Build the dependencies and place them in the correct places
 RUN apt-get update
@@ -86,4 +87,4 @@ RUN git clone https://github.com/AO-StreetArt/AOSharedServiceLibrary.git
 RUN cd AOSharedServiceLibrary && make && make install
 
 #Start up the SSH terminal so that we can connect & start the app
-CMD tail -f /var/log
+CMD /etc/rc.local; bash
