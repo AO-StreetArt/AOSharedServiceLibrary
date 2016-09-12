@@ -87,4 +87,4 @@ RUN git clone https://github.com/AO-StreetArt/AOSharedServiceLibrary.git
 RUN cd AOSharedServiceLibrary && make && make install
 
 #Start up the SSH terminal so that we can connect & start the app
-CMD /etc/rc.local; bash
+CMD tail -f /dev/null
