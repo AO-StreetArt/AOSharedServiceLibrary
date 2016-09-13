@@ -42,8 +42,17 @@ static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t o
   RequestError *rerr = r->req_err;
 
 	//Get the Key
-	std::string key ((char*)resp->v.v0.key);
-	r->req_addr = key;
+	char *key_data = (char*)resp->v.v0.key;
+
+	cb_logging->debug("CB Key:");
+	cb_logging->debug(key_data);
+
+	//Store the key in the request
+	if (key_data)
+	{
+		std::string key (key_data);
+		r->req_addr = key;
+	}
 
 	//Retrieve any errors
   if (err != LCB_SUCCESS) {
@@ -104,6 +113,10 @@ static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, co
 
 	//Get the Key
 	char *key_data = (char*)resp->v.v0.key;
+	cb_logging->debug("CB Key:");
+	cb_logging->debug(key_data);
+
+	//Store the key in the request
 	if (key_data) {
 		std::string key (key_data);
 		r->req_addr = key;
