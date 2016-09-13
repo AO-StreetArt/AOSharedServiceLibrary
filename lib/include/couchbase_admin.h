@@ -108,13 +108,6 @@ static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, co
 		std::string key (key_data);
 		r->req_addr = key;
 	}
-	//Get the retrieved value
-	char *data = (char*)resp->v.v0.bytes;
-	if (data)
-	{
-		std::string val (data);
-		r->req_data = val;
-	}
 
 	//Retrieve any errors
   if (err != LCB_SUCCESS) {
