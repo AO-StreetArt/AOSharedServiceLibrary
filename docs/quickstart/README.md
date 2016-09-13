@@ -24,7 +24,7 @@ Then, you can access the container with the following:
 
 ### Docker Images of External Tools
 
-Docker images are also available for many/all of the external tools connected to within the library. 
+Docker images are also available for many/all of the external tools connected to within the library.
 
 These are great tools for development, but you should follow the guidelines of each respective service when deploying to production.
 
@@ -52,9 +52,9 @@ In times when you need to connect to an instance of [Consul] (https://www.consul
 
 From the main project folder, we can execute the following command to build the docker image:
 
-`docker pull aostreetart/clyman`
-`docker build -t aostreetart/clyman`
-`docker push aostreetart/clyman`
+`docker pull aostreetart/aossl`
+`docker build -t aostreetart/aossl .`
+`docker push aostreetart/aossl`
 
 ## Build from Source
 
