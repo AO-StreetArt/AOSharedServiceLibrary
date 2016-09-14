@@ -16,11 +16,11 @@ If you do not already have Docker installed, please follow the instructions [her
 
 You can create a fully functional build environment for new micro services via Docker, and ssh into that process.
 
-`docker run --name aossl-devel -d -P aostreetart/aossl`
+`docker run --name aossl -d -P aostreetart/ao-services`
 
 Then, you can access the container with the following:
 
-`sudo docker exec -i -t aossl-devel /bin/bash`
+`sudo docker exec -i -t aossl /bin/bash`
 
 ### Docker Images of External Tools
 
