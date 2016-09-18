@@ -33,10 +33,15 @@ std::string consul_addr;
 int timeout;
 std::string build_url(std::string request_url_segment);
 std::string query(std::string query_url);
+static bool is_base64(unsigned char c) {
+  return (isalnum(c) || (c == '+') || (c == '/'));
+}
 public:
 
+  std::string base64_decode(std::string const& encoded_string);
+
   //! Construct a consul admin, passing in the connection string
-  ConsulAdmin(std::string caddr) {ha = new HttpAdmin; consul_addr = caddr;timeout=5;}
+  ConsulAdmin(std::string caddr) {ha = new HttpAdmin; consul_addr = caddr;timeout=5;if (!consul_logging) {consul_logging = logging->get_category("consul");}}
 
   //! Delete a consul admin
   ~ConsulAdmin() {delete ha;}

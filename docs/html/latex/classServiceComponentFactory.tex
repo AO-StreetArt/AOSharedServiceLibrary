@@ -1,0 +1,73 @@
+\hypertarget{classServiceComponentFactory}{\section{Service\-Component\-Factory Class Reference}
+\label{classServiceComponentFactory}\index{Service\-Component\-Factory@{Service\-Component\-Factory}}
+}
+
+
+The Service Component Factory.  
+
+
+
+
+{\ttfamily \#include $<$factory.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classServiceComponentFactory_a0d91931c88bb8df41ee4f58b54c3cc8f}{\hyperlink{classServiceComponentFactory_a0d91931c88bb8df41ee4f58b54c3cc8f}{Service\-Component\-Factory} ()}\label{classServiceComponentFactory_a0d91931c88bb8df41ee4f58b54c3cc8f}
+
+\begin{DoxyCompactList}\small\item\em Create a new Service Component Factory. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a377472acb3040b7e06749ff48239ebd4}{\hyperlink{classServiceComponentFactory_a377472acb3040b7e06749ff48239ebd4}{$\sim$\-Service\-Component\-Factory} ()}\label{classServiceComponentFactory_a377472acb3040b7e06749ff48239ebd4}
+
+\begin{DoxyCompactList}\small\item\em Delete a Service Component Factory. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a7783b94ad65b0be4de8e4658f5b0ab4f}{\hyperlink{classCommandLineInterface}{Command\-Line\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_a7783b94ad65b0be4de8e4658f5b0ab4f}{get\-\_\-command\-\_\-line\-\_\-interface} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})}\label{classServiceComponentFactory_a7783b94ad65b0be4de8e4658f5b0ab4f}
+
+\begin{DoxyCompactList}\small\item\em Get the Command Line Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a3c7d8ab1a2a2a88eac293d5a10610829}{\hyperlink{classuuidInterface}{uuid\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_a3c7d8ab1a2a2a88eac293d5a10610829}{get\-\_\-uuid\-\_\-interface} ()}\label{classServiceComponentFactory_a3c7d8ab1a2a2a88eac293d5a10610829}
+
+\begin{DoxyCompactList}\small\item\em Get the U\-U\-I\-D Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a231204b51354b045ea3d5fff7b07ec94}{\hyperlink{classHttpInterface}{Http\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_a231204b51354b045ea3d5fff7b07ec94}{get\-\_\-http\-\_\-interface} ()}\label{classServiceComponentFactory_a231204b51354b045ea3d5fff7b07ec94}
+
+\begin{DoxyCompactList}\small\item\em Get the H\-T\-T\-P Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a8f1a67c4158e2e9fc844563b7c35dc15}{\hyperlink{classConsulInterface}{Consul\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_a8f1a67c4158e2e9fc844563b7c35dc15}{get\-\_\-consul\-\_\-interface} (std\-::string caddr)}\label{classServiceComponentFactory_a8f1a67c4158e2e9fc844563b7c35dc15}
+
+\begin{DoxyCompactList}\small\item\em Get a Consul Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a18fc7b189a89281312ae594db57bf9f3}{\hyperlink{classServiceInterface}{Service\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_a18fc7b189a89281312ae594db57bf9f3}{get\-\_\-service\-\_\-interface} ()}\label{classServiceComponentFactory_a18fc7b189a89281312ae594db57bf9f3}
+
+\begin{DoxyCompactList}\small\item\em Get a Service Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_ae0f4ffe321b3ef4f0677a319a29bb7ac}{\hyperlink{classServiceInterface}{Service\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_ae0f4ffe321b3ef4f0677a319a29bb7ac}{get\-\_\-service\-\_\-interface} (std\-::string new\-\_\-id, std\-::string new\-\_\-name)}\label{classServiceComponentFactory_ae0f4ffe321b3ef4f0677a319a29bb7ac}
+
+\begin{DoxyCompactList}\small\item\em Get a Service Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a00f71ee92a14c3d850d8dd7e808d4b19}{\hyperlink{classServiceInterface}{Service\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_a00f71ee92a14c3d850d8dd7e808d4b19}{get\-\_\-service\-\_\-interface} (std\-::string new\-\_\-id, std\-::string new\-\_\-name, std\-::string new\-\_\-address, std\-::string new\-\_\-port)}\label{classServiceComponentFactory_a00f71ee92a14c3d850d8dd7e808d4b19}
+
+\begin{DoxyCompactList}\small\item\em Get a Service Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a3461ba8dac008cf74b117b626a1851b2}{\hyperlink{classServiceInterface}{Service\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_a3461ba8dac008cf74b117b626a1851b2}{get\-\_\-service\-\_\-interface} (std\-::string new\-\_\-id, std\-::string new\-\_\-name, std\-::string new\-\_\-address, std\-::string new\-\_\-port, std\-::vector$<$ std\-::string $>$ new\-\_\-tags)}\label{classServiceComponentFactory_a3461ba8dac008cf74b117b626a1851b2}
+
+\begin{DoxyCompactList}\small\item\em Get a Service Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_ab0054b867f4ceb06217a035a8909ca65}{\hyperlink{classCouchbaseInterface}{Couchbase\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_ab0054b867f4ceb06217a035a8909ca65}{get\-\_\-couchbase\-\_\-interface} (const char $\ast$conn)}\label{classServiceComponentFactory_ab0054b867f4ceb06217a035a8909ca65}
+
+\begin{DoxyCompactList}\small\item\em Get a Couchbase Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_ae0c38d94599bcf148704d3436a529d13}{\hyperlink{classCouchbaseInterface}{Couchbase\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_ae0c38d94599bcf148704d3436a529d13}{get\-\_\-couchbase\-\_\-interface} (const char $\ast$conn, const char $\ast$pswd)}\label{classServiceComponentFactory_ae0c38d94599bcf148704d3436a529d13}
+
+\begin{DoxyCompactList}\small\item\em Get a Couchbase Interface instance for a password protected D\-B. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a960660c5cb312c1cdb6b20bd87c2e2d5}{\hyperlink{classRedisInterface}{Redis\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_a960660c5cb312c1cdb6b20bd87c2e2d5}{get\-\_\-redis\-\_\-cluster\-\_\-interface} (std\-::vector$<$ \hyperlink{structRedisConnChain}{Redis\-Conn\-Chain} $>$ Redis\-Connection\-List)}\label{classServiceComponentFactory_a960660c5cb312c1cdb6b20bd87c2e2d5}
+
+\begin{DoxyCompactList}\small\item\em Get a Redis Cluster Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_aa0bd65f6cb0e588ab97d51ba15733d31}{\hyperlink{classLoggingInterface}{Logging\-Interface} $\ast$ \hyperlink{classServiceComponentFactory_aa0bd65f6cb0e588ab97d51ba15733d31}{get\-\_\-logging\-\_\-interface} (std\-::string init\-File\-Name)}\label{classServiceComponentFactory_aa0bd65f6cb0e588ab97d51ba15733d31}
+
+\begin{DoxyCompactList}\small\item\em Get a Logging Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a1d20e28c7b7c88d458598278245ae499}{\hyperlink{classZmqio}{Zmqio} $\ast$ \hyperlink{classServiceComponentFactory_a1d20e28c7b7c88d458598278245ae499}{get\-\_\-zmq\-\_\-outbound\-\_\-interface} (std\-::string conn\-\_\-str)}\label{classServiceComponentFactory_a1d20e28c7b7c88d458598278245ae499}
+
+\begin{DoxyCompactList}\small\item\em Get a Z\-M\-Q Outbound Interface instance. \end{DoxyCompactList}\item 
+\hypertarget{classServiceComponentFactory_a01ba58fc37d73d758774635d723dc7f9}{\hyperlink{classZmqio}{Zmqio} $\ast$ \hyperlink{classServiceComponentFactory_a01ba58fc37d73d758774635d723dc7f9}{get\-\_\-zmq\-\_\-inbound\-\_\-interface} (std\-::string conn\-\_\-str)}\label{classServiceComponentFactory_a01ba58fc37d73d758774635d723dc7f9}
+
+\begin{DoxyCompactList}\small\item\em Get a Z\-M\-Q Inbound Interface instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The Service Component Factory. 
+
+The Service Component Factory tracks the various objects exposed by the framework and passes back instances of interfaces. This allows for the publicly exposed methods to be independent of the implementations. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+lib/include/factory.\-h\end{DoxyCompactItemize}

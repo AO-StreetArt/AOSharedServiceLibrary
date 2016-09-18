@@ -118,3 +118,20 @@ Zmqio* ServiceComponentFactory::get_zmq_inbound_interface( std::string conn_str 
   zmqi->bind( conn_str );
   return zmqi;
 }
+
+HttpServerInterface* ServiceComponentFactory::get_http_server_interface(std::string base_addr, int base_port)
+{
+  return new HttpServer(base_addr, base_port);
+}
+
+//! Get a Properties File Interface Instance
+PropertiesReaderInterface* ServiceComponentFactory::get_properties_reader_interface(std::string filename)
+{
+  return new PropertiesReader(filename);
+}
+
+//! Get an application response interface instance
+ApplicationResponseInterface* ServiceComponentFactory::get_application_response_interface()
+{
+  return new ApplicationResponse;
+}

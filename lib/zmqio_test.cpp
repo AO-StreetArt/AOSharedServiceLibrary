@@ -59,6 +59,7 @@ int main()
   //Cleanup
   delete zmqi;
   delete zmqo;
+  delete zmq_logging;
   delete logging;
 
   return 0;

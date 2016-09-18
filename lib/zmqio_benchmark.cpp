@@ -82,6 +82,7 @@ hayai::Benchmarker::RunAllTests();
 
 delete zmqo;
 delete zmqi;
+delete zmq_logging;
 delete logging;
 
 return 0;

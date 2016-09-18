@@ -7,6 +7,7 @@
 #include "include/factory/logging_interface.h"
 #include "include/logging.h"
 #include "include/factory/writeable.h"
+#include "include/factory/callbacks.h"
 
 //Test Data Class with to_json method
 class TestData: public Writeable
@@ -37,34 +38,48 @@ public:
   }
 };
 
-static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t op,
-   lcb_error_t err, const lcb_store_resp_t *resp)
+//Couchbase Callbacks
+std::string my_storage_callback (Request *r)
 {
-  if (err == LCB_SUCCESS) {
-    printf("Stored %.*s\n", (int)resp->v.v0.nkey, (char*)resp->v.v0.key);
+  if (r->req_err->err_code == NOERROR)
+  {
+    std::cout << "stored: " << r->req_addr << std::endl;
   }
-  else {
-    fprintf(stderr, "Couldn't retrieve item: %s\n", lcb_strerror(instance, err));
+  else
+  {
+    std::cout << "Failed to Store: " << r->req_addr << std::endl;
+    std::cout << r->req_err->err_message << std::endl;
   }
+  return r->req_addr;
 }
 
-static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
-   const lcb_get_resp_t *resp)
+std::string my_retrieval_callback (Request *r)
 {
-  printf("Retrieved key %.*s\n", (int)resp->v.v0.nkey, (char*)resp->v.v0.key);
-  printf("Value is %.*s\n", (int)resp->v.v0.nbytes, (char*)resp->v.v0.bytes);
+  if (r->req_err->err_code == NOERROR)
+  {
+    std::cout << "retrieved: " << r->req_addr << std::endl;
+    std::cout << "value: " << r->req_data << std::endl;
+  }
+  else
+  {
+    std::cout << "Failed to Store: " << r->req_addr << std::endl;
+    std::cout << r->req_err->err_message << std::endl;
+  }
+  return r->req_addr;
 }
 
-static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp)
+std::string my_delete_callback (Request *r)
 {
-  if (err == LCB_SUCCESS) {
-    printf("Removed:");
-    printf( (char*)resp->v.v0.key );
+  if (r->req_err->err_code == NOERROR)
+  {
+    std::cout << "removed: " << r->req_addr << std::endl;
   }
-  else {
-    printf("Couldn't remove item:");
-    printf(lcb_strerror(instance, err));
+  else
+  {
+    std::cout << "Failed to Delete: " << r->req_addr << std::endl;
+    std::cout << r->req_err->err_message << std::endl;
   }
+  return r->req_addr;
 }
 
 int main ()
@@ -75,9 +90,9 @@ logging = new Logger(initFileName);
 
 //Create an object
 std::string name = "TestObject";
-TestData data (1, 2);
-data.set_key(name);
-const char* obj_key = data.get_key().c_str();
+TestData *obj_ptr = new TestData (1, 2);
+obj_ptr->set_key(name);
+const char* obj_key = obj_ptr->get_key().c_str();
 
 //Build the Couchbase Admin (which will automatically connect to the DB)
 CouchbaseAdmin cb ("couchbase://localhost/default");
@@ -85,12 +100,11 @@ CouchbaseAdmin cb ("couchbase://localhost/default");
 //Supports both password authentication and clustering
 printf("Connected to Couchbase");
 //Bind callbacks
-cb.bind_get_callback(get_callback);
-cb.bind_storage_callback(storage_callback);
-cb.bind_delete_callback(del_callback);
+cb.bind_get_callback(my_retrieval_callback);
+cb.bind_storage_callback(my_storage_callback);
+cb.bind_delete_callback(my_delete_callback);
 printf("Callbacks bound");
 //Write the object to the DB
-TestData *obj_ptr = &data;
 cb.create_object ( obj_ptr );
 cb.wait();
 printf("Create Object Tested");
@@ -99,7 +113,7 @@ cb.load_object ( obj_key );
 cb.wait();
 printf("Load Object Tested");
 //Update the object in the DB
-data.set_i ( 10 );
+obj_ptr->set_i ( 10 );
 cb.save_object ( obj_ptr );
 cb.wait();
 printf("Save Object Tested");
@@ -111,6 +125,7 @@ cb.delete_object ( obj_key );
 cb.wait();
 printf("Delete Object Tested");
 
+delete cb_logging;
 delete logging;
 
 return 0;

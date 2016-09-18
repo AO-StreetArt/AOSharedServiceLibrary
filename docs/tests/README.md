@@ -12,8 +12,11 @@ Now we have a set of executables that end with "test" which run some basic tests
     ./redis_test
     ./uuid_test
     ./zmqio_test
+    ./http_server_test
 
 Please note that the Redis, Couchbase, and Consul tests will require an active server/agent for the respective service.
+You can hit the http_server_test with curl from the command line with:
+`curl --request GET 'http://0.0.0.0:12345/'`
 
 # Benchmarks
 

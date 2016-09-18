@@ -8,6 +8,7 @@
 
 #include "writeable.h"
 #include "db_admin.h"
+#include "callbacks.h"
 
 #include <string>
 #include <string.h>
@@ -20,15 +21,6 @@ extern "C"
 
 #ifndef COUCHBASE_INTERFACE
 #define COUCHBASE_INTERFACE
-
-//! Define the storage callback that will get passed to Couchbase
-typedef void (*StorageCallback)(lcb_t, const void*, lcb_storage_t, lcb_error_t, const lcb_store_resp_t*);
-
-//! Define the get callback that will get passed to Couchbase
-typedef void (*GetCallback)(lcb_t, const void*, lcb_error_t, const lcb_get_resp_t*);
-
-//! Define the delete callback that will get passed to Couchbase
-typedef void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_resp_t*);
 
 //! The Couchbase Administrator handles interactions with the Couchbase DB
 
@@ -71,19 +63,19 @@ public:
 
 	//! When the requested object is loaded, the method bound with
 	//! bind_get_callback will be executed
-	virtual void bind_get_callback(GetCallback) = 0;
+	virtual void bind_get_callback(CallbackInterface) = 0;
 
 	//! Bind the Storage Callback
 
 	//! When the requested object is saved or created, the method bound with
 	//! bind_storage_callback will be executed
-	virtual void bind_storage_callback(StorageCallback) = 0;
+	virtual void bind_storage_callback(CallbackInterface) = 0;
 
 	//! Bind the Removal Callback
 
 	//! When the requested object is deleted, the method bound with
 	//! bind_delete_callback will be executed
-	virtual void bind_delete_callback(DelCallback) = 0;
+	virtual void bind_delete_callback(CallbackInterface) = 0;
 
 	//! Blocking call until the transaction stack is empty
 	virtual void wait () = 0;

@@ -1,0 +1,60 @@
+\hypertarget{classCommandLineInterpreter}{\section{Command\-Line\-Interpreter Class Reference}
+\label{classCommandLineInterpreter}\index{Command\-Line\-Interpreter@{Command\-Line\-Interpreter}}
+}
+Inheritance diagram for Command\-Line\-Interpreter\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCommandLineInterpreter}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCommandLineInterpreter_a01f8bc835f57c535fd20b75d83825067}{Command\-Line\-Interpreter} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Create a new Command Line Interpreter. \end{DoxyCompactList}\item 
+\hypertarget{classCommandLineInterpreter_ac47f18ba85e0a282c1e4e073aa9681e6}{bool \hyperlink{classCommandLineInterpreter_ac47f18ba85e0a282c1e4e073aa9681e6}{opt\-\_\-exist} (std\-::string key)}\label{classCommandLineInterpreter_ac47f18ba85e0a282c1e4e073aa9681e6}
+
+\begin{DoxyCompactList}\small\item\em Does a key exist? \end{DoxyCompactList}\item 
+\hypertarget{classCommandLineInterpreter_a98b3e98a2a9f6bb1df34e7c1ce438738}{std\-::string \hyperlink{classCommandLineInterpreter_a98b3e98a2a9f6bb1df34e7c1ce438738}{get\-\_\-opt} (std\-::string key)}\label{classCommandLineInterpreter_a98b3e98a2a9f6bb1df34e7c1ce438738}
+
+\begin{DoxyCompactList}\small\item\em Get an option by key. \end{DoxyCompactList}\item 
+std\-::string \hyperlink{classCommandLineInterpreter_a6d8a4dd860eca967dc27c47d06e92075}{get\-\_\-program\-\_\-name} ()
+\begin{DoxyCompactList}\small\item\em Get the program name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classCommandLineInterpreter_a01f8bc835f57c535fd20b75d83825067}{\index{Command\-Line\-Interpreter@{Command\-Line\-Interpreter}!Command\-Line\-Interpreter@{Command\-Line\-Interpreter}}
+\index{Command\-Line\-Interpreter@{Command\-Line\-Interpreter}!CommandLineInterpreter@{Command\-Line\-Interpreter}}
+\subsubsection[{Command\-Line\-Interpreter}]{\setlength{\rightskip}{0pt plus 5cm}Command\-Line\-Interpreter\-::\-Command\-Line\-Interpreter (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{classCommandLineInterpreter_a01f8bc835f57c535fd20b75d83825067}
+
+
+Create a new Command Line Interpreter. 
+
+Here we create a new interpreter by passing in the two arguments from the main method, int argc \& char$\ast$ argv\mbox{[}\mbox{]}. This parses arguments passed in the form\-: -\/arg\-\_\-key=arg\-\_\-val 
+
+\subsection{Member Function Documentation}
+\hypertarget{classCommandLineInterpreter_a6d8a4dd860eca967dc27c47d06e92075}{\index{Command\-Line\-Interpreter@{Command\-Line\-Interpreter}!get\-\_\-program\-\_\-name@{get\-\_\-program\-\_\-name}}
+\index{get\-\_\-program\-\_\-name@{get\-\_\-program\-\_\-name}!CommandLineInterpreter@{Command\-Line\-Interpreter}}
+\subsubsection[{get\-\_\-program\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string Command\-Line\-Interpreter\-::get\-\_\-program\-\_\-name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{classCommandLineInterpreter_a6d8a4dd860eca967dc27c47d06e92075}
+
+
+Get the program name. 
+
+Get the name of the executable currently being run. 
+
+Implements \hyperlink{classCommandLineInterface_a47bd2a11bc8d8f507a7f75dbef36a3c9}{Command\-Line\-Interface}.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+lib/include/cli.\-h\end{DoxyCompactItemize}

@@ -11,6 +11,7 @@
 #include "include/factory/redis_interface.h"
 #include "include/factory/uuid_interface.h"
 #include "include/factory/zmq_interface.h"
+#include "include/factory/http_server_interface.h"
 
 int main( int argc, char** argv )
 {
@@ -58,6 +59,12 @@ Zmqio *zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
 //! Get a ZMQ Inbound Interface instance
 Zmqio *zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
 
+//! Get an HTTP Server Interface instance
+HttpServerInterface *http = factory.get_http_server_interface("0.0.0.0", 12345);
+
+//! Get a Properties File Reader Instance
+PropertiesReaderInterface *props = factory.get_properties_reader_interface("test/test.properties");
+
 //Run our tests
 
 //Command Line Tests
@@ -66,17 +73,19 @@ if ( cli->opt_exist("name") ) {
   std::cout << cli->get_opt("name") << std::endl;
 }
 
+delete props;
+delete http;
 delete cli;
 delete uuid;
 delete ha;
 delete s;
 delete consul;
 delete ca;
-//delete ca2;
 delete ra;
-delete logging;
 delete zmqo;
 delete zmqi;
+shutdown_framework_logging();
+delete logging;
 
 return 0;
 }

@@ -1,9 +1,9 @@
 //This is the Couchbase DB Admin
 //This implements the DB Admin interface
 
-//However, it also requires you to implement
-//Additional callback functions unique to
-//the couchbase engine, which are called upon
+//It requires you to implement
+//Additional callback functions using the
+//universal callbacks, which are called upon
 //completion of the asynchronous threads
 
 #include "factory/db_admin.h"
@@ -29,10 +29,112 @@ extern "C"
 #ifndef COUCHBASE_ADMIN
 #define COUCHBASE_ADMIN
 
-//Define the callbacks that will get passed to Couchbase
-typedef void (*StorageCallback)(lcb_t, const void*, lcb_storage_t, lcb_error_t, const lcb_store_resp_t*);
-typedef void (*GetCallback)(lcb_t, const void*, lcb_error_t, const lcb_get_resp_t*);
-typedef void (*DelCallback)(lcb_t, const void*, lcb_error_t, const lcb_remove_resp_t*);
+extern CallbackInterface storage;
+extern CallbackInterface retrieval;
+extern CallbackInterface deletion;
+
+//Transfer the callback information into a Request and call the registered callback
+static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t op,
+   lcb_error_t err, const lcb_store_resp_t *resp)
+{
+	//Build the request
+	Request *r = new Request();
+  RequestError *rerr = r->req_err;
+
+	//Get the Key
+	char *key_data = (char*)resp->v.v0.key;
+
+	cb_logging->debug("CB Key:");
+	cb_logging->debug(key_data);
+
+	//Store the key in the request
+	if (key_data)
+	{
+		std::string key (key_data);
+		r->req_addr = key;
+	}
+
+	//Retrieve any errors
+  if (err != LCB_SUCCESS) {
+    rerr->err_code = COUCHBASE_BADREQUEST;
+		rerr->err_message = lcb_strerror(instance, err);
+  }
+  else {
+    rerr->err_code = NOERROR;
+  }
+
+	//Call the registered callback function
+	std::string rresp = (*storage)(r);
+	delete r;
+}
+
+static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
+   const lcb_get_resp_t *resp)
+{
+	//Build the request
+	Request *r = new Request();
+  RequestError *rerr = r->req_err;
+
+	//Get the Key
+	char *key_data = (char*)resp->v.v0.key;
+	if (key_data)
+	{
+		std::string key (key_data);
+		r->req_addr = key;
+	}
+
+	//Get the retrieved value
+	char *data = (char*)resp->v.v0.bytes;
+	if (data)
+	{
+		std::string val (data);
+		r->req_data = val;
+	}
+
+	//Retrieve any errors
+  if (err != LCB_SUCCESS) {
+    rerr->err_code = COUCHBASE_BADREQUEST;
+		rerr->err_message = lcb_strerror(instance, err);
+  }
+  else {
+    rerr->err_code = NOERROR;
+  }
+
+	//Call the registered callback function
+	std::string rresp = (*retrieval)(r);
+	delete r;
+}
+
+static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp)
+{
+	//Build the request
+	Request *r = new Request();
+  RequestError *rerr = r->req_err;
+
+	//Get the Key
+	char *key_data = (char*)resp->v.v0.key;
+	cb_logging->debug("CB Key:");
+	cb_logging->debug(key_data);
+
+	//Store the key in the request
+	if (key_data) {
+		std::string key (key_data);
+		r->req_addr = key;
+	}
+
+	//Retrieve any errors
+  if (err != LCB_SUCCESS) {
+    rerr->err_code = COUCHBASE_BADREQUEST;
+		rerr->err_message = lcb_strerror(instance, err);
+  }
+  else {
+		rerr->err_code = NOERROR;
+  }
+
+	//Call the registered callback function
+	std::string rresp = (*deletion)(r);
+	delete r;
+}
 
 //! The Couchbase Administrator handles interactions with the Couchbase DB
 
@@ -86,19 +188,19 @@ public:
 
 	//! When the requested object is loaded, the method bound with
 	//! bind_get_callback will be executed
-	void bind_get_callback(GetCallback);
+	void bind_get_callback(CallbackInterface);
 
 	//! Bind the Storage Callback
 
 	//! When the requested object is saved or created, the method bound with
 	//! bind_storage_callback will be executed
-	void bind_storage_callback(StorageCallback);
+	void bind_storage_callback(CallbackInterface);
 
 	//! Bind the Removal Callback
 
 	//! When the requested object is deleted, the method bound with
 	//! bind_delete_callback will be executed
-	void bind_delete_callback(DelCallback);
+	void bind_delete_callback(CallbackInterface);
 
 	//! Get the instance, for advanced operations if necessary.  Not advised
 	lcb_t get_instance ();

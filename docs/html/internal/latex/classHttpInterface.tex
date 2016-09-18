@@ -1,0 +1,114 @@
+\hypertarget{classHttpInterface}{\section{Http\-Interface Class Reference}
+\label{classHttpInterface}\index{Http\-Interface@{Http\-Interface}}
+}
+
+
+The H\-T\-T\-P Requests Administrators.  
+
+
+
+
+{\ttfamily \#include $<$http\-\_\-interface.\-h$>$}
+
+Inheritance diagram for Http\-Interface\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classHttpInterface}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classHttpInterface_a3ac819dcec45535bf3c0fa614c5bdfce}{virtual void \hyperlink{classHttpInterface_a3ac819dcec45535bf3c0fa614c5bdfce}{shutdown} ()=0}\label{classHttpInterface_a3ac819dcec45535bf3c0fa614c5bdfce}
+
+\begin{DoxyCompactList}\small\item\em Shutdown the admin. \end{DoxyCompactList}\item 
+\hypertarget{classHttpInterface_ac5a64589f4c4b68c4feedc58497b7c06}{virtual void \hyperlink{classHttpInterface_ac5a64589f4c4b68c4feedc58497b7c06}{bind\-\_\-get\-\_\-callback} (Write\-Callback)=0}\label{classHttpInterface_ac5a64589f4c4b68c4feedc58497b7c06}
+
+\begin{DoxyCompactList}\small\item\em Bind Callback. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classHttpInterface_af8e2e93e5affacd9420db0b6b0cb24db}{put} (char $\ast$url, char $\ast$data, int timeout)=0
+\begin{DoxyCompactList}\small\item\em Put. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classHttpInterface_a3f93eec08da2e42f14f2b23d18636442}{get} (char $\ast$url, int timeout)=0
+\begin{DoxyCompactList}\small\item\em Get. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classHttpInterface_a717a51a28818ff835a057d17cbeb32c1}{post} (char $\ast$url, char $\ast$data, int timeout)=0
+\begin{DoxyCompactList}\small\item\em Post. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classHttpInterface_af3d4141c2ec53c0b2dbb8de8fb22212d}{del} (char $\ast$url, int timeout)=0
+\begin{DoxyCompactList}\small\item\em Delete. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The H\-T\-T\-P Requests Administrators. 
+
+This class is in charge of making H\-T\-T\-P Requests Support for put, get post, and delete 
+
+\subsection{Member Function Documentation}
+\hypertarget{classHttpInterface_af3d4141c2ec53c0b2dbb8de8fb22212d}{\index{Http\-Interface@{Http\-Interface}!del@{del}}
+\index{del@{del}!HttpInterface@{Http\-Interface}}
+\subsubsection[{del}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\-Interface\-::del (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{url, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_af3d4141c2ec53c0b2dbb8de8fb22212d}
+
+
+Delete. 
+
+Delete from the given U\-R\-L with the specified timeout 
+
+Implemented in \hyperlink{classHttpAdmin_ac503bfdb6ddbcb197390b57029411f8a}{Http\-Admin}.
+
+\hypertarget{classHttpInterface_a3f93eec08da2e42f14f2b23d18636442}{\index{Http\-Interface@{Http\-Interface}!get@{get}}
+\index{get@{get}!HttpInterface@{Http\-Interface}}
+\subsubsection[{get}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\-Interface\-::get (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{url, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_a3f93eec08da2e42f14f2b23d18636442}
+
+
+Get. 
+
+Get from the given U\-R\-L with the specified timeout 
+
+Implemented in \hyperlink{classHttpAdmin_a70b93e959d2cef3fe2526d78203d5b19}{Http\-Admin}.
+
+\hypertarget{classHttpInterface_a717a51a28818ff835a057d17cbeb32c1}{\index{Http\-Interface@{Http\-Interface}!post@{post}}
+\index{post@{post}!HttpInterface@{Http\-Interface}}
+\subsubsection[{post}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\-Interface\-::post (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{url, }
+\item[{char $\ast$}]{data, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_a717a51a28818ff835a057d17cbeb32c1}
+
+
+Post. 
+
+Post to the given U\-R\-L the supplied data with the specified timeout 
+
+Implemented in \hyperlink{classHttpAdmin_a1e323e24e18a80d635450fa218bd0025}{Http\-Admin}.
+
+\hypertarget{classHttpInterface_af8e2e93e5affacd9420db0b6b0cb24db}{\index{Http\-Interface@{Http\-Interface}!put@{put}}
+\index{put@{put}!HttpInterface@{Http\-Interface}}
+\subsubsection[{put}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\-Interface\-::put (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{url, }
+\item[{char $\ast$}]{data, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_af8e2e93e5affacd9420db0b6b0cb24db}
+
+
+Put. 
+
+Put to the given U\-R\-L the supplied data with the specified timeout 
+
+Implemented in \hyperlink{classHttpAdmin_a671cbab4092d7602813722185560c6c4}{Http\-Admin}.
+
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+lib/include/factory/http\-\_\-interface.\-h\end{DoxyCompactItemize}

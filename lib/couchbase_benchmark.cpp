@@ -46,27 +46,35 @@ int getcounter = 0;
 int delcounter = 0;
 int loadcounter = 0;
 
-static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t op,
-   lcb_error_t err, const lcb_store_resp_t *resp)
+//Couchbase Callbacks
+std::string my_storage_callback (Request *r)
 {
-  if (err != LCB_SUCCESS) {
-    fprintf(stderr, "Couldn't retrieve item: %s\n", lcb_strerror(instance, err));
+  if (r->req_err->err_code != NOERROR)
+  {
+    std::cout << "Failed to Store: " << r->req_addr << std::endl;
+    std::cout << r->req_err->err_message << std::endl;
   }
+  return r->req_addr;
 }
 
-static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
-   const lcb_get_resp_t *resp)
+std::string my_retrieval_callback (Request *r)
 {
-  if (err != LCB_SUCCESS) {
-    fprintf(stderr, "Couldn't retrieve item: %s\n", lcb_strerror(instance, err));
+  if (r->req_err->err_code != NOERROR)
+  {
+    std::cout << "Failed to Store: " << r->req_addr << std::endl;
+    std::cout << r->req_err->err_message << std::endl;
   }
+  return r->req_addr;
 }
 
-static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp)
+std::string my_delete_callback (Request *r)
 {
-  if (err != LCB_SUCCESS) {
-    fprintf(stderr, "Couldn't retrieve item: %s\n", lcb_strerror(instance, err));
+  if (r->req_err->err_code != NOERROR)
+  {
+    std::cout << "Failed to Delete: " << r->req_addr << std::endl;
+    std::cout << r->req_err->err_message << std::endl;
   }
+  return r->req_addr;
 }
 
 
@@ -150,9 +158,9 @@ cb = factory.get_couchbase_interface("couchbase://localhost/default");
 //Supports both password authentication and clustering
 printf("Connected to Couchbase");
 //Bind callbacks
-cb->bind_storage_callback(storage_callback);
-cb->bind_get_callback(get_callback);
-cb->bind_delete_callback(del_callback);
+cb->bind_storage_callback(my_storage_callback);
+cb->bind_get_callback(my_retrieval_callback);
+cb->bind_delete_callback(my_delete_callback);
 
 //------------------------------Run Tests-------------------------------------//
 //----------------------------------------------------------------------------//
@@ -167,6 +175,7 @@ hayai::Benchmarker::RunAllTests();
 
 delete obj;
 delete cb;
+delete cb_logging;
 delete logging;
 
 return 0;

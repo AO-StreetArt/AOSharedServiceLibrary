@@ -119,14 +119,299 @@ void Logger::info(const char * msg)
   }
 }
 
-//Pull down different categories by name
-log4cpp::Category& Logger::get_category(std::string name)
+void Logger::debug(int msg)
 {
-  return log4cpp::Category::getInstance(name);
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->debug(std::to_string(msg));
+  }
+}
+
+void Logger::error(int msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->error(std::to_string(msg));
+  }
+}
+
+void Logger::info(int msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->info(std::to_string(msg));
+  }
+}
+
+void Logger::debug(float msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->debug(std::to_string(msg));
+  }
+}
+
+void Logger::error(float msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->error(std::to_string(msg));
+  }
+}
+
+void Logger::info(float msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->info(std::to_string(msg));
+  }
+}
+
+void Logger::debug(double msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->debug(std::to_string(msg));
+  }
+}
+
+void Logger::error(double msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->error(std::to_string(msg));
+  }
+}
+
+void Logger::info(double msg)
+{
+  if (!root_log)
+  {
+    std::cout << msg << std::endl;
+  }
+  else
+  {
+    root_log->info(std::to_string(msg));
+  }
 }
 
 //Pull down different categories by name
-log4cpp::Category* Logger::get_root()
+LoggingCategoryInterface* Logger::get_category(std::string name)
 {
-  return root_log;
+  return new LoggingCategory(name);
+}
+
+//--------------------------Logging Category Methods---------------------------//
+
+//Exposures that log to the root category
+void LoggingCategory::debug(std::string msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->debug(name + "::" + msg);
+  }
+}
+
+void LoggingCategory::error(std::string msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->error(name + "::" + msg);
+  }
+}
+
+void LoggingCategory::info(std::string msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->info(name + "::" + msg);
+  }
+}
+
+void LoggingCategory::debug(const char * msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->debug(name + "::" + msg);
+  }
+}
+
+void LoggingCategory::error(const char * msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->error(name + "::" + msg);
+  }
+}
+
+void LoggingCategory::info(const char * msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->info(name + "::" + msg);
+  }
+}
+
+void LoggingCategory::debug(int msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->debug(name + "::" + std::to_string(msg));
+  }
+}
+
+void LoggingCategory::error(int msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->error(name + "::" + std::to_string(msg));
+  }
+}
+
+void LoggingCategory::info(int msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->info(name + "::" + std::to_string(msg));
+  }
+}
+
+void LoggingCategory::debug(float msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->debug(name + "::" + std::to_string(msg));
+  }
+}
+
+void LoggingCategory::error(float msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->error(name + "::" + std::to_string(msg));
+  }
+}
+
+void LoggingCategory::info(float msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->info(name + "::" + std::to_string(msg));
+  }
+}
+
+void LoggingCategory::debug(double msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->debug(name + "::" + std::to_string(msg));
+  }
+}
+
+void LoggingCategory::error(double msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->error(name + "::" + std::to_string(msg));
+  }
+}
+
+void LoggingCategory::info(double msg)
+{
+  if (!int_category)
+  {
+    std::cout << name << ": " << msg << std::endl;
+  }
+  else
+  {
+    int_category->info(name + "::" + std::to_string(msg));
+  }
 }
