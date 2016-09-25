@@ -18,9 +18,10 @@ struct RedisConnectionException: public std::exception
 struct RedisOperationException: public std::exception
 {
   std::string int_msg;
-  RedisConnectionException (std::string msg) {int_msg = msg;}
-  RedisConnectionException () {}
-  ~RedisConnectionException() throw () {}
+  RedisOperationException (std::string msg) {int_msg = msg;}
+  RedisOperationException (const char * msg_cstr) {std::string msg (msg_cstr);int_msg = msg;}
+  RedisOperationException () {}
+  ~RedisOperationException() throw () {}
   const char * what() const throw ()
   {
     std::string what_str = "Error Connecting to Redis: " + int_msg;
