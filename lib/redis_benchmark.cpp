@@ -196,7 +196,6 @@ hayai::Benchmarker::RunAllTests();
 //----------------------------------------------------------------------------//
 
 delete xRedis;
-delete redis_logging;
 delete logging;
 
 return 0;

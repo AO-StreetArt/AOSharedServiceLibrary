@@ -66,7 +66,6 @@ ca.deregister_service(s0);
 
 logging->debug(ca.services());
 
-delete consul_logging;
 delete logging;
 
 }
