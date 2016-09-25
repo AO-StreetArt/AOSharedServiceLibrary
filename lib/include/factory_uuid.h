@@ -15,10 +15,10 @@ class uuidComponentFactory
 public:
 
   //! Create a new Service Component Factory
-  uuidComponentFactory();
+  uuidComponentFactory() {}
 
   //! Delete a Service Component Factory
-  ~uuidComponentFactory();
+  ~uuidComponentFactory() {}
 
   //! Get the UUID Interface instance
   uuidInterface* get_uuid_interface() {return new uuidAdmin;}

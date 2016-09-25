@@ -17,10 +17,10 @@ class ConsulComponentFactory
 public:
 
   //! Create a new Service Component Factory
-  ConsulComponentFactory();
+  ConsulComponentFactory() {}
 
   //! Delete a Service Component Factory
-  ~ConsulComponentFactory();
+  ~ConsulComponentFactory() {}
 
   //! Get a Consul Interface instance
   ConsulInterface* get_consul_interface( std::string caddr ) {return new ConsulAdmin( caddr );}

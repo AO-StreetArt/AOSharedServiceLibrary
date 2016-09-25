@@ -15,10 +15,10 @@ class CouchbaseComponentFactory
 public:
 
   //! Create a new Service Component Factory
-  CouchbaseComponentFactory();
+  CouchbaseComponentFactory() {}
 
   //! Delete a Service Component Factory
-  ~CouchbaseComponentFactory();
+  ~CouchbaseComponentFactory() {}
 
   //! Get a Couchbase Interface instance
   CouchbaseInterface* get_couchbase_interface( const char * conn ) {return new CouchbaseAdmin( conn );}

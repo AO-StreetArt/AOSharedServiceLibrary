@@ -16,10 +16,10 @@ class LoggingComponentFactory
 public:
 
   //! Create a new Service Component Factory
-  LoggingComponentFactory();
+  LoggingComponentFactory() {}
 
   //! Delete a Service Component Factory
-  ~LoggingComponentFactory();
+  ~LoggingComponentFactory() {}
 
   //! Get a Logging Interface instance
   LoggingInterface* get_logging_interface( std::string initFileName ) {return new Logger( initFileName );}
