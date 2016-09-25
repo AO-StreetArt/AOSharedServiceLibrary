@@ -14,10 +14,8 @@
 #include <string.h>
 #include <cstring>
 
-extern "C"
-{
-	#include <libcouchbase/couchbase.h>
-}
+#include <libcouchbase/couchbase.h>
+
 
 #ifndef COUCHBASE_INTERFACE
 #define COUCHBASE_INTERFACE
