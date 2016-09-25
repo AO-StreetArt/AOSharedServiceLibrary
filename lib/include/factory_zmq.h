@@ -43,6 +43,6 @@ public:
   //! Get an application response interface instance
   ApplicationResponseInterface* get_application_response_interface() {return new ApplicationResponse;}
 
-}
+};
 
 #endif
