@@ -16,7 +16,7 @@ BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
 LIBS = -lpthread -llog4cpp
 FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lxredis -lcurl -lcouchbase -levent `pkg-config --cflags --libs hiredis`
-FACTORIES = include/factory_cli.h include/factory_consul.h include/factory_couchbase.h include/factory_http_client.h include/factory_http_server.h include/factory_logging.h include/factory_props.h include/factory_redis.h include/factory_uuid.h include/factory_zmq.h
+FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/factory_couchbase.h lib/include/factory_http_client.h lib/include/factory_http_server.h lib/include/factory_logging.h lib/include/factory_props.h lib/include/factory_redis.h lib/include/factory_uuid.h lib/include/factory_zmq.h
 
 # typing 'make' will invoke the first target entry in the file
 # (in this case the default target entry)
