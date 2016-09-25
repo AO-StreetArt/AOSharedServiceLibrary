@@ -102,7 +102,6 @@ delete ca;
 delete ra;
 delete zmqo;
 delete zmqi;
-shutdown_framework_logging();
 delete logging;
 
 return 0;
