@@ -7,8 +7,9 @@
 #include <cstdlib>
 
 #include "include/factory/logging_interface.h"
-#include "include/factory/uuid_interface.h"
-#include "include/factory.h"
+#include "include/factory/zmq_interface.h"
+#include "include/factory_logging.h"
+#include "include/factory_zmq.h"
 
 Zmqio *zmqo;
 Zmqio *zmqi;
@@ -55,19 +56,20 @@ BENCHMARK(ZMQ, SendRecieve, 10, 100)
 int main()
 {
 
-ServiceComponentFactory factory;
+  ZmqComponentFactory zmq_factory;
+  LoggingComponentFactory logging_factory;
 
 //Read the Logging Configuration File
 std::string initFileName = "test/log4cpp_test.properties";
-logging = factory.get_logging_interface( initFileName );
+logging = logging_factory.get_logging_interface( initFileName );
 //logging = new Logger(initFileName);
 
 //Set up internal variables
 logging->info("Internal Logging Intialized");
 
 //Set up UUID Generator
-zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
-zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
+zmqo = zmq_factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
+zmqi = zmq_factory.get_zmq_inbound_interface( "tcp://*:5555" );
 
 //------------------------------Run Tests-------------------------------------//
 //----------------------------------------------------------------------------//

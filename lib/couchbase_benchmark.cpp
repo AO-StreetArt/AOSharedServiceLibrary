@@ -7,7 +7,8 @@
 #include "include/factory/couchbase_interface.h"
 #include "include/factory/logging_interface.h"
 
-#include "include/factory.h"
+#include "include/factory_logging.h"
+#include "include/factory_couchbase.h"
 
 //Test Data Class with to_json method
 class TestData: public Writeable
@@ -130,12 +131,13 @@ int main()
 {
 
 
-ServiceComponentFactory factory;
+  CouchbaseComponentFactory couchbase_factory;
+  LoggingComponentFactory logging_factory;
 
 //Application Setup
 
 std::string initFileName = "test/log4cpp_test.properties";
-logging = factory.get_logging_interface(initFileName);
+logging = logging_factory.get_logging_interface(initFileName);
 
 //Generate the UUID's for the benchmarks
 int i=0;
@@ -153,7 +155,7 @@ obj = new TestData (0, 1);
 
 //Set up the Couchbase Admin
 //Build the Couchbase Admin (which will automatically connect to the DB)
-cb = factory.get_couchbase_interface("couchbase://localhost/default");
+cb = couchbase_factory.get_couchbase_interface("couchbase://localhost/default");
 
 //Supports both password authentication and clustering
 printf("Connected to Couchbase");

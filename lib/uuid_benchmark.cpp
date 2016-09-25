@@ -8,7 +8,8 @@
 
 #include "include/factory/logging_interface.h"
 #include "include/factory/uuid_interface.h"
-#include "include/factory.h"
+#include "include/factory_logging.h"
+#include "include/factory_uuid.h"
 
 uuidInterface *uuid;
 
@@ -30,18 +31,19 @@ std::string uuid_str = uuid->generate();
 int main()
 {
 
-ServiceComponentFactory factory;
+  uuidComponentFactory uuid_factory;
+  LoggingComponentFactory logging_factory;
 
 //Read the Logging Configuration File
 std::string initFileName = "test/log4cpp_test.properties";
-logging = factory.get_logging_interface( initFileName );
+logging = logging_factory.get_logging_interface( initFileName );
 //logging = new Logger(initFileName);
 
 //Set up internal variables
 logging->info("Internal Logging Intialized");
 
 //Set up UUID Generator
-uuid = factory.get_uuid_interface();
+uuid = uuid_factory.get_uuid_interface();
 //uuid = new uuidAdmin;
 logging->info("UUID Generator Created");
 

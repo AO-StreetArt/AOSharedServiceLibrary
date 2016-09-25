@@ -9,7 +9,8 @@
 
 #include "include/factory/logging_interface.h"
 #include "include/factory/redis_interface.h"
-#include "include/factory.h"
+#include "include/factory_logging.h"
+#include "include/factory_redis.h"
 
 RedisInterface *xRedis;
 std::vector<std::string> uuid_list;
@@ -164,11 +165,12 @@ if (file.is_open()) {
 }
 
 //Set up the Service Factory
-ServiceComponentFactory factory;
+RedisComponentFactory redis_factory;
+LoggingComponentFactory logging_factory;
 
 //Read the Logging Configuration File
 std::string initFileName = "test/log4cpp_test.properties";
-logging = factory.get_logging_interface( initFileName );
+logging = logging_factory.get_logging_interface( initFileName );
 
 //Generate the UUID's for the benchmarks
 int i=0;
@@ -179,7 +181,7 @@ for (i=0; i< 1001; i++) {
 }
 
 //Set up Redis Connection
-xRedis = factory.get_redis_cluster_interface(RedisConnectionList);
+xRedis = redis_factory.get_redis_cluster_interface(RedisConnectionList);
 logging->info("Connected to Redis");
 
 //------------------------------Run Tests-------------------------------------//
