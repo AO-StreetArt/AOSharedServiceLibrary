@@ -3,7 +3,6 @@
 #include "xredis/xRedisClient.h"
 #include <string.h>
 #include <string>
-#include "factory/logging_interface.h"
 
 #include "factory/redis_interface.h"
 

@@ -1,14 +1,12 @@
 //An admin for generating UUID's
 
-#ifndef UUID_ADMIN
-#define UUID_ADMIN
-
 #include <string>
 #include <string.h>
 #include <uuid/uuid.h>
-
-#include "factory/logging_interface.h"
 #include "factory/uuid_interface.h"
+
+#ifndef UUID_ADMIN
+#define UUID_ADMIN
 
 //! UUID Admin
 
@@ -17,7 +15,7 @@
 class uuidAdmin: public uuidInterface
 {
 public:
-	uuidAdmin() {if (!uuid_logging) {uuid_logging = logging->get_category("uuid");}}
+	uuidAdmin() {}
 	~uuidAdmin() {}
 	//! Generate a new UUID
 

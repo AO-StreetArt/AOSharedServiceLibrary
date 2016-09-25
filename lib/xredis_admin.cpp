@@ -18,9 +18,6 @@ unsigned int APHash(const char *str) {
 //Initialization
 xRedisAdmin::xRedisAdmin(RedisNode conn_list[], int conn_list_size)
 {
-if (!redis_logging) {
-	redis_logging = logging->get_category("redis");
-}
 
 enum {
 CACHE_TYPE_1,
@@ -31,7 +28,7 @@ CACHE_TYPE_MAX,
 xRed.Init(CACHE_TYPE_MAX);
 bool bret = xRed.ConnectRedisCache(conn_list, conn_list_size, CACHE_TYPE_1);
 if (!bret) {
-redis_logging->error("Error connecting to Redis DB");
+throw RedisConnectionException();
 }
 }
 
@@ -68,9 +65,7 @@ if (bret) {
 return strValue;
 }
 else {
-redis_logging->error("Error Loading from Redis DB");
-redis_logging->error(d.GetErrInfo());
-return "";
+throw RedisOperationException(d.GetErrInfo());
 }
 }
 
@@ -88,8 +83,7 @@ d.CreateDBIndex(key, APHash, CACHE_TYPE_1);
 // sprintf(szKey, "%s", key);
 bool ret_val = xRed.set(d, key, val);
 if (!ret_val) {
-redis_logging->error("Error writing to Redis DB");
-redis_logging->error(d.GetErrInfo());
+throw RedisOperationException(d.GetErrInfo());
 }
 return ret_val;
 }
@@ -108,8 +102,7 @@ char szKey[256] = {0};
 sprintf(szKey, "%s", key);
 bool bret = xRed.del(d, szKey);
 if (!bret) {
-redis_logging->error("Error Deleting from Redis DB");
-redis_logging->error(d.GetErrInfo());
+throw RedisOperationException(d.GetErrInfo());
 }
 return bret;
 }
@@ -129,8 +122,7 @@ char szKey[256] = {0};
 sprintf(szKey, "%s", key);
 bool bret = xRed.expire(d, key, second);
 if (!bret) {
-redis_logging->error("Error setting expiration on Redis DB");
-redis_logging->error(d.GetErrInfo());
+throw RedisOperationException(d.GetErrInfo());
 }
 return bret;
 }

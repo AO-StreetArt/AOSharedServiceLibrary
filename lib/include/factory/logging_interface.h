@@ -60,21 +60,7 @@ public:
   virtual LoggingCategoryInterface* get_category(std::string name) = 0;
 };
 
-//Define the globals needed
-
 //! The global logging pointer that is instantiated and deleted at startup/shutdown, respectively
 extern LoggingInterface *logging;
-extern LoggingCategoryInterface *consul_logging;
-extern LoggingCategoryInterface *cb_logging;
-extern LoggingCategoryInterface *http_logging;
-extern LoggingCategoryInterface *uuid_logging;
-extern LoggingCategoryInterface *redis_logging;
-extern LoggingCategoryInterface *zmq_logging;
-
-//! Shutdown the internal framework logging subcategories
-
-//! Delete the logging categories that are created internally in the framework
-//! Every application should call this method on closing
-void shutdown_framework_logging();
 
 #endif

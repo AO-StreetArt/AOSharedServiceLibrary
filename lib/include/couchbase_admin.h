@@ -19,8 +19,6 @@
 #include <stdlib.h>
 #include <exception>
 
-#include "factory/logging_interface.h"
-
 extern "C"
 {
 	#include <libcouchbase/couchbase.h>
@@ -43,9 +41,6 @@ static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t o
 
 	//Get the Key
 	char *key_data = (char*)resp->v.v0.key;
-
-	cb_logging->debug("CB Key:");
-	cb_logging->debug(key_data);
 
 	//Store the key in the request
 	if (key_data)
@@ -113,8 +108,6 @@ static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, co
 
 	//Get the Key
 	char *key_data = (char*)resp->v.v0.key;
-	cb_logging->debug("CB Key:");
-	cb_logging->debug(key_data);
 
 	//Store the key in the request
 	if (key_data) {

@@ -6,6 +6,28 @@
 #ifndef REDIS_INTERFACE
 #define REDIS_INTERFACE
 
+struct RedisConnectionException: public std::exception
+{
+  const char * what() const throw ()
+  {
+    return "Error Connecting to Redis";
+  }
+};
+
+
+struct RedisOperationException: public std::exception
+{
+  std::string int_msg;
+  RedisConnectionException (std::string msg) {int_msg = msg;}
+  RedisConnectionException () {}
+  ~RedisConnectionException() throw () {}
+  const char * what() const throw ()
+  {
+    std::string what_str = "Error Connecting to Redis: " + int_msg;
+    return what_str.c_str();
+  }
+};
+
 //! A Structure for storing Redis Connection Information
 struct RedisConnChain
 {

@@ -1,10 +1,19 @@
 //An admin for generating UUID's
 
+#include <string>
+#include <string.h>
+#include <exception>
+
 #ifndef UUID_INTERFACE
 #define UUID_INTERFACE
 
-#include <string>
-#include <string.h>
+struct UuidSecurityException: public std::exception
+{
+	const char * what() const throw ()
+    {
+      return "UUID Generated in an unsafe manner that exposes a potential security risk : http://linux.die.net/man/3/uuid_generate";
+    }
+}
 
 //! UUID Admin
 

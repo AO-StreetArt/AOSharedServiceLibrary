@@ -6,6 +6,20 @@
 #ifndef HTTP_INTERFACE
 #define HTTP_INTERFACE
 
+struct HttpRequestException: public std::exception
+{
+  std::string int_msg;
+  HttpRequestException (std::string msg) {int_msg = msg;}
+  HttpRequestException () {}
+  ~HttpRequestException() throw () {}
+  const char * what() const throw ()
+  {
+    std::string what_str = "Error Sending HTTP Request: " + int_msg;
+    return what_str.c_str();
+  }
+};
+
+
 typedef size_t (*WriteCallback)(char *, size_t, size_t, void*);
 
 //! The HTTP Requests Administrators
