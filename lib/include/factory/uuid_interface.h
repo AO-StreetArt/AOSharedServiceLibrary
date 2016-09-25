@@ -13,7 +13,7 @@ struct UuidSecurityException: public std::exception
     {
       return "UUID Generated in an unsafe manner that exposes a potential security risk : http://linux.die.net/man/3/uuid_generate";
     }
-}
+};
 
 //! UUID Admin
 
