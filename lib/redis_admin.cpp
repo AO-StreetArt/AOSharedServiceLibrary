@@ -39,11 +39,11 @@ RedisAdmin::~RedisAdmin()
 {
   if (c)
   {
-    delete c;
+    redisFree(c);
   }
   if (reply)
   {
-    delete reply;
+    freeReplyObject(reply);
   }
 }
 
