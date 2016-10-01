@@ -61,11 +61,12 @@ std::string RedisAdmin::load ( std::string key )
 bool RedisAdmin::save ( std::string key, std::string msg )
 {
   reply = (redisReply *) redisCommand( c, "SET %s %s", key.c_str(), msg.c_str() );
-  freeReplyObject(reply);
+  bool ret_val = false;
   if ( strcmp(reply->str, "OK") == 0 ) {
-    return true;
+    ret_val = true;
   }
-  return false;
+  freeReplyObject(reply);
+  return ret_val;
 }
 
 //! Does a key exist in Redis?
