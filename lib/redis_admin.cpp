@@ -54,6 +54,7 @@ std::string RedisAdmin::load ( std::string key )
   reply = (redisReply *) redisCommand(c, key_str.c_str());
   std::string reply_str (reply->str);
   freeReplyObject(reply);
+  reply = NULL;
   return reply_str;
 }
 
@@ -66,6 +67,7 @@ bool RedisAdmin::save ( std::string key, std::string msg )
     ret_val = true;
   }
   freeReplyObject(reply);
+  reply = NULL;
   return ret_val;
 }
 
@@ -76,6 +78,7 @@ bool RedisAdmin::exists ( std::string key )
   reply = (redisReply *) redisCommand(c, key_str.c_str());
   int reply_code = reply->integer;
   freeReplyObject(reply);
+  reply = NULL;
   if (reply_code == 1) {
     return true;
   }
@@ -87,8 +90,10 @@ bool RedisAdmin::del ( std::string key )
 {
   std::string key_str = "DEL " + key;
   reply = (redisReply *) redisCommand( c, key_str.c_str() );
+  int reply_code = reply->integer;
   freeReplyObject(reply);
-  if (reply->integer > 0) {
+  reply = NULL;
+  if (reply_code > 0) {
     return true;
   }
   return false;
@@ -99,8 +104,10 @@ bool RedisAdmin::expire ( std::string key, unsigned int second)
 {
   std::string length_key = std::to_string(second);
   reply = (redisReply *) redisCommand( c, "EXPIRE %s %s", key.c_str(), length_key.c_str() );
+  int reply_code = reply->integer;
   freeReplyObject(reply);
-  if (reply->integer == 1) {
+  reply = NULL;
+  if (reply_code == 1) {
     return true;
   }
   return false;

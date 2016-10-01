@@ -8,8 +8,8 @@
 
 class RedisAdmin : public RedisInterface
 {
-redisContext *c;
-redisReply *reply;
+redisContext *c = NULL;
+redisReply *reply = NULL;
 void init(std::string hostname, int port, int timeout_seconds, int timeout_microseconds);
 public:
   //TO-DO: Constructor accepting list of connections to Sentinels for HA setups
