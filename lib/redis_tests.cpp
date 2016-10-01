@@ -5,6 +5,7 @@
 #include <sstream>
 #include <fstream>
 #include <cstdlib>
+#include <vector>
 
 #include "include/factory/redis_interface.h"
 
@@ -16,7 +17,7 @@
 
 std::vector<RedisConnChain> RedisConnectionList;
 
-xRedisAdmin *xRedis;
+RedisAdmin *xRedis;
 
 int main()
 {
@@ -91,27 +92,6 @@ if (file.is_open()) {
   file.close();
 }
 
-//Set up the Redis Admin
-//Set up our Redis Connection List
-int conn_list_size = RedisConnectionList.size();
-RedisNode RedisList1[conn_list_size];
-for (int y = 0; y < conn_list_size; ++y)
-{
-  //Pull the values from RedisConnectionList
-  RedisNode redis_n;
-  redis_n.dbindex = y;
-  RedisConnChain redis_chain = RedisConnectionList[y];
-  redis_n.host = redis_chain.ip.c_str();
-  redis_n.port = redis_chain.port;
-  redis_n.passwd = redis_chain.password.c_str();
-  redis_n.poolsize = redis_chain.pool_size;
-  redis_n.timeout = redis_chain.timeout;
-  redis_n.role = redis_chain.role;
-  std::cout << "Line added to Redis Configuration List with IP:" << std::endl;
-  std::cout << redis_n.host << std::endl;
-
-  RedisList1[y] = redis_n;
-}
 std::cout << "Redis Connection List Built" << std::endl;
 
 //Set up Redis Connection
