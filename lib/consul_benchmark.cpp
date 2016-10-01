@@ -147,7 +147,6 @@ hayai::Benchmarker::RunAllTests();
 
 delete consul;
 delete service;
-delete consul_logging;
 delete logging;
 
 return 0;
