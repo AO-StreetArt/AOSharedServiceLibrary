@@ -1,8 +1,6 @@
 #include <string>
 #include <stdlib.h>
 #include <zmq.hpp>
-
-#include "factory/logging_interface.h"
 #include "factory/zmq_interface.h"
 
 #ifndef ZMQIO

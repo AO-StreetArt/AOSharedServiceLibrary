@@ -122,8 +122,6 @@ int main()
     logging->debug("Tests completed");
 
     ha.shutdown();
-
-  delete http_logging;
   delete logging;
 
   return 0;

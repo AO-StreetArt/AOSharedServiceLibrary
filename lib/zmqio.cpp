@@ -6,7 +6,6 @@
 Zmqi::Zmqi(zmq::context_t &context)
 {
   zmqi = new zmq::socket_t (context, ZMQ_REP);
-  if (!zmq_logging) {zmq_logging = logging->get_category("zmq");}
 }
 
 Zmqi::~Zmqi()
@@ -27,12 +26,10 @@ std::string Zmqi::recv()
 
   //  Wait for next request from client
   zmqi->recv (&request);
-  zmq_logging->info("ZMQ: Inbound Request Recieved");
 
   //Convert the OMQ message into a string to be passed
   std::string req_string;
   req_string = hexDump (request);
-  zmq_logging->debug(req_string);
   return req_string;
 }
 
@@ -46,8 +43,6 @@ void Zmqi::send(const char * msg, int msg_size)
   memcpy (reply.data (), msg, msg_size);
   //Send the response
   zmqi->send (reply);
-  zmq_logging->info("ZMQ: Inbound Response Sent");
-  zmq_logging->debug(msg);
 }
 
 //Send a string response
@@ -62,7 +57,6 @@ void Zmqi::send(std::string msg)
 //Constructor & Destructor
 Zmqo::Zmqo(zmq::context_t &context)
 {
-  if (!zmq_logging) {zmq_logging = logging->get_category("zmq");}
   zmqo = new zmq::socket_t (context, ZMQ_REQ);
 }
 
@@ -86,9 +80,6 @@ void Zmqo::send(const char * msg, int msg_size)
 
   //Send the message
   zmqo->send (req);
-
-  zmq_logging->info("ZMQ: Outbound Message Sent");
-  zmq_logging->debug(msg);
 }
 
 //Send a string message
@@ -103,11 +94,8 @@ std::string Zmqo::recv()
   //  Get the reply.
   zmq::message_t rep;
   zmqo->recv (&rep);
-
-  zmq_logging->info("ZMQ: Outbound Response Recieved");
-
+  
   //Process the reply
   std::string r_str = hexDump(rep);
-  zmq_logging->debug(r_str);
   return r_str;
 }

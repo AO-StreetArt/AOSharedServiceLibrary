@@ -8,7 +8,8 @@
 
 #include "include/factory/logging_interface.h"
 #include "include/factory/consul_interface.h"
-#include "include/factory.h"
+#include "include/factory_consul.h"
+#include "include/factory_logging.h"
 
 ConsulInterface *consul;
 ServiceInterface *service;
@@ -104,20 +105,21 @@ BENCHMARK(CONSUL, DeleteConfigurationValue, 10, 100)
 int main()
 {
 
-ServiceComponentFactory factory;
+ConsulComponentFactory consul_factory;
+LoggingComponentFactory logging_factory;
 
 //Read the Logging Configuration File
 std::string initFileName = "test/log4cpp_test.properties";
-logging = factory.get_logging_interface( initFileName );
+logging = logging_factory.get_logging_interface( initFileName );
 //logging = new Logger(initFileName);
 
 //Set up internal variables
 logging->info("Internal Logging Intialized");
 
 //Set up UUID Generator
-consul = factory.get_consul_interface( "localhost:8500" );
+consul = consul_factory.get_consul_interface( "localhost:8500" );
 
-service = factory.get_service_interface( "1", "CLyman", "tcp://*", "5555" );
+service = consul_factory.get_service_interface( "1", "CLyman", "tcp://*", "5555" );
 service->add_tag("Testing");
 
 //Generate the UUID's for the benchmarks
@@ -145,7 +147,6 @@ hayai::Benchmarker::RunAllTests();
 
 delete consul;
 delete service;
-delete consul_logging;
 delete logging;
 
 return 0;

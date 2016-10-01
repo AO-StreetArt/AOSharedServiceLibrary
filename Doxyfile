@@ -1,7 +1,7 @@
 PROJECT_NAME     = AoSharedServiceLibrary
 OUTPUT_DIRECTORY = docs/html
 WARNINGS         = YES
-INPUT            = lib/include/factory.h lib/include/factory
+INPUT            = include/factory_cli.h include/factory_consul.h include/factory_couchbase.h include/factory_http_client.h include/factory_http_server.h include/factory_logging.h include/factory_props.h include/factory_redis.h include/factory_uuid.h include/factory_zmq.h lib/include/factory
 FILE_PATTERNS    = *.cpp *.h
 INCLUDE_PATH     = lib
 SEARCHENGINE     = NO

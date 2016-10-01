@@ -9,7 +9,8 @@
 
 #include "include/factory/logging_interface.h"
 #include "include/factory/redis_interface.h"
-#include "include/factory.h"
+#include "include/factory_logging.h"
+#include "include/factory_redis.h"
 
 RedisInterface *xRedis;
 std::vector<std::string> uuid_list;
@@ -28,7 +29,7 @@ BENCHMARK(Redis, Save, 10, 100)
 std::string uuid_str = uuid_list[savecounter];
 
 //save
-bool bRet = xRedis->save( uuid_str.c_str(), "123");
+bool bRet = xRedis->save( uuid_str, "123");
 if (!bRet) {
 logging->error("Error putting object to Redis Smart Update Buffer");
 }
@@ -43,7 +44,7 @@ BENCHMARK(Redis, ExistsTrue, 10, 100)
 std::string uuid_str = uuid_list[existcounter];
 
 //exists
-bool eRet = xRedis->exists( uuid_str.c_str() );
+bool eRet = xRedis->exists( uuid_str );
 
 existcounter=existcounter+1;
 
@@ -55,7 +56,7 @@ BENCHMARK(Redis, ExistsFalse, 10, 100)
 std::string uuid_str = "TEST";
 
 //exists
-bool eRet = xRedis->exists( uuid_str.c_str() );
+bool eRet = xRedis->exists( uuid_str );
 
 }
 
@@ -65,7 +66,7 @@ BENCHMARK(Redis, Load, 10, 100)
 std::string uuid_str = uuid_list[getcounter];
 
 //load
-std::string strValue = xRedis->load( uuid_str.c_str() );
+std::string strValue = xRedis->load( uuid_str );
 
 getcounter=getcounter+1;
 
@@ -77,7 +78,7 @@ BENCHMARK(Redis, Delete, 10, 100)
 std::string uuid_str = uuid_list[delcounter];
 
 //Delete
-xRedis->del( uuid_str.c_str() );
+xRedis->del( uuid_str );
 
 delcounter=delcounter+1;
 
@@ -164,11 +165,12 @@ if (file.is_open()) {
 }
 
 //Set up the Service Factory
-ServiceComponentFactory factory;
+RedisComponentFactory redis_factory;
+LoggingComponentFactory logging_factory;
 
 //Read the Logging Configuration File
 std::string initFileName = "test/log4cpp_test.properties";
-logging = factory.get_logging_interface( initFileName );
+logging = logging_factory.get_logging_interface( initFileName );
 
 //Generate the UUID's for the benchmarks
 int i=0;
@@ -179,7 +181,7 @@ for (i=0; i< 1001; i++) {
 }
 
 //Set up Redis Connection
-xRedis = factory.get_redis_cluster_interface(RedisConnectionList);
+xRedis = redis_factory.get_redis_interface("127.0.0.1", 6379);
 logging->info("Connected to Redis");
 
 //------------------------------Run Tests-------------------------------------//
@@ -194,7 +196,6 @@ hayai::Benchmarker::RunAllTests();
 //----------------------------------------------------------------------------//
 
 delete xRedis;
-delete redis_logging;
 delete logging;
 
 return 0;

@@ -8,7 +8,6 @@
 #include <sstream>
 #include <curl/curl.h>
 
-#include "factory/logging_interface.h"
 #include "factory/http_interface.h"
 
 //! The HTTP Requests Administrators
@@ -22,7 +21,7 @@ bool send(char * url, int timeout);
 public:
 
   //! Start a new HTTP Requests Admin
-  HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();if (!http_logging) {http_logging = logging->get_category("http");}}
+  HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();}
 
   //! Shutdown the admin
   void shutdown() {curl_global_cleanup();}

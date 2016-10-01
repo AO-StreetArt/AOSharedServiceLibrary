@@ -12,9 +12,7 @@ uuid_t uuid;
 uuid_gen_result = uuid_generate_time_safe(uuid);
 
 if (uuid_gen_result == -1) {
-	uuid_logging->error("UUID Generated in an unsafe manner that exposes a potential security risk");
-	uuid_logging->error("http://linux.die.net/man/3/uuid_generate");
-	uuid_logging->error("Please take the needed actions to allow uuid generation with a safe generator");
+	throw UuidSecurityException();
 }
 
 char uuid_str[37];

@@ -7,7 +7,7 @@
 #include <cstdlib>
 
 #include "include/factory/logging_interface.h"
-#include "include/factory.h"
+#include "include/factory_logging.h"
 
 //----------------------------------------------------------------------------//
 //------------------------------Benchmarks------------------------------------//
@@ -41,11 +41,11 @@ logging->info("Testing");
 int main()
 {
 
-ServiceComponentFactory factory;
+LoggingComponentFactory logging_factory;
 
 //Read the Logging Configuration File
 std::string initFileName = "test/log4cpp_test.properties";
-logging = factory.get_logging_interface( initFileName );
+logging = logging_factory.get_logging_interface( initFileName );
 //logging = new Logger(initFileName);
 
 //Set up internal variables

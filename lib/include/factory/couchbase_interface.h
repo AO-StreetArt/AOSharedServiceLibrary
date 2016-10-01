@@ -13,14 +13,65 @@
 #include <string>
 #include <string.h>
 #include <cstring>
+#include <exception>
 
-extern "C"
-{
-	#include <libcouchbase/couchbase.h>
-}
+#include <libcouchbase/couchbase.h>
+
 
 #ifndef COUCHBASE_INTERFACE
 #define COUCHBASE_INTERFACE
+
+struct CouchbaseInitException: public std::exception
+{
+	std::string int_msg;
+  CouchbaseInitException (std::string msg) {int_msg = msg;}
+  CouchbaseInitException () {}
+  ~CouchbaseInitException() throw () {}
+  const char * what() const throw ()
+  {
+		std::string what_str = "Couldn't create Couchbase instance: " + int_msg;
+    return what_str.c_str();
+  }
+};
+
+struct CouchbaseConnectException: public std::exception
+{
+	std::string int_msg;
+  CouchbaseConnectException (std::string msg) {int_msg = msg;}
+  CouchbaseConnectException () {}
+  ~CouchbaseConnectException() throw () {}
+  const char * what() const throw ()
+  {
+		std::string what_str = "Couldn't schedule Couchbase connection: " + int_msg;
+    return what_str.c_str();
+  }
+};
+
+struct CouchbaseBootstrapException: public std::exception
+{
+	std::string int_msg;
+  CouchbaseBootstrapException (std::string msg) {int_msg = msg;}
+  CouchbaseBootstrapException () {}
+  ~CouchbaseBootstrapException() throw () {}
+  const char * what() const throw ()
+  {
+		std::string what_str = "Couchbase Bootstrapping Failed: " + int_msg;
+    return what_str.c_str();
+  }
+};
+
+struct CouchbaseOperationException: public std::exception
+{
+	std::string int_msg;
+  CouchbaseOperationException (std::string msg) {int_msg = msg;}
+  CouchbaseOperationException () {}
+  ~CouchbaseOperationException() throw () {}
+  const char * what() const throw ()
+  {
+		std::string what_str = "Couldn't Schedule Couchbase Operation: " + int_msg;
+    return what_str.c_str();
+  }
+};
 
 //! The Couchbase Administrator handles interactions with the Couchbase DB
 

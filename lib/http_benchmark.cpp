@@ -9,7 +9,8 @@
 
 #include "include/factory/logging_interface.h"
 #include "include/factory/http_interface.h"
-#include "include/factory.h"
+#include "include/factory_logging.h"
+#include "include/factory_http_client.h"
 
 //----------------------------HTTP Callbacks----------------------------------//
 
@@ -154,19 +155,18 @@ int main()
   strcpy(GETURL, get.c_str());
   strcpy(DELETEURL, del.c_str());
 
-ServiceComponentFactory factory;
+  HttpClientFactory http_client_factory;
+  LoggingComponentFactory logging_factory;
 
 //Read the Logging Configuration File
 std::string initFileName = "test/log4cpp_test.properties";
-logging = factory.get_logging_interface( initFileName );
-//logging = new Logger(initFileName);
+logging = logging_factory.get_logging_interface( initFileName );
 
 //Set up internal variables
 logging->info("Internal Logging Intialized");
 
-//Set up UUID Generator
-http = factory.get_http_interface();
-//uuid = new uuidAdmin;
+//Set up HTTP Client
+http = http_client_factory.get_http_interface();
 logging->info("HTTP Outbound Interface Created");
 
 //We set up the structure to store the return data
@@ -186,7 +186,6 @@ hayai::Benchmarker::RunAllTests();
 //----------------------------------------------------------------------------//
 
 delete http;
-delete http_logging;
 delete logging;
 
 return 0;

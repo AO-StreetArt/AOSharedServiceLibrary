@@ -2,7 +2,6 @@
 #define CONSUL_ADMIN
 
 #include "http_admin.h"
-#include "factory/logging_interface.h"
 
 #include "factory/consul_interface.h"
 #include "service.h"
@@ -41,7 +40,7 @@ public:
   std::string base64_decode(std::string const& encoded_string);
 
   //! Construct a consul admin, passing in the connection string
-  ConsulAdmin(std::string caddr) {ha = new HttpAdmin; consul_addr = caddr;timeout=5;if (!consul_logging) {consul_logging = logging->get_category("consul");}}
+  ConsulAdmin(std::string caddr) {ha = new HttpAdmin; consul_addr = caddr;timeout=5;}
 
   //! Delete a consul admin
   ~ConsulAdmin() {delete ha;}

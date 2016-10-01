@@ -3,15 +3,13 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <vector>
 
-#include "include/factory/logging_interface.h"
 #include "include/factory/redis_interface.h"
-#include "include/logging.h"
 
-#include "include/xredis_admin.h"
+#include "include/redis_admin.h"
 
 #include <assert.h>
 
@@ -19,7 +17,7 @@
 
 std::vector<RedisConnChain> RedisConnectionList;
 
-xRedisAdmin *xRedis;
+RedisAdmin *xRedis;
 
 int main()
 {
@@ -94,66 +92,34 @@ if (file.is_open()) {
   file.close();
 }
 
-
-//Read the Logging Configuration File
-std::string initFileName = "test/logging.properties";
-logging = new Logger(initFileName);
-
-//Set up internal variables
-logging->info("Internal Variables Intialized");
-
-//Set up the Redis Admin
-//Set up our Redis Connection List
-int conn_list_size = RedisConnectionList.size();
-RedisNode RedisList1[conn_list_size];
-for (int y = 0; y < conn_list_size; ++y)
-{
-  //Pull the values from RedisConnectionList
-  RedisNode redis_n;
-  redis_n.dbindex = y;
-  RedisConnChain redis_chain = RedisConnectionList[y];
-  redis_n.host = redis_chain.ip.c_str();
-  redis_n.port = redis_chain.port;
-  redis_n.passwd = redis_chain.password.c_str();
-  redis_n.poolsize = redis_chain.pool_size;
-  redis_n.timeout = redis_chain.timeout;
-  redis_n.role = redis_chain.role;
-  logging->debug("Line added to Redis Configuration List with IP:");
-  logging->debug(redis_n.host);
-
-  RedisList1[y] = redis_n;
-}
-logging->info("Redis Connection List Built");
+std::cout << "Redis Connection List Built" << std::endl;
 
 //Set up Redis Connection
-xRedis = new xRedisAdmin (RedisList1, conn_list_size);
-logging->info("Connected to Redis");
+xRedis = new RedisAdmin ("127.0.0.1", 6379);
+std::cout << "Connected to Redis" << std::endl;
 
 //save
 bool bRet = xRedis->save("Test", "123");
 if (!bRet) {
-logging->error("Error putting object to Redis Smart Update Buffer");
+std::cout << "Error putting object to Redis Smart Update Buffer" << std::endl;
 assert(bRet);
 }
 
 //exists
 bool eRet = xRedis->exists("Test");
 if (!eRet) {
-logging->error("Test not found in buffer");
+std::cout << "Test not found in buffer" << std::endl;
 assert(eRet);
 }
 
 //load
 std::string strValue = xRedis->load("Test");
 assert(strValue == "123");
-logging->debug(strValue);
+std::cout << strValue << std::endl;
 
 //Delete
 xRedis->del("Test");
 
 delete xRedis;
-delete redis_logging;
-delete logging;
-
 return 0;
 }
