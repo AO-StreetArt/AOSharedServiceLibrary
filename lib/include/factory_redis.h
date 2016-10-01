@@ -24,12 +24,12 @@ public:
 
   inline RedisInterface* get_redis_interface(std::string hostname, int port, int timeout_seconds, int timeout_microseconds)
   {
-    return new RedisAdmin(std::string hostname, int port, int timeout_seconds, int timeout_microseconds);
+    return new RedisAdmin( hostname, port, timeout_seconds, timeout_microseconds);
   }
 
   inline RedisInterface* get_redis_interface(std::string hostname, int port)
   {
-    return new RedisAdmin(std::string hostname, int port);
+    return new RedisAdmin( hostname, port);
   }
 
   //! Get a Redis Cluster Interface instance
