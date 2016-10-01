@@ -96,7 +96,7 @@ bool RedisAdmin::del ( std::string key )
 //! Expire a value in Redis after a specified number of seconds
 bool RedisAdmin::expire ( std::string key, unsigned int second)
 {
-  std::string length_key (second);
+  std::string length_key = std::to_string(second);
   reply = (redisReply *) redisCommand( c, "EXPIRE %s %s", key.c_str(), length_key.c_str() );
   freeReplyObject(reply);
   if (reply->integer == 1) {
