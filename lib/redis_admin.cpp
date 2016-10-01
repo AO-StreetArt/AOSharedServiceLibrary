@@ -62,7 +62,7 @@ bool RedisAdmin::save ( std::string key, std::string msg )
 {
   reply = (redisReply *) redisCommand( c, "SET %s %s", key.c_str(), msg.c_str() );
   freeReplyObject(reply);
-  if (reply->str == "OK") {
+  if ( strcmp(reply->str, "OK") == 0 ) {
     return true;
   }
   return false;
