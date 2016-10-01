@@ -59,17 +59,8 @@ CouchbaseInterface *ca = couchbase_factory.get_couchbase_interface( "couchbase:/
 //! Get a Couchbase Interface instance for a password protected DB
 //CouchbaseInterface *ca2 = factory.get_couchbase_interface( const char * conn, const char * pswd );
 
-//! Get a Redis Cluster Interface instance
-std::vector<RedisConnChain> RedisConnectionList;
-RedisConnChain r;
-r.ip = "127.0.0.1";
-r.port = 6379;
-r.password = "";
-r.pool_size = 2;
-r.timeout = 5;
-r.role = 0;
-RedisConnectionList.push_back(r);
-RedisInterface *ra = redis_factory.get_redis_cluster_interface( RedisConnectionList );
+//! Get a Redis Interface instance
+RedisInterface *ra = redis_factory.get_redis_interface( "127.0.0.1", 6379 );
 
 //! Get a ZMQ Outbound Interface instance
 Zmqio *zmqo = zmq_factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
