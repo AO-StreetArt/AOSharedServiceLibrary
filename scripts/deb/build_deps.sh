@@ -26,9 +26,9 @@ if [ ! -d /usr/local/include/xredis ]; then
   printf "Building XRedis"
 
   mkdir $PRE/xredis
-  git clone https://github.com/AO-StreetArt/xredis.git $PRE/xredis
+  git clone https://github.com/redis/hiredis.git ./hiredis $PRE/hiredis
 
-  cd $PRE/xredis && make && sudo make install
+  cd $PRE/hiredis && make && sudo make install
 
 fi
 
