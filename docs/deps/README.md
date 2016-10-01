@@ -4,7 +4,7 @@ You will need Zero MQ which can be found [here] (http://zeromq.org/intro:get-the
 
 For logging, we use log4cpp, which can be found [here] (http://log4cpp.sourceforge.net/)
 
-You will also need xRedis, which can be found [here] (https://github.com/0xsky/xredis).  We recommend that you download our [development fork](https://github.com/AO-StreetArt/xredis), as we test any new pushes to the library on the dev branch and promote to master once it is considered stable.
+You will need libhiredis, which can be found [here] (https://github.com/redis/hiredis)
 
 You will need Couchbase drivers installed.  Couchbase drivers can be found [here] (http://developer.couchbase.com/documentation/server/4.1/sdks/c-2.4/overview.html)
 

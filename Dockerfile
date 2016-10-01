@@ -25,20 +25,14 @@ RUN apt-get update
 #Ensure that specific build requirements are satisfied
 RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git software-properties-common
 
-#Get the RapidJSON Dependency
-RUN git clone https://github.com/miloyip/rapidjson.git
-
-#Move the RapidJSON header files to the include path
-RUN cp -r rapidjson/include/rapidjson/ /usr/local/include
-
 #Get the Couchbase dependecies
 RUN wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
 RUN dpkg -i couchbase-release-1.0-2-amd64.deb
 
-#Get the XRedis Dependencies
-RUN git clone https://github.com/AO-StreetArt/xredis.git ./xredis
+#Get the Redis Dependencies
+RUN git clone https://github.com/redis/hiredis.git ./hiredis
 
-RUN cd ./xredis && make && make install
+RUN cd ./hiredis && make && make install
 
 #Get the ZMQ Dependencies
 RUN wget https://github.com/zeromq/zeromq4-1/releases/download/v4.1.4/zeromq-4.1.4.tar.gz
