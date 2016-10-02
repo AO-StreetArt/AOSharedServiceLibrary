@@ -52,7 +52,7 @@ public:
 
   //! Get from the given URL
   //! with the specified timeout
-  bool get(std::string url, int timeout);
+  std::string get(std::string url, int timeout);
 
   //! Post
 
@@ -64,7 +64,7 @@ public:
 
   //! Delete from the given URL
   //! with the specified timeout
-  bool del(char * url, int timeout);
+  bool del(std::string url, int timeout);
 };
 
 #endif
