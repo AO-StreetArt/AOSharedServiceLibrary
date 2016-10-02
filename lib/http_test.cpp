@@ -11,64 +11,63 @@
 
 int main()
 {
-    //----------------------------TEST SETUP----------------------------------//
+  //----------------------------TEST SETUP----------------------------------//
 
-    //Variables to store URL's
-    std::string post = "http://httpbin.org/post";
-    std::string put = "http://httpbin.org/put";
-    std::string get = "http://httpbin.org/get";
-    std::string del = "http://httpbin.org/delete";
+  //Variables to store URL's
+  std::string post = "http://httpbin.org/post";
+  std::string put = "http://httpbin.org/put";
+  std::string get = "http://httpbin.org/get";
+  std::string del = "http://httpbin.org/delete";
 
-    //----------------------------MAIN TEST-----------------------------------//
+  //----------------------------MAIN TEST-----------------------------------//
 
-    HttpAdmin ha;
+  HttpAdmin ha;
 
-    //-------------------------------GET--------------------------------------//
+  //-------------------------------GET--------------------------------------//
 
-    //Send the request
-    std::string ret_val = ha.get(get, 5);
-    if ( ret_val.empty() )
-    {
-      //We now have the full response
-      assert(false);
-    }
-    else
-    {
-      std::cout << ("Retrieved:") << std::endl;
-      std::cout << (ret_val) << std::endl;
-    }
+  //Send the request
+  std::string ret_val = ha.get(get, 5);
+  if ( ret_val.empty() )
+  {
+    //We now have the full response
+    assert(false);
+  }
+  else
+  {
+    std::cout << ("Retrieved:") << std::endl;
+    std::cout << (ret_val) << std::endl;
+  }
 
-    //-------------------------------PUT--------------------------------------//
+  //-------------------------------PUT--------------------------------------//
 
-    success = ha.put(put, "123", 5);
-    if (!success)
-    {
-      //We now have the full response
-      assert(false);
-    }
+  bool success = ha.put(put, "123", 5);
+  if (!success)
+  {
+    //We now have the full response
+    assert(false);
+  }
 
-    //-------------------------------POST-------------------------------------//
+  //-------------------------------POST-------------------------------------//
 
-    success = ha.post(post, "CLYMAN", 5);
-    if (!success)
-    {
-      //We now have the full response
-      assert(false);
-    }
+  success = ha.post(post, "CLYMAN", 5);
+  if (!success)
+  {
+    //We now have the full response
+    assert(false);
+  }
 
-    //------------------------------DELETE------------------------------------//
+  //------------------------------DELETE------------------------------------//
 
-    success = ha.del(del, 5);
-    if (!success)
-    {
-      //We now have the full response
-      assert(false);
-    }
+  success = ha.del(del, 5);
+  if (!success)
+  {
+    //We now have the full response
+    assert(false);
+  }
 
-    std::cout << ("Tests completed") << std::endl;
+  std::cout << ("Tests completed") << std::endl;
 
-    ha.shutdown();
-  delete logging;
+  ha.shutdown();
 
   return 0;
 }
