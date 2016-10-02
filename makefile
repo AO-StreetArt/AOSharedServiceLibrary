@@ -176,7 +176,7 @@ consul_benchmark: lib/consul_benchmark.o lib/logging.o lib/consul_admin.o lib/ht
 lib/consul_benchmark.o: lib/consul_benchmark.cpp lib/include/factory/consul_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_benchmark.cpp $(STD)
 
-couchbase_benchmark: lib/couchbase_benchmark.o lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o lib/logging_interface.o
+couchbase_benchmark: lib/couchbase_benchmark.o lib/logging.o lib/couchbase_admin.o lib/logging_interface.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid -lcouchbase $(STD)
 
 lib/couchbase_benchmark.o: lib/couchbase_benchmark.cpp lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
