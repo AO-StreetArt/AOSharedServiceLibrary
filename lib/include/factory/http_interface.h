@@ -35,9 +35,6 @@ public:
 
   virtual ~HttpInterface() {}
 
-  //! Bind Callback
-  virtual void bind_get_callback(WriteCallback) = 0;
-
   //HTTP Methods
 
   //! Put
