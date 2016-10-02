@@ -12,6 +12,7 @@ OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.
 TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_tests factory_test http_server_test properties_reader_test app_response_test
 TESTS_RHEL = cli_test consul_test logging_test http_test zmqio_test couchbase_test factory_test_rhel http_server_test properties_reader_test app_response_test redis_tests_rhel
 BENCHMARKS = consul_benchmark logging_benchmark http_benchmark couchbase_benchmark redis_benchmark
+BENCHMARKS_RHEL = redis_benchmark_rhel consul_benchmark logging_benchmark http_benchmark couchbase_benchmark
 INCL = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/local/include/aossl/factory_uuid.h /usr/local/include/aossl/factory_redis.h /usr/local/include/aossl/factory_props.h /usr/local/include/aossl/factory_logging.h /usr/local/include/aossl/factory_http_server.h /usr/local/include/aossl/factory_http_client.h /usr/local/include/aossl/factory_couchbase.h /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/http_admin.h /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/redis_admin.h /usr/local/include/aossl/zmqio.h /usr/local/include/aossl/http_server.h /usr/local/include/aossl/properties_reader.h /usr/local/include/aossl/factory/properties_reader_interface.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h /usr/local/include/aossl/response.h /usr/local/include/aossl/factory/response_interface.h
 BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
@@ -35,6 +36,9 @@ rhel-test: $(TESTS_RHEL)
 
 # typing 'make benchmarks' will build the benchmarks
 benchmarks: $(BENCHMARKS)
+
+# typing 'make rhel-benchmarks' will build benchmarks on RHEL/CentOS
+rhel-benchmarks: $(BENCHMARKS_RHEL)
 
 # typing 'sudo make install' will install the libraries into system paths
 install: /usr/local/lib/libaossl.a $(INCL)
@@ -166,58 +170,61 @@ clean: clean_local clean_tests clean_benchmarks
 	cp $< $@
 
 # Generate Benchmarks
-consul_benchmark: lib/consul_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/consul_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
+consul_benchmark: lib/consul_benchmark.o lib/logging.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o lib/service.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid -lcurl $(STD)
 
 lib/consul_benchmark.o: lib/consul_benchmark.cpp lib/include/factory/consul_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_benchmark.cpp $(STD)
 
-couchbase_benchmark: lib/couchbase_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/couchbase_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
+couchbase_benchmark: lib/couchbase_benchmark.o lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid -lcouchbase $(STD)
 
 lib/couchbase_benchmark.o: lib/couchbase_benchmark.cpp lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_benchmark.cpp $(STD)
 
-http_benchmark: lib/http_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/http_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
+http_benchmark: lib/http_benchmark.o lib/logging.o lib/http_admin.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid -lcurl $(STD)
 
 lib/http_benchmark.o: lib/http_benchmark.cpp lib/include/factory/http_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/http_benchmark.cpp $(STD)
 
-logging_benchmark: lib/logging_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/logging_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
+logging_benchmark: lib/logging_benchmark.o lib/logging.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
 
 lib/logging_benchmark.o: lib/logging_benchmark.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_benchmark.cpp $(STD)
 
-redis_benchmark: lib/redis_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/redis_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
+redis_benchmark: lib/redis_benchmark.o lib/redis_admin.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid `pkg-config --cflags --libs hiredis` $(STD)
+
+redis_benchmark_rhel: lib/redis_benchmark.o lib/redis_admin.o
+	$(CC) $(CFLAGS) -o redis_benchmark $^ -lpthread -llog4cpp -luuid -lhiredis $(STD)
 
 lib/redis_benchmark.o: lib/redis_benchmark.cpp lib/include/factory/redis_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/redis_benchmark.cpp $(STD)
 
-uuid_benchmark: lib/uuid_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/uuid_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
+uuid_benchmark: lib/uuid_benchmark.o lib/logging.o lib/uuid_admin.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid $(STD)
 
 lib/uuid_benchmark.o: lib/uuid_benchmark.cpp lib/include/factory/uuid_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/uuid_benchmark.cpp $(STD)
 
-zmqio_benchmark: lib/zmqio_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/zmqio_benchmark.o $(OBJS) $(FULL_LIBS) $(STD)
+zmqio_benchmark: lib/zmqio_benchmark.o lib/logging.o lib/zmqio.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -lzmq $(STD)
 
 lib/zmqio_benchmark.o: lib/zmqio_benchmark.cpp lib/include/factory/zmq_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_benchmark.cpp $(STD)
 
 # Create the executable http_server_test
-http_server_test: lib/http_server_test.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/http_server_test.o $(OBJS) $(FULL_LIBS) $(STD)
+http_server_test: lib/http_server_test.o lib/http_server.o
+	$(CC) $(CFLAGS) -o $@ $^ -levent $(STD)
 
 lib/http_server_test.o: lib/http_server_test.cpp lib/include/http_server.h
 	$(CC) $(CFLAGS) -o $@ -c lib/http_server_test.cpp $(STD)
 
 # Create the executable file cli_test
 cli_test: lib/cli_test.o lib/cli.o
-	$(CC) $(CFLAGS) -o $@ lib/cli_test.o lib/cli.o $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(STD)
 
 # Create the object file cli_test.o
 lib/cli_test.o: lib/cli_test.cpp lib/include/cli.h
@@ -225,7 +232,7 @@ lib/cli_test.o: lib/cli_test.cpp lib/include/cli.h
 
 # Create the executable file consul_test
 consul_test: lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o lib/service.o
-	$(CC) $(CFLAGS) -o $@ -o $@ lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o lib/service.o $(LIBS) -lcurl $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -lcurl $(STD)
 
 # Create the object file consul_test.o
 lib/consul_test.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/factory/logging_interface.h lib/include/service.h
@@ -233,15 +240,15 @@ lib/consul_test.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/lo
 
 # Create the executable file couchbase_test
 couchbase_test: lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o lib/logging_interface.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o lib/logging_interface.o $(LIBS) -lcouchbase $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -lcouchbase $(STD)
 
 # Create the object file couchbase_test.o
 lib/couchbase_test.o: lib/couchbase_test.cpp lib/include/couchbase_admin.h lib/include/logging.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_test.cpp $(STD)
 
 # Create the executable file http_test
-http_test: lib/logging.o lib/http_admin.o lib/http_test.o lib/logging_interface.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/http_test.o lib/http_admin.o lib/logging_interface.o $(LIBS) -lcurl $(STD)
+http_test: lib/http_admin.o lib/http_test.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -lcurl $(STD)
 
 # Create the object file http_test.o
 lib/http_test.o: lib/http_test.cpp lib/include/http_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
@@ -249,19 +256,19 @@ lib/http_test.o: lib/http_test.cpp lib/include/http_admin.h lib/include/logging.
 
 # Create the executable file logging_test
 logging_test: lib/logging.o lib/logging_test.o lib/logging_interface.o
-	$(CC) $(CFLAGS) -o $@ lib/logging_test.o lib/logging.o lib/logging_interface.o $(LIBS) $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
 
 # Create the object file logging_test.o
 lib/logging_test.o: lib/logging_test.cpp lib/include/logging.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_test.cpp $(STD)
 
 # Create the executable file redis_tests
-redis_tests: lib/logging.o lib/redis_admin.o lib/redis_tests.o
-	$(CC) $(CFLAGS) -o $@ lib/redis_admin.o lib/redis_tests.o $(LIBS) `pkg-config --cflags --libs hiredis` $(STD)
+redis_tests: lib/redis_admin.o lib/redis_tests.o
+	$(CC) $(CFLAGS) -o $@ $^ `pkg-config --cflags --libs hiredis` $(STD)
 
 # Create the executable file redis_tests
-redis_tests_rhel: lib/logging.o lib/redis_admin.o lib/redis_tests.o
-	$(CC) $(CFLAGS) -o redis_tests lib/redis_admin.o lib/redis_tests.o -lhiredis $(STD)
+redis_tests_rhel: lib/redis_admin.o lib/redis_tests.o
+	$(CC) $(CFLAGS) -o redis_tests $^ -lhiredis $(STD)
 
 # Create the object file redis_tests.o
 lib/redis_tests.o: lib/redis_tests.cpp lib/include/redis_admin.h
@@ -269,7 +276,7 @@ lib/redis_tests.o: lib/redis_tests.cpp lib/include/redis_admin.h
 
 # Create the executable file uuid_test
 uuid_test: lib/logging.o lib/uuid_admin.o lib/uuid_test.o lib/logging_interface.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/uuid_admin.o lib/uuid_test.o lib/logging_interface.o $(LIBS) -luuid $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid $(STD)
 
 # Create the object file uuid_test.o
 lib/uuid_test.o: lib/uuid_test.cpp lib/include/uuid_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
@@ -277,7 +284,7 @@ lib/uuid_test.o: lib/uuid_test.cpp lib/include/uuid_admin.h lib/include/logging.
 
 # Create the executable file zmqio_test
 zmqio_test: lib/logging.o lib/zmqio.o lib/zmqio_test.o lib/logging_interface.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/zmqio.o lib/zmqio_test.o lib/logging_interface.o $(LIBS) -lzmq $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -lzmq $(STD)
 
 # Create the object file zmqio_test.o
 lib/zmqio_test.o: lib/zmqio_test.cpp lib/include/zmqio.h lib/include/logging.h lib/include/factory/logging_interface.h
@@ -285,7 +292,7 @@ lib/zmqio_test.o: lib/zmqio_test.cpp lib/include/zmqio.h lib/include/logging.h l
 
 # Create the executable file properties_reader_test
 properties_reader_test: lib/properties_reader_test.o lib/properties_reader.o
-	$(CC) $(CFLAGS) -o $@ lib/properties_reader_test.o lib/properties_reader.o $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(STD)
 
 # Create the object file properties_reader_test.o
 lib/properties_reader_test.o: lib/properties_reader_test.cpp lib/properties_reader.cpp lib/include/properties_reader.h
@@ -293,17 +300,17 @@ lib/properties_reader_test.o: lib/properties_reader_test.cpp lib/properties_read
 
 # Create the executable file app_response_test
 app_response_test: lib/response.o lib/app_response_test.o
-	$(CC) $(CFLAGS) -o $@ lib/response.o lib/app_response_test.o $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(STD)
 
 # Create the object file app_response_test.o
 lib/app_response_test.o: lib/response.o lib/app_response_test.cpp
 	$(CC) $(CFLAGS) -o $@ -c lib/app_response_test.cpp $(STD)
 
 factory_test: lib/factory_test.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ lib/factory_test.o $(OBJS) $(FULL_LIBS) $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(FULL_LIBS) $(STD)
 
 factory_test_rhel: lib/factory_test.o $(OBJS)
-	$(CC) $(CFLAGS) -o factory_test lib/factory_test.o $(OBJS) $(FULL_LIBS_RHEL) $(STD)
+	$(CC) $(CFLAGS) -o factory_test $^ $(FULL_LIBS_RHEL) $(STD)
 
 lib/factory_test.o: lib/factory_test.cpp $(FACTORIES)
 	$(CC) $(CFLAGS) -o $@ -c lib/factory_test.cpp $(STD)
