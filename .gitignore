@@ -4,5 +4,6 @@
 *.cc
 *.pb.*
 *_test
+*_tests
 *_benchmark
 *.a

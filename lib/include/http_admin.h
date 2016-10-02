@@ -5,6 +5,7 @@
 #define HTTP_ADMIN
 
 #include <string>
+#include <string.h>
 #include <sstream>
 #include <curl/curl.h>
 
