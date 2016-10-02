@@ -65,7 +65,6 @@ std::string ConsulAdmin::query(std::string query_url)
 
   //Send the HTTP Request
   std::string get_resp = ha->get(url_string, timeout);
-  delete url;
   if ( !get_resp.empty() )
   {
     return get_resp;
