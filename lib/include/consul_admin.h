@@ -4,19 +4,13 @@
 #include "http_admin.h"
 
 #include "factory/consul_interface.h"
+#include "factory/http_interface.h"
+#include "factory_http_client.h"
 #include "service.h"
 
 #include <string>
 #include <string.h>
 #include <vector>
-
-//HTTP Callbacks
-//A String to store response data
-extern std::string writedata;
-
-//This is the callback that gets called when we recieve the response to the
-//Get Curl Request
-size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
 
 //------------------------------Consul Admin-----------------------------------//
 
@@ -27,7 +21,7 @@ size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
 //! Note that the values returned from the Key-Value store will be stored in base64 format
 class ConsulAdmin: public ConsulInterface
 {
-HttpAdmin *ha;
+HttpInterface *ha = NULL;
 std::string consul_addr;
 int timeout;
 std::string build_url(std::string request_url_segment);
@@ -40,7 +34,7 @@ public:
   std::string base64_decode(std::string const& encoded_string);
 
   //! Construct a consul admin, passing in the connection string
-  ConsulAdmin(std::string caddr) {ha = new HttpAdmin; consul_addr = caddr;timeout=5;}
+  ConsulAdmin(std::string caddr) {HttpClientFactory http_factory; ha = http_factory.get_http_interface(); consul_addr = caddr;timeout=5;}
 
   //! Delete a consul admin
   ~ConsulAdmin() {delete ha;}

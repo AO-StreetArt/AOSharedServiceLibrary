@@ -35,7 +35,7 @@ rapid development of new capabilities.
 
 #### Connections to Critical External Tools
 * Couchbase Administrator with cluster support
-* Redis Administrator with cluster support
+* Redis Administrator
 * Consul Administrator
 
 #### Basic Tools that all good services need

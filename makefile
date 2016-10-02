@@ -363,7 +363,7 @@ clean_local:
 	$(RM) libaossl.a lib/*.o *~
 
 clean_tests:
-	$(RM) *_test
+	$(RM) *_test *_tests
 
 clean_benchmarks:
 	$(RM) *_benchmark
