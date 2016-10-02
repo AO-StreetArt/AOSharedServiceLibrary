@@ -41,6 +41,7 @@ bool HttpAdmin::send(std::string url, int timeout)
 
   curl_easy_cleanup(curl);
   curl = curl_easy_init();
+  delete url_s;
   return ret;
 }
 
@@ -52,7 +53,9 @@ bool HttpAdmin::put(std::string url, std::string data, int timeout)
 
   curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
   curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data_s);
-  return send(url, timeout);
+  bool ret_val = send(url, timeout);
+  delete data_s;
+  return ret_val;
 }
 
 //Needs a write function registered
@@ -72,7 +75,9 @@ bool HttpAdmin::post(std::string url, std::string data, int timeout)
 
   curl_easy_setopt(curl, CURLOPT_POST, 1L);
   curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data_s);
-  return send(url, timeout);
+  bool ret_val = send(url, timeout);
+  delete data_s;
+  return ret_val;
 }
 
 bool HttpAdmin::del(std::string url, int timeout)

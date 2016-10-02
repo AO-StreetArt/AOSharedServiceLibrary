@@ -88,8 +88,6 @@ bool ConsulAdmin::register_service(ServiceInterface& s)
 
   //Send the HTTP Request
   bool success = ha->put(url_string, body_str, timeout);
-  delete body;
-  delete url;
   return success;
 }
 
@@ -103,8 +101,6 @@ bool ConsulAdmin::deregister_service(ServiceInterface& s)
   //Send the HTTP Request
   std::string empty_str = "";
   bool success = ha->put(url_string, empty_str, timeout);
-  delete empty_arr;
-  delete url;
   return success;
 }
 
@@ -141,8 +137,6 @@ bool ConsulAdmin::set_config_value(std::string key, std::string val)
 
   //Send the HTTP Request
   bool success = ha->put(url_string, val, timeout);
-  delete body;
-  delete url;
   return success;
 }
 
@@ -160,7 +154,6 @@ bool ConsulAdmin::del_config_value(std::string key)
   url_string = url_string.append(key);
   //Send the HTTP Request
   bool success = ha->del(url_string, timeout);
-  delete url;
   return success;
 }
 
