@@ -18,15 +18,15 @@ sudo yum -y update
 printf "Addressing pre-build requirements"
 
 #Ensure that specific build requirements are satisfied
-sudo yum -y install build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev
+sudo yum -y install build-essential libtool pkg-config autoconf automake cmake make git wget gcc gcc-c++
 
-#Determine if we Need XRedis
-if [ ! -d /usr/local/include/xredis ]; then
+#Determine if we Need Redis Client
+if [ ! -d /usr/local/include/hiredis ]; then
 
-  printf "Building XRedis"
+  printf "Building libhiredis"
 
-  mkdir $PRE/xredis
-  git clone https://github.com/redis/hiredis.git ./hiredis $PRE/hiredis
+  mkdir $PRE/hiredis
+  git clone https://github.com/redis/hiredis.git ./$PRE/hiredis
 
   cd $PRE/hiredis && make && sudo make install
 
@@ -69,28 +69,38 @@ if [ ! -f ./couchbase-release-1.0-2-amd64.deb ]; then
   printf "Pulling Down Repositories for Couchbase Client"
 
   #Get the Couchbase dependecies
-  wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
+  # Only needed during first-time setup:
+  wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-0-x86_64.rpm
+  sudo rpm -ivh couchbase-release-1.0-0-x86_64.rpm
 
 fi
+
+if [ ! -f ./couchbase-release-1.0-2-amd64.deb ]; then
 
 printf "Building Hayai, optional, for benchmarks"
 
 #Install hayai, for compiling benchmarks
-sudo apt-add-repository -y ppa:bruun/hayai
-sudo apt-get update -y
-sudo apt-get install -y libhayai-dev
+mkdir $PRE/hayai
+git clone https://github.com/nickbruun/hayai.git ./$PRE/hayai
+cd ./$PRE/hayai && cmake . && make && sudo make install
 
-printf "Building Couchbase Client"
-
-sudo dpkg -i ./couchbase-release-1.0-2-amd64.deb
+fi
 
 printf "Update cache and install final dependencies through apt-get"
+
+#Log4cpp install
+mkdir $PRE/log4cpp
+wget ftp://mirror.switch.ch/pool/4/mirror/epel/7/x86_64/l/log4cpp-devel-1.1.1-1.el7.x86_64.rpm
+wget ftp://mirror.switch.ch/pool/4/mirror/epel/7/x86_64/l/log4cpp-1.1.1-1.el7.x86_64.rpm
+
+sudo rpm -Uvh log4cpp-1.1.1-1.el7.x86_64.rpm
+sudo rpm -Uvh log4cpp-devel-1.1.1-1.el7.x86_64.rpm
 
 #Update the apt-get cache
 sudo yum -y update
 
 #Install the dependencies
-sudo yum -y install libcouchbase-dev libcouchbase2-bin liblog4cpp5-dev
+sudo yum -y install libcouchbase-devel libcouchbase2-bin libuuid-devel libcurl-devel libevent-devel
 
 #Run ldconfig to ensure that all built libraries are on the linker path
 sudo ldconfig

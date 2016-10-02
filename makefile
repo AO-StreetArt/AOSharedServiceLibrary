@@ -10,12 +10,14 @@ CFLAGS  = -g -Wall
 STD = -std=c++11
 OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/redis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o lib/service.o lib/http_server.o lib/properties_reader.o lib/response.o
 TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_tests factory_test http_server_test properties_reader_test app_response_test
+TESTS_RHEL = cli_test consul_test logging_test http_test zmqio_test couchbase_test factory_test_rhel http_server_test properties_reader_test app_response_test redis_tests_rhel
 BENCHMARKS = consul_benchmark logging_benchmark http_benchmark couchbase_benchmark redis_benchmark
 INCL = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/local/include/aossl/factory_uuid.h /usr/local/include/aossl/factory_redis.h /usr/local/include/aossl/factory_props.h /usr/local/include/aossl/factory_logging.h /usr/local/include/aossl/factory_http_server.h /usr/local/include/aossl/factory_http_client.h /usr/local/include/aossl/factory_couchbase.h /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/http_admin.h /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/redis_admin.h /usr/local/include/aossl/zmqio.h /usr/local/include/aossl/http_server.h /usr/local/include/aossl/properties_reader.h /usr/local/include/aossl/factory/properties_reader_interface.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h /usr/local/include/aossl/response.h /usr/local/include/aossl/factory/response_interface.h
 BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
 LIBS = -lpthread -llog4cpp
 FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent `pkg-config --cflags --libs hiredis`
+FULL_LIBS_RHEL = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lhiredis
 FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/factory_couchbase.h lib/include/factory_http_client.h lib/include/factory_http_server.h lib/include/factory_logging.h lib/include/factory_props.h lib/include/factory_redis.h lib/include/factory_uuid.h lib/include/factory_zmq.h
 
 # typing 'make' will invoke the first target entry in the file
@@ -27,6 +29,9 @@ default: libaossl.a
 
 # typing 'make test' will build the tests
 test: $(TESTS)
+
+# 'make rhel-test' will build the tests on RHEL/CentOS
+rhel-test: $(TESTS_RHEL)
 
 # typing 'make benchmarks' will build the benchmarks
 benchmarks: $(BENCHMARKS)
@@ -251,11 +256,15 @@ lib/logging_test.o: lib/logging_test.cpp lib/include/logging.h lib/include/facto
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_test.cpp $(STD)
 
 # Create the executable file redis_tests
-redis_tests: lib/logging.o lib/redis_admin.o lib/redis_tests.o lib/logging_interface.o
-	$(CC) $(CFLAGS) -o $@ lib/logging.o lib/redis_admin.o lib/redis_tests.o lib/logging_interface.o $(LIBS) `pkg-config --cflags --libs hiredis` $(STD)
+redis_tests: lib/logging.o lib/redis_admin.o lib/redis_tests.o
+	$(CC) $(CFLAGS) -o $@ lib/redis_admin.o lib/redis_tests.o $(LIBS) `pkg-config --cflags --libs hiredis` $(STD)
+
+# Create the executable file redis_tests
+redis_tests_rhel: lib/logging.o lib/redis_admin.o lib/redis_tests.o
+	$(CC) $(CFLAGS) -o redis_tests lib/redis_admin.o lib/redis_tests.o -lhiredis $(STD)
 
 # Create the object file redis_tests.o
-lib/redis_tests.o: lib/redis_tests.cpp lib/include/redis_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
+lib/redis_tests.o: lib/redis_tests.cpp lib/include/redis_admin.h
 	$(CC) $(CFLAGS) -o $@ -c lib/redis_tests.cpp $(STD)
 
 # Create the executable file uuid_test
@@ -292,6 +301,9 @@ lib/app_response_test.o: lib/response.o lib/app_response_test.cpp
 
 factory_test: lib/factory_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o $@ lib/factory_test.o $(OBJS) $(FULL_LIBS) $(STD)
+
+factory_test_rhel: lib/factory_test.o $(OBJS)
+	$(CC) $(CFLAGS) -o factory_test lib/factory_test.o $(OBJS) $(FULL_LIBS_RHEL) $(STD)
 
 lib/factory_test.o: lib/factory_test.cpp $(FACTORIES)
 	$(CC) $(CFLAGS) -o $@ -c lib/factory_test.cpp $(STD)
