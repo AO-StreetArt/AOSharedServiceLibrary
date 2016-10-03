@@ -77,6 +77,17 @@ The build_deps.sh script should allow for automatic resolution of dependencies. 
 
 `sudo ./build_deps.sh`
 
+##### CentOS 7/Redhat Enterprise Linux 7
+The build_deps.sh script should allow for automatic resolution of dependencies.  Run the following commands from within the main folder
+
+`mkdir ../aossl_deps`
+
+`sudo cp scripts/rhel/build_deps.sh ../aossl_deps`
+
+`cd ../aossl_deps`
+
+`sudo ./build_deps.sh`
+
 ##### Other
 Please refer to the [Dependency Resolution] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps) section of the documentation.
 
@@ -86,15 +97,29 @@ The project and tests can be built with make on most linux systems.
 
 `make`
 
-`make test`
-
 We can clean the build and remove all generated files with:
 
 `make clean`
 
+#### Build the Tests/Benchmarks
+
+##### Ubuntu 14.04/Debian 7
+
+Run the following to build the library test executables and the benchmarking apps
+
+    make test
+    make benchmarks
+
+##### CentOS 7/Redhat Enterprise Linux 7
+
+Run the following to build the library test executables and the benchmarking apps
+
+    make rhel-test
+    make rhel-benchmarks
+
 #### Install and Uninstall the Project
 
-The project can be installed on most linux systems with:
+The project can be installed on linux systems with:
 
 `sudo make install`
 

@@ -3,16 +3,21 @@
 #include <exception>
 #include <signal.h>
 
-#include "aossl/factory.h"
+#include "aossl/factory_cli.h"
+#include "aossl/factory_logging.h"
 
 #include "aossl/factory/commandline_interface.h"
 #include "aossl/factory/logging_interface.h"
+
+CommandLineInterface *cli = NULL;
 
 //Shutdown the application
 void shutdown()
 {
   //Delete objects off the heap
-  delete cli;
+  if (cli) {
+    delete cli;
+  }
   delete logging;
 }
 
@@ -37,10 +42,11 @@ sigIntHandler.sa_flags = 0;
 sigaction(SIGINT, &sigIntHandler, NULL);
 
 // Set up a Service Component Factory, where we get our application components
-ServiceComponentFactory factory;
+CommandLineInterpreterFactory cli_factory;
+LoggingComponentFactory logging_factory;
 
 //Retrieve a new command line interface
-cli = factory.get_command_line_interface(argc, argv);
+cli = cli_factory.get_command_line_interface(argc, argv);
 
 std::string initFileName;
 
@@ -54,7 +60,7 @@ else
 }
 
 //! Get a Logging Interface instance, and pass to the global logging instance
-logging = factory.get_logging_interface( initFileName );
+logging = logging_factory.get_logging_interface( initFileName );
 
 //Say Hello!
 logging->error("Hello world!");

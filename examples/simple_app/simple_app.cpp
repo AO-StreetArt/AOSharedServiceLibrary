@@ -61,10 +61,18 @@ sigIntHandler.sa_flags = 0;
 sigaction(SIGINT, &sigIntHandler, NULL);
 
 // Set up a Service Component Factory, where we get our application components
-ServiceComponentFactory factory;
+CommandLineInterpreterFactory cli_factory;
+ConsulComponentFactory consul_factory;
+CouchbaseComponentFactory couchbase_factory;
+HttpClientFactory http_client_factory;
+PropertyReaderFactory props_factory;
+RedisComponentFactory redis_factory;
+uuidComponentFactory uuid_factory;
+ZmqComponentFactory zmq_factory;
+LoggingComponentFactory logging_factory;
 
 //Retrieve a new command line interface
-cli = factory.get_command_line_interface(argc, argv);
+cli = cli_factory.get_command_line_interface(argc, argv);
 
 std::string initFileName;
 
@@ -78,40 +86,31 @@ else
 }
 
 //! Get a Logging Interface instance, and pass to the global logging instance
-logging = factory.get_logging_interface( initFileName );
+logging = logging_factory.get_logging_interface( initFileName );
 
 // Get a UUID Generator
-uuid = factory.get_uuid_interface();
+uuid = uuid_factory.get_uuid_interface();
 
 //! Get the HTTP Interface instance
-ha = factory.get_http_interface();
+ha = http_client_factory.get_http_interface();
 
 //! Get a Service Interface instance
-s = factory.get_service_interface();
+s = consul_factory.get_service_interface();
 
 //! Get a Consul Interface instance
-consul = factory.get_consul_interface( "localhost:8500" );
+consul = consul_factory.get_consul_interface( "localhost:8500" );
 
 //! Get a Couchbase Interface instance
-ca = factory.get_couchbase_interface( "couchbase://localhost/default" );
+ca = couchbase_factory.get_couchbase_interface( "couchbase://localhost/default" );
 
-//! Get a Redis Cluster Interface instance
-std::vector<RedisConnChain> RedisConnectionList;
-RedisConnChain r;
-r.ip = "127.0.0.1";
-r.port = 6379;
-r.password = "";
-r.pool_size = 2;
-r.timeout = 5;
-r.role = 0;
-RedisConnectionList.push_back(r);
-ra = factory.get_redis_cluster_interface( RedisConnectionList );
+//! Get a Redis Interface instance
+ra = redis_factory.get_redis_interface( "127.0.0.1", 6379 );
 
 //! Get a ZMQ Outbound Interface instance
-zmqo = factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
+zmqo = zmq_factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
 
 //! Get a ZMQ Inbound Interface instance
-zmqi = factory.get_zmq_inbound_interface( "tcp://*:5555" );
+zmqi = zmq_factory.get_zmq_inbound_interface( "tcp://*:5555" );
 
 //Here we have the core of the application
 logging->info("Sending a message");
