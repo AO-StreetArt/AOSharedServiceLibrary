@@ -21,7 +21,7 @@ in order to provide all of the services once provided by the monolithic applicat
 scale by starting up more instances of programs, and introduces a system with no single point of failure.
 
 The AO Shared Service Library provides frameworks for microservices, ranging from communications protocols to
-useful tools all services need.  This is designed to reduce time-to-market on C++ Services, and is designed
+useful tools all services need.  This is meant to reduce time-to-market on C++ Services, and is designed
 to be reliable and robust while maintaining high performance standards.
 
 It also provides a plug-and-play architecture, allowing users to pick elements of the framework they would
@@ -42,6 +42,10 @@ rapid development of new capabilities.
 * Asynchronous Logging Module
 * Universally Unique ID Generator
 * A Command Line Argument Parser
+
+#### Platform Support
+* Support for Ubuntu 14.04, Debian 7, CentOS 7, RHEL 7
+* Easy to construct Docker Images with templates
 
 In order to use the respective administrators, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Couchbase] (http://www.couchbase.com/) and [Redis] (http://redis.io/) to connect to.
 

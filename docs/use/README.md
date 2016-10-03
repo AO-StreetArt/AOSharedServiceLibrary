@@ -4,26 +4,47 @@ This page is meant to be an overview of functionality, for complete documentatio
 
 ## Core Components
 
-### Service Component Factory
+### Service Component Factories
 
-The Service Component Factory is a component which allows us to build instances of the interfaces exposed by the library.
+The Service Component Factories are components which allow us to build instances of the interfaces exposed by the library.
 
 It's important that we use the factory to get instances of the interfaces as the interfaces guarantee backwards-compatibility.  While particular implementations may change,
-the interfaces will remain the same across versions of the library.
+the interfaces will remain the same across versions of the library.  For example:
 
-So, any application on the AO Shared Service Library begins with building this factory:
+    #include "include/factory_cli.h"
+    #include "include/factory/commandline_interface.h"
 
     // Set up a Service Component Factory, where we get our application components
-    ServiceComponentFactory factory;
+    CommandLineInterpreterFactory cli_factory;
 
 The factory then provides us access to instances of the interfaces exposed by the library.  Let's take a look with the components below.
 
-Note: Be sure to delete anything you build with the factory!
+Note: Be sure to delete anything you build with the factories!
 
 ### Callbacks
 
 Request-based callbacks are critical components of AOSSL, and can be seen used with several AOSSL components.  All callbacks match the following method signature:
     std::string process_request(struct Request *req)
+
+The Request object has a few properties which are relevent:
+
+* req_data - Used to store original request data
+* req_addr - Used to store the request type
+* req_err - A pointer used to store any error messages from the request
+* resp_data - Used to store response data from the request
+
+The Request Error, if present, will come in the form of:
+
+    //! A struct that gets passed to callbacks to transmit errors
+    struct RequestError
+    {
+      //! A numerical error code
+      int err_code;
+
+      //! An Error message
+      std::string err_message;
+      RequestError() {err_code = NOERROR; err_message = "";}
+    };
 
 ## Choose a Framework
 
@@ -34,10 +55,21 @@ This is the most common framework used for services in other languages.
 
 The HTTP Server binds callbacks to URL's and allows for distinguishing between types of requests.
 
+    #include "aossl/factory_http_server.h"
+    #include "aossl/factory/http_server_interface.h"
+
     //Set up the HTTP Server
-    http = new HttpServer("0.0.0.0", 12345);
+    HttpServerFactory http_server_factory;
+    HttpServerInterface *http = http_server_factory.get_http_server_interface("0.0.0.0", 12345);
+
+    //Bind some callbacks
     http->bind_callback("/", process_request);
     http->bind_callback("/test", process_test_request);
+
+    //Bind a default callback, which is called when a
+    //bound callback is not found for the request URL
+    //Useful for API's that rely on dynamic URL construction for querying
+    http->bind_default_callback(process_default_request);
 
 Here, we bind the specified URL and port to a particular callback function, process_request().
 Note that a string is returned from the method with the value being sent back to the client
@@ -96,11 +128,16 @@ The Zmqio object exposes these methods:
 
 In order to connect to a socket, we ask the factory to create one:
 
+    #include "aossl/factory/zmq_interface.h"
+    #include "aossl/factory_zmq.h"
+
+    ZmqComponentFactory zmq_factory;
+
     //Set up the outbound ZMQ Client
-    zmqo = factory.get_zmq_outbound_interface("tcp://localhost:5555");
+    Zmqio *zmqo = zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555");
 
     //Set up the inbound ZMQ Client
-    zmqi = factory.get_zmq_inbound_interface("tcp://*:5555");
+    Zmqio *zmqi = zmq_factory.get_zmq_inbound_interface("tcp://*:5555");
 
 ## Tools
 
@@ -122,6 +159,11 @@ methods implemented:
 
 Now, we can start building objects in our DB:
 
+    #include "include/factory_couchbase.h"
+    #include "include/factory/couchbase_interface.h"
+
+    CouchbaseComponentFactory couchbase_factory;
+
     //Create an object
     std::string name = "TestObject";
     TestData data ();
@@ -130,7 +172,7 @@ Now, we can start building objects in our DB:
 
     //Build the Couchbase Admin (which will automatically connect to the DB),
     //by asking the factory to create the new instance
-    CouchbaseInterface *cb = factory.get_couchbase_interface("couchbase://localhost/default");
+    CouchbaseInterface *cb = couchbase_factory.get_couchbase_interface("couchbase://localhost/default");
 
     //Bind callbacks
     cb->bind_get_callback(my_retrieval_callback);
@@ -215,19 +257,11 @@ The Redis Admin allows for quick Redis access, and exposes the below methods to 
 * bool del ( const char * key )
 * bool expire ( const char * key, unsigned int second)
 
-We can connect to a single Redis Instance or a cluster.
+    #include "include/factory_redis.h"
+    #include "include/factory/redis_interface.h"
 
-    //! Get a Redis Cluster Interface instance
-    std::vector<RedisConnChain> RedisConnectionList;
-    RedisConnChain r;
-    r.ip = "127.0.0.1";
-    r.port = 6379;
-    r.password = "";
-    r.pool_size = 2;
-    r.timeout = 5;
-    r.role = 0;
-    RedisConnectionList.push_back(r);
-    redis = factory.get_redis_cluster_interface( RedisConnectionList );
+    RedisComponentFactory redis_factory;
+    RedisInterface *redis = redis_factory.get_redis_interface( "127.0.0.1", 6379 );
 
     //Now, we can access our basic Redis Operations
     bool bRet = redis->save("Test", "123");
@@ -240,33 +274,39 @@ We can connect to a single Redis Instance or a cluster.
 Consul is responsible for Service Registration & Discovery, Key-Value
 Retrieval, and Health Check Configuration.
 
-We first define a Service which represents the current instance of the code.
+We start by importing the necessary interfaces and the establish the service factory
+
+    #include "include/factory/consul_interface.h"
+    #include "include/factory_consul.h"
+
+    ConsulComponentFactory consul_factory;
+
+Next, we define a Service which represents the current instance of the code.
 
 This contains an ID, a name, a connection, and a port number.  Tags can be added or not:
 
-`ServiceInterface *s = factory.get_service_interface("1", "test", "http://localhost/", "5555");`
-
-`s->add_tag("Testing");`
+    ServiceInterface *s = consul_factory.get_service_interface("1", "test", "http://localhost/", "5555");
+    s->add_tag("Testing");
 
 And build our Consul Admin, specifying the connection address:
 
-`ConsulInterface *ca = factory.get_consul_interface("localhost:8500");`
+    ConsulInterface *ca = consul_factory.get_consul_interface("localhost:8500");
 
 Now, we can register the currently running instance of a service with Consul
 
-`ca->register_service(*s);`
+    ca->register_service(*s);
 
 And, we can unregister on shutdown:
 
-`ca->deregister_service(*s);`
+    ca->deregister_service(*s);
 
 We can get and set key-value storage elements:
 
-`bool success = ca->set_config_value("Test", "123");`
-`assert(success);`
+    bool success = ca->set_config_value("Test", "123");
+    assert(success);
 
-`std::string test_val = ca->get_config_value("Test");`
-`logging->debug(test_val);`
+    std::string test_val = ca->get_config_value("Test");
+    logging->debug(test_val);
 
 It also has some limited query capabilities, please see API for further details.
 
@@ -274,51 +314,23 @@ It also has some limited query capabilities, please see API for further details.
 
 The HTTP Admin allows quick and easy HTTP Requests by exposing:
 
-* bool put(char * url, char * data, int timeout)
-* bool get(char * url, int timeout)
-* bool post(char * url, char * data, int timeout)
-* bool del(char * url, int timeout)
+* bool put(std::string url, std::string data, int timeout)
+* std::string get(std::string url, int timeout)
+* bool post(std::string url, std::string data, int timeout)
+* bool del(std::string url, int timeout)
 
-It also allows binding a callback to return when the data is recieved from a get request, by calling bind_get_callback(func)
+    #include "include/factory_http_client.h"
+    #include "include/factory/http_interface.h"
 
-    //------------------------------SETUP-------------------------------------//
-
-    //A String to store response data
-    std::string writedata;
-
-    //This is the callback that gets called when we recieve the response to the
-    //Get Curl Request
-    size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up)
-    {
-
-      logging->debug("Callback Triggered");
-
-    //Put the response into a string
-    for (int c = 0; c<size*nmemb; c++)
-    {
-      writedata.push_back(buf[c]);
-    }
-
-    return size*nmemb;
-    }
+    HttpClientFactory http_client_factory;
 
     //Declare the admin
-    HttpInterface *ha;
+    HttpInterface *ha = http_client_factory.get_http_interface();
 
     //-------------------------------GET--------------------------------------//
 
-    writedata.clear();
-
-    ha->bind_get_callback(writeCallback);
-
     //Send the request
-    bool success = ha->get(GETURL, 5);
-    if (!success) {
-    }
-    else {
-      logging->debug("Retrieved:");
-      logging->debug(writedata);
-    }
+    std::string returned_string = ha->get(GETURL, 5);
 
     //-------------------------------PUT--------------------------------------//
     success = ha->put(PUTURL, "123", 5);
@@ -333,11 +345,15 @@ It also allows binding a callback to return when the data is recieved from a get
 Logging exposes a pointer to a Logger instance, which can log directly itself or
 provide categories to log to.
 
+    #include "include/factory_logging.h"
+    #include "include/factory/logging_interface.h"
+
+    LoggingComponentFactory logging_factory;
+
     std::string initFileName = "configuration_file";
-    logging = factory.get_logging_interface(initFileName);
+    logging = logging_factory.get_logging_interface(initFileName);
 
     logging->debug("My message");
-    logging->get_category("MyCategory").error("My other message");
 
 We read from the [log4cpp configuration files] (http://log4cpp.sourceforge.net/api/classlog4cpp_1_1PropertyConfigurator.html), of which several examples are provided within the library itself.
 
@@ -345,9 +361,13 @@ We read from the [log4cpp configuration files] (http://log4cpp.sourceforge.net/a
 
 Easy and quick Universally Unique ID Generation:
 
-`uuidInterface uuid;`
+    #include "include/factory_uuid.h"
+    #include "include/factory/uuid_interface.h"
 
-`std::string uuid_str = uuid->generate();``
+    uuidComponentFactory uuid_factory;
+    uuidInterface *uuid = uuid_factory.get_uuid_interface();
+
+    std::string uuid_str = uuid->generate();
 
 ### Command Line Argument Parser
 
@@ -358,10 +378,13 @@ we get access to command line arguments in the form:
 
 We have access to an opt_exist method to determine if an option was entered.  We can also use get_opt to pull parameter values, and get_program_name to return the current program name executing on this instance.
 
+    #include "include/factory_cli.h"
+    #include "include/factory/commandline_interface.h"
+
     int main( int argc, char** argv )
     {
-
-    CommandLineInterface *cli = factory.get_command_line_interface( argc, argv );
+    CommandLineInterpreterFactory cli_factory;
+    CommandLineInterface *cli = cli_factory.get_command_line_interface( argc, argv );
     std::cout << cli->get_program_name() << std::endl;
     if ( cli->opt_exist("name") ) {
       std::cout << cli->get_opt("name") << std::endl;

@@ -8,7 +8,7 @@ You will need libhiredis, which can be found [here] (https://github.com/redis/hi
 
 You will need Couchbase drivers installed.  Couchbase drivers can be found [here] (http://developer.couchbase.com/documentation/server/4.1/sdks/c-2.4/overview.html)
 
-We rely also on a set of base libraries which are installable via Ubuntu/Debian package managers:
+We rely also on a set of base libraries which are installable via most package managers:
 * libuuid
 * libcurl
 * libevent

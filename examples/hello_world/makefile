@@ -8,7 +8,7 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-LIBS = -laossl -lpthread -llog4cpp -lzmq -luuid -lxredis -lcurl -lcouchbase `pkg-config --cflags --libs hiredis`
+LIBS = -laossl -lpthread -llog4cpp
 
 default: simple_app
 
