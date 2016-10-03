@@ -194,7 +194,7 @@ logging_benchmark: lib/logging_benchmark.o lib/logging.o lib/logging_interface.o
 lib/logging_benchmark.o: lib/logging_benchmark.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_benchmark.cpp $(STD)
 
-redis_benchmark: lib/redis_benchmark.o lib/redis_admin.o
+redis_benchmark: lib/redis_benchmark.o lib/redis_admin.o lib/logging.o lib/logging_interface.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid `pkg-config --cflags --libs hiredis` $(STD)
 
 redis_benchmark_rhel: lib/redis_benchmark.o lib/redis_admin.o lib/logging.o lib/logging_interface.o
