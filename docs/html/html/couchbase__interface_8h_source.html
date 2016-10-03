@@ -58,75 +58,125 @@
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;writeable.h&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;db_admin.h&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">    #include &lt;libcouchbase/couchbase.h&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;callbacks.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;exception&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;libcouchbase/couchbase.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#ifndef COUCHBASE_INTERFACE</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define COUCHBASE_INTERFACE</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">typedef</span> void (*StorageCallback)(lcb_t, <span class="keyword">const</span> <span class="keywordtype">void</span>*, lcb_storage_t, lcb_error_t, <span class="keyword">const</span> lcb_store_resp_t*);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">typedef</span> void (*GetCallback)(lcb_t, <span class="keyword">const</span> <span class="keywordtype">void</span>*, lcb_error_t, <span class="keyword">const</span> lcb_get_resp_t*);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">typedef</span> void (*DelCallback)(lcb_t, <span class="keyword">const</span> <span class="keywordtype">void</span>*, lcb_error_t, <span class="keyword">const</span> lcb_remove_resp_t*);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classCouchbaseInterface.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="classCouchbaseInterface.html">CouchbaseInterface</a>: <span class="keyword">public</span> <a class="code" href="classDBAdmin.html">DBAdmin</a> {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classCouchbaseInterface.html">CouchbaseInterface</a>() {}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">//Object CRUD Operations</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a62a765de48bfc92d748df829ca960ff2">load_object</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key ) = 0;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structCouchbaseInitException.html">   24</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structCouchbaseInitException.html">CouchbaseInitException</a>: <span class="keyword">public</span> std::exception</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    std::string int_msg;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <a class="code" href="structCouchbaseInitException.html">CouchbaseInitException</a> (std::string msg) {int_msg = msg;}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <a class="code" href="structCouchbaseInitException.html">CouchbaseInitException</a> () {}</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  ~<a class="code" href="structCouchbaseInitException.html">CouchbaseInitException</a>() <span class="keywordflow">throw</span> () {}</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span> * what() <span class="keyword">const</span> <span class="keywordflow">throw</span> ()</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        std::string what_str = <span class="stringliteral">&quot;Couldn&#39;t create Couchbase instance: &quot;</span> + int_msg;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">return</span> what_str.c_str();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="structCouchbaseConnectException.html">   37</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structCouchbaseConnectException.html">CouchbaseConnectException</a>: <span class="keyword">public</span> std::exception</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    std::string int_msg;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <a class="code" href="structCouchbaseConnectException.html">CouchbaseConnectException</a> (std::string msg) {int_msg = msg;}</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <a class="code" href="structCouchbaseConnectException.html">CouchbaseConnectException</a> () {}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  ~<a class="code" href="structCouchbaseConnectException.html">CouchbaseConnectException</a>() <span class="keywordflow">throw</span> () {}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span> * what() <span class="keyword">const</span> <span class="keywordflow">throw</span> ()</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        std::string what_str = <span class="stringliteral">&quot;Couldn&#39;t schedule Couchbase connection: &quot;</span> + int_msg;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">return</span> what_str.c_str();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;};</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#ab4ea907f469d14323e451ffdccb213c2">save_object</a> ( <a class="code" href="classWriteable.html">Writeable</a> *obj ) = 0;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a7ac9545e6f7a45d24e8e41ccae1f6112">create_object</a> ( <a class="code" href="classWriteable.html">Writeable</a> *obj ) = 0;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a99ec66952f649bb84c80b20487e82839">delete_object</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key ) = 0;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">//Bind Callbacks</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#aea02cefeae5b210318471696bd6580c9">bind_get_callback</a>(GetCallback) = 0;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="structCouchbaseBootstrapException.html">   50</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structCouchbaseBootstrapException.html">CouchbaseBootstrapException</a>: <span class="keyword">public</span> std::exception</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::string int_msg;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <a class="code" href="structCouchbaseBootstrapException.html">CouchbaseBootstrapException</a> (std::string msg) {int_msg = msg;}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="structCouchbaseBootstrapException.html">CouchbaseBootstrapException</a> () {}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  ~<a class="code" href="structCouchbaseBootstrapException.html">CouchbaseBootstrapException</a>() <span class="keywordflow">throw</span> () {}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span> * what() <span class="keyword">const</span> <span class="keywordflow">throw</span> ()</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        std::string what_str = <span class="stringliteral">&quot;Couchbase Bootstrapping Failed: &quot;</span> + int_msg;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">return</span> what_str.c_str();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structCouchbaseOperationException.html">   63</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structCouchbaseOperationException.html">CouchbaseOperationException</a>: <span class="keyword">public</span> std::exception</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;{</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::string int_msg;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <a class="code" href="structCouchbaseOperationException.html">CouchbaseOperationException</a> (std::string msg) {int_msg = msg;}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <a class="code" href="structCouchbaseOperationException.html">CouchbaseOperationException</a> () {}</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  ~<a class="code" href="structCouchbaseOperationException.html">CouchbaseOperationException</a>() <span class="keywordflow">throw</span> () {}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span> * what() <span class="keyword">const</span> <span class="keywordflow">throw</span> ()</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        std::string what_str = <span class="stringliteral">&quot;Couldn&#39;t Schedule Couchbase Operation: &quot;</span> + int_msg;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordflow">return</span> what_str.c_str();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a229805a21e8dec6d5a4636644b420996">bind_storage_callback</a>(StorageCallback) = 0;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a58fc6806bf33bc98c25d943fa1809505">bind_delete_callback</a>(DelCallback) = 0;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#ae901a3e383a82044679d0b77702c7e2c">wait</a> () = 0;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;};</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classCouchbaseInterface_html_a58fc6806bf33bc98c25d943fa1809505"><div class="ttname"><a href="classCouchbaseInterface.html#a58fc6806bf33bc98c25d943fa1809505">CouchbaseInterface::bind_delete_callback</a></div><div class="ttdeci">virtual void bind_delete_callback(DelCallback)=0</div><div class="ttdoc">Bind the Removal Callback. </div></div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classCouchbaseInterface.html">   80</a></span>&#160;<span class="keyword">class </span><a class="code" href="classCouchbaseInterface.html">CouchbaseInterface</a>: <span class="keyword">public</span> <a class="code" href="classDBAdmin.html">DBAdmin</a> {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classCouchbaseInterface.html">CouchbaseInterface</a>() {}</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">//Object CRUD Operations</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a62a765de48bfc92d748df829ca960ff2">load_object</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key ) = 0;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#ab4ea907f469d14323e451ffdccb213c2">save_object</a> ( <a class="code" href="classWriteable.html">Writeable</a> *obj ) = 0;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a7ac9545e6f7a45d24e8e41ccae1f6112">create_object</a> ( <a class="code" href="classWriteable.html">Writeable</a> *obj ) = 0;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a99ec66952f649bb84c80b20487e82839">delete_object</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key ) = 0;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment">//Bind Callbacks</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a88980b99dc329e5cd02f240ddbbba1ca">bind_get_callback</a>(CallbackInterface) = 0;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a54a056865fc0caa456413b97c6cfb030">bind_storage_callback</a>(CallbackInterface) = 0;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#a48f4eb1863cc7750c75de7227f11ad81">bind_delete_callback</a>(CallbackInterface) = 0;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classCouchbaseInterface.html#ae901a3e383a82044679d0b77702c7e2c">wait</a> () = 0;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;};</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classCouchbaseInterface_html_ae901a3e383a82044679d0b77702c7e2c"><div class="ttname"><a href="classCouchbaseInterface.html#ae901a3e383a82044679d0b77702c7e2c">CouchbaseInterface::wait</a></div><div class="ttdeci">virtual void wait()=0</div><div class="ttdoc">Blocking call until the transaction stack is empty. </div></div>
+<div class="ttc" id="classCouchbaseInterface_html_a88980b99dc329e5cd02f240ddbbba1ca"><div class="ttname"><a href="classCouchbaseInterface.html#a88980b99dc329e5cd02f240ddbbba1ca">CouchbaseInterface::bind_get_callback</a></div><div class="ttdeci">virtual void bind_get_callback(CallbackInterface)=0</div><div class="ttdoc">Bind the Retrieval Callback. </div></div>
+<div class="ttc" id="structCouchbaseInitException_html"><div class="ttname"><a href="structCouchbaseInitException.html">CouchbaseInitException</a></div><div class="ttdef"><b>Definition:</b> couchbase_interface.h:24</div></div>
 <div class="ttc" id="classDBAdmin_html"><div class="ttname"><a href="classDBAdmin.html">DBAdmin</a></div><div class="ttdoc">Database Administrator Interface. </div><div class="ttdef"><b>Definition:</b> db_admin.h:15</div></div>
 <div class="ttc" id="classCouchbaseInterface_html_a7ac9545e6f7a45d24e8e41ccae1f6112"><div class="ttname"><a href="classCouchbaseInterface.html#a7ac9545e6f7a45d24e8e41ccae1f6112">CouchbaseInterface::create_object</a></div><div class="ttdeci">virtual void create_object(Writeable *obj)=0</div><div class="ttdoc">Create a JSON Object in the Couchbase DB. </div></div>
 <div class="ttc" id="classWriteable_html"><div class="ttname"><a href="classWriteable.html">Writeable</a></div><div class="ttdoc">The Writeable Interface. </div><div class="ttdef"><b>Definition:</b> writeable.h:14</div></div>
+<div class="ttc" id="structCouchbaseBootstrapException_html"><div class="ttname"><a href="structCouchbaseBootstrapException.html">CouchbaseBootstrapException</a></div><div class="ttdef"><b>Definition:</b> couchbase_interface.h:50</div></div>
+<div class="ttc" id="classCouchbaseInterface_html_a54a056865fc0caa456413b97c6cfb030"><div class="ttname"><a href="classCouchbaseInterface.html#a54a056865fc0caa456413b97c6cfb030">CouchbaseInterface::bind_storage_callback</a></div><div class="ttdeci">virtual void bind_storage_callback(CallbackInterface)=0</div><div class="ttdoc">Bind the Storage Callback. </div></div>
 <div class="ttc" id="classCouchbaseInterface_html_a62a765de48bfc92d748df829ca960ff2"><div class="ttname"><a href="classCouchbaseInterface.html#a62a765de48bfc92d748df829ca960ff2">CouchbaseInterface::load_object</a></div><div class="ttdeci">virtual void load_object(const char *key)=0</div><div class="ttdoc">Load a JSON Object from the Couchbase DB. </div></div>
 <div class="ttc" id="classCouchbaseInterface_html_a99ec66952f649bb84c80b20487e82839"><div class="ttname"><a href="classCouchbaseInterface.html#a99ec66952f649bb84c80b20487e82839">CouchbaseInterface::delete_object</a></div><div class="ttdeci">virtual void delete_object(const char *key)=0</div><div class="ttdoc">Delete a JSON Object from the Couchbase DB. </div></div>
-<div class="ttc" id="classCouchbaseInterface_html_a229805a21e8dec6d5a4636644b420996"><div class="ttname"><a href="classCouchbaseInterface.html#a229805a21e8dec6d5a4636644b420996">CouchbaseInterface::bind_storage_callback</a></div><div class="ttdeci">virtual void bind_storage_callback(StorageCallback)=0</div><div class="ttdoc">Bind the Storage Callback. </div></div>
-<div class="ttc" id="classCouchbaseInterface_html_aea02cefeae5b210318471696bd6580c9"><div class="ttname"><a href="classCouchbaseInterface.html#aea02cefeae5b210318471696bd6580c9">CouchbaseInterface::bind_get_callback</a></div><div class="ttdeci">virtual void bind_get_callback(GetCallback)=0</div><div class="ttdoc">Bind the Retrieval Callback. </div></div>
-<div class="ttc" id="classCouchbaseInterface_html"><div class="ttname"><a href="classCouchbaseInterface.html">CouchbaseInterface</a></div><div class="ttdoc">The Couchbase Administrator handles interactions with the Couchbase DB. </div><div class="ttdef"><b>Definition:</b> couchbase_interface.h:37</div></div>
+<div class="ttc" id="structCouchbaseConnectException_html"><div class="ttname"><a href="structCouchbaseConnectException.html">CouchbaseConnectException</a></div><div class="ttdef"><b>Definition:</b> couchbase_interface.h:37</div></div>
+<div class="ttc" id="classCouchbaseInterface_html_a48f4eb1863cc7750c75de7227f11ad81"><div class="ttname"><a href="classCouchbaseInterface.html#a48f4eb1863cc7750c75de7227f11ad81">CouchbaseInterface::bind_delete_callback</a></div><div class="ttdeci">virtual void bind_delete_callback(CallbackInterface)=0</div><div class="ttdoc">Bind the Removal Callback. </div></div>
+<div class="ttc" id="structCouchbaseOperationException_html"><div class="ttname"><a href="structCouchbaseOperationException.html">CouchbaseOperationException</a></div><div class="ttdef"><b>Definition:</b> couchbase_interface.h:63</div></div>
+<div class="ttc" id="classCouchbaseInterface_html"><div class="ttname"><a href="classCouchbaseInterface.html">CouchbaseInterface</a></div><div class="ttdoc">The Couchbase Administrator handles interactions with the Couchbase DB. </div><div class="ttdef"><b>Definition:</b> couchbase_interface.h:80</div></div>
 <div class="ttc" id="classCouchbaseInterface_html_ab4ea907f469d14323e451ffdccb213c2"><div class="ttname"><a href="classCouchbaseInterface.html#ab4ea907f469d14323e451ffdccb213c2">CouchbaseInterface::save_object</a></div><div class="ttdeci">virtual void save_object(Writeable *obj)=0</div><div class="ttdoc">Save a JSON Object to the Couchbase DB. </div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 14 2016 21:47:27 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

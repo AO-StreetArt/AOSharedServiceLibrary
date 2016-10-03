@@ -2,6 +2,7 @@
 #include "factory/redis_interface.h"
 #include <string.h>
 #include <string>
+#include <vector>
 
 #ifndef REDIS_ADMIN
 #define REDIS_ADMIN
@@ -17,6 +18,9 @@ public:
   //Constructors for single Redis Connections
   RedisAdmin(std::string hostname, int port);
   RedisAdmin(std::string hostname, int port, int timeout_seconds, int timeout_microseconds);
+
+  //Constructors for lists of Redis Connections (Sentinels)
+  RedisAdmin(RedisConnChain connection_list);
 
   //Destructor
   ~RedisAdmin();

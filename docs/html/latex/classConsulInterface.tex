@@ -13,6 +13,8 @@ The Consul Administrator, who handles distributed configuration \& service disco
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+virtual std\-::string \hyperlink{classConsulInterface_a636b134672f2c150f6b38fc821fb2348}{base64\-\_\-decode} (std\-::string const \&encoded\-\_\-string)=0
+\begin{DoxyCompactList}\small\item\em Convinience Method for base64 decoding. \end{DoxyCompactList}\item 
 \hypertarget{classConsulInterface_ad1d3a241b2fc31e4b13789a49a0d010a}{virtual bool \hyperlink{classConsulInterface_ad1d3a241b2fc31e4b13789a49a0d010a}{register\-\_\-service} (\hyperlink{classServiceInterface}{Service\-Interface} \&s)=0}\label{classConsulInterface_ad1d3a241b2fc31e4b13789a49a0d010a}
 
 \begin{DoxyCompactList}\small\item\em Register the Service. \end{DoxyCompactList}\item 
@@ -59,7 +61,18 @@ The Consul Administrator, who handles distributed configuration \& service disco
 This relies on the H\-T\-T\-P Administrator, and takes in a Service object in order to register. It's responses are J\-S\-O\-N strings that are recieved from Consul. Note that the values returned from the Key-\/\-Value store will be stored in base64 format 
 
 \subsection{Member Function Documentation}
-\hypertarget{classConsulInterface_a98ce2623db59b3f8804691a4039957a8}{\index{Consul\-Interface@{Consul\-Interface}!set\-\_\-config\-\_\-value@{set\-\_\-config\-\_\-value}}
+\hypertarget{classConsulInterface_a636b134672f2c150f6b38fc821fb2348}{\index{Consul\-Interface@{Consul\-Interface}!base64\-\_\-decode@{base64\-\_\-decode}}
+\index{base64\-\_\-decode@{base64\-\_\-decode}!ConsulInterface@{Consul\-Interface}}
+\subsubsection[{base64\-\_\-decode}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\-::string Consul\-Interface\-::base64\-\_\-decode (
+\begin{DoxyParamCaption}
+\item[{std\-::string const \&}]{encoded\-\_\-string}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classConsulInterface_a636b134672f2c150f6b38fc821fb2348}
+
+
+Convinience Method for base64 decoding. 
+
+This is needed as all configuration values are returned from Consul in base64, and need to be decoded after the json is parsed. \hypertarget{classConsulInterface_a98ce2623db59b3f8804691a4039957a8}{\index{Consul\-Interface@{Consul\-Interface}!set\-\_\-config\-\_\-value@{set\-\_\-config\-\_\-value}}
 \index{set\-\_\-config\-\_\-value@{set\-\_\-config\-\_\-value}!ConsulInterface@{Consul\-Interface}}
 \subsubsection[{set\-\_\-config\-\_\-value}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Consul\-Interface\-::set\-\_\-config\-\_\-value (
 \begin{DoxyParamCaption}
