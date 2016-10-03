@@ -35,6 +35,22 @@ RedisAdmin::RedisAdmin(std::string hostname, int port, int timeout_seconds, int 
   init(hostname, port, timeout_seconds, timeout_microseconds);
 }
 
+RedisAdmin::RedisAdmin(RedisConnChain current_connection)
+{
+  //Connect to the DB
+  init(current_connection.ip, current_connection.port, current_connection.timeout, 0);
+
+  //Authenticate with the DB
+  std::string key_str = "AUTH " + current_connection.password;
+  reply = (redisReply *) redisCommand(c, key_str.c_str());
+  if ( !(strcmp(reply->str, "OK") == 0) ) {
+    std::string err_msg = "Error: Authentication Failed";
+    throw RedisConnectionException( err_msg );
+  }
+  freeReplyObject(reply);
+
+}
+
 RedisAdmin::~RedisAdmin()
 {
   if (c)

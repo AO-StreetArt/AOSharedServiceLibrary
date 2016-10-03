@@ -46,10 +46,10 @@ struct RedisConnChain
   int role;
 };
 
-//! The XRedis Admin
+//! The Redis Admin
 
-//! The XRedis Admin is responsible for all interactions with the Redis Key-Value
-//! Store.  This is capable of connecting to single Redis instances or Clusters
+//! The Redis Admin is responsible for all interactions with the Redis Key-Value
+//! Store
 class RedisInterface
 {
 public:
