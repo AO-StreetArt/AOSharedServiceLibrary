@@ -56,46 +56,77 @@
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#ifndef REDIS_INTERFACE</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define REDIS_INTERFACE</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structRedisConnChain.html">   10</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structRedisConnChain.html">RedisConnChain</a></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  std::string ip;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="keywordtype">int</span> port;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  std::string password;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <span class="keywordtype">int</span> pool_size;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keywordtype">int</span> timeout;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="keywordtype">int</span> role;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;};</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classRedisInterface.html">   24</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRedisInterface.html">RedisInterface</a></div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="structRedisConnectionException.html">    9</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structRedisConnectionException.html">RedisConnectionException</a>: <span class="keyword">public</span> std::exception</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  std::string int_msg;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;  <a class="code" href="structRedisConnectionException.html">RedisConnectionException</a> (std::string msg) {int_msg = msg;}</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <a class="code" href="structRedisConnectionException.html">RedisConnectionException</a> (<span class="keyword">const</span> <span class="keywordtype">char</span> * msg_cstr) {std::string msg (msg_cstr);int_msg = msg;}</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <a class="code" href="structRedisConnectionException.html">RedisConnectionException</a> () {}</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  ~<a class="code" href="structRedisConnectionException.html">RedisConnectionException</a>() <span class="keywordflow">throw</span> () {}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span> * what() <span class="keyword">const</span> <span class="keywordflow">throw</span> ()</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    std::string what_str = <span class="stringliteral">&quot;Error Connecting to Redis: &quot;</span> + int_msg;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> what_str.c_str();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;};</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structRedisOperationException.html">   24</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structRedisOperationException.html">RedisOperationException</a>: <span class="keyword">public</span> std::exception</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classRedisInterface.html">RedisInterface</a>() {}</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="classRedisInterface.html#afd325866fd98ca6e002b2702e5566ee5">load</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key ) = 0;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRedisInterface.html#adb0d6e3f8a0848cbb6b346e57aeb3ad5">save</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key, std::string msg ) = 0;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRedisInterface.html#a3881f54b919852b7aaa231015775544e">exists</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key ) = 0;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRedisInterface.html#abb9b1fe2c11911648d62d431968fa04e">del</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key ) = 0;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRedisInterface.html#ac327841b5c3d227be88f164495e32dd0">expire</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> * key, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> second) = 0;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classRedisInterface_html_ac327841b5c3d227be88f164495e32dd0"><div class="ttname"><a href="classRedisInterface.html#ac327841b5c3d227be88f164495e32dd0">RedisInterface::expire</a></div><div class="ttdeci">virtual bool expire(const char *key, unsigned int second)=0</div><div class="ttdoc">Expire a value in Redis after a specified number of seconds. </div></div>
-<div class="ttc" id="structRedisConnChain_html"><div class="ttname"><a href="structRedisConnChain.html">RedisConnChain</a></div><div class="ttdoc">A Structure for storing Redis Connection Information. </div><div class="ttdef"><b>Definition:</b> redis_interface.h:10</div></div>
-<div class="ttc" id="classRedisInterface_html"><div class="ttname"><a href="classRedisInterface.html">RedisInterface</a></div><div class="ttdoc">The XRedis Admin. </div><div class="ttdef"><b>Definition:</b> redis_interface.h:24</div></div>
-<div class="ttc" id="classRedisInterface_html_a3881f54b919852b7aaa231015775544e"><div class="ttname"><a href="classRedisInterface.html#a3881f54b919852b7aaa231015775544e">RedisInterface::exists</a></div><div class="ttdeci">virtual bool exists(const char *key)=0</div><div class="ttdoc">Does a key exist in Redis? </div></div>
-<div class="ttc" id="classRedisInterface_html_adb0d6e3f8a0848cbb6b346e57aeb3ad5"><div class="ttname"><a href="classRedisInterface.html#adb0d6e3f8a0848cbb6b346e57aeb3ad5">RedisInterface::save</a></div><div class="ttdeci">virtual bool save(const char *key, std::string msg)=0</div><div class="ttdoc">Save a value to Redis. </div></div>
-<div class="ttc" id="classRedisInterface_html_afd325866fd98ca6e002b2702e5566ee5"><div class="ttname"><a href="classRedisInterface.html#afd325866fd98ca6e002b2702e5566ee5">RedisInterface::load</a></div><div class="ttdeci">virtual std::string load(const char *key)=0</div><div class="ttdoc">Load a value from Redis. </div></div>
-<div class="ttc" id="classRedisInterface_html_abb9b1fe2c11911648d62d431968fa04e"><div class="ttname"><a href="classRedisInterface.html#abb9b1fe2c11911648d62d431968fa04e">RedisInterface::del</a></div><div class="ttdeci">virtual bool del(const char *key)=0</div><div class="ttdoc">Delete a value from Redis. </div></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  std::string int_msg;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <a class="code" href="structRedisOperationException.html">RedisOperationException</a> (std::string msg) {int_msg = msg;}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <a class="code" href="structRedisOperationException.html">RedisOperationException</a> (<span class="keyword">const</span> <span class="keywordtype">char</span> * msg_cstr) {std::string msg (msg_cstr);int_msg = msg;}</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <a class="code" href="structRedisOperationException.html">RedisOperationException</a> () {}</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  ~<a class="code" href="structRedisOperationException.html">RedisOperationException</a>() <span class="keywordflow">throw</span> () {}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">char</span> * what() <span class="keyword">const</span> <span class="keywordflow">throw</span> ()</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    std::string what_str = <span class="stringliteral">&quot;Error Performing Redis Operation: &quot;</span> + int_msg;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">return</span> what_str.c_str();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;};</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="structRedisConnChain.html">   39</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structRedisConnChain.html">RedisConnChain</a></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  std::string ip;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordtype">int</span> port;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  std::string password;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keywordtype">int</span> pool_size;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordtype">int</span> timeout;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordtype">int</span> role;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;};</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classRedisInterface.html">   53</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRedisInterface.html">RedisInterface</a></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classRedisInterface.html">RedisInterface</a>() {}</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="classRedisInterface.html#a13dca0045887adbf90dd8f11c007d02d">load</a> ( std::string key ) = 0;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRedisInterface.html#a60b25df720d353d426567f10a8fca483">save</a> ( std::string key, std::string msg ) = 0;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRedisInterface.html#a1ddea059a6bc0c4503cd98ef520beac0">exists</a> ( std::string key ) = 0;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRedisInterface.html#a320ec4f76fd83d767dc476a6ca330957">del</a> ( std::string key ) = 0;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classRedisInterface.html#a1bccb873c675701ce5f9c828067ba37f">expire</a> ( std::string key, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> second) = 0;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;};</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classRedisInterface_html_a60b25df720d353d426567f10a8fca483"><div class="ttname"><a href="classRedisInterface.html#a60b25df720d353d426567f10a8fca483">RedisInterface::save</a></div><div class="ttdeci">virtual bool save(std::string key, std::string msg)=0</div><div class="ttdoc">Save a value to Redis. </div></div>
+<div class="ttc" id="structRedisConnChain_html"><div class="ttname"><a href="structRedisConnChain.html">RedisConnChain</a></div><div class="ttdoc">A Structure for storing Redis Connection Information. </div><div class="ttdef"><b>Definition:</b> redis_interface.h:39</div></div>
+<div class="ttc" id="classRedisInterface_html"><div class="ttname"><a href="classRedisInterface.html">RedisInterface</a></div><div class="ttdoc">The XRedis Admin. </div><div class="ttdef"><b>Definition:</b> redis_interface.h:53</div></div>
+<div class="ttc" id="structRedisConnectionException_html"><div class="ttname"><a href="structRedisConnectionException.html">RedisConnectionException</a></div><div class="ttdef"><b>Definition:</b> redis_interface.h:9</div></div>
+<div class="ttc" id="classRedisInterface_html_a1bccb873c675701ce5f9c828067ba37f"><div class="ttname"><a href="classRedisInterface.html#a1bccb873c675701ce5f9c828067ba37f">RedisInterface::expire</a></div><div class="ttdeci">virtual bool expire(std::string key, unsigned int second)=0</div><div class="ttdoc">Expire a value in Redis after a specified number of seconds. </div></div>
+<div class="ttc" id="classRedisInterface_html_a13dca0045887adbf90dd8f11c007d02d"><div class="ttname"><a href="classRedisInterface.html#a13dca0045887adbf90dd8f11c007d02d">RedisInterface::load</a></div><div class="ttdeci">virtual std::string load(std::string key)=0</div><div class="ttdoc">Load a value from Redis. </div></div>
+<div class="ttc" id="classRedisInterface_html_a1ddea059a6bc0c4503cd98ef520beac0"><div class="ttname"><a href="classRedisInterface.html#a1ddea059a6bc0c4503cd98ef520beac0">RedisInterface::exists</a></div><div class="ttdeci">virtual bool exists(std::string key)=0</div><div class="ttdoc">Does a key exist in Redis? </div></div>
+<div class="ttc" id="structRedisOperationException_html"><div class="ttname"><a href="structRedisOperationException.html">RedisOperationException</a></div><div class="ttdef"><b>Definition:</b> redis_interface.h:24</div></div>
+<div class="ttc" id="classRedisInterface_html_a320ec4f76fd83d767dc476a6ca330957"><div class="ttname"><a href="classRedisInterface.html#a320ec4f76fd83d767dc476a6ca330957">RedisInterface::del</a></div><div class="ttdeci">virtual bool del(std::string key)=0</div><div class="ttdoc">Delete a value from Redis. </div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 14 2016 21:47:27 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -16,16 +16,13 @@ The H\-T\-T\-P Requests Administrators.
 \hypertarget{classHttpInterface_a3ac819dcec45535bf3c0fa614c5bdfce}{virtual void \hyperlink{classHttpInterface_a3ac819dcec45535bf3c0fa614c5bdfce}{shutdown} ()=0}\label{classHttpInterface_a3ac819dcec45535bf3c0fa614c5bdfce}
 
 \begin{DoxyCompactList}\small\item\em Shutdown the admin. \end{DoxyCompactList}\item 
-\hypertarget{classHttpInterface_ac5a64589f4c4b68c4feedc58497b7c06}{virtual void \hyperlink{classHttpInterface_ac5a64589f4c4b68c4feedc58497b7c06}{bind\-\_\-get\-\_\-callback} (Write\-Callback)=0}\label{classHttpInterface_ac5a64589f4c4b68c4feedc58497b7c06}
-
-\begin{DoxyCompactList}\small\item\em Bind Callback. \end{DoxyCompactList}\item 
-virtual bool \hyperlink{classHttpInterface_af8e2e93e5affacd9420db0b6b0cb24db}{put} (char $\ast$url, char $\ast$data, int timeout)=0
+virtual bool \hyperlink{classHttpInterface_a57d393f0886723f1e1efadd56faa2b80}{put} (std\-::string url, std\-::string data, int timeout)=0
 \begin{DoxyCompactList}\small\item\em Put. \end{DoxyCompactList}\item 
-virtual bool \hyperlink{classHttpInterface_a3f93eec08da2e42f14f2b23d18636442}{get} (char $\ast$url, int timeout)=0
+virtual std\-::string \hyperlink{classHttpInterface_a1304fcad3f7376da136288d280f658d9}{get} (std\-::string url, int timeout)=0
 \begin{DoxyCompactList}\small\item\em Get. \end{DoxyCompactList}\item 
-virtual bool \hyperlink{classHttpInterface_a717a51a28818ff835a057d17cbeb32c1}{post} (char $\ast$url, char $\ast$data, int timeout)=0
+virtual bool \hyperlink{classHttpInterface_a089efdf4a6e47e7a13b028e75991439b}{post} (std\-::string url, std\-::string data, int timeout)=0
 \begin{DoxyCompactList}\small\item\em Post. \end{DoxyCompactList}\item 
-virtual bool \hyperlink{classHttpInterface_af3d4141c2ec53c0b2dbb8de8fb22212d}{del} (char $\ast$url, int timeout)=0
+virtual bool \hyperlink{classHttpInterface_acc7539a13d663ba17604acdad6e83bf4}{del} (std\-::string url, int timeout)=0
 \begin{DoxyCompactList}\small\item\em Delete. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -35,52 +32,52 @@ The H\-T\-T\-P Requests Administrators.
 This class is in charge of making H\-T\-T\-P Requests Support for put, get post, and delete 
 
 \subsection{Member Function Documentation}
-\hypertarget{classHttpInterface_af3d4141c2ec53c0b2dbb8de8fb22212d}{\index{Http\-Interface@{Http\-Interface}!del@{del}}
+\hypertarget{classHttpInterface_acc7539a13d663ba17604acdad6e83bf4}{\index{Http\-Interface@{Http\-Interface}!del@{del}}
 \index{del@{del}!HttpInterface@{Http\-Interface}}
 \subsubsection[{del}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\-Interface\-::del (
 \begin{DoxyParamCaption}
-\item[{char $\ast$}]{url, }
+\item[{std\-::string}]{url, }
 \item[{int}]{timeout}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_af3d4141c2ec53c0b2dbb8de8fb22212d}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_acc7539a13d663ba17604acdad6e83bf4}
 
 
 Delete. 
 
-Delete from the given U\-R\-L with the specified timeout \hypertarget{classHttpInterface_a3f93eec08da2e42f14f2b23d18636442}{\index{Http\-Interface@{Http\-Interface}!get@{get}}
+Delete from the given U\-R\-L with the specified timeout \hypertarget{classHttpInterface_a1304fcad3f7376da136288d280f658d9}{\index{Http\-Interface@{Http\-Interface}!get@{get}}
 \index{get@{get}!HttpInterface@{Http\-Interface}}
-\subsubsection[{get}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\-Interface\-::get (
+\subsubsection[{get}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\-::string Http\-Interface\-::get (
 \begin{DoxyParamCaption}
-\item[{char $\ast$}]{url, }
+\item[{std\-::string}]{url, }
 \item[{int}]{timeout}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_a3f93eec08da2e42f14f2b23d18636442}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_a1304fcad3f7376da136288d280f658d9}
 
 
 Get. 
 
-Get from the given U\-R\-L with the specified timeout \hypertarget{classHttpInterface_a717a51a28818ff835a057d17cbeb32c1}{\index{Http\-Interface@{Http\-Interface}!post@{post}}
+Get from the given U\-R\-L with the specified timeout \hypertarget{classHttpInterface_a089efdf4a6e47e7a13b028e75991439b}{\index{Http\-Interface@{Http\-Interface}!post@{post}}
 \index{post@{post}!HttpInterface@{Http\-Interface}}
 \subsubsection[{post}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\-Interface\-::post (
 \begin{DoxyParamCaption}
-\item[{char $\ast$}]{url, }
-\item[{char $\ast$}]{data, }
+\item[{std\-::string}]{url, }
+\item[{std\-::string}]{data, }
 \item[{int}]{timeout}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_a717a51a28818ff835a057d17cbeb32c1}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_a089efdf4a6e47e7a13b028e75991439b}
 
 
 Post. 
 
-Post to the given U\-R\-L the supplied data with the specified timeout \hypertarget{classHttpInterface_af8e2e93e5affacd9420db0b6b0cb24db}{\index{Http\-Interface@{Http\-Interface}!put@{put}}
+Post to the given U\-R\-L the supplied data with the specified timeout \hypertarget{classHttpInterface_a57d393f0886723f1e1efadd56faa2b80}{\index{Http\-Interface@{Http\-Interface}!put@{put}}
 \index{put@{put}!HttpInterface@{Http\-Interface}}
 \subsubsection[{put}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\-Interface\-::put (
 \begin{DoxyParamCaption}
-\item[{char $\ast$}]{url, }
-\item[{char $\ast$}]{data, }
+\item[{std\-::string}]{url, }
+\item[{std\-::string}]{data, }
 \item[{int}]{timeout}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_af8e2e93e5affacd9420db0b6b0cb24db}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classHttpInterface_a57d393f0886723f1e1efadd56faa2b80}
 
 
 Put. 

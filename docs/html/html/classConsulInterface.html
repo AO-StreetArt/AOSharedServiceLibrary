@@ -58,6 +58,9 @@
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a636b134672f2c150f6b38fc821fb2348"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConsulInterface.html#a636b134672f2c150f6b38fc821fb2348">base64_decode</a> (std::string const &amp;encoded_string)=0</td></tr>
+<tr class="memdesc:a636b134672f2c150f6b38fc821fb2348"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convinience Method for base64 decoding.  <a href="#a636b134672f2c150f6b38fc821fb2348">More...</a><br/></td></tr>
+<tr class="separator:a636b134672f2c150f6b38fc821fb2348"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1d3a241b2fc31e4b13789a49a0d010a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad1d3a241b2fc31e4b13789a49a0d010a"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classConsulInterface.html#ad1d3a241b2fc31e4b13789a49a0d010a">register_service</a> (<a class="el" href="classServiceInterface.html">ServiceInterface</a> &amp;s)=0</td></tr>
 <tr class="memdesc:ad1d3a241b2fc31e4b13789a49a0d010a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register the Service. <br/></td></tr>
@@ -114,6 +117,33 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <div class="textblock"><p>The Consul Administrator, who handles distributed configuration &amp; service discovery. </p>
 <p>This relies on the HTTP Administrator, and takes in a Service object in order to register. It's responses are JSON strings that are recieved from Consul. Note that the values returned from the Key-Value store will be stored in base64 format </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a636b134672f2c150f6b38fc821fb2348"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::string ConsulInterface::base64_decode </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>encoded_string</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convinience Method for base64 decoding. </p>
+<p>This is needed as all configuration values are returned from Consul in base64, and need to be decoded after the json is parsed. </p>
+
+</div>
+</div>
 <a class="anchor" id="a98ce2623db59b3f8804691a4039957a8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -157,7 +187,7 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class=
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 14 2016 21:47:27 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
