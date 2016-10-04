@@ -270,7 +270,7 @@ bool RedisAdmin::ltrim ( std::string key, int start_index, int end_index)
 bool RedisAdmin::mset ( std::vector<RedisKvPair> save_sets )
 {
   std::string cmd_str = "MSET ";
-  for (int i=0; i<save_sets.size(); ++i)
+  for (std::size_t i=0; i<save_sets.size(); ++i)
   {
     cmd_str = cmd_str + save_sets[i].key + " \"" + save_sets[i].val + "\" ";
   }
@@ -282,7 +282,7 @@ bool RedisAdmin::mset ( std::vector<RedisKvPair> save_sets )
 std::vector<std::string> RedisAdmin::mget ( std::vector<std::string> keys )
 {
   std::string cmd_str = "MGET ";
-  for (int i=0; i<keys.size(); ++i)
+  for (std::size_t i=0; i<keys.size(); ++i)
   {
     cmd_str = cmd_str + keys[i] + " ";
   }
@@ -290,7 +290,7 @@ std::vector<std::string> RedisAdmin::mget ( std::vector<std::string> keys )
   reply = (redisReply *) redisCommand( c, cmd_str.c_str() );
   std::vector<std::string> reply_string;
 
-  for (int j=0;j<reply->elements; ++j)
+  for (std::size_t j=0;j<reply->elements; ++j)
   {
     std::string new_element (reply->element[j]->str);
     reply_string.push_back(new_element);
@@ -302,7 +302,7 @@ std::vector<std::string> RedisAdmin::mget ( std::vector<std::string> keys )
 bool RedisAdmin::msetnx ( std::vector<RedisKvPair> save_sets )
 {
   std::string cmd_str = "MSETNX ";
-  for (int i=0; i<save_sets.size(); ++i)
+  for (std::size_t i=0; i<save_sets.size(); ++i)
   {
     cmd_str = cmd_str + save_sets[i].key + " \"" + save_sets[i].val + "\" ";
   }
