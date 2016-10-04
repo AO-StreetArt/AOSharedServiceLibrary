@@ -47,6 +47,6 @@ before_install:
   - cd ../aossl_deps && sudo ./build_deps.sh
   - cd $TRAVIS_BUILD_DIR
 script:
-  - make
-  - make test
-  - make benchmarks
+  - make gcc-48
+  - make test-48
+  - make benchmarks-48

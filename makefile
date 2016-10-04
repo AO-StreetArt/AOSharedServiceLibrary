@@ -21,6 +21,11 @@ FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent `pkg-con
 FULL_LIBS_RHEL = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lhiredis
 FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/factory_couchbase.h lib/include/factory_http_client.h lib/include/factory_http_server.h lib/include/factory_logging.h lib/include/factory_props.h lib/include/factory_redis.h lib/include/factory_uuid.h lib/include/factory_zmq.h
 
+STD_GCC_48 = -std=c11
+TESTS-48 = cli_test_48 consul_test_48 logging_test_48 http_test_48 zmqio_test_48 couchbase_test_48 redis_tests_48 factory_test_48 http_server_test_48 properties_reader_test_48 app_response_test_48
+BENCHMARKS-48 = consul_benchmark_48 logging_benchmark_48 http_benchmark_48 couchbase_benchmark_48 redis_benchmark_48
+OBJS-48 = lib/cli_48.o lib/logging_48.o lib/http_admin_48.o lib/zmqio_48.o lib/couchbase_admin_48.o lib/redis_admin_48.o lib/consul_admin_48.o lib/logging_interface_48.o lib/uuid_admin_48.o lib/service_48.o lib/http_server_48.o lib/properties_reader_48.o lib/response_48.o
+
 # typing 'make' will invoke the first target entry in the file
 # (in this case the default target entry)
 # you can name this target entry anything, but "default" or "all"
@@ -28,14 +33,20 @@ FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/f
 #
 default: libaossl.a
 
+gcc-48: libaossl.a-48
+
 # typing 'make test' will build the tests
 test: $(TESTS)
+
+test-48: $(TESTS-48)
 
 # 'make rhel-test' will build the tests on RHEL/CentOS
 rhel-test: $(TESTS_RHEL)
 
 # typing 'make benchmarks' will build the benchmarks
 benchmarks: $(BENCHMARKS)
+
+benchmarks-48: $(BENCHMARKS-48)
 
 # typing 'make rhel-benchmarks' will build benchmarks on RHEL/CentOS
 rhel-benchmarks: $(BENCHMARKS_RHEL)
@@ -315,6 +326,143 @@ factory_test_rhel: lib/factory_test.o $(OBJS)
 lib/factory_test.o: lib/factory_test.cpp $(FACTORIES)
 	$(CC) $(CFLAGS) -o $@ -c lib/factory_test.cpp $(STD)
 
+# Creation of tests with g++ 4.8 and up support
+consul_benchmark_48: lib/consul_benchmark_48.o lib/logging.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o lib/service.o
+	$(CC) $(CFLAGS) -o consul_benchmark $^ $(LIBS) -luuid -lcurl $(STD_GCC_48)
+
+lib/consul_benchmark_48.o: lib/consul_benchmark.cpp lib/include/factory/consul_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/consul_benchmark.cpp $(STD_GCC_48)
+
+couchbase_benchmark_48: lib/couchbase_benchmark_48.o lib/logging.o lib/couchbase_admin.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o couchbase_benchmark $^ $(LIBS) -luuid -lcouchbase $(STD_GCC_48)
+
+lib/couchbase_benchmark_48.o: lib/couchbase_benchmark.cpp lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_benchmark.cpp $(STD_GCC_48)
+
+http_benchmark_48: lib/http_benchmark_48.o lib/logging.o lib/http_admin.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o http_benchmark $^ $(LIBS) -luuid -lcurl $(STD_GCC_48)
+
+lib/http_benchmark_48.o: lib/http_benchmark.cpp lib/include/factory/http_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/http_benchmark.cpp $(STD_GCC_48)
+
+logging_benchmark_48: lib/logging_benchmark_48.o lib/logging.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o logging_benchmark $^ $(LIBS) $(STD_GCC_48)
+
+lib/logging_benchmark_48.o: lib/logging_benchmark.cpp lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/logging_benchmark.cpp $(STD_GCC_48)
+
+redis_benchmark_48: lib/redis_benchmark_48.o lib/redis_admin.o lib/logging.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o redis_benchmark $^ $(LIBS) -luuid `pkg-config --cflags --libs hiredis` $(STD_GCC_48)
+
+lib/redis_benchmark_48.o: lib/redis_benchmark.cpp lib/include/factory/redis_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/redis_benchmark.cpp $(STD_GCC_48)
+
+uuid_benchmark_48: lib/uuid_benchmark_48.o lib/logging.o lib/uuid_admin.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o uuid_benchmark $^ $(LIBS) -luuid $(STD_GCC_48)
+
+lib/uuid_benchmark_48.o: lib/uuid_benchmark.cpp lib/include/factory/uuid_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/uuid_benchmark.cpp $(STD_GCC_48)
+
+zmqio_benchmark_48: lib/zmqio_benchmark_48.o lib/logging.o lib/zmqio.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o zmqio_benchmark $^ $(LIBS) -lzmq $(STD_GCC_48)
+
+lib/zmqio_benchmark_48.o: lib/zmqio_benchmark.cpp lib/include/factory/zmq_interface.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_benchmark.cpp $(STD_GCC_48)
+
+# Create the executable http_server_test
+http_server_test_48: lib/http_server_test_48.o lib/http_server.o
+	$(CC) $(CFLAGS) -o http_server_test $^ -levent $(STD_GCC_48)
+
+lib/http_server_test_48.o: lib/http_server_test.cpp lib/include/http_server.h
+	$(CC) $(CFLAGS) -o $@ -c lib/http_server_test.cpp $(STD_GCC_48)
+
+# Create the executable file cli_test
+cli_test_48: lib/cli_test_48.o lib/cli.o
+	$(CC) $(CFLAGS) -o cli_test $^ $(STD_GCC_48)
+
+# Create the object file cli_test.o
+lib/cli_test_48.o: lib/cli_test.cpp lib/include/cli.h
+	$(CC) $(CFLAGS) -o $@ -c lib/cli_test.cpp $(STD_GCC_48)
+
+# Create the executable file consul_test
+consul_test_48: lib/logging.o lib/consul_test_48.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o lib/service.o
+	$(CC) $(CFLAGS) -o consul_test $^ $(LIBS) -lcurl $(STD_GCC_48)
+
+# Create the object file consul_test.o
+lib/consul_test_48.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/factory/logging_interface.h lib/include/service.h
+	$(CC) $(CFLAGS) -o $@ -c lib/consul_test.cpp $(STD_GCC_48)
+
+# Create the executable file couchbase_test
+couchbase_test_48: lib/logging.o lib/couchbase_admin.o lib/couchbase_test_48.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o couchbase_test $^ $(LIBS) -lcouchbase $(STD_GCC_48)
+
+# Create the object file couchbase_test.o
+lib/couchbase_test_48.o: lib/couchbase_test.cpp lib/include/couchbase_admin.h lib/include/logging.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_test.cpp $(STD_GCC_48)
+
+# Create the executable file http_test
+http_test_48: lib/http_admin.o lib/http_test_48.o
+	$(CC) $(CFLAGS) -o http_test $^ $(LIBS) -lcurl $(STD_GCC_48)
+
+# Create the object file http_test.o
+lib/http_test_48.o: lib/http_test.cpp lib/include/http_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/http_test.cpp $(STD_GCC_48)
+
+# Create the executable file logging_test
+logging_test_48: lib/logging.o lib/logging_test_48.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o logging_test $^ $(LIBS) $(STD_GCC_48)
+
+# Create the object file logging_test.o
+lib/logging_test_48.o: lib/logging_test.cpp lib/include/logging.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/logging_test.cpp $(STD_GCC_48)
+
+# Create the executable file redis_tests
+redis_tests_48: lib/redis_admin.o lib/redis_tests_48.o
+	$(CC) $(CFLAGS) -o redis_tests $^ `pkg-config --cflags --libs hiredis` $(STD_GCC_48)
+
+# Create the object file redis_tests.o
+lib/redis_tests_48.o: lib/redis_tests.cpp lib/include/redis_admin.h
+	$(CC) $(CFLAGS) -o $@ -c lib/redis_tests.cpp $(STD_GCC_48)
+
+# Create the executable file uuid_test
+uuid_test_48: lib/logging.o lib/uuid_admin.o lib/uuid_test_48.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o uuid_test $^ $(LIBS) -luuid $(STD_GCC_48)
+
+# Create the object file uuid_test.o
+lib/uuid_test_48.o: lib/uuid_test.cpp lib/include/uuid_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/uuid_test.cpp $(STD_GCC_48)
+
+# Create the executable file zmqio_test
+zmqio_test_48: lib/logging.o lib/zmqio.o lib/zmqio_test_48.o lib/logging_interface.o
+	$(CC) $(CFLAGS) -o zmqio_test $^ $(LIBS) -lzmq $(STD_GCC_48)
+
+# Create the object file zmqio_test.o
+lib/zmqio_test_48.o: lib/zmqio_test.cpp lib/include/zmqio.h lib/include/logging.h lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_test.cpp $(STD_GCC_48)
+
+# Create the executable file properties_reader_test
+properties_reader_test_48: lib/properties_reader_test_48.o lib/properties_reader.o
+	$(CC) $(CFLAGS) -o properties_reader_test $^ $(STD_GCC_48)
+
+# Create the object file properties_reader_test.o
+lib/properties_reader_test_48.o: lib/properties_reader_test.cpp lib/properties_reader.cpp lib/include/properties_reader.h
+	$(CC) $(CFLAGS) -o $@ -c lib/properties_reader_test.cpp $(STD_GCC_48)
+
+# Create the executable file app_response_test
+app_response_test_48: lib/response.o lib/app_response_test_48.o
+	$(CC) $(CFLAGS) -o app_response_test $^ $(STD_GCC_48)
+
+# Create the object file app_response_test.o
+lib/app_response_test_48.o: lib/response.o lib/app_response_test.cpp
+	$(CC) $(CFLAGS) -o $@ -c lib/app_response_test.cpp $(STD_GCC_48)
+
+factory_test_48: lib/factory_test_48.o $(OBJS)
+	$(CC) $(CFLAGS) -o factory_test $^ $(FULL_LIBS) $(STD_GCC_48)
+
+lib/factory_test_48.o: lib/factory_test.cpp $(FACTORIES)
+	$(CC) $(CFLAGS) -o $@ -c lib/factory_test.cpp $(STD_GCC_48)
+
+
 # To create the static library we need the object files
 # Using $@ gives us the current target
 #
@@ -370,6 +518,52 @@ lib/response.o: lib/response.cpp lib/include/response.h lib/include/factory/resp
 
 lib/logging_interface.o: lib/logging_interface.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_interface.cpp $(STD)
+
+#G++ 4.8 and up support
+
+libaossl.a-48: $(OBJS-48)
+	$(SLC) libaossl.a $(OBJS-48)
+
+lib/cli_48.o: lib/cli.cpp lib/include/cli.h lib/include/factory/commandline_interface.h
+	$(CC) $(CFLAGS) -o lib/cli.o -c lib/cli.cpp $(STD_GCC_48)
+
+lib/logging_48.o: lib/logging.cpp lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o lib/logging.o -c lib/logging.cpp $(STD_GCC_48)
+
+lib/http_admin_48.o: lib/http_admin.cpp lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/http_admin.cpp $(STD_GCC_48)
+
+lib/zmqio_48.o: lib/zmqio.cpp lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/zmqio.cpp $(STD_GCC_48)
+
+lib/couchbase_admin_48.o: lib/couchbase_admin.cpp lib/include/logging.h lib/include/factory/db_admin.h lib/include/factory/writeable.h
+	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_admin.cpp $(STD_GCC_48)
+
+lib/redis_admin_48.o:lib/redis_admin.cpp
+	$(CC) $(CFLAGS) -o $@ -c lib/redis_admin.cpp $(STD_GCC_48)
+
+lib/consul_admin_48.o: lib/consul_admin.cpp lib/include/factory/logging_interface.h lib/include/http_admin.h lib/include/service.h lib/include/factory/consul_interface.h
+	$(CC) $(CFLAGS) -o lib/consul_admin.o -c lib/consul_admin.cpp $(STD_GCC_48)
+
+lib/logging_interface_48.o: lib/logging_interface.cpp lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o lib/logging_interface.o -c lib/logging_interface.cpp $(STD_GCC_48)
+
+lib/uuid_admin_48.o: lib/uuid_admin.cpp lib/include/factory/logging_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/uuid_admin.cpp $(STD_GCC_48)
+
+lib/service_48.o: lib/service.cpp lib/include/service.h lib/include/factory/consul_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/service.cpp $(STD_GCC_48)
+
+lib/http_server_48.o: lib/http_server.cpp lib/include/http_server.h lib/include/factory/http_server_interface.h lib/include/factory/callbacks.h
+	$(CC) $(CFLAGS) -o $@ -c lib/http_server.cpp $(STD_GCC_48)
+
+lib/properties_reader_48.o: lib/properties_reader.cpp lib/include/properties_reader.h lib/include/factory/properties_reader_interface.h
+	$(CC) $(CFLAGS) -o lib/properties_reader.o -c lib/properties_reader.cpp $(STD_GCC_48)
+
+lib/response_48.o: lib/response.cpp lib/include/response.h lib/include/factory/response_interface.h
+	$(CC) $(CFLAGS) -o lib/response.o -c lib/response.cpp $(STD_GCC_48)
+
+
 # To start over from scratch, type 'make clean'.  This
 # removes the executable file, as well as old .o object
 # files and *~ backup files:
