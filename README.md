@@ -1,8 +1,7 @@
 # AO Shared Service Library
 
 ## Build Status
-* Project - Successful
-* Tests - Successful
+![](https://travis-ci.org/AO-StreetArt/MovingHelper.svg?branch=master)
 
 ## Overview
 
