@@ -6,6 +6,8 @@
 #include <fstream>
 #include <cstdlib>
 #include <vector>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include "include/factory/redis_interface.h"
 
@@ -22,95 +24,16 @@ RedisAdmin *xRedis;
 int main()
 {
 
-//Read the Redis Configuration File
-//Open the file
-std::string line;
-std::ifstream file ("test/redis.properties");
-
-if (file.is_open()) {
-  while (getline (file, line) ) {
-    //Read a line from the property file
-
-    //Figure out if we have a blank or comment line
-    bool keep_going = true;
-    if (line.length() > 0) {
-      if (line[0] == '/' && line[1] == '/') {
-        keep_going=false;
-      }
-    }
-    else {
-      keep_going=false;
-    }
-
-    if (keep_going==true) {
-      int eq_pos = line.find("=", 0);
-      std::string var_name = line.substr(0, eq_pos);
-      std::string var_value = line.substr(eq_pos+1, line.length() - eq_pos);
-      if (var_name=="RedisConnectionString") {
-        //Read a string in the format 127.0.0.1--7000----2--5--0
-        RedisConnChain chain;
-
-        //Retrieve the first value
-        int spacer_position = var_value.find("--", 0);
-        std::string str1 = var_value.substr(0, spacer_position);
-        chain.ip = str1;
-
-        //Retrieve the second value
-        std::string new_value = var_value.substr(spacer_position+2, var_value.length() - 1);
-        spacer_position = new_value.find("--", 0);
-        str1 = new_value.substr(0, spacer_position);
-        chain.port = std::stoi(str1);
-
-        //Retrieve the third value
-        new_value = new_value.substr(spacer_position+2, new_value.length() - 1);
-        spacer_position = new_value.find("--", 0);
-        str1 = new_value.substr(0, spacer_position);
-        chain.password = str1;
-
-        //Retrieve the fourth value
-        new_value = new_value.substr(spacer_position+2, new_value.length() - 1);
-        spacer_position = new_value.find("--", 0);
-        str1 = new_value.substr(0, spacer_position);
-        chain.pool_size = std::stoi(str1);
-
-        //Retrieve the fifth value
-        new_value = new_value.substr(spacer_position+2, new_value.length() - 1);
-          spacer_position = new_value.find("--", 0);
-          str1 = new_value.substr(0, spacer_position);
-        chain.timeout = std::stoi(str1);
-
-        //Retrieve the final value
-        new_value = new_value.substr(spacer_position+2, new_value.length() - 1);
-        spacer_position = new_value.find("--", 0);
-        str1 = new_value.substr(0, spacer_position);
-        chain.role = std::stoi(str1);
-
-        RedisConnectionList.push_back(chain);
-      }
-    }
-  }
-  file.close();
-}
-
-std::cout << "Redis Connection List Built" << std::endl;
-
 //Set up Redis Connection
 xRedis = new RedisAdmin ("127.0.0.1", 6379);
-std::cout << "Connected to Redis" << std::endl;
+
+//---------------------------Core Components----------------------------------//
 
 //save
-bool bRet = xRedis->save("Test", "123");
-if (!bRet) {
-std::cout << "Error putting object to Redis Smart Update Buffer" << std::endl;
-assert(bRet);
-}
+assert( xRedis->save("Test", "123") );
 
 //exists
-bool eRet = xRedis->exists("Test");
-if (!eRet) {
-std::cout << "Test not found in buffer" << std::endl;
-assert(eRet);
-}
+assert( xRedis->exists("Test") );
 
 //load
 std::string strValue = xRedis->load("Test");
@@ -118,7 +41,62 @@ assert(strValue == "123");
 std::cout << strValue << std::endl;
 
 //Delete
-xRedis->del("Test");
+assert( xRedis->del("Test") );
+assert( !(xRedis->exists("Test")) );
+
+//Expire & Persist
+assert( xRedis->save("1", "123") );
+assert( xRedis->save("2", "456") );
+assert( xRedis->save("3", "789") );
+assert( xRedis->expire("1", 1) );
+assert( xRedis->expire("2", 10) );
+assert( xRedis->expire("3", 5) );
+assert( xRedis->exists("1") );
+assert( xRedis->exists("2") );
+assert( xRedis->exists("3") );
+
+sleep(2000);
+assert( !(xRedis->exists("1")) );
+assert( xRedis->exists("2") );
+assert( xRedis->exists("3") );
+
+assert( xRedis->persist("3") );
+
+sleep(20000);
+assert( !(xRedis->exists("1")) );
+assert( !(xRedis->exists("2")) );
+assert( xRedis->exists("3") );
+
+//Setex
+assert( xRedis->setex("1", "123", 1) );
+assert( xRedis->setex("2", "456", 10) );
+assert( xRedis->exists("1") );
+assert( xRedis->exists("2") );
+
+sleep(2000);
+assert( !(xRedis->exists("1")) );
+assert( xRedis->exists("2") );
+
+sleep(20000);
+assert( !(xRedis->exists("1")) );
+assert( !(xRedis->exists("2")) );
+
+//Length
+assert( xRedis->len("3") == 3 );
+
+//append
+assert( xRedis->append("3", "1011") );
+assert( xRedis->len("3") == 7 );
+
+//---------------------------Counter Methods----------------------------------//
+
+//Increase
+assert( xRedis->incr("counter") == 1);
+assert( xRedis->incr("counter") == 2);
+
+//Decrease
+assert( xRedis->decr("counter") == 1);
+assert( xRedis->decr("counter") == 0);
 
 delete xRedis;
 return 0;

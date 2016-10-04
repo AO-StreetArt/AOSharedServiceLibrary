@@ -1,0 +1,27 @@
+# Use new trusty images, should yield newer compilers and packages
+sudo: required
+dist: precise
+language: cpp
+
+sudo: required
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-5
+    - g++-5
+services:
+  - redis-server
+before_install:
+  - mkdir ../aossl_deps
+  - sudo cp scripts/deb/build_deps.sh ../aossl_deps
+  - cd ../aossl_deps && sudo ./build_deps.sh
+  - cd $TRAVIS_BUILD_DIR
+script:
+  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
+  - sudo unlink /usr/bin/g++ && sudo ln -s /usr/bin/g++-5 /usr/bin/g++
+  - gcc --version
+  - make
+  - make rhel-test
+  - make rhel-benchmarks

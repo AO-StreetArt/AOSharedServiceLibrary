@@ -1,8 +1,6 @@
 # AO Shared Service Library
 
-## Build Status
-* Project - Successful
-* Tests - Successful
+![](https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary.svg?branch=master)
 
 ## Overview
 

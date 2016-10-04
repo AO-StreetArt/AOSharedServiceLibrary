@@ -370,6 +370,7 @@ lib/response.o: lib/response.cpp lib/include/response.h lib/include/factory/resp
 
 lib/logging_interface.o: lib/logging_interface.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_interface.cpp $(STD)
+
 # To start over from scratch, type 'make clean'.  This
 # removes the executable file, as well as old .o object
 # files and *~ backup files:
