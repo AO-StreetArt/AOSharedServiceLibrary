@@ -1,6 +1,5 @@
 # AO Shared Service Library
 
-## Build Status
 ![](https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary.svg?branch=master)
 
 ## Overview
