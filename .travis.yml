@@ -45,7 +45,7 @@ before_install:
   - mkdir ../aossl_deps
   - sudo cp scripts/deb/build_deps.sh ../aossl_deps
   - cd ../aossl_deps && sudo ./build_deps.sh
-  - cd
+  - cd $TRAVIS_BUILD_DIR
 script:
   - make
   - make test
