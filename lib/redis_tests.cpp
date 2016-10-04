@@ -69,7 +69,7 @@ assert( xRedis->exists("3") );
 
 //Setex
 assert( xRedis->setex("1", "123", 1) );
-assert( xRedis->save("2", "456", 10) );
+assert( xRedis->setex("2", "456", 10) );
 assert( xRedis->exists("1") );
 assert( xRedis->exists("2") );
 
