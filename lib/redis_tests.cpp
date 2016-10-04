@@ -55,14 +55,14 @@ assert( xRedis->exists("1") );
 assert( xRedis->exists("2") );
 assert( xRedis->exists("3") );
 
-std::sleep(2000);
+sleep(2000);
 assert( !(xRedis->exists("1")) );
 assert( xRedis->exists("2") );
 assert( xRedis->exists("3") );
 
 assert( xRedis->persist("3") );
 
-std::sleep(20000);
+sleep(20000);
 assert( !(xRedis->exists("1")) );
 assert( !(xRedis->exists("2")) );
 assert( xRedis->exists("3") );
@@ -73,11 +73,11 @@ assert( xRedis->save("2", "456", 10) );
 assert( xRedis->exists("1") );
 assert( xRedis->exists("2") );
 
-std::sleep(2000);
+sleep(2000);
 assert( !(xRedis->exists("1")) );
 assert( xRedis->exists("2") );
 
-std::sleep(20000);
+sleep(20000);
 assert( !(xRedis->exists("1")) );
 assert( !(xRedis->exists("2")) );
 
