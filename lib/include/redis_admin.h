@@ -70,7 +70,7 @@ public:
   bool lset ( std::string key, std::string val, int index);
 
   //! Insert a value into the list at key and before/after the pivot value
-  int linsert ( std::string key, std::string val, std::string pivot, bool before_pivot=true);
+  int linsert ( std::string key, std::string val, std::string pivot, bool before_pivot);
 
   //! Get the value stored in the list at key and the index at index
   std::string lindex ( std::string key, int index);

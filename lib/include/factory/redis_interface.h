@@ -141,7 +141,7 @@ public:
   virtual bool lset ( std::string key, std::string val, int index) = 0;
 
   //! Insert a value into the list at key and before/after the pivot value
-  virtual int linsert ( std::string key, std::string val, std::string pivot, bool before_pivot=true) = 0;
+  virtual int linsert ( std::string key, std::string val, std::string pivot, bool before_pivot) = 0;
 
   //! Get the value stored in the list at key and the index at index
   virtual std::string lindex ( std::string key, int index) = 0;
