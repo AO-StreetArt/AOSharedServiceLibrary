@@ -299,7 +299,7 @@ std::vector<std::string> RedisAdmin::mget ( std::vector<std::string> keys )
   return reply_string;
 }
 
-bool msetnx ( std::vector<RedisKvPair> save_sets )
+bool RedisAdmin::msetnx ( std::vector<RedisKvPair> save_sets )
 {
   std::string cmd_str = "MSETNX ";
   for (int i=0; i<save_sets.size(); ++i)
@@ -311,7 +311,7 @@ bool msetnx ( std::vector<RedisKvPair> save_sets )
   return process_std_int_reply(reply);
 }
 
-bool setnx ( std::string key, std::string msg )
+bool RedisAdmin::setnx ( std::string key, std::string msg )
 {
   reply = (redisReply *) redisCommand( c, "SETNX %s %s", key.c_str(), msg.c_str() );
   return process_std_int_reply(reply);
