@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <vector>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "include/factory/redis_interface.h"
 
