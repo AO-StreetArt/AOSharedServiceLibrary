@@ -16,8 +16,8 @@ int main()
   }
   catch (UuidSecurityException& ue) {
     //Continue and print the security error
-    uuid_logging->error("UUID Security Exception");
-    uuid_logging->error(ue.what());
+    std::cout << "UUID Security Exception" << std::endl;
+    std::cout << ue.what() << std::endl;
   }
   assert ( !id_str.empty() );
   std::cout << id_str << std::endl;
