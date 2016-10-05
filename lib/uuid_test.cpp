@@ -12,7 +12,7 @@ int main()
   //Generate a UUID
   std::string id_str;
   try {
-    id_str = ua->generate();
+    id_str = uuid->generate();
   }
   catch (UuidSecurityException& ue) {
     //Continue and print the security error
