@@ -11,15 +11,18 @@ int main()
 
   //Generate a UUID
   std::string id_str;
+  bool generated = false;
   try {
     id_str = uuid.generate();
+    generated = true;
   }
   catch (UuidSecurityException& ue) {
     //Continue and print the security error
     std::cout << "UUID Security Exception" << std::endl;
     std::cout << ue.what() << std::endl;
   }
-  assert ( !id_str.empty() );
-  std::cout << id_str << std::endl;
-
+  if (generated) {
+    assert ( !id_str.empty() );
+    std::cout << id_str << std::endl;
+  }
 }
