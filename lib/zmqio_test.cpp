@@ -38,7 +38,7 @@ int main()
 
   std::string response = zmqo->recv();
   std::cout << response << std::endl;
-  assert ( response = "success" );
+  assert ( response == "success" );
 
   //Cleanup
   delete zmqi;
