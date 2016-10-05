@@ -279,7 +279,7 @@ uuid_test: lib/uuid_admin.o lib/uuid_test.o
 	$(CC) $(CFLAGS) -o $@ $^ -luuid $(STD)
 
 # Create the object file uuid_test.o
-lib/uuid_test.o: lib/uuid_test.cpp lib/include/uuid_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
+lib/uuid_test.o: lib/uuid_test.cpp lib/include/uuid_admin.h
 	$(CC) $(CFLAGS) -o $@ -c lib/uuid_test.cpp $(STD)
 
 # Create the executable file zmqio_test
