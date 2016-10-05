@@ -54,8 +54,19 @@ ServiceInterface *s = consul_factory.get_service_interface();
 ConsulInterface *consul = consul_factory.get_consul_interface( "localhost:8500" );
 
 //! Get a Couchbase Interface instance
-CouchbaseInterface *ca = couchbase_factory.get_couchbase_interface( "couchbase://localhost/default" );
-
+try {
+    CouchbaseInterface *ca = couchbase_factory.get_couchbase_interface( "couchbase://localhost/default" );
+  }
+catch (CouchbaseBootstrapException& be)
+{
+  std::cout << "Couchbase Bootstrap Exception" << std::endl;
+  std::cout << be.what() << std::endl;
+}
+catch (CouchbaseConnectException& ce)
+{
+  std::cout << "Couchbase Bootstrap Exception" << std::endl;
+  std::cout << ce.what() << std::endl;
+}
 //! Get a Couchbase Interface instance for a password protected DB
 //CouchbaseInterface *ca2 = factory.get_couchbase_interface( const char * conn, const char * pswd );
 

@@ -27,7 +27,7 @@ script:
   - make rhel-benchmarks
   - ./factory_test
   - ./app_response_test
-  - ./property_reader_test
+  - ./properties_reader_test
   - ./cli_test name=test
   - ./http_test
   - ./logging_test
