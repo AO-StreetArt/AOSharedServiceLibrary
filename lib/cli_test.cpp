@@ -1,5 +1,8 @@
 #include "include/cli.h"
 #include <iostream>
+#include <cstdlib>
+#include <stdlib.h>
+#include <unistd.h>
 
 int main( int argc, char** argv )
 {
