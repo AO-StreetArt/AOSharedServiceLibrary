@@ -95,7 +95,6 @@ assert ( uuid );
 assert ( ha );
 assert ( s );
 assert ( consul );
-assert ( ca );
 assert ( ra );
 assert ( zmqo );
 assert ( zmqi );
