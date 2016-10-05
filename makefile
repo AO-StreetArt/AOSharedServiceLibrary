@@ -9,7 +9,7 @@ SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
 OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/redis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o lib/service.o lib/http_server.o lib/properties_reader.o lib/response.o
-TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_tests factory_test http_server_test properties_reader_test app_response_test
+TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_tests factory_test http_server_test properties_reader_test app_response_test uuid_test
 TESTS_RHEL = cli_test consul_test logging_test http_test zmqio_test couchbase_test factory_test_rhel http_server_test properties_reader_test app_response_test redis_tests_rhel
 BENCHMARKS = consul_benchmark logging_benchmark http_benchmark couchbase_benchmark redis_benchmark
 BENCHMARKS_RHEL = redis_benchmark_rhel consul_benchmark logging_benchmark http_benchmark couchbase_benchmark

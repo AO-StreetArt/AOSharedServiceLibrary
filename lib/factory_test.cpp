@@ -54,7 +54,7 @@ ServiceInterface *s = consul_factory.get_service_interface();
 ConsulInterface *consul = consul_factory.get_consul_interface( "localhost:8500" );
 
 //! Get a Couchbase Interface instance
-CouchbaseInterface *ca;
+CouchbaseInterface *ca = NULL;
 try {
     ca = couchbase_factory.get_couchbase_interface( "couchbase://localhost/default" );
   }
@@ -108,7 +108,9 @@ delete uuid;
 delete ha;
 delete s;
 delete consul;
-delete ca;
+if (ca) {
+  delete ca;
+}
 delete ra;
 delete zmqo;
 delete zmqi;
