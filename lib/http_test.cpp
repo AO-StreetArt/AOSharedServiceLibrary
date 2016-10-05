@@ -65,8 +65,6 @@ int main()
     assert(false);
   }
 
-  std::cout << ("Tests completed") << std::endl;
-
   ha.shutdown();
 
   return 0;
