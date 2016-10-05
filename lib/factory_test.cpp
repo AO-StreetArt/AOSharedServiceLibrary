@@ -54,8 +54,9 @@ ServiceInterface *s = consul_factory.get_service_interface();
 ConsulInterface *consul = consul_factory.get_consul_interface( "localhost:8500" );
 
 //! Get a Couchbase Interface instance
+CouchbaseInterface *ca;
 try {
-    CouchbaseInterface *ca = couchbase_factory.get_couchbase_interface( "couchbase://localhost/default" );
+    ca = couchbase_factory.get_couchbase_interface( "couchbase://localhost/default" );
   }
 catch (CouchbaseBootstrapException& be)
 {
