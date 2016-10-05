@@ -275,8 +275,8 @@ lib/redis_tests.o: lib/redis_tests.cpp lib/include/redis_admin.h
 	$(CC) $(CFLAGS) -o $@ -c lib/redis_tests.cpp $(STD)
 
 # Create the executable file uuid_test
-uuid_test: lib/logging.o lib/uuid_admin.o lib/uuid_test.o lib/logging_interface.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid $(STD)
+uuid_test: lib/uuid_admin.o lib/uuid_test.o
+	$(CC) $(CFLAGS) -o $@ $^ -luuid $(STD)
 
 # Create the object file uuid_test.o
 lib/uuid_test.o: lib/uuid_test.cpp lib/include/uuid_admin.h lib/include/logging.h lib/include/factory/logging_interface.h

@@ -76,11 +76,18 @@ PropertiesReaderInterface *props = props_factory.get_properties_reader_interface
 
 //Run our tests
 
-//Command Line Tests
-std::cout << cli->get_program_name() << std::endl;
-if ( cli->opt_exist("name") ) {
-  std::cout << cli->get_opt("name") << std::endl;
-}
+assert ( props );
+assert ( http );
+assert ( cli );
+assert ( uuid );
+assert ( ha );
+assert ( s );
+assert ( consul );
+assert ( ca );
+assert ( ra );
+assert ( zmqo );
+assert ( zmqi );
+assert ( logging );
 
 delete props;
 delete http;

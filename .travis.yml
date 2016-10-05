@@ -25,3 +25,12 @@ script:
   - make
   - make rhel-test
   - make rhel-benchmarks
+  - ./factory_test
+  - ./app_response_test
+  - ./property_reader_test
+  - ./cli_test name=test
+  - ./http_test
+  - ./logging_test
+  - ./uuid_test
+  - ./zmqio_test
+  - ./redis_tests
