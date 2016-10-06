@@ -1,4 +1,5 @@
 #include "include/uuid_admin.h"
+#include "include/factory/uuid_interface.h"
 #include <iostream>
 #include <assert.h>
 #include <string>
@@ -10,19 +11,9 @@ int main()
   uuidAdmin uuid;
 
   //Generate a UUID
-  std::string id_str;
-  bool generated = false;
-  try {
-    id_str = uuid.generate();
-    generated = true;
-  }
-  catch (UuidSecurityException& ue) {
-    //Continue and print the security error
-    std::cout << "UUID Security Exception" << std::endl;
-    std::cout << ue.what() << std::endl;
-  }
-  if (generated) {
-    assert ( !id_str.empty() );
-    std::cout << id_str << std::endl;
-  }
+  UuidContainer id_container = uuid.generate();
+  std::string id_str = id_container.id;
+  assert ( !(id_str.empty()) );
+  std::cout << id_str << std::endl;
+  std::cout << id_container.err << std::endl;
 }

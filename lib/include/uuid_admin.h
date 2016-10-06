@@ -24,7 +24,7 @@ public:
 	//! risk.  In this case, that fact will be clearly called out in the logs, and
 	//! it is recommended that production systems are tested to ensure that UUID's are
 	//! generated in a safe manner
-	std::string generate();
+	UuidContainer generate();
 };
 
 #endif

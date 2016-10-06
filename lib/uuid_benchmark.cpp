@@ -20,7 +20,7 @@ uuidInterface *uuid;
 BENCHMARK(UUID, Generate, 10, 100)
 {
 
-std::string uuid_str = uuid->generate();
+UuidContainer uuid_str = uuid->generate();
 
 }
 
