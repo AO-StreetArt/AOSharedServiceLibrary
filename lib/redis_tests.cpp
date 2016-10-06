@@ -27,6 +27,20 @@ int main()
 //Set up Redis Connection
 xRedis = new RedisAdmin ("127.0.0.1", 6379);
 
+//Clear out the Keys from the last test
+xRedis->del("Test");
+xRedis->del("1");
+xRedis->del("2");
+xRedis->del("3");
+xRedis->del("counter");
+xRedis->del("list1");
+xRedis->del("test1");
+xRedis->del("test2");
+xRedis->del("test3");
+xRedis->del("test11");
+xRedis->del("test12");
+xRedis->del("test13");
+
 //---------------------------Core Components----------------------------------//
 
 //save
@@ -115,17 +129,17 @@ assert ( xRedis->lset("list1", "9", 1) );
 
 //Index
 assert ( xRedis->lindex("list1", 1) == "9" );
-assert ( xRedis->lindex("list1", 0) == "1" );
+assert ( xRedis->lindex("list1", 0) == "2" );
 
 //Length
 assert ( xRedis->llen("list1") == 2 );
 
 //Insert
 assert ( xRedis->lpush("list1", "0") == 3);
-assert ( xRedis->linsert("list1", "4", "1", true) );
+assert ( xRedis->linsert("list1", "4", "2", true) == 4 );
 assert ( xRedis->lindex("list1", 1) == "4" );
-assert ( xRedis->linsert("list1", "6", "1", false) );
-assert ( xRedis->lindex("list1", 2) == "6" );
+assert ( xRedis->linsert("list1", "6", "2", false) == 5 );
+assert ( xRedis->lindex("list1", 3) == "6" );
 
 //Trim
 assert ( xRedis->ltrim("list1", 0, 1) );
@@ -163,7 +177,8 @@ ret_keys.push_back("test2");
 ret_keys.push_back("test3");
 ret_keys.push_back("not_there");
 
-std::vector<std::string> vals = xRedis->mget(ret_keys);
+std::vector<std::string> vals;
+vals = xRedis->mget(ret_keys);
 
 assert ( vals[0] == "first" );
 assert ( vals[1] == "second" );
