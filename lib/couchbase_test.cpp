@@ -1,6 +1,7 @@
 #include <libcouchbase/couchbase.h>
 #include <string>
 #include <string.h>
+#include <iostream>
 
 #include "include/couchbase_admin.h"
 
