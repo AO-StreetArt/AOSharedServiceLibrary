@@ -231,15 +231,15 @@ lib/cli_test.o: lib/cli_test.cpp lib/include/cli.h
 	$(CC) $(CFLAGS) -o $@ -c lib/cli_test.cpp $(STD)
 
 # Create the executable file consul_test
-consul_test: lib/logging.o lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o lib/service.o
+consul_test: lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/service.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -lcurl $(STD)
 
 # Create the object file consul_test.o
-lib/consul_test.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/logging.h lib/include/http_admin.h lib/include/factory/logging_interface.h lib/include/service.h
+lib/consul_test.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/http_admin.h lib/include/service.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_test.cpp $(STD)
 
 # Create the executable file couchbase_test
-couchbase_test: lib/logging.o lib/couchbase_admin.o lib/couchbase_test.o lib/logging_interface.o
+couchbase_test: lib/couchbase_admin.o lib/couchbase_test.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -lcouchbase $(STD)
 
 # Create the object file couchbase_test.o

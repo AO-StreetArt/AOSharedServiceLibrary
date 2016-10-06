@@ -4,8 +4,6 @@
 
 #include "include/couchbase_admin.h"
 
-#include "include/factory/logging_interface.h"
-#include "include/logging.h"
 #include "include/factory/writeable.h"
 #include "include/factory/callbacks.h"
 
@@ -85,9 +83,6 @@ std::string my_delete_callback (Request *r)
 int main ()
 {
 
-std::string initFileName = "test/log4cpp_test.properties";
-logging = new Logger(initFileName);
-
 //Create an object
 std::string name = "TestObject";
 TestData *obj_ptr = new TestData (1, 2);
@@ -124,8 +119,6 @@ cb.wait();
 cb.delete_object ( obj_key );
 cb.wait();
 printf("Delete Object Tested");
-
-delete logging;
 
 return 0;
 }
