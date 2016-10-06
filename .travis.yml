@@ -35,5 +35,5 @@ script:
   - ./uuid_test
   - ./zmqio_test
   - ./redis_tests
-  - cd scripts && ./test_http_server.sh
+  - cd scripts && sudo ./test_http_server.sh
   - cd ..
