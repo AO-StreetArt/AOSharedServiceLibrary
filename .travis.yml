@@ -1,7 +1,6 @@
 # Use new trusty images, should yield newer compilers and packages
 sudo: required
 dist: precise
-group: legacy
 language: cpp
 
 sudo: required
@@ -20,8 +19,6 @@ before_install:
   - sudo cp scripts/deb/build_deps.sh ../aossl_deps
   - cd ../aossl_deps && sudo ./build_deps.sh
   - cd $TRAVIS_BUILD_DIR
-  - docker pull couchbase
-  - docker pull consul
 script:
   - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
   - sudo unlink /usr/bin/g++ && sudo ln -s /usr/bin/g++-5 /usr/bin/g++
