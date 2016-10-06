@@ -4,7 +4,7 @@
 
 Now we have a set of executables that end with "test" which run some basic tests on the libraries to ensure they function correctly.
 
-    ./cli_test -name=test
+    ./cli_test name=test
     ./consul_test
     ./couchbase_test
     ./http_test

@@ -9,8 +9,8 @@ SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
 OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/redis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o lib/service.o lib/http_server.o lib/properties_reader.o lib/response.o
-TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_tests factory_test http_server_test properties_reader_test app_response_test
-TESTS_RHEL = cli_test consul_test logging_test http_test zmqio_test couchbase_test factory_test_rhel http_server_test properties_reader_test app_response_test redis_tests_rhel
+TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_tests factory_test http_server_test properties_reader_test app_response_test uuid_test
+TESTS_RHEL = cli_test consul_test logging_test http_test zmqio_test couchbase_test factory_test_rhel http_server_test properties_reader_test app_response_test redis_tests_rhel uuid_test
 BENCHMARKS = consul_benchmark logging_benchmark http_benchmark couchbase_benchmark redis_benchmark
 BENCHMARKS_RHEL = redis_benchmark_rhel consul_benchmark logging_benchmark http_benchmark couchbase_benchmark
 INCL = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/local/include/aossl/factory_uuid.h /usr/local/include/aossl/factory_redis.h /usr/local/include/aossl/factory_props.h /usr/local/include/aossl/factory_logging.h /usr/local/include/aossl/factory_http_server.h /usr/local/include/aossl/factory_http_client.h /usr/local/include/aossl/factory_couchbase.h /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/http_admin.h /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/redis_admin.h /usr/local/include/aossl/zmqio.h /usr/local/include/aossl/http_server.h /usr/local/include/aossl/properties_reader.h /usr/local/include/aossl/factory/properties_reader_interface.h /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/couchbase_interface.h /usr/local/include/aossl/factory/db_admin.h /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h /usr/local/include/aossl/response.h /usr/local/include/aossl/factory/response_interface.h
@@ -275,11 +275,11 @@ lib/redis_tests.o: lib/redis_tests.cpp lib/include/redis_admin.h
 	$(CC) $(CFLAGS) -o $@ -c lib/redis_tests.cpp $(STD)
 
 # Create the executable file uuid_test
-uuid_test: lib/logging.o lib/uuid_admin.o lib/uuid_test.o lib/logging_interface.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid $(STD)
+uuid_test: lib/uuid_admin.o lib/uuid_test.o
+	$(CC) $(CFLAGS) -o $@ $^ -luuid $(STD)
 
 # Create the object file uuid_test.o
-lib/uuid_test.o: lib/uuid_test.cpp lib/include/uuid_admin.h lib/include/logging.h lib/include/factory/logging_interface.h
+lib/uuid_test.o: lib/uuid_test.cpp lib/include/uuid_admin.h
 	$(CC) $(CFLAGS) -o $@ -c lib/uuid_test.cpp $(STD)
 
 # Create the executable file zmqio_test

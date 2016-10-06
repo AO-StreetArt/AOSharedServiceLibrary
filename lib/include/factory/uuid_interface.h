@@ -7,12 +7,9 @@
 #ifndef UUID_INTERFACE
 #define UUID_INTERFACE
 
-struct UuidSecurityException: public std::exception
-{
-	const char * what() const throw ()
-    {
-      return "UUID Generated in an unsafe manner that exposes a potential security risk : http://linux.die.net/man/3/uuid_generate";
-    }
+struct UuidContainer {
+	std::string id;
+	std::string err;
 };
 
 //! UUID Admin
@@ -31,7 +28,7 @@ public:
 	//! risk.  In this case, that fact will be clearly called out in the logs, and
 	//! it is recommended that production systems are tested to ensure that UUID's are
 	//! generated in a safe manner
-	virtual std::string generate() = 0;
+	virtual UuidContainer generate() = 0;
 };
 
 #endif

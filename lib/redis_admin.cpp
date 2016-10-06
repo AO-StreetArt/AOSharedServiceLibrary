@@ -28,8 +28,10 @@ void RedisAdmin::init(std::string hostname, int port, int timeout_seconds, int t
 bool RedisAdmin::process_std_string_reply(redisReply *reply)
 {
   bool ret_val = false;
-  if ( strcmp(reply->str, "OK") == 0 ) {
-    ret_val = true;
+  if (reply->str) {
+    if ( strcmp(reply->str, "OK") == 0 ) {
+      ret_val = true;
+    }
   }
   freeReplyObject(reply);
   reply = NULL;
@@ -94,10 +96,6 @@ RedisAdmin::~RedisAdmin()
   if (c)
   {
     redisFree(c);
-  }
-  if (reply)
-  {
-    freeReplyObject(reply);
   }
 }
 
@@ -178,14 +176,14 @@ int RedisAdmin::decr ( std::string key, int decr_amt )
 bool RedisAdmin::setex ( std::string key, std::string val, unsigned int second)
 {
   std::string length_key = std::to_string(second);
-  reply = (redisReply *) redisCommand( c, "SETEX %s \"%s\" %s", key.c_str(), val.c_str(), length_key.c_str() );
+  reply = (redisReply *) redisCommand( c, "SETEX %s %s %s", key.c_str(), length_key.c_str(), val.c_str() );
   return process_std_string_reply(reply);
 }
 
 bool RedisAdmin::append ( std::string key, std::string val )
 {
-  reply = (redisReply *) redisCommand( c, "APPEND %s \"%s\"", key.c_str(), val.c_str() );
-  return process_std_string_reply(reply);
+  reply = (redisReply *) redisCommand( c, "APPEND %s %s", key.c_str(), val.c_str() );
+  return return_int_reply(reply);
 }
 
 int RedisAdmin::len ( std::string key )
@@ -197,13 +195,13 @@ int RedisAdmin::len ( std::string key )
 
 int RedisAdmin::lpush ( std::string key, std::string val )
 {
-  reply = (redisReply *) redisCommand( c, "LPUSH %s \"%s\"", key.c_str(), val.c_str() );
+  reply = (redisReply *) redisCommand( c, "LPUSH %s %s", key.c_str(), val.c_str() );
   return return_int_reply(reply);
 }
 
 int RedisAdmin::rpush ( std::string key, std::string val )
 {
-  reply = (redisReply *) redisCommand( c, "RPUSH %s \"%s\"", key.c_str(), val.c_str() );
+  reply = (redisReply *) redisCommand( c, "RPUSH %s %s", key.c_str(), val.c_str() );
   return return_int_reply(reply);
 }
 
@@ -227,7 +225,7 @@ std::string RedisAdmin::rpop ( std::string key )
 bool RedisAdmin::lset ( std::string key, std::string val, int index)
 {
   std::string index_str = std::to_string(index);
-  reply = (redisReply *) redisCommand( c, "APPEND %s %s \"%s\"", key.c_str(), index_str.c_str(), val.c_str() );
+  reply = (redisReply *) redisCommand( c, "LSET %s %s %s", key.c_str(), index_str.c_str(), val.c_str() );
   return process_std_string_reply(reply);
 }
 
@@ -237,8 +235,7 @@ int RedisAdmin::linsert ( std::string key, std::string val, std::string pivot, b
   std::string ba_str;
   if (before_pivot) {ba_str = "BEFORE";}
   else {ba_str = "AFTER";}
-  std::string key_str = "LINSERT " + key;
-  reply = (redisReply *) redisCommand(c, "LINSERT %s \"%s\" \"%s\"", key_str.c_str(), pivot.c_str(), val.c_str());
+  reply = (redisReply *) redisCommand(c, "LINSERT %s %s %s %s", key.c_str(), ba_str.c_str(), pivot.c_str(), val.c_str());
   return return_int_reply(reply);
 }
 
@@ -272,7 +269,7 @@ bool RedisAdmin::mset ( std::vector<RedisKvPair> save_sets )
   std::string cmd_str = "MSET ";
   for (std::size_t i=0; i<save_sets.size(); ++i)
   {
-    cmd_str = cmd_str + save_sets[i].key + " \"" + save_sets[i].val + "\" ";
+    cmd_str = cmd_str + save_sets[i].key + " " + save_sets[i].val + " ";
   }
 
   reply = (redisReply *) redisCommand( c, cmd_str.c_str() );
@@ -292,8 +289,14 @@ std::vector<std::string> RedisAdmin::mget ( std::vector<std::string> keys )
 
   for (std::size_t j=0;j<reply->elements; ++j)
   {
-    std::string new_element (reply->element[j]->str);
-    reply_string.push_back(new_element);
+    if (reply->element[j]->str) {
+      std::string new_element (reply->element[j]->str);
+      reply_string.push_back(new_element);
+    }
+    else {
+      std::string new_element = "";
+      reply_string.push_back(new_element);
+    }
   }
 
   return reply_string;
@@ -304,7 +307,7 @@ bool RedisAdmin::msetnx ( std::vector<RedisKvPair> save_sets )
   std::string cmd_str = "MSETNX ";
   for (std::size_t i=0; i<save_sets.size(); ++i)
   {
-    cmd_str = cmd_str + save_sets[i].key + " \"" + save_sets[i].val + "\" ";
+    cmd_str = cmd_str + save_sets[i].key + " " + save_sets[i].val + " ";
   }
 
   reply = (redisReply *) redisCommand( c, cmd_str.c_str() );

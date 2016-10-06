@@ -54,8 +54,20 @@ ServiceInterface *s = consul_factory.get_service_interface();
 ConsulInterface *consul = consul_factory.get_consul_interface( "localhost:8500" );
 
 //! Get a Couchbase Interface instance
-CouchbaseInterface *ca = couchbase_factory.get_couchbase_interface( "couchbase://localhost/default" );
-
+CouchbaseInterface *ca = NULL;
+try {
+    ca = couchbase_factory.get_couchbase_interface( "couchbase://localhost/default" );
+  }
+catch (CouchbaseBootstrapException& be)
+{
+  std::cout << "Couchbase Bootstrap Exception" << std::endl;
+  std::cout << be.what() << std::endl;
+}
+catch (CouchbaseConnectException& ce)
+{
+  std::cout << "Couchbase Bootstrap Exception" << std::endl;
+  std::cout << ce.what() << std::endl;
+}
 //! Get a Couchbase Interface instance for a password protected DB
 //CouchbaseInterface *ca2 = factory.get_couchbase_interface( const char * conn, const char * pswd );
 
@@ -76,11 +88,17 @@ PropertiesReaderInterface *props = props_factory.get_properties_reader_interface
 
 //Run our tests
 
-//Command Line Tests
-std::cout << cli->get_program_name() << std::endl;
-if ( cli->opt_exist("name") ) {
-  std::cout << cli->get_opt("name") << std::endl;
-}
+assert ( props );
+assert ( http );
+assert ( cli );
+assert ( uuid );
+assert ( ha );
+assert ( s );
+assert ( consul );
+assert ( ra );
+assert ( zmqo );
+assert ( zmqi );
+assert ( logging );
 
 delete props;
 delete http;
@@ -89,7 +107,9 @@ delete uuid;
 delete ha;
 delete s;
 delete consul;
-delete ca;
+if (ca) {
+  delete ca;
+}
 delete ra;
 delete zmqo;
 delete zmqi;

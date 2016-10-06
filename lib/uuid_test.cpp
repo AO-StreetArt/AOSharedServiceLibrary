@@ -1,20 +1,19 @@
 #include "include/uuid_admin.h"
-#include "include/factory/logging_interface.h"
-#include "include/logging.h"
+#include "include/factory/uuid_interface.h"
+#include <iostream>
+#include <assert.h>
+#include <string>
+#include <string.h>
 
 int main()
 {
-  //Set up logging
-  std::string initFileName = "test/log4cpp_test.properties";
-  logging = new Logger(initFileName);
-
   //Initialize the UUID Admin
   uuidAdmin uuid;
 
   //Generate a UUID
-  std::string uuid_str = uuid.generate();
-  logging->debug(uuid_str);
-
-  delete logging;
-
+  UuidContainer id_container = uuid.generate();
+  std::string id_str = id_container.id;
+  assert ( !(id_str.empty()) );
+  std::cout << id_str << std::endl;
+  std::cout << id_container.err << std::endl;
 }
