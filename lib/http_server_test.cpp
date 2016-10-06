@@ -80,7 +80,7 @@ sigIntHandler.sa_flags = 0;
 sigaction(SIGINT, &sigIntHandler, NULL);
 
 //Set up the HTTP Server
-http = new HttpServer("0.0.0.0", 12345);
+http = new HttpServer("127.0.0.1", 12345);
 http->bind_callback("/", process_request);
 http->bind_callback("/test", process_test_request);
 
