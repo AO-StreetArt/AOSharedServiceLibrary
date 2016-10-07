@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Aosharedservicelibrary by AO-StreetArt</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Aosharedservicelibrary</h1>
+          <h2>A C++ Framework for Microservices</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/AO-StreetArt/AOSharedServiceLibrary/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/AO-StreetArt/AOSharedServiceLibrary/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/AO-StreetArt/AOSharedServiceLibrary" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="ao-shared-service-library" class="anchor" href="#ao-shared-service-library" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AO Shared Service Library</h1>
+
+<p><img src="https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary.svg?branch=master" alt=""></p>
+
+<h2>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>Welcome to the AO Shared Service Library.  This is a framework for constructing C++ Microservices.
+This means smaller, more focused programs that perform a single function well and rely on inter-process
+communications.  </p>
+
+<h3>
+<a id="why-use-aossl" class="anchor" href="#why-use-aossl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why use AOSSL?</h3>
+
+<p>Over the last twenty years, most enterprise scale applications have been built as 'monoliths', a single,
+large piece of software that must be deployed all at once.  This has a host of limitations, such as scalability
+and difficulty of highly-available systems.</p>
+
+<p>Microservices offer a different design, instead relying on many different programs that all communicate
+in order to provide all of the services once provided by the monolithic application.  This lets us
+scale by starting up more instances of programs, and introduces a system with no single point of failure.</p>
+
+<p>The AO Shared Service Library provides frameworks for microservices, ranging from communications protocols to
+useful tools all services need.  This is meant to reduce time-to-market on C++ Services, and is designed
+to be reliable and robust while maintaining high performance standards.</p>
+
+<p>It also provides a plug-and-play architecture, allowing users to pick elements of the framework they would
+like to use and exclude others.  This also promotes extensibility, as careful interface design allows for
+rapid development of new capabilities.</p>
+
+<h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features:</h3>
+
+<h4>
+<a id="core-frameworks-revolving-around-inter-service-messaging-protocols" class="anchor" href="#core-frameworks-revolving-around-inter-service-messaging-protocols" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Core Frameworks revolving around inter-service messaging protocols</h4>
+
+<ul>
+<li>HTTP Service Framework</li>
+<li>ZeroMQ Service Framework</li>
+</ul>
+
+<h4>
+<a id="connections-to-critical-external-tools" class="anchor" href="#connections-to-critical-external-tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Connections to Critical External Tools</h4>
+
+<ul>
+<li>Couchbase Administrator with cluster support</li>
+<li>Redis Administrator</li>
+<li>Consul Administrator</li>
+</ul>
+
+<h4>
+<a id="basic-tools-that-all-good-services-need" class="anchor" href="#basic-tools-that-all-good-services-need" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic Tools that all good services need</h4>
+
+<ul>
+<li>Asynchronous Logging Module</li>
+<li>Universally Unique ID Generator</li>
+<li>A Command Line Argument Parser</li>
+</ul>
+
+<h4>
+<a id="platform-support" class="anchor" href="#platform-support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Platform Support</h4>
+
+<ul>
+<li>Support for Ubuntu 14.04, Debian 7, CentOS 7, RHEL 7</li>
+<li>Easy to construct Docker Images with templates</li>
+</ul>
+
+<p>In order to use the respective administrators, you should have an active <a href="https://www.consul.io/">Consul</a> Agent, as well as servers of <a href="http://www.couchbase.com/">Couchbase</a> and <a href="http://redis.io/">Redis</a> to connect to.</p>
+
+<p>Full API Documentation is available via doxygen, and the latest execution is stored in the docs/html folder.</p>
+
+<h2>
+<a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table of Contents</h2>
+
+<ul>
+<li><a href="https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/quickstart">Quickstart</a></li>
+<li><a href="https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use">Use</a></li>
+<li><a href="https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps">Dependency Resolution</a></li>
+<li><a href="https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/tests">Tests</a></li>
+<li><a href="https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs">Building Documentation</a></li>
+</ul>
+        </section>
+
+        <footer>
+          Aosharedservicelibrary is maintained by <a href="https://github.com/AO-StreetArt">AO-StreetArt</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
