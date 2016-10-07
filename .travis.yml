@@ -18,7 +18,7 @@ before_install:
   - sudo cp scripts/deb/build_deps.sh ../aossl_deps
   - cd ../aossl_deps && sudo ./build_deps.sh
   - cd $TRAVIS_BUILD_DIR
-  - apt-get install libssl-dev
+  - sudo apt-get install libssl-dev
 install:
   - wget http://packages.couchbase.com/releases/4.1.0/couchbase-server-community_4.1.0-ubuntu12.04_amd64.deb
   - sudo dpkg -i couchbase-server couchbase-server-community_4.1.0-ubuntu12.04_amd64.deb
