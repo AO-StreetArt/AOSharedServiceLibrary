@@ -1,4 +1,6 @@
 #include "include/response.h"
+#include "include/factory_response.h"
+#include "include/factory/response_interface.h"
 #include "include/factory/writeable.h"
 #include <iostream>
 #include <assert.h>
@@ -35,31 +37,33 @@ public:
 int main()
 {
 
-ApplicationResponse response;
-assert(response.get_error_code() == NO_ERROR);
+ResponseFactory response_factory;
+ApplicationResponseInterface *response = response_factory.get_application_response_interface();
+assert(response->get_error_code() == NO_ERROR);
 
-response.set_object_id("12345");
-response.set_transaction_id("56789");
+response->set_object_id("12345");
+response->set_transaction_id("56789");
 
-assert(response.get_object_id() == "12345");
-assert(response.get_transaction_id() == "56789");
+assert(response->get_object_id() == "12345");
+assert(response->get_transaction_id() == "56789");
 
-response.set_error(DB_ERROR);
+response->set_error(DB_ERROR);
 
-std::cout << response.to_json() << std::endl;
+std::cout << response->to_json() << std::endl;
 
-response.set_error(BAD_REQUEST_ERROR, "Invalid Message type");
+response->set_error(BAD_REQUEST_ERROR, "Invalid Message type");
 
-std::cout << response.to_json() << std::endl;
+std::cout << response->to_json() << std::endl;
 
 //Create an object
 std::string name = "TestObject";
 TestData *obj_ptr = new TestData (1, 2);
 obj_ptr->set_key(name);
 
-std::cout << response.to_json(obj_ptr);
+std::cout << response->to_json(obj_ptr);
 
 delete obj_ptr;
+delete response;
 
 return 0;
 }

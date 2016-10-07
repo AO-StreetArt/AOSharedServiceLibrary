@@ -1,4 +1,5 @@
-#include "include/http_server.h"
+#include "include/factory_http_server.h"
+#include "include/factory/http_server_interface.h"
 #include "include/factory/callbacks.h"
 #include <vector>
 #include <string>
@@ -52,7 +53,7 @@ std::string process_test_request(struct Request *req)
 	return process_request(req);
 }
 
-HttpServer *http;
+HttpServerInterface *http;
 
 //Shutdown the application
 void shutdown()
@@ -79,8 +80,10 @@ sigemptyset(&sigIntHandler.sa_mask);
 sigIntHandler.sa_flags = 0;
 sigaction(SIGINT, &sigIntHandler, NULL);
 
+HttpServerFactory server_factory;
+
 //Set up the HTTP Server
-http = new HttpServer("127.0.0.1", 12345);
+http = server_factory.get_http_server_interface("127.0.0.1", 12345);
 http->bind_callback("/", process_request);
 http->bind_callback("/test", process_test_request);
 

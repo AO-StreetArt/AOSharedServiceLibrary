@@ -1,5 +1,6 @@
 #include "include/http_admin.h"
-
+#include "include/factory_http_client.h"
+#include "include/factory/http_interface.h"
 #include <string>
 #include <string.h>
 #include <stdlib.h>
@@ -21,12 +22,13 @@ int main()
 
   //----------------------------MAIN TEST-----------------------------------//
 
-  HttpAdmin ha;
+  HttpClientFactory http_factory;
+  HttpInterface *ha = http_factory.get_http_interface();
 
   //-------------------------------GET--------------------------------------//
 
   //Send the request
-  std::string ret_val = ha.get(get, 5);
+  std::string ret_val = ha->get(get, 5);
   if ( ret_val.empty() )
   {
     //We now have the full response
@@ -40,7 +42,7 @@ int main()
 
   //-------------------------------PUT--------------------------------------//
 
-  bool success = ha.put(put, "123", 5);
+  bool success = ha->put(put, "123", 5);
   if (!success)
   {
     //We now have the full response
@@ -49,7 +51,7 @@ int main()
 
   //-------------------------------POST-------------------------------------//
 
-  success = ha.post(post, "CLYMAN", 5);
+  success = ha->post(post, "CLYMAN", 5);
   if (!success)
   {
     //We now have the full response
@@ -58,14 +60,16 @@ int main()
 
   //------------------------------DELETE------------------------------------//
 
-  success = ha.del(del, 5);
+  success = ha->del(del, 5);
   if (!success)
   {
     //We now have the full response
     assert(false);
   }
 
-  ha.shutdown();
+  ha->shutdown();
+
+  delete ha;
 
   return 0;
 }

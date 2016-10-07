@@ -18,6 +18,13 @@ before_install:
   - sudo cp scripts/deb/build_deps.sh ../aossl_deps
   - cd ../aossl_deps && sudo ./build_deps.sh
   - cd $TRAVIS_BUILD_DIR
+  - sudo apt-get install libssl-dev
+install:
+  - cd scripts && sudo ./install_couchbase.sh
+  - cd $TRAVIS_BUILD_DIR
+  - wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
+  - unzip consul_0.6.4_linux_amd64.zip
+  - ./consul agent -dev &
 script:
   - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
   - sudo unlink /usr/bin/g++ && sudo ln -s /usr/bin/g++-5 /usr/bin/g++
@@ -37,3 +44,5 @@ script:
   - ./redis_tests
   - cd scripts && sudo ./test_http_server.sh
   - cd ..
+  - ./couchbase_test
+  - ./consul_test

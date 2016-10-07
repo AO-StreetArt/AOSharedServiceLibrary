@@ -11,6 +11,7 @@
 #include "include/factory_redis.h"
 #include "include/factory_uuid.h"
 #include "include/factory_zmq.h"
+#include "include/factory_response.h"
 
 #include "include/factory/commandline_interface.h"
 #include "include/factory/consul_interface.h"
