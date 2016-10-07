@@ -2,10 +2,10 @@
 
 #Get and install couchbase server
 wget http://packages.couchbase.com/releases/4.1.0/couchbase-server-community_4.1.0-ubuntu12.04_amd64.deb
-sudo dpkg -i couchbase-server-community_4.1.0-ubuntu12.04_amd64.deb $HOME
+sudo dpkg -i couchbase-server-community_4.1.0-ubuntu12.04_amd64.deb .
 
 #Configure the couchbase server
-cd $HOME/opt/couchbase
+cd /opt/couchbase
 ./bin/install/reloc.sh `pwd`
 ./bin/couchbase-server -- -noinput -detached
 sleep 20
