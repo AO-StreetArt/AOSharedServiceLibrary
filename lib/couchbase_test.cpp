@@ -92,7 +92,7 @@ obj_ptr->set_key(name);
 const char* obj_key = obj_ptr->get_key().c_str();
 
 //Build the Couchbase Admin (which will automatically connect to the DB)
-CouchbaseFactory couchbase_factory;
+CouchbaseComponentFactory couchbase_factory;
 CouchbaseInterface *cb = couchbase_factory.get_couchbase_interface("couchbase://localhost/default");
 
 //Supports both password authentication and clustering
