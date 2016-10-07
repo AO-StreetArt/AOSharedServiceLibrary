@@ -10,8 +10,7 @@
 #include <unistd.h>
 
 #include "include/factory/redis_interface.h"
-
-#include "include/redis_admin.h"
+#include "include/factory_redis.h"
 
 #include <assert.h>
 
@@ -19,13 +18,14 @@
 
 std::vector<RedisConnChain> RedisConnectionList;
 
-RedisAdmin *xRedis;
+RedisInterface *xRedis;
 
 int main()
 {
 
 //Set up Redis Connection
-xRedis = new RedisAdmin ("127.0.0.1", 6379);
+RedisComponentFactory redis_factory;
+xRedis = redis_factory.get_redis_interface("127.0.0.1", 6379);
 
 //Clear out the Keys from the last test
 xRedis->del("Test");

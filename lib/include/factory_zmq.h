@@ -1,8 +1,6 @@
 #include <zmq.hpp>
 #include "zmqio.h"
 #include "factory/zmq_interface.h"
-#include "factory/response_interface.h"
-#include "response.h"
 
 #ifndef AOSSL_FACTORY_ZMQ
 #define AOSSL_FACTORY_ZMQ
@@ -39,9 +37,6 @@ public:
     zmqi->bind( conn_str );
     return zmqi;
   }
-
-  //! Get an application response interface instance
-  ApplicationResponseInterface* get_application_response_interface() {return new ApplicationResponse;}
 
 };
 
