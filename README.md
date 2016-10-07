@@ -6,7 +6,7 @@
 
 Welcome to the AO Shared Service Library.  This is a framework for constructing C++ Microservices.
 This means smaller, more focused programs that perform a single function well and rely on inter-process
-communications.  
+communications to perform more complex tasks.  
 
 ### Why use AOSSL?
 
