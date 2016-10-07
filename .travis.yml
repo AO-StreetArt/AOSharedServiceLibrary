@@ -12,16 +12,21 @@ addons:
     - gcc-5
     - g++-5
 services:
-  - docker
   - redis-server
 before_install:
   - mkdir ../aossl_deps
   - sudo cp scripts/deb/build_deps.sh ../aossl_deps
   - cd ../aossl_deps && sudo ./build_deps.sh
   - cd $TRAVIS_BUILD_DIR
+  - apt-get install libssl-dev
 install:
-  - docker run -d --name db -p 8091-8093:8091-8093 -p 11210:11210 couchbase
-  - docker run -d --name=dev-consul consul
+  - wget http://packages.couchbase.com/releases/4.1.0/couchbase-server-community_4.1.0-ubuntu12.04_amd64.deb
+  - sudo dpkg -i couchbase-server couchbase-server-community_4.1.0-ubuntu12.04_amd64.deb
+  - cd scripts && sudo ./configure_couchbase.sh
+  - cd $TRAVIS_BUILD_DIR
+  - wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
+  - unzip consul_0.6.4_linux_amd64.zip
+  - ./consul agent -dev &
 script:
   - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
   - sudo unlink /usr/bin/g++ && sudo ln -s /usr/bin/g++-5 /usr/bin/g++
