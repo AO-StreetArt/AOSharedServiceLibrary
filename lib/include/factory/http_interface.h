@@ -6,19 +6,23 @@
 #ifndef HTTP_INTERFACE
 #define HTTP_INTERFACE
 
+//! An Implementation of std::exception that denotes an error in Couchbase during bootstrap
 struct HttpRequestException: public std::exception
 {
+  //! An error message passed on initialization
   std::string int_msg;
+
   HttpRequestException (std::string msg) {int_msg = msg;}
   HttpRequestException () {}
   ~HttpRequestException() throw () {}
+
+  //! Show the error message in readable format
   const char * what() const throw ()
   {
     std::string what_str = "Error Sending HTTP Request: " + int_msg;
     return what_str.c_str();
   }
 };
-
 
 typedef size_t (*WriteCallback)(char *, size_t, size_t, void*);
 

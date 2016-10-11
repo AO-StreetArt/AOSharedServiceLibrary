@@ -21,25 +21,35 @@
 #ifndef COUCHBASE_INTERFACE
 #define COUCHBASE_INTERFACE
 
+//! An Implementation of std::exception that denotes an error in Couchbase during initialization of the client library
 struct CouchbaseInitException: public std::exception
 {
+	//! An error message passed on initialization
 	std::string int_msg;
+
   CouchbaseInitException (std::string msg) {int_msg = msg;}
   CouchbaseInitException () {}
   ~CouchbaseInitException() throw () {}
-  const char * what() const throw ()
+
+	//! Show the error message in readable format
+	const char * what() const throw ()
   {
 		std::string what_str = "Couldn't create Couchbase instance: " + int_msg;
     return what_str.c_str();
   }
 };
 
+//! An Implementation of std::exception that denotes an error connecting to Couchbase
 struct CouchbaseConnectException: public std::exception
 {
+	//! An error message passed on initialization
 	std::string int_msg;
+
   CouchbaseConnectException (std::string msg) {int_msg = msg;}
   CouchbaseConnectException () {}
   ~CouchbaseConnectException() throw () {}
+
+	//! Show the error message in readable format
   const char * what() const throw ()
   {
 		std::string what_str = "Couldn't schedule Couchbase connection: " + int_msg;
@@ -47,12 +57,17 @@ struct CouchbaseConnectException: public std::exception
   }
 };
 
+//! An Implementation of std::exception that denotes an error in Couchbase during bootstrap
 struct CouchbaseBootstrapException: public std::exception
 {
+	//! An error message passed on initialization
 	std::string int_msg;
+
   CouchbaseBootstrapException (std::string msg) {int_msg = msg;}
   CouchbaseBootstrapException () {}
   ~CouchbaseBootstrapException() throw () {}
+
+	//! Show the error message in readable format
   const char * what() const throw ()
   {
 		std::string what_str = "Couchbase Bootstrapping Failed: " + int_msg;
@@ -60,12 +75,17 @@ struct CouchbaseBootstrapException: public std::exception
   }
 };
 
+//! An Implementation of std::exception that denotes an error in Couchbase during a transaction
 struct CouchbaseOperationException: public std::exception
 {
+	//! An error message passed on initialization
 	std::string int_msg;
+
   CouchbaseOperationException (std::string msg) {int_msg = msg;}
   CouchbaseOperationException () {}
   ~CouchbaseOperationException() throw () {}
+
+	//! Show the error message in readable format
   const char * what() const throw ()
   {
 		std::string what_str = "Couldn't Schedule Couchbase Operation: " + int_msg;
