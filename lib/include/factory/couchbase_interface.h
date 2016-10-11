@@ -27,7 +27,9 @@ struct CouchbaseInitException: public std::exception
 	//! An error message passed on initialization
 	std::string int_msg;
 
+	//! Create a Couchbase initialization Exception, and store the given error message
   CouchbaseInitException (std::string msg) {int_msg = msg;}
+
   CouchbaseInitException () {}
   ~CouchbaseInitException() throw () {}
 
@@ -45,7 +47,9 @@ struct CouchbaseConnectException: public std::exception
 	//! An error message passed on initialization
 	std::string int_msg;
 
+	//! Create a Couchbase Connection Exception, and store the given error message
   CouchbaseConnectException (std::string msg) {int_msg = msg;}
+
   CouchbaseConnectException () {}
   ~CouchbaseConnectException() throw () {}
 
@@ -63,7 +67,9 @@ struct CouchbaseBootstrapException: public std::exception
 	//! An error message passed on initialization
 	std::string int_msg;
 
+	//! Create a Couchbase Bootstrap Exception, and store the given error message
   CouchbaseBootstrapException (std::string msg) {int_msg = msg;}
+
   CouchbaseBootstrapException () {}
   ~CouchbaseBootstrapException() throw () {}
 
@@ -81,7 +87,9 @@ struct CouchbaseOperationException: public std::exception
 	//! An error message passed on initialization
 	std::string int_msg;
 
+	//! Create a Couchbase Operation Exception, and store the given error message
   CouchbaseOperationException (std::string msg) {int_msg = msg;}
+	
   CouchbaseOperationException () {}
   ~CouchbaseOperationException() throw () {}
 

@@ -30,8 +30,8 @@ public:
 	//! Delete a JSON Object from the DB
 	virtual void delete_object (const char * key) = 0;
 
-	//If the engine is asynchronous, wait for the
-	//active threads to complete.  Otherwise, do nothing
+	//! If the engine is asynchronous, wait for the
+	//! active threads to complete.  Otherwise, do nothing
 	virtual void wait () = 0;
 
 	//Methods to prevent duplication of singleton

@@ -12,7 +12,9 @@ struct HttpRequestException: public std::exception
   //! An error message passed on initialization
   std::string int_msg;
 
+  //! Create a HTTP Request Exception, and store the given error message
   HttpRequestException (std::string msg) {int_msg = msg;}
+  
   HttpRequestException () {}
   ~HttpRequestException() throw () {}
 

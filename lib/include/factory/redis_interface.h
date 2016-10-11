@@ -17,8 +17,12 @@ struct RedisConnectionException: public std::exception
   //! An error message passed on initialization
   std::string int_msg;
 
+  //! Create a Redis Connection Exception, and store the given error message
   RedisConnectionException (std::string msg) {int_msg = msg;}
+
+  //! Create a Redis Connection Exception, and store the given error message
   RedisConnectionException (const char * msg_cstr) {std::string msg (msg_cstr);int_msg = msg;}
+
   RedisConnectionException () {}
   ~RedisConnectionException() throw () {}
 
@@ -36,8 +40,12 @@ struct RedisOperationException: public std::exception
   //! An error message passed on initialization
   std::string int_msg;
 
+  //! Create a Redis Operation Exception, and store the given error message
   RedisOperationException (std::string msg) {int_msg = msg;}
+
+  //! Create a Redis Operation Exception, and store the given error message
   RedisOperationException (const char * msg_cstr) {std::string msg (msg_cstr);int_msg = msg;}
+  
   RedisOperationException () {}
   ~RedisOperationException() throw () {}
 
