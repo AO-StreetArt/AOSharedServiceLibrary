@@ -57,32 +57,33 @@
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifndef UUID_INTERFACE</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define UUID_INTERFACE</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structUuidSecurityException.html">   10</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structUuidSecurityException.html">UuidSecurityException</a>: <span class="keyword">public</span> std::exception</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> * what() <span class="keyword">const</span> <span class="keywordflow">throw</span> ()</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;      <span class="keywordflow">return</span> <span class="stringliteral">&quot;UUID Generated in an unsafe manner that exposes a potential security risk : http://linux.die.net/man/3/uuid_generate&quot;</span>;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    }</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;};</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="structUuidContainer.html">   11</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structUuidContainer.html">UuidContainer</a> {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="structUuidContainer.html#aea2f6e3768858acb4086cd1a93c5666a">   14</a></span>&#160;    std::string <a class="code" href="structUuidContainer.html#aea2f6e3768858acb4086cd1a93c5666a">id</a>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="structUuidContainer.html#a58e21d1df4638157e157a41fa95a5e07">   17</a></span>&#160;    std::string <a class="code" href="structUuidContainer.html#a58e21d1df4638157e157a41fa95a5e07">err</a>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;};</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classuuidInterface.html">   22</a></span>&#160;<span class="keyword">class </span><a class="code" href="classuuidInterface.html">uuidInterface</a></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classuuidInterface.html">uuidInterface</a>() {}</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="classuuidInterface.html#ae1696692de5b139246154c8d32d44797">generate</a>() = 0;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classuuidInterface_html_ae1696692de5b139246154c8d32d44797"><div class="ttname"><a href="classuuidInterface.html#ae1696692de5b139246154c8d32d44797">uuidInterface::generate</a></div><div class="ttdeci">virtual std::string generate()=0</div><div class="ttdoc">Generate a new UUID. </div></div>
-<div class="ttc" id="structUuidSecurityException_html"><div class="ttname"><a href="structUuidSecurityException.html">UuidSecurityException</a></div><div class="ttdef"><b>Definition:</b> uuid_interface.h:10</div></div>
-<div class="ttc" id="classuuidInterface_html"><div class="ttname"><a href="classuuidInterface.html">uuidInterface</a></div><div class="ttdoc">UUID Admin. </div><div class="ttdef"><b>Definition:</b> uuid_interface.h:22</div></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classuuidInterface.html">   24</a></span>&#160;<span class="keyword">class </span><a class="code" href="classuuidInterface.html">uuidInterface</a></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classuuidInterface.html">uuidInterface</a>() {}</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="structUuidContainer.html">UuidContainer</a> <a class="code" href="classuuidInterface.html#ae77d609afc738681588cff1a647eb656">generate</a>() = 0;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;};</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="structUuidContainer_html"><div class="ttname"><a href="structUuidContainer.html">UuidContainer</a></div><div class="ttdoc">A return structure which captures any security error messages thrown by the framework. </div><div class="ttdef"><b>Definition:</b> uuid_interface.h:11</div></div>
+<div class="ttc" id="structUuidContainer_html_a58e21d1df4638157e157a41fa95a5e07"><div class="ttname"><a href="structUuidContainer.html#a58e21d1df4638157e157a41fa95a5e07">UuidContainer::err</a></div><div class="ttdeci">std::string err</div><div class="ttdoc">Is either empty or contains an error message. </div><div class="ttdef"><b>Definition:</b> uuid_interface.h:17</div></div>
+<div class="ttc" id="classuuidInterface_html"><div class="ttname"><a href="classuuidInterface.html">uuidInterface</a></div><div class="ttdoc">UUID Admin. </div><div class="ttdef"><b>Definition:</b> uuid_interface.h:24</div></div>
+<div class="ttc" id="classuuidInterface_html_ae77d609afc738681588cff1a647eb656"><div class="ttname"><a href="classuuidInterface.html#ae77d609afc738681588cff1a647eb656">uuidInterface::generate</a></div><div class="ttdeci">virtual UuidContainer generate()=0</div><div class="ttdoc">Generate a new UUID. </div></div>
+<div class="ttc" id="structUuidContainer_html_aea2f6e3768858acb4086cd1a93c5666a"><div class="ttname"><a href="structUuidContainer.html#aea2f6e3768858acb4086cd1a93c5666a">UuidContainer::id</a></div><div class="ttdeci">std::string id</div><div class="ttdoc">The UUID generated. </div><div class="ttdef"><b>Definition:</b> uuid_interface.h:14</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2016 23:27:43 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

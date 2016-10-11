@@ -51,7 +51,7 @@
 </div><!--header-->
 <div class="contents">
 
-<p>The XRedis Admin.  
+<p>The Redis Admin.  
  <a href="classRedisInterface.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="redis__interface_8h_source.html">redis_interface.h</a>&gt;</code></p>
@@ -66,6 +66,10 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class=
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a60b25df720d353d426567f10a8fca483">save</a> (std::string key, std::string msg)=0</td></tr>
 <tr class="memdesc:a60b25df720d353d426567f10a8fca483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save a value to Redis. <br/></td></tr>
 <tr class="separator:a60b25df720d353d426567f10a8fca483"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadbf5e9040bd896e9411da407459e426"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aadbf5e9040bd896e9411da407459e426"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#aadbf5e9040bd896e9411da407459e426">setnx</a> (std::string key, std::string msg)=0</td></tr>
+<tr class="memdesc:aadbf5e9040bd896e9411da407459e426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a value in Redis, only if the key does not exist. <br/></td></tr>
+<tr class="separator:aadbf5e9040bd896e9411da407459e426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ddea059a6bc0c4503cd98ef520beac0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ddea059a6bc0c4503cd98ef520beac0"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a1ddea059a6bc0c4503cd98ef520beac0">exists</a> (std::string key)=0</td></tr>
 <tr class="memdesc:a1ddea059a6bc0c4503cd98ef520beac0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does a key exist in Redis? <br/></td></tr>
@@ -78,17 +82,97 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a1bccb873c675701ce5f9c828067ba37f">expire</a> (std::string key, unsigned int second)=0</td></tr>
 <tr class="memdesc:a1bccb873c675701ce5f9c828067ba37f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expire a value in Redis after a specified number of seconds. <br/></td></tr>
 <tr class="separator:a1bccb873c675701ce5f9c828067ba37f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2eaaa5dc9647ac1663e967deea12431"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac2eaaa5dc9647ac1663e967deea12431"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#ac2eaaa5dc9647ac1663e967deea12431">persist</a> (std::string key)=0</td></tr>
+<tr class="memdesc:ac2eaaa5dc9647ac1663e967deea12431"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prevent a value from being expired in Redis. <br/></td></tr>
+<tr class="separator:ac2eaaa5dc9647ac1663e967deea12431"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abded05a0334cf85620cd1b0662466e42"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abded05a0334cf85620cd1b0662466e42"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#abded05a0334cf85620cd1b0662466e42">setex</a> (std::string key, std::string val, unsigned int second)=0</td></tr>
+<tr class="memdesc:abded05a0334cf85620cd1b0662466e42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set and add an expiration to an object in a single operation. <br/></td></tr>
+<tr class="separator:abded05a0334cf85620cd1b0662466e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a5f2b9c3d401a0170f7d966919868c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a5f2b9c3d401a0170f7d966919868c4"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a8a5f2b9c3d401a0170f7d966919868c4">append</a> (std::string key, std::string val)=0</td></tr>
+<tr class="memdesc:a8a5f2b9c3d401a0170f7d966919868c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append a value to a Redis value on the given key. <br/></td></tr>
+<tr class="separator:a8a5f2b9c3d401a0170f7d966919868c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad52034f760e2c197e1c34ff18f72dfc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad52034f760e2c197e1c34ff18f72dfc4"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#ad52034f760e2c197e1c34ff18f72dfc4">len</a> (std::string key)=0</td></tr>
+<tr class="memdesc:ad52034f760e2c197e1c34ff18f72dfc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the length of the string value stored at key. <br/></td></tr>
+<tr class="separator:ad52034f760e2c197e1c34ff18f72dfc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a175deb36b92a98e497ee3d065d3327ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a175deb36b92a98e497ee3d065d3327ea"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a175deb36b92a98e497ee3d065d3327ea">incr</a> (std::string key)=0</td></tr>
+<tr class="memdesc:a175deb36b92a98e497ee3d065d3327ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment a Counter value in Redis. <br/></td></tr>
+<tr class="separator:a175deb36b92a98e497ee3d065d3327ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6299f2e405bb474333efc990c22b1765"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6299f2e405bb474333efc990c22b1765"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a6299f2e405bb474333efc990c22b1765">incr</a> (std::string key, int incr_amt)=0</td></tr>
+<tr class="memdesc:a6299f2e405bb474333efc990c22b1765"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment a Counter value in Redis. <br/></td></tr>
+<tr class="separator:a6299f2e405bb474333efc990c22b1765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2147447af614a2c59f69a7b9ef3f5f2a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2147447af614a2c59f69a7b9ef3f5f2a"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a2147447af614a2c59f69a7b9ef3f5f2a">decr</a> (std::string key)=0</td></tr>
+<tr class="memdesc:a2147447af614a2c59f69a7b9ef3f5f2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decriment a Counter value in Redis. <br/></td></tr>
+<tr class="separator:a2147447af614a2c59f69a7b9ef3f5f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac25ea101a43a9e6cf48d4b40009aedec"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac25ea101a43a9e6cf48d4b40009aedec"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#ac25ea101a43a9e6cf48d4b40009aedec">decr</a> (std::string key, int decr_amt)=0</td></tr>
+<tr class="memdesc:ac25ea101a43a9e6cf48d4b40009aedec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decriment a Counter value in Redis. <br/></td></tr>
+<tr class="separator:ac25ea101a43a9e6cf48d4b40009aedec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a300bdd29f8a198b57f4760c24d832e46"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a300bdd29f8a198b57f4760c24d832e46"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a300bdd29f8a198b57f4760c24d832e46">lpush</a> (std::string key, std::string val)=0</td></tr>
+<tr class="memdesc:a300bdd29f8a198b57f4760c24d832e46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push a value to a Redis list on the given key. <br/></td></tr>
+<tr class="separator:a300bdd29f8a198b57f4760c24d832e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a1e75499b8beda20d514f4baa0c488b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a1e75499b8beda20d514f4baa0c488b"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a7a1e75499b8beda20d514f4baa0c488b">rpush</a> (std::string key, std::string val)=0</td></tr>
+<tr class="memdesc:a7a1e75499b8beda20d514f4baa0c488b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push a value to a Redis list on the given key. <br/></td></tr>
+<tr class="separator:a7a1e75499b8beda20d514f4baa0c488b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a461d229377c71435c0f83f42a2e3acae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a461d229377c71435c0f83f42a2e3acae"></a>
+virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a461d229377c71435c0f83f42a2e3acae">lpop</a> (std::string key)=0</td></tr>
+<tr class="memdesc:a461d229377c71435c0f83f42a2e3acae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pop a value from a Redis list on the given key. <br/></td></tr>
+<tr class="separator:a461d229377c71435c0f83f42a2e3acae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad10c64204a6ea7e11605848c968939b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad10c64204a6ea7e11605848c968939b2"></a>
+virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#ad10c64204a6ea7e11605848c968939b2">rpop</a> (std::string key)=0</td></tr>
+<tr class="memdesc:ad10c64204a6ea7e11605848c968939b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pop a value from a Redis list on the given key. <br/></td></tr>
+<tr class="separator:ad10c64204a6ea7e11605848c968939b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4fd798b32c37f6ca6561284d66a8265"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4fd798b32c37f6ca6561284d66a8265"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#af4fd798b32c37f6ca6561284d66a8265">lset</a> (std::string key, std::string val, int index)=0</td></tr>
+<tr class="memdesc:af4fd798b32c37f6ca6561284d66a8265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value stored in the list at key and the index at index. <br/></td></tr>
+<tr class="separator:af4fd798b32c37f6ca6561284d66a8265"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ad704dc93fb00508f55b1e1eb48befa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ad704dc93fb00508f55b1e1eb48befa"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a3ad704dc93fb00508f55b1e1eb48befa">linsert</a> (std::string key, std::string val, std::string pivot, bool before_pivot)=0</td></tr>
+<tr class="memdesc:a3ad704dc93fb00508f55b1e1eb48befa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a value into the list at key and before/after the pivot value. <br/></td></tr>
+<tr class="separator:a3ad704dc93fb00508f55b1e1eb48befa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d5c84fe82cb6b83e37fe1e16941c87f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d5c84fe82cb6b83e37fe1e16941c87f"></a>
+virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a0d5c84fe82cb6b83e37fe1e16941c87f">lindex</a> (std::string key, int index)=0</td></tr>
+<tr class="memdesc:a0d5c84fe82cb6b83e37fe1e16941c87f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value stored in the list at key and the index at index. <br/></td></tr>
+<tr class="separator:a0d5c84fe82cb6b83e37fe1e16941c87f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67309af9d56fc0e8f413897bd5ec2a1f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a67309af9d56fc0e8f413897bd5ec2a1f"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a67309af9d56fc0e8f413897bd5ec2a1f">llen</a> (std::string key)=0</td></tr>
+<tr class="memdesc:a67309af9d56fc0e8f413897bd5ec2a1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the length of a list stored in Redis. <br/></td></tr>
+<tr class="separator:a67309af9d56fc0e8f413897bd5ec2a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65c6e61527d2947eb6055b61eece2f88"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65c6e61527d2947eb6055b61eece2f88"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a65c6e61527d2947eb6055b61eece2f88">ltrim</a> (std::string key, int start_index, int end_index)=0</td></tr>
+<tr class="memdesc:a65c6e61527d2947eb6055b61eece2f88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trim a list to the specified start and end index. <br/></td></tr>
+<tr class="separator:a65c6e61527d2947eb6055b61eece2f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38b721e7e8036bfba391b9ddec1725b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38b721e7e8036bfba391b9ddec1725b5"></a>
+virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#a38b721e7e8036bfba391b9ddec1725b5">mget</a> (std::vector&lt; std::string &gt; keys)=0</td></tr>
+<tr class="memdesc:a38b721e7e8036bfba391b9ddec1725b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a set of string replies. <br/></td></tr>
+<tr class="separator:a38b721e7e8036bfba391b9ddec1725b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad396ae3e13286451ff6f494f462cb349"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad396ae3e13286451ff6f494f462cb349"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#ad396ae3e13286451ff6f494f462cb349">mset</a> (std::vector&lt; <a class="el" href="structRedisKvPair.html">RedisKvPair</a> &gt; save_sets)=0</td></tr>
+<tr class="memdesc:ad396ae3e13286451ff6f494f462cb349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a set of string objects. <br/></td></tr>
+<tr class="separator:ad396ae3e13286451ff6f494f462cb349"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3281e8788a6f972b7cba305794e53a0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3281e8788a6f972b7cba305794e53a0"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRedisInterface.html#ae3281e8788a6f972b7cba305794e53a0">msetnx</a> (std::vector&lt; <a class="el" href="structRedisKvPair.html">RedisKvPair</a> &gt; save_sets)=0</td></tr>
+<tr class="memdesc:ae3281e8788a6f972b7cba305794e53a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a set of string objects, as long as none of the keys exist. <br/></td></tr>
+<tr class="separator:ae3281e8788a6f972b7cba305794e53a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The XRedis Admin. </p>
-<p>The XRedis Admin is responsible for all interactions with the Redis Key-Value Store. This is capable of connecting to single Redis instances or Clusters </p>
+<div class="textblock"><p>The Redis Admin. </p>
+<p>The Redis Admin is responsible for all interactions with the Redis Key-Value Store </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>lib/include/factory/<a class="el" href="redis__interface_8h_source.html">redis_interface.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2016 23:27:43 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

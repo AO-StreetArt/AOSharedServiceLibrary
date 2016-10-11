@@ -57,21 +57,29 @@
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#ifndef HTTP_SERVER_INTERFACE</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define HTTP_SERVER_INTERFACE</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classHttpServerInterface.html">   10</a></span>&#160;<span class="keyword">class </span><a class="code" href="classHttpServerInterface.html">HttpServerInterface</a></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> bind_callback(std::string uri, CallbackInterface func) = 0;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> bind_default_callback(CallbackInterface func) = 0;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> recv() = 0;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classHttpServerInterface.html">HttpServerInterface</a>() {}</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;};</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classHttpServerInterface.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="classHttpServerInterface.html">HttpServerInterface</a></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classHttpServerInterface_html"><div class="ttname"><a href="classHttpServerInterface.html">HttpServerInterface</a></div><div class="ttdef"><b>Definition:</b> http_server_interface.h:10</div></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classHttpServerInterface.html#a6aa54efaf6f176d985c7faa57e1aa7fd">bind_callback</a>(std::string uri, CallbackInterface func) = 0;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classHttpServerInterface.html#a398064a0d7fb0c7e52d94ccfcbb6d89a">bind_default_callback</a>(CallbackInterface func) = 0;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classHttpServerInterface.html#a350f4321505079d9c440ce4a4372044f">recv</a>() = 0;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classHttpServerInterface.html">HttpServerInterface</a>() {}</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;};</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classHttpServerInterface_html"><div class="ttname"><a href="classHttpServerInterface.html">HttpServerInterface</a></div><div class="ttdoc">This is a basic HTTP Server that can be used to build a RESTful API. </div><div class="ttdef"><b>Definition:</b> http_server_interface.h:15</div></div>
+<div class="ttc" id="classHttpServerInterface_html_a350f4321505079d9c440ce4a4372044f"><div class="ttname"><a href="classHttpServerInterface.html#a350f4321505079d9c440ce4a4372044f">HttpServerInterface::recv</a></div><div class="ttdeci">virtual void recv()=0</div><div class="ttdoc">Blocking call for waiting for incoming API Calls. </div></div>
+<div class="ttc" id="classHttpServerInterface_html_a398064a0d7fb0c7e52d94ccfcbb6d89a"><div class="ttname"><a href="classHttpServerInterface.html#a398064a0d7fb0c7e52d94ccfcbb6d89a">HttpServerInterface::bind_default_callback</a></div><div class="ttdeci">virtual bool bind_default_callback(CallbackInterface func)=0</div><div class="ttdoc">Bind a callback for a dynamic API Method. </div></div>
+<div class="ttc" id="classHttpServerInterface_html_a6aa54efaf6f176d985c7faa57e1aa7fd"><div class="ttname"><a href="classHttpServerInterface.html#a6aa54efaf6f176d985c7faa57e1aa7fd">HttpServerInterface::bind_callback</a></div><div class="ttdeci">virtual bool bind_callback(std::string uri, CallbackInterface func)=0</div><div class="ttdoc">Bind a callback for a static API Method. </div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2016 23:27:43 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

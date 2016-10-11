@@ -21,12 +21,16 @@ Inheritance diagram for Couchbase\-Interface\-:\begin{figure}[H]
 \item 
 virtual void \hyperlink{classCouchbaseInterface_a62a765de48bfc92d748df829ca960ff2}{load\-\_\-object} (const char $\ast$key)=0
 \begin{DoxyCompactList}\small\item\em Load a J\-S\-O\-N Object from the Couchbase D\-B. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCouchbaseInterface_a1aee19796f864ff531cbb55f42764bf6}{load\-\_\-object} (std\-::string key)=0
+\item 
 virtual void \hyperlink{classCouchbaseInterface_ab4ea907f469d14323e451ffdccb213c2}{save\-\_\-object} (\hyperlink{classWriteable}{Writeable} $\ast$obj)=0
 \begin{DoxyCompactList}\small\item\em Save a J\-S\-O\-N Object to the Couchbase D\-B. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCouchbaseInterface_a7ac9545e6f7a45d24e8e41ccae1f6112}{create\-\_\-object} (\hyperlink{classWriteable}{Writeable} $\ast$obj)=0
 \begin{DoxyCompactList}\small\item\em Create a J\-S\-O\-N Object in the Couchbase D\-B. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCouchbaseInterface_a99ec66952f649bb84c80b20487e82839}{delete\-\_\-object} (const char $\ast$key)=0
 \begin{DoxyCompactList}\small\item\em Delete a J\-S\-O\-N Object from the Couchbase D\-B. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCouchbaseInterface_aa45552deeb14c1eafca33eaccb85e094}{delete\-\_\-object} (std\-::string key)=0
+\item 
 virtual void \hyperlink{classCouchbaseInterface_a88980b99dc329e5cd02f240ddbbba1ca}{bind\-\_\-get\-\_\-callback} (Callback\-Interface)=0
 \begin{DoxyCompactList}\small\item\em Bind the Retrieval Callback. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCouchbaseInterface_a54a056865fc0caa456413b97c6cfb030}{bind\-\_\-storage\-\_\-callback} (Callback\-Interface)=0
@@ -107,7 +111,14 @@ The requested object is deleted and, when complete, the method bound with bind\-
 
 Implements \hyperlink{classDBAdmin_a6fffd56ad4f9db9cd951a91ecb41373b}{D\-B\-Admin}.
 
-\hypertarget{classCouchbaseInterface_a62a765de48bfc92d748df829ca960ff2}{\index{Couchbase\-Interface@{Couchbase\-Interface}!load\-\_\-object@{load\-\_\-object}}
+\hypertarget{classCouchbaseInterface_aa45552deeb14c1eafca33eaccb85e094}{\index{Couchbase\-Interface@{Couchbase\-Interface}!delete\-\_\-object@{delete\-\_\-object}}
+\index{delete\-\_\-object@{delete\-\_\-object}!CouchbaseInterface@{Couchbase\-Interface}}
+\subsubsection[{delete\-\_\-object}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Couchbase\-Interface\-::delete\-\_\-object (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classCouchbaseInterface_aa45552deeb14c1eafca33eaccb85e094}
+The requested object is deleted and, when complete, the method bound with bind\-\_\-delete\-\_\-callback will be executed \hypertarget{classCouchbaseInterface_a62a765de48bfc92d748df829ca960ff2}{\index{Couchbase\-Interface@{Couchbase\-Interface}!load\-\_\-object@{load\-\_\-object}}
 \index{load\-\_\-object@{load\-\_\-object}!CouchbaseInterface@{Couchbase\-Interface}}
 \subsubsection[{load\-\_\-object}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Couchbase\-Interface\-::load\-\_\-object (
 \begin{DoxyParamCaption}
@@ -122,7 +133,14 @@ The requested object is loaded and, when ready, the method bound with bind\-\_\-
 
 Implements \hyperlink{classDBAdmin_a48ebd30b2e5bb44d23359baa86fe42b9}{D\-B\-Admin}.
 
-\hypertarget{classCouchbaseInterface_ab4ea907f469d14323e451ffdccb213c2}{\index{Couchbase\-Interface@{Couchbase\-Interface}!save\-\_\-object@{save\-\_\-object}}
+\hypertarget{classCouchbaseInterface_a1aee19796f864ff531cbb55f42764bf6}{\index{Couchbase\-Interface@{Couchbase\-Interface}!load\-\_\-object@{load\-\_\-object}}
+\index{load\-\_\-object@{load\-\_\-object}!CouchbaseInterface@{Couchbase\-Interface}}
+\subsubsection[{load\-\_\-object}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Couchbase\-Interface\-::load\-\_\-object (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{key}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classCouchbaseInterface_a1aee19796f864ff531cbb55f42764bf6}
+The requested object is loaded and, when ready, the method bound with bind\-\_\-get\-\_\-callback will be executed \hypertarget{classCouchbaseInterface_ab4ea907f469d14323e451ffdccb213c2}{\index{Couchbase\-Interface@{Couchbase\-Interface}!save\-\_\-object@{save\-\_\-object}}
 \index{save\-\_\-object@{save\-\_\-object}!CouchbaseInterface@{Couchbase\-Interface}}
 \subsubsection[{save\-\_\-object}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Couchbase\-Interface\-::save\-\_\-object (
 \begin{DoxyParamCaption}

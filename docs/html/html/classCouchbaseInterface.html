@@ -70,6 +70,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a62a765de48bfc92d748df829ca960ff2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCouchbaseInterface.html#a62a765de48bfc92d748df829ca960ff2">load_object</a> (const char *key)=0</td></tr>
 <tr class="memdesc:a62a765de48bfc92d748df829ca960ff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a JSON Object from the Couchbase DB.  <a href="#a62a765de48bfc92d748df829ca960ff2">More...</a><br/></td></tr>
 <tr class="separator:a62a765de48bfc92d748df829ca960ff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aee19796f864ff531cbb55f42764bf6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCouchbaseInterface.html#a1aee19796f864ff531cbb55f42764bf6">load_object</a> (std::string key)=0</td></tr>
+<tr class="separator:a1aee19796f864ff531cbb55f42764bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4ea907f469d14323e451ffdccb213c2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCouchbaseInterface.html#ab4ea907f469d14323e451ffdccb213c2">save_object</a> (<a class="el" href="classWriteable.html">Writeable</a> *obj)=0</td></tr>
 <tr class="memdesc:ab4ea907f469d14323e451ffdccb213c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save a JSON Object to the Couchbase DB.  <a href="#ab4ea907f469d14323e451ffdccb213c2">More...</a><br/></td></tr>
 <tr class="separator:ab4ea907f469d14323e451ffdccb213c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -79,6 +81,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a99ec66952f649bb84c80b20487e82839"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCouchbaseInterface.html#a99ec66952f649bb84c80b20487e82839">delete_object</a> (const char *key)=0</td></tr>
 <tr class="memdesc:a99ec66952f649bb84c80b20487e82839"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a JSON Object from the Couchbase DB.  <a href="#a99ec66952f649bb84c80b20487e82839">More...</a><br/></td></tr>
 <tr class="separator:a99ec66952f649bb84c80b20487e82839"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa45552deeb14c1eafca33eaccb85e094"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCouchbaseInterface.html#aa45552deeb14c1eafca33eaccb85e094">delete_object</a> (std::string key)=0</td></tr>
+<tr class="separator:aa45552deeb14c1eafca33eaccb85e094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88980b99dc329e5cd02f240ddbbba1ca"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCouchbaseInterface.html#a88980b99dc329e5cd02f240ddbbba1ca">bind_get_callback</a> (CallbackInterface)=0</td></tr>
 <tr class="memdesc:a88980b99dc329e5cd02f240ddbbba1ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bind the Retrieval Callback.  <a href="#a88980b99dc329e5cd02f240ddbbba1ca">More...</a><br/></td></tr>
 <tr class="separator:a88980b99dc329e5cd02f240ddbbba1ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -236,6 +240,31 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
+<a class="anchor" id="aa45552deeb14c1eafca33eaccb85e094"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void CouchbaseInterface::delete_object </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The requested object is deleted and, when complete, the method bound with bind_delete_callback will be executed </p>
+
+</div>
+</div>
 <a class="anchor" id="a62a765de48bfc92d748df829ca960ff2"></a>
 <div class="memitem">
 <div class="memproto">
@@ -262,6 +291,31 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>The requested object is loaded and, when ready, the method bound with bind_get_callback will be executed </p>
 
 <p>Implements <a class="el" href="classDBAdmin.html#a48ebd30b2e5bb44d23359baa86fe42b9">DBAdmin</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1aee19796f864ff531cbb55f42764bf6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void CouchbaseInterface::load_object </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The requested object is loaded and, when ready, the method bound with bind_get_callback will be executed </p>
 
 </div>
 </div>
@@ -300,7 +354,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 10 2016 23:27:43 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
