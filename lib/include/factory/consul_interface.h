@@ -7,10 +7,13 @@
 
 //-----------------------------Health Checks----------------------------------//
 
-//! A strcut to hold health check information which can be added to a service
+//! A struct to hold health check information which can be added to a service
 struct HealthCheck
 {
+  //! The script to run for the health check
   std::string script;
+
+  //! The interval for the health check
   std::string interval;
 };
 
@@ -55,18 +58,18 @@ public:
   //! Set the Service Port
   virtual void set_port(std::string new_port) = 0;
 
-  //Get the tags
+  //! Get the tags
   virtual std::vector<std::string> get_tags() = 0;
-  //Add a tag
+  //! Add a tag
   virtual void add_tag(std::string new_tag) = 0;
-  //Clear the tags
+  //! Clear the tags
 	virtual void clear_tags() = 0;
-	//How many tags are there?
+	//! How many tags are there?
 	virtual int num_tags() const = 0;
 
-  //Get the health checks
+  //! Get the health checks
   virtual HealthCheck get_check() = 0;
-  //Add a check
+  //! Add a check
   virtual void set_check(std::string scr, int interval_seconds) = 0;
 };
 

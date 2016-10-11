@@ -11,13 +11,18 @@
 //----------------------------------Errors------------------------------------//
 //----------------------------------------------------------------------------//
 
+//! An Implementation of std::exception that denotes a connection error within Redis
 struct RedisConnectionException: public std::exception
 {
+  //! An error message passed on initialization
   std::string int_msg;
+
   RedisConnectionException (std::string msg) {int_msg = msg;}
   RedisConnectionException (const char * msg_cstr) {std::string msg (msg_cstr);int_msg = msg;}
   RedisConnectionException () {}
   ~RedisConnectionException() throw () {}
+
+  //! Show the error message in readable format
   const char * what() const throw ()
   {
     std::string what_str = "Error Connecting to Redis: " + int_msg;
@@ -25,14 +30,18 @@ struct RedisConnectionException: public std::exception
   }
 };
 
-
+//! An Implementation of std::exception that denotes an error within Redis during a transaction
 struct RedisOperationException: public std::exception
 {
+  //! An error message passed on initialization
   std::string int_msg;
+
   RedisOperationException (std::string msg) {int_msg = msg;}
   RedisOperationException (const char * msg_cstr) {std::string msg (msg_cstr);int_msg = msg;}
   RedisOperationException () {}
   ~RedisOperationException() throw () {}
+
+  //! Show the error message in readable format
   const char * what() const throw ()
   {
     std::string what_str = "Error Performing Redis Operation: " + int_msg;
@@ -47,17 +56,32 @@ struct RedisOperationException: public std::exception
 //! A Structure for storing Redis Connection Information
 struct RedisConnChain
 {
+  //! The IP of the Redis Node
   std::string ip;
+
+  //! The port of the Redis Node
   int port;
+
+  //! The password of the Redis Node
   std::string password;
+
+  //! The pool size on the Redis Node
   int pool_size;
+
+  //! The timeout on the Redis Node
   int timeout;
+
+  //! The Role on the Redis Node
   int role;
 };
 
+//! A Structure for storing a Key-Value pair, used with batch operations
 struct RedisKvPair
 {
+  //! Key of the pair
   std::string key;
+
+  //! Value stored in the pair
   std::string val;
 };
 

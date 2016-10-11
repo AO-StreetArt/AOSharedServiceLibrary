@@ -25,8 +25,10 @@ public:
   //! Get an option by key
   virtual std::string get_opt( std::string key ) = 0;
 
+  //! Does a list exist within the configuration?
   virtual bool list_exist( std::string key ) = 0;
 
+  //! Get a list that exists within the configuration
   virtual std::vector<std::string> get_list( std::string key ) = 0;
 
 };
