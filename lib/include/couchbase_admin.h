@@ -156,6 +156,7 @@ public:
 	//! The requested object is loaded and, when ready,
 	//! the method bound with bind_get_callback will be executed
 	void load_object ( const char * key );
+	void load_object ( std::string key );
 
 	//! Save a JSON Object to the Couchbase DB
 
@@ -174,6 +175,7 @@ public:
 	//! The requested object is deleted and, when complete,
 	//! the method bound with bind_delete_callback will be executed
 	void delete_object ( const char * key );
+	void delete_object ( std::string key );
 
 	//Bind Callbacks
 

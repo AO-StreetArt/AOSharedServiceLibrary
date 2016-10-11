@@ -78,6 +78,10 @@ void CouchbaseAdmin::load_object ( const char * key )
 	}
 }
 
+void CouchbaseAdmin::load_object ( std::string key ) {
+  load_object( key.c_str() );
+}
+
 void CouchbaseAdmin::save_object ( Writeable *obj )
 {
 	lcb_store_cmd_t scmd;
@@ -126,6 +130,10 @@ void CouchbaseAdmin::delete_object ( const char * key ) {
 	if (err != LCB_SUCCESS) {
 		throw CouchbaseOperationException( lcb_strerror(private_instance, err) );
 	}
+}
+
+void CouchbaseAdmin::delete_object ( std::string key ) {
+  delete_object( key.c_str() );
 }
 
 //Bind the Get Callback for the couchbase calls
