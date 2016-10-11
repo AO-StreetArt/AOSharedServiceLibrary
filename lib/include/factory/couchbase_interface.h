@@ -90,6 +90,10 @@ public:
 	//! the method bound with bind_get_callback will be executed
 	virtual void load_object ( const char * key ) = 0;
 
+	//! The requested object is loaded and, when ready,
+	//! the method bound with bind_get_callback will be executed
+	virtual void load_object ( std::string key ) = 0;
+
 	//! Save a JSON Object to the Couchbase DB
 
 	//! The requested object is saved and, when complete,
@@ -107,6 +111,10 @@ public:
 	//! The requested object is deleted and, when complete,
 	//! the method bound with bind_delete_callback will be executed
 	virtual void delete_object ( const char * key ) = 0;
+
+	//! The requested object is deleted and, when complete,
+	//! the method bound with bind_delete_callback will be executed
+	virtual void delete_object ( std::string key ) = 0;
 
 	//Bind Callbacks
 
