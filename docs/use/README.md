@@ -17,16 +17,18 @@ the interfaces will remain the same across versions of the library.  For example
     // Set up a Service Component Factory, where we get our application components
     CommandLineInterpreterFactory cli_factory;
 
-The factory then provides us access to instances of the interfaces exposed by the library.  Let's take a look with the components below.
+The factory then provides us access to instances of the interfaces exposed by the library.
+
+    CommandLineInterface *cli = cli_factory.get_command_line_interface( argc, argv );
 
 Note: Be sure to delete anything you build with the factories!
 
 ### Callbacks
 
-Request-based callbacks are critical components of AOSSL, and can be seen used with several AOSSL components.  All callbacks match the following method signature:
+Request-based callbacks are critical components of AOSSL, and can be seen used with several AOSSL components, in particular the HTTP Server and Couchbase Administrator.  All callbacks match the following method signature:
     std::string process_request(struct Request *req)
 
-The Request object has a few properties which are relevent:
+The Request object has a few properties which are relevant:
 
 * req_data - Used to store original request data
 * req_addr - Used to store the request type
@@ -269,6 +271,8 @@ The Redis Admin allows for quick Redis access, and exposes the below methods to 
     std::string strValue = redis->load("Test");
     redis->del("Test");
 
+The Redis Administrator suuports a number of other operations, all of which are covered in [Redis' documentation] (http://redis.io/commands).  A full list of supported operations can be found in this libraries HTML documentation, found in the html folder of the docs on this repository.  You are free to download it and view it in a web browser.
+
 ### Consul Administrator
 
 Consul is responsible for Service Registration & Discovery, Key-Value
@@ -391,6 +395,31 @@ We have access to an opt_exist method to determine if an option was entered.  We
     }
 
     return 0;
+    }
+
+### Property File Reader
+
+The property file reader accepts properties file names and interprets them.  It accepts properties in the form `property_name=property_value`.  This also accepts lists in the form
+
+    -list_name-list_value
+    -list_name-list_value2
+
+    #include "include/factory_props.h"
+    #include "include/factory/properties_reader_interface.h"
+    #include <string>
+    #include <vector>
+
+    PropertyReaderFactory prop_factory;
+    PropertiesReaderInterface *reader = prop_factory.get_properties_reader_interface( "test.properties" );
+
+We can access properties via the get_opt method, and lists via the get_list method.  We also have opt_exist and list_exist methods so we can determine if something has been detected in the configuration file.
+
+    if ( reader->opt_exist("DB_Password") ) {
+      std::string db_pswd = reader->get_opt("DB_Password");
+    }
+
+    if ( reader->list_exist("RedisConnectionString") ) {
+      std::vector<std::string> list = reader->get_list("RedisConnectionString");
     }
 
 ## Tests
