@@ -21,25 +21,8 @@ void shutdown()
   delete logging;
 }
 
-//Catch a Signal (for example, keyboard interrupt)
-void my_signal_handler(int s){
-   logging->error("Caught signal");
-   std::string signal_type = std::to_string(s);
-   logging->error(signal_type);
-   shutdown();
-   exit(1);
-}
-
 int main( int argc, char** argv )
 {
-
-//Set up a handler for any signal events so that we always shutdown gracefully
-struct sigaction sigIntHandler;
-sigIntHandler.sa_handler = my_signal_handler;
-sigemptyset(&sigIntHandler.sa_mask);
-sigIntHandler.sa_flags = 0;
-
-sigaction(SIGINT, &sigIntHandler, NULL);
 
 // Set up a Service Component Factory, where we get our application components
 CommandLineInterpreterFactory cli_factory;
