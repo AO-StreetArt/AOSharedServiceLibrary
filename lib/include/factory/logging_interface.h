@@ -4,6 +4,7 @@
 #ifndef LOGGING_INTERFACE
 #define LOGGING_INTERFACE
 
+//! A Logging Category instantiated on a standard logging instance
 class LoggingCategoryInterface
 {
 public:
@@ -30,6 +31,7 @@ public:
   virtual void info(const char * msg) = 0;
 };
 
+//! An overall logging interface, which can generate logging categories
 class LoggingInterface
 {
 public:
