@@ -423,6 +423,6 @@ We can access properties via the get_opt method, and lists via the get_list meth
     }
 
 ## Tests
-Please continue on to the [Tests] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/tests) section of the documentation to learn about the libraries automated tests.
+Please continue on to the [Compilation] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/comp) section of the documentation to learn about building an application with the library.
 
 [Go Home] (https://github.com/AO-StreetArt/AOSharedServiceLibrary)
