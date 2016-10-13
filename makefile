@@ -20,7 +20,7 @@ BENCHMARKS = consul_benchmark logging_benchmark http_benchmark couchbase_benchma
 BENCHMARKS_RHEL = redis_benchmark_rhel consul_benchmark logging_benchmark http_benchmark couchbase_benchmark
 INCL_NOCOUCHBASE = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/local/include/aossl/factory_uuid.h /usr/local/include/aossl/factory_redis.h\
  /usr/local/include/aossl/factory_props.h /usr/local/include/aossl/factory_logging.h /usr/local/include/aossl/factory_http_server.h /usr/local/include/aossl/factory_http_client.h\
-  /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/http_admin.h\
+  /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/factory_response.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/http_admin.h\
 	 /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/redis_admin.h /usr/local/include/aossl/zmqio.h\
 	  /usr/local/include/aossl/http_server.h /usr/local/include/aossl/properties_reader.h /usr/local/include/aossl/factory/properties_reader_interface.h\
 		 /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/db_admin.h\
@@ -104,6 +104,9 @@ clean: clean_local clean_tests clean_benchmarks
 	cp $< $@
 
 /usr/local/include/aossl/factory_zmq.h: lib/include/factory_zmq.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_response.h: lib/include/factory_response.h
 	cp $< $@
 
 /usr/local/include/aossl/cli.h: lib/include/cli.h
