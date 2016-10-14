@@ -7,3 +7,4 @@
 *_tests
 *_benchmark
 *.a
+examples/hello_world/simple_app
