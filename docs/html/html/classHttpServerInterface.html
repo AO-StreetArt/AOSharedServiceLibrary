@@ -50,26 +50,37 @@
 <div class="title">HttpServerInterface Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This is a basic HTTP Server that can be used to build a RESTful API.  
+ <a href="classHttpServerInterface.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="http__server__interface_8h_source.html">http_server_interface.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6aa54efaf6f176d985c7faa57e1aa7fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6aa54efaf6f176d985c7faa57e1aa7fd"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>bind_callback</b> (std::string uri, CallbackInterface func)=0</td></tr>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHttpServerInterface.html#a6aa54efaf6f176d985c7faa57e1aa7fd">bind_callback</a> (std::string uri, CallbackInterface func)=0</td></tr>
+<tr class="memdesc:a6aa54efaf6f176d985c7faa57e1aa7fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bind a callback for a static API Method. <br/></td></tr>
 <tr class="separator:a6aa54efaf6f176d985c7faa57e1aa7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a398064a0d7fb0c7e52d94ccfcbb6d89a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a398064a0d7fb0c7e52d94ccfcbb6d89a"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>bind_default_callback</b> (CallbackInterface func)=0</td></tr>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHttpServerInterface.html#a398064a0d7fb0c7e52d94ccfcbb6d89a">bind_default_callback</a> (CallbackInterface func)=0</td></tr>
+<tr class="memdesc:a398064a0d7fb0c7e52d94ccfcbb6d89a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bind a callback for a dynamic API Method. <br/></td></tr>
 <tr class="separator:a398064a0d7fb0c7e52d94ccfcbb6d89a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a350f4321505079d9c440ce4a4372044f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a350f4321505079d9c440ce4a4372044f"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>recv</b> ()=0</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classHttpServerInterface.html#a350f4321505079d9c440ce4a4372044f">recv</a> ()=0</td></tr>
+<tr class="memdesc:a350f4321505079d9c440ce4a4372044f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking call for waiting for incoming API Calls. <br/></td></tr>
 <tr class="separator:a350f4321505079d9c440ce4a4372044f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This is a basic HTTP Server that can be used to build a RESTful API. </p>
+<p>The HTTP Server can bind static API methods to individual callbacks, and dynamic API methods can go to a default callback. Used to build RESTful API's </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>lib/include/factory/<a class="el" href="http__server__interface_8h_source.html">http_server_interface.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 11 2016 23:29:31 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

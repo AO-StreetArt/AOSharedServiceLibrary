@@ -83,20 +83,46 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDBAdmin.html#a6fffd56ad4f9db9cd951a91ecb41373b">delete_object</a> (const char *key)=0</td></tr>
 <tr class="memdesc:a6fffd56ad4f9db9cd951a91ecb41373b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a JSON Object from the DB. <br/></td></tr>
 <tr class="separator:a6fffd56ad4f9db9cd951a91ecb41373b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a3ac4ee0b0c6453120fca46e126efe2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a3ac4ee0b0c6453120fca46e126efe2"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>wait</b> ()=0</td></tr>
+<tr class="memitem:a9a3ac4ee0b0c6453120fca46e126efe2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDBAdmin.html#a9a3ac4ee0b0c6453120fca46e126efe2">wait</a> ()=0</td></tr>
 <tr class="separator:a9a3ac4ee0b0c6453120fca46e126efe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Database Administrator Interface. </p>
 <p>An Interface defining the behavior of different Document-based Data Base Administrators </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a9a3ac4ee0b0c6453120fca46e126efe2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void DBAdmin::wait </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>If the engine is asynchronous, wait for the active threads to complete. Otherwise, do nothing </p>
+
+<p>Implemented in <a class="el" href="classCouchbaseInterface.html#ae901a3e383a82044679d0b77702c7e2c">CouchbaseInterface</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>lib/include/factory/<a class="el" href="db__admin_8h_source.html">db_admin.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 11 2016 23:29:31 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

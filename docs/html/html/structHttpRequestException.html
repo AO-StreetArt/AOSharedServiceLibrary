@@ -51,6 +51,11 @@
 <div class="title">HttpRequestException Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>An Implementation of std::exception that denotes an error in Couchbase during bootstrap.  
+ <a href="structHttpRequestException.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="http__interface_8h_source.html">http_interface.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for HttpRequestException:</div>
 <div class="dyncontent">
@@ -63,25 +68,30 @@ Inheritance diagram for HttpRequestException:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8470fe285f8e7f0939b5068546967764"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8470fe285f8e7f0939b5068546967764"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>HttpRequestException</b> (std::string msg)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHttpRequestException.html#a8470fe285f8e7f0939b5068546967764">HttpRequestException</a> (std::string msg)</td></tr>
+<tr class="memdesc:a8470fe285f8e7f0939b5068546967764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a HTTP <a class="el" href="structRequest.html" title="A struct that gets passed to callbacks. ">Request</a> Exception, and store the given error message. <br/></td></tr>
 <tr class="separator:a8470fe285f8e7f0939b5068546967764"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf07a2f7382157a27c0c5d2cedb2f2e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acf07a2f7382157a27c0c5d2cedb2f2e6"></a>
-const char *&#160;</td><td class="memItemRight" valign="bottom"><b>what</b> () const   throw ()</td></tr>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHttpRequestException.html#acf07a2f7382157a27c0c5d2cedb2f2e6">what</a> () const   throw ()</td></tr>
+<tr class="memdesc:acf07a2f7382157a27c0c5d2cedb2f2e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Show the error message in readable format. <br/></td></tr>
 <tr class="separator:acf07a2f7382157a27c0c5d2cedb2f2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a52a64d4648b543b81050bec3fb039e5f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52a64d4648b543b81050bec3fb039e5f"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>int_msg</b></td></tr>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHttpRequestException.html#a52a64d4648b543b81050bec3fb039e5f">int_msg</a></td></tr>
+<tr class="memdesc:a52a64d4648b543b81050bec3fb039e5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">An error message passed on initialization. <br/></td></tr>
 <tr class="separator:a52a64d4648b543b81050bec3fb039e5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An Implementation of std::exception that denotes an error in Couchbase during bootstrap. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>lib/include/factory/<a class="el" href="http__interface_8h_source.html">http_interface.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 11 2016 23:29:31 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

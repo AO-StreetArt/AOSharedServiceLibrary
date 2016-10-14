@@ -31,8 +31,7 @@ Inheritance diagram for D\-B\-Admin\-:\begin{figure}[H]
 \hypertarget{classDBAdmin_a6fffd56ad4f9db9cd951a91ecb41373b}{virtual void \hyperlink{classDBAdmin_a6fffd56ad4f9db9cd951a91ecb41373b}{delete\-\_\-object} (const char $\ast$key)=0}\label{classDBAdmin_a6fffd56ad4f9db9cd951a91ecb41373b}
 
 \begin{DoxyCompactList}\small\item\em Delete a J\-S\-O\-N Object from the D\-B. \end{DoxyCompactList}\item 
-\hypertarget{classDBAdmin_a9a3ac4ee0b0c6453120fca46e126efe2}{virtual void {\bfseries wait} ()=0}\label{classDBAdmin_a9a3ac4ee0b0c6453120fca46e126efe2}
-
+virtual void \hyperlink{classDBAdmin_a9a3ac4ee0b0c6453120fca46e126efe2}{wait} ()=0
 \end{DoxyCompactItemize}
 
 
@@ -40,6 +39,20 @@ Inheritance diagram for D\-B\-Admin\-:\begin{figure}[H]
 Database Administrator Interface. 
 
 An Interface defining the behavior of different Document-\/based Data Base Administrators 
+
+\subsection{Member Function Documentation}
+\hypertarget{classDBAdmin_a9a3ac4ee0b0c6453120fca46e126efe2}{\index{D\-B\-Admin@{D\-B\-Admin}!wait@{wait}}
+\index{wait@{wait}!DBAdmin@{D\-B\-Admin}}
+\subsubsection[{wait}]{\setlength{\rightskip}{0pt plus 5cm}virtual void D\-B\-Admin\-::wait (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classDBAdmin_a9a3ac4ee0b0c6453120fca46e126efe2}
+If the engine is asynchronous, wait for the active threads to complete. Otherwise, do nothing 
+
+Implemented in \hyperlink{classCouchbaseInterface_ae901a3e383a82044679d0b77702c7e2c}{Couchbase\-Interface}.
+
+
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
 \item 

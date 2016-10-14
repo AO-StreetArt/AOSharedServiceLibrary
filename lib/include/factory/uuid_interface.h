@@ -7,8 +7,13 @@
 #ifndef UUID_INTERFACE
 #define UUID_INTERFACE
 
+//! A return structure which captures any security error messages thrown by the framework
 struct UuidContainer {
+
+	//! The UUID generated
 	std::string id;
+
+	//! Is either empty or contains an error message
 	std::string err;
 };
 

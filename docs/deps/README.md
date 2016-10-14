@@ -17,7 +17,7 @@ You will need [Hayai] (https://github.com/nickbruun/hayai) to run the benchmarks
 
 # External Services
 
-We use three external services which are necessary to use the respective elements of this library.  Note that the elements of this library can be used separately, so you are in no way tied to the use of these services as a part of your project.  In fact, you are encouraged to develop drivers for alternate technologies and submit a pull request.
+We use several external services which are necessary to use the respective elements of this library.  Note that the elements of this library can be used separately, so you are in no way tied to the use of these services as a part of your project.  In fact, you are encouraged to develop drivers for alternate technologies and submit a pull request.
 
 * [Redis] (http://redis.io/) - Key/Value Store
 * [Couchbase] (http://www.couchbase.com/) - Document Based Database

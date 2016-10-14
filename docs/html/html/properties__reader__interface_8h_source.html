@@ -66,21 +66,23 @@
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">virtual</span> std::string <a class="code" href="classPropertiesReaderInterface.html#a16db6a1917d0274811a499b2a270679b">get_opt</a>( std::string key ) = 0;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> list_exist( std::string key ) = 0;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keyword">virtual</span> std::vector&lt;std::string&gt; get_list( std::string key ) = 0;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;};</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classPropertiesReaderInterface.html#ab088ce690f3f96b3f885d762289c23c2">list_exist</a>( std::string key ) = 0;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">virtual</span> std::vector&lt;std::string&gt; <a class="code" href="classPropertiesReaderInterface.html#a466f88254dc3f26691e73ba739bdabce">get_list</a>( std::string key ) = 0;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;};</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classPropertiesReaderInterface_html_a16db6a1917d0274811a499b2a270679b"><div class="ttname"><a href="classPropertiesReaderInterface.html#a16db6a1917d0274811a499b2a270679b">PropertiesReaderInterface::get_opt</a></div><div class="ttdeci">virtual std::string get_opt(std::string key)=0</div><div class="ttdoc">Get an option by key. </div></div>
 <div class="ttc" id="classPropertiesReaderInterface_html"><div class="ttname"><a href="classPropertiesReaderInterface.html">PropertiesReaderInterface</a></div><div class="ttdoc">PropertiesReaderInterface. </div><div class="ttdef"><b>Definition:</b> properties_reader_interface.h:16</div></div>
 <div class="ttc" id="classInterpreter_html"><div class="ttname"><a href="classInterpreter.html">Interpreter</a></div><div class="ttdoc">Interpreter Interface. </div><div class="ttdef"><b>Definition:</b> interpreter.h:10</div></div>
+<div class="ttc" id="classPropertiesReaderInterface_html_a466f88254dc3f26691e73ba739bdabce"><div class="ttname"><a href="classPropertiesReaderInterface.html#a466f88254dc3f26691e73ba739bdabce">PropertiesReaderInterface::get_list</a></div><div class="ttdeci">virtual std::vector&lt; std::string &gt; get_list(std::string key)=0</div><div class="ttdoc">Get a list that exists within the configuration. </div></div>
+<div class="ttc" id="classPropertiesReaderInterface_html_ab088ce690f3f96b3f885d762289c23c2"><div class="ttname"><a href="classPropertiesReaderInterface.html#ab088ce690f3f96b3f885d762289c23c2">PropertiesReaderInterface::list_exist</a></div><div class="ttdeci">virtual bool list_exist(std::string key)=0</div><div class="ttdoc">Does a list exist within the configuration? </div></div>
 <div class="ttc" id="classPropertiesReaderInterface_html_a092db49483a5f97b1eb6e2fdca5b97fb"><div class="ttname"><a href="classPropertiesReaderInterface.html#a092db49483a5f97b1eb6e2fdca5b97fb">PropertiesReaderInterface::opt_exist</a></div><div class="ttdeci">virtual bool opt_exist(std::string key)=0</div><div class="ttdoc">Does a key exist? </div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 2 2016 20:25:41 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Oct 11 2016 23:29:31 for AoSharedServiceLibrary by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

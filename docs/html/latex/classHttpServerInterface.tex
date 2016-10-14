@@ -1,19 +1,33 @@
 \hypertarget{classHttpServerInterface}{\section{Http\-Server\-Interface Class Reference}
 \label{classHttpServerInterface}\index{Http\-Server\-Interface@{Http\-Server\-Interface}}
 }
+
+
+This is a basic H\-T\-T\-P Server that can be used to build a R\-E\-S\-Tful A\-P\-I.  
+
+
+
+
+{\ttfamily \#include $<$http\-\_\-server\-\_\-interface.\-h$>$}
+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{classHttpServerInterface_a6aa54efaf6f176d985c7faa57e1aa7fd}{virtual bool {\bfseries bind\-\_\-callback} (std\-::string uri, Callback\-Interface func)=0}\label{classHttpServerInterface_a6aa54efaf6f176d985c7faa57e1aa7fd}
+\hypertarget{classHttpServerInterface_a6aa54efaf6f176d985c7faa57e1aa7fd}{virtual bool \hyperlink{classHttpServerInterface_a6aa54efaf6f176d985c7faa57e1aa7fd}{bind\-\_\-callback} (std\-::string uri, Callback\-Interface func)=0}\label{classHttpServerInterface_a6aa54efaf6f176d985c7faa57e1aa7fd}
 
-\item 
-\hypertarget{classHttpServerInterface_a398064a0d7fb0c7e52d94ccfcbb6d89a}{virtual bool {\bfseries bind\-\_\-default\-\_\-callback} (Callback\-Interface func)=0}\label{classHttpServerInterface_a398064a0d7fb0c7e52d94ccfcbb6d89a}
+\begin{DoxyCompactList}\small\item\em Bind a callback for a static A\-P\-I Method. \end{DoxyCompactList}\item 
+\hypertarget{classHttpServerInterface_a398064a0d7fb0c7e52d94ccfcbb6d89a}{virtual bool \hyperlink{classHttpServerInterface_a398064a0d7fb0c7e52d94ccfcbb6d89a}{bind\-\_\-default\-\_\-callback} (Callback\-Interface func)=0}\label{classHttpServerInterface_a398064a0d7fb0c7e52d94ccfcbb6d89a}
 
-\item 
-\hypertarget{classHttpServerInterface_a350f4321505079d9c440ce4a4372044f}{virtual void {\bfseries recv} ()=0}\label{classHttpServerInterface_a350f4321505079d9c440ce4a4372044f}
+\begin{DoxyCompactList}\small\item\em Bind a callback for a dynamic A\-P\-I Method. \end{DoxyCompactList}\item 
+\hypertarget{classHttpServerInterface_a350f4321505079d9c440ce4a4372044f}{virtual void \hyperlink{classHttpServerInterface_a350f4321505079d9c440ce4a4372044f}{recv} ()=0}\label{classHttpServerInterface_a350f4321505079d9c440ce4a4372044f}
 
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Blocking call for waiting for incoming A\-P\-I Calls. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\subsection{Detailed Description}
+This is a basic H\-T\-T\-P Server that can be used to build a R\-E\-S\-Tful A\-P\-I. 
+
+The H\-T\-T\-P Server can bind static A\-P\-I methods to individual callbacks, and dynamic A\-P\-I methods can go to a default callback. Used to build R\-E\-S\-Tful A\-P\-I's 
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
 \item 

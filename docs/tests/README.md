@@ -1,8 +1,10 @@
 # Tests
 
-`make test`
+AOSSL Uses Travis-CI for automated builds and tests, for full history please see the [Travis CI Homepage] (https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary).  Automated builds are also performed by [Docker Hub] (https://hub.docker.com/r/aostreetart/ao-services).  Tests and benchmarks can be run manually as well.
 
-Now we have a set of executables that end with "test" which run some basic tests on the libraries to ensure they function correctly.
+## Manually Executing Tests
+
+Once we follow the commands in the quickstart for building from source, we have a set of executables that end with "test" which run some basic tests on the libraries to ensure they function correctly.  Please note that the Redis, Couchbase, and Consul tests will require an active server/agent for the respective service.
 
     ./cli_test name=test
     ./consul_test
@@ -14,15 +16,12 @@ Now we have a set of executables that end with "test" which run some basic tests
     ./zmqio_test
     ./http_server_test
 
-Please note that the Redis, Couchbase, and Consul tests will require an active server/agent for the respective service.
 You can hit the http_server_test with curl from the command line with:
 `curl --request GET 'http://0.0.0.0:12345/'`
 
-# Benchmarks
+## Manually Executing Benchmarks
 
-`make benchmarks`
-
-Now, we have a set of benchmark programs which are built on the [hayai] (https://github.com/nickbruun/hayai) framework.
+We will also have a set of benchmark programs which are built on the [hayai] (https://github.com/nickbruun/hayai) framework.
 These systematically test each element within the framework to provide realistic benchmarks on any given system.
 
     ./consul_benchmark

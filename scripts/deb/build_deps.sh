@@ -23,10 +23,10 @@ sudo apt-get -y install build-essential libtool pkg-config autoconf automake uui
 #Determine if we Need XRedis
 if [ ! -d /usr/local/include/xredis ]; then
 
-  printf "Building XRedis"
+  printf "Building HiRedis"
 
-  mkdir $PRE/xredis
-  git clone https://github.com/redis/hiredis.git ./hiredis $PRE/hiredis
+  mkdir $PRE/hiredis
+  git clone https://github.com/redis/hiredis.git $PRE/hiredis
 
   cd $PRE/hiredis && make && sudo make install
 

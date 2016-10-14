@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>AoSharedServiceLibrary: HealthCheck Struct Reference</title>
+<title>AoSharedServiceLibrary: RedisKvPair Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -45,32 +45,32 @@
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="structHealthCheck-members.html">List of all members</a>  </div>
+<a href="structRedisKvPair-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">HealthCheck Struct Reference</div>  </div>
+<div class="title">RedisKvPair Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A struct to hold health check information which can be added to a service.  
- <a href="structHealthCheck.html#details">More...</a></p>
+<p>A Structure for storing a Key-Value pair, used with batch operations.  
+ <a href="structRedisKvPair.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="consul__interface_8h_source.html">consul_interface.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="redis__interface_8h_source.html">redis_interface.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af2cf9613abcc567941f8a21cd8c15bff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2cf9613abcc567941f8a21cd8c15bff"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHealthCheck.html#af2cf9613abcc567941f8a21cd8c15bff">script</a></td></tr>
-<tr class="memdesc:af2cf9613abcc567941f8a21cd8c15bff"><td class="mdescLeft">&#160;</td><td class="mdescRight">The script to run for the health check. <br/></td></tr>
-<tr class="separator:af2cf9613abcc567941f8a21cd8c15bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8e93405495e1733ba69a7e3f73a139a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8e93405495e1733ba69a7e3f73a139a"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structHealthCheck.html#af8e93405495e1733ba69a7e3f73a139a">interval</a></td></tr>
-<tr class="memdesc:af8e93405495e1733ba69a7e3f73a139a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interval for the health check. <br/></td></tr>
-<tr class="separator:af8e93405495e1733ba69a7e3f73a139a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3f52908debaab15e1ed092801d9a875"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3f52908debaab15e1ed092801d9a875"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRedisKvPair.html#af3f52908debaab15e1ed092801d9a875">key</a></td></tr>
+<tr class="memdesc:af3f52908debaab15e1ed092801d9a875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key of the pair. <br/></td></tr>
+<tr class="separator:af3f52908debaab15e1ed092801d9a875"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d376aa2e230347adc28ac942e3da043"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d376aa2e230347adc28ac942e3da043"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structRedisKvPair.html#a4d376aa2e230347adc28ac942e3da043">val</a></td></tr>
+<tr class="memdesc:a4d376aa2e230347adc28ac942e3da043"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value stored in the pair. <br/></td></tr>
+<tr class="separator:a4d376aa2e230347adc28ac942e3da043"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A struct to hold health check information which can be added to a service. </p>
+<div class="textblock"><p>A Structure for storing a Key-Value pair, used with batch operations. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>lib/include/factory/<a class="el" href="consul__interface_8h_source.html">consul_interface.h</a></li>
+<li>lib/include/factory/<a class="el" href="redis__interface_8h_source.html">redis_interface.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

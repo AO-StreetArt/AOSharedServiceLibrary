@@ -46,15 +46,7 @@ In times when you need to connect to an instance of [Consul] (https://www.consul
 
 `docker run -d --name=dev-consul consul`
 
-### Connecting from Docker Images
-
-### Building the Docker Image
-
-From the main project folder, we can execute the following command to build the docker image:
-
-`docker pull aostreetart/aossl`
-`docker build -t aostreetart/aossl .`
-`docker push aostreetart/aossl`
+### Connecting the Docker Images
 
 ## Build from Source
 
