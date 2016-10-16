@@ -89,7 +89,7 @@ struct CouchbaseOperationException: public std::exception
 
 	//! Create a Couchbase Operation Exception, and store the given error message
   CouchbaseOperationException (std::string msg) {int_msg = msg;}
-	
+
   CouchbaseOperationException () {}
   ~CouchbaseOperationException() throw () {}
 
@@ -128,11 +128,23 @@ public:
 	//! the method bound with bind_storage_callback will be executed
 	virtual void save_object ( Writeable *obj ) = 0;
 
+	//! Save a string to the Couchbase DB
+
+	//! The requested object is saved and, when complete,
+	//! the method bound with bind_storage_callback will be executed
+	virtual void save_string ( std::string key, std::string val ) = 0;
+
 	//! Create a JSON Object in the Couchbase DB
 
 	//! The requested object is saved and, when complete,
 	//! the method bound with bind_storage_callback will be executed
 	virtual void create_object ( Writeable *obj ) = 0;
+
+	//! Create a string in the Couchbase DB
+
+	//! The requested object is saved and, when complete,
+	//! the method bound with bind_storage_callback will be executed
+	virtual void create_string ( std::string key, std::string val ) = 0;
 
 	//! Delete a JSON Object from the Couchbase DB
 
@@ -166,6 +178,9 @@ public:
 
 	//! Blocking call until the transaction stack is empty
 	virtual void wait () = 0;
+
+	//! Should be called by the last Couchbase Interface prior to deletion
+	virtual void shutdown_session() = 0;
 };
 
 #endif

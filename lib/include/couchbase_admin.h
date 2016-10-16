@@ -27,9 +27,14 @@ extern "C"
 #ifndef COUCHBASE_ADMIN
 #define COUCHBASE_ADMIN
 
-extern CallbackInterface storage;
-extern CallbackInterface retrieval;
-extern CallbackInterface deletion;
+struct CouchbaseSession {
+	//Global Callbacks
+	CallbackInterface storage;
+	CallbackInterface retrieval;
+	CallbackInterface deletion;
+}
+
+extern CouchbaseSession *current_couchbase_session;
 
 //Transfer the callback information into a Request and call the registered callback
 static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t op,
@@ -59,7 +64,7 @@ static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t o
   }
 
 	//Call the registered callback function
-	std::string rresp = (*storage)(r);
+	std::string rresp = (*(current_couchbase_session->storage))(r);
 	delete r;
 }
 
@@ -96,7 +101,7 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
   }
 
 	//Call the registered callback function
-	std::string rresp = (*retrieval)(r);
+	std::string rresp = (*(current_couchbase_session->retrieval))(r);
 	delete r;
 }
 
@@ -125,9 +130,12 @@ static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, co
   }
 
 	//Call the registered callback function
-	std::string rresp = (*deletion)(r);
+	std::string rresp = (*(current_couchbase_session->deletion))(r);
 	delete r;
 }
+
+const int COUCHBASE_CREATE = 0;
+const int COUCHBASE_UPDATE = 1;
 
 //! The Couchbase Administrator handles interactions with the Couchbase DB
 
@@ -139,6 +147,7 @@ lcb_t private_instance;
 bool authentication_active;
 const char * password;
 void initialize (const char * conn);
+void save (std::string key, std::string val, int op_code);
 public:
 	//! Create a new Couchbase Admin, without a password
 	CouchbaseAdmin ( const char * conn );
@@ -164,11 +173,15 @@ public:
 	//! the method bound with bind_storage_callback will be executed
 	void save_object ( Writeable *obj );
 
+	void save_string ( std::string key, std::string val );
+
 	//! Create a JSON Object in the Couchbase DB
 
 	//! The requested object is saved and, when complete,
 	//! the method bound with bind_storage_callback will be executed
 	void create_object ( Writeable *obj );
+
+	void create_string ( std::string key, std::string val );
 
 	//! Delete a JSON Object from the Couchbase DB
 
@@ -202,6 +215,8 @@ public:
 
 	//! Blocking call until the transaction stack is empty
 	void wait ();
+
+	void shutdown_session() {if (current_couchbase_session) {delete current_couchbase_session;}}
 };
 
 #endif

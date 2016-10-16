@@ -123,6 +123,7 @@ cb->delete_object ( obj_key );
 cb->wait();
 printf("Delete Object Tested");
 
+cb->shutdown_session();
 delete cb;
 
 return 0;

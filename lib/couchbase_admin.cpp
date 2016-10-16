@@ -1,12 +1,14 @@
 #include "include/couchbase_admin.h"
 
-//Global Callbacks
-CallbackInterface storage;
-CallbackInterface retrieval;
-CallbackInterface deletion;
+CouchbaseSession *current_couchbase_session = NULL;
 
 void CouchbaseAdmin::initialize (const char * conn)
 {
+  //Start the Couchbase Session, if necessary
+  if (!current_couchbase_session) {
+    current_couchbase_session = new CouchbaseSession;
+  }
+
 	//Initializing
   struct lcb_create_st cropts;
   memset(&cropts, 0, sizeof cropts);
@@ -42,6 +44,30 @@ void CouchbaseAdmin::initialize (const char * conn)
   lcb_set_remove_callback(private_instance, del_callback);
   lcb_set_store_callback(private_instance, storage_callback);
   lcb_set_get_callback(private_instance, get_callback);
+}
+
+void save (std::string key, std::string val, int op_code) {
+  lcb_error_t err;
+	lcb_store_cmd_t scmd;
+	const lcb_store_cmd_t *scmdlist = &scmd;
+	scmd.v.v0.key = key.c_str();
+	scmd.v.v0.nkey = key.length();
+	const char * object_string = val.c_str();
+	scmd.v.v0.bytes = object_string;
+	scmd.v.v0.nbytes = strlen(object_string);
+  if (op_code == COUCHBASE_CREATE) {
+	   scmd.v.v0.operation = LCB_SET;
+  }
+  else if (op_code == COUCHBASE_UPDATE) {
+    scmd.v.v0.operation = LCB_REPLACE;
+  }
+  else {
+    throw CouchbaseOperationException( "Couchbase Operation Code not found" );
+  }
+	err = lcb_store(private_instance, NULL, 1, &scmdlist);
+	if (err != LCB_SUCCESS) {
+		throw CouchbaseOperationException( lcb_strerror(private_instance, err) );
+	}
 }
 
 CouchbaseAdmin::CouchbaseAdmin( const char * conn )
@@ -84,40 +110,20 @@ void CouchbaseAdmin::load_object ( std::string key ) {
 
 void CouchbaseAdmin::save_object ( Writeable *obj )
 {
-	lcb_store_cmd_t scmd;
-	lcb_error_t err;
-        const lcb_store_cmd_t *scmdlist = &scmd;
-        std::string key = obj->get_key();
-        scmd.v.v0.key = key.c_str();
-        scmd.v.v0.nkey = key.length();
-		std::string obj_json_str = obj->to_json();
-        const char * object_string = obj_json_str.c_str();
-        scmd.v.v0.bytes = object_string;
-        scmd.v.v0.nbytes = strlen(object_string);
-        scmd.v.v0.operation = LCB_REPLACE;
-        err = lcb_store(private_instance, NULL, 1, &scmdlist);
-        if (err != LCB_SUCCESS) {
-          throw CouchbaseOperationException( lcb_strerror(private_instance, err) );
-        }
+  save (obj->get_key(), obj->to_json(), COUCHBASE_UPDATE);
 }
 
 void CouchbaseAdmin::create_object ( Writeable *obj )
 {
-	lcb_error_t err;
-	lcb_store_cmd_t scmd;
-	const lcb_store_cmd_t *scmdlist = &scmd;
-	std::string key = obj->get_key();
-	scmd.v.v0.key = key.c_str();
-	scmd.v.v0.nkey = key.length();
-	std::string obj_json_str = obj->to_json();
-	const char * object_string = obj_json_str.c_str();
-	scmd.v.v0.bytes = object_string;
-	scmd.v.v0.nbytes = strlen(object_string);
-	scmd.v.v0.operation = LCB_SET;
-	err = lcb_store(private_instance, NULL, 1, &scmdlist);
-	if (err != LCB_SUCCESS) {
-		throw CouchbaseOperationException( lcb_strerror(private_instance, err) );
-	}
+  save (obj->get_key(), obj->to_json(), COUCHBASE_CREATE);
+}
+
+void CouchbaseAdmin::save_string ( std::string key, std::string val ) {
+  save (key, val, COUCHBASE_UPDATE);
+}
+
+void CouchbaseAdmin::create_string ( std::string key, std::string val ) {
+  save (key, val, COUCHBASE_CREATE);
 }
 
 void CouchbaseAdmin::delete_object ( const char * key ) {
@@ -139,19 +145,19 @@ void CouchbaseAdmin::delete_object ( std::string key ) {
 //Bind the Get Callback for the couchbase calls
 void CouchbaseAdmin::bind_get_callback(CallbackInterface gc)
 {
-  retrieval = gc;
+  current_couchbase_session->retrieval = gc;
 }
 
 //Bind the Storage Callback for the couchbase calls
 void CouchbaseAdmin::bind_storage_callback(CallbackInterface sc)
 {
-  storage = sc;
+  current_couchbase_session->storage = sc;
 }
 
 //Bind the Delete Callback for the couchbase calls
 void CouchbaseAdmin::bind_delete_callback(CallbackInterface dc)
 {
-  deletion = dc;
+  current_couchbase_session->deletion = dc;
 }
 
 lcb_t CouchbaseAdmin::get_instance ()

@@ -176,6 +176,7 @@ hayai::Benchmarker::RunAllTests();
 //----------------------------------------------------------------------------//
 
 delete obj;
+cb->shutdown_session();
 delete cb;
 delete logging;
 
