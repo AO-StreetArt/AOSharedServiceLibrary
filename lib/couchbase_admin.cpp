@@ -46,7 +46,7 @@ void CouchbaseAdmin::initialize (const char * conn)
   lcb_set_get_callback(private_instance, get_callback);
 }
 
-void save (std::string key, std::string val, int op_code) {
+void CouchbaseAdmin::save (std::string key, std::string val, int op_code) {
   lcb_error_t err;
 	lcb_store_cmd_t scmd;
 	const lcb_store_cmd_t *scmdlist = &scmd;

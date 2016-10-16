@@ -27,7 +27,7 @@ extern "C"
 #ifndef COUCHBASE_ADMIN
 #define COUCHBASE_ADMIN
 
-struct CouchbaseSession {
+class CouchbaseSession {
 	//Global Callbacks
 	CallbackInterface storage;
 	CallbackInterface retrieval;
