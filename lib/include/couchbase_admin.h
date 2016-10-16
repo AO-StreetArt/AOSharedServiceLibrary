@@ -28,11 +28,12 @@ extern "C"
 #define COUCHBASE_ADMIN
 
 class CouchbaseSession {
+public:
 	//Global Callbacks
 	CallbackInterface storage;
 	CallbackInterface retrieval;
 	CallbackInterface deletion;
-}
+};
 
 extern CouchbaseSession *current_couchbase_session;
 
