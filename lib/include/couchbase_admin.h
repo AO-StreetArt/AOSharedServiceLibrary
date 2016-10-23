@@ -74,8 +74,7 @@ static void get_callback(lcb_t instance, int cbtype, const lcb_RESPBASE *rb)
 
 	//Get the Key
 	char *key_data = (char*)(rb->key);
-	if (key_data)
-	{
+	if (key_data) {
 		std::string key (key_data);
 		r->req_addr = key;
 	}
@@ -83,8 +82,7 @@ static void get_callback(lcb_t instance, int cbtype, const lcb_RESPBASE *rb)
 	//Get the retrieved value
 	const lcb_RESPGET *rg = (const lcb_RESPGET *)rb;
 	char *data = (char*)(rg->value);
-	if (data)
-	{
+	if (data) {
 		std::string val (data);
 		r->req_data = val;
 	}
