@@ -10,7 +10,7 @@ void CouchbaseAdmin::initialize (const char * conn)
   }
 
 	//Initializing
-  struct lcb_create_st cropts;
+  lcb_create_st cropts;
   memset(&cropts, 0, sizeof cropts);
   cropts.version = 3;
   cropts.v.v3.connstr = conn;
@@ -36,35 +36,27 @@ void CouchbaseAdmin::initialize (const char * conn)
 
   //Yield to IO
   lcb_wait(private_instance);
-  err = lcb_get_bootstrap_status(private_instance);
-  if (err != LCB_SUCCESS) {
-    throw CouchbaseBootstrapException(lcb_strerror(NULL, err));
-  }
 
-  lcb_set_remove_callback(private_instance, del_callback);
-  lcb_set_store_callback(private_instance, storage_callback);
-  lcb_set_get_callback(private_instance, get_callback);
+  lcb_install_callback3(private_instance, LCB_CALLBACK_GET, get_callback);
+  lcb_install_callback3(private_instance, LCB_CALLBACK_STORE, storage_callback);
+  lcb_install_callback3(private_instance, LCB_CALLBACK_REMOVE, del_callback);
 }
 
 void CouchbaseAdmin::save (std::string key, std::string val, int op_code) {
   lcb_error_t err;
-	lcb_store_cmd_t scmd;
-	const lcb_store_cmd_t *scmdlist = &scmd;
-	scmd.v.v0.key = key.c_str();
-	scmd.v.v0.nkey = key.length();
-	const char * object_string = val.c_str();
-	scmd.v.v0.bytes = object_string;
-	scmd.v.v0.nbytes = strlen(object_string);
+	lcb_CMDSTORE scmd = { 0 };
+  LCB_CMD_SET_KEY(&scmd, key.c_str(), key.length());
+  LCB_CMD_SET_VALUE(&scmd, val.c_str(), val.length())
   if (op_code == COUCHBASE_CREATE) {
-	   scmd.v.v0.operation = LCB_SET;
+	   scmd.operation = LCB_SET;
   }
   else if (op_code == COUCHBASE_UPDATE) {
-    scmd.v.v0.operation = LCB_REPLACE;
+    scmd.operation = LCB_REPLACE;
   }
   else {
     throw CouchbaseOperationException( "Couchbase Operation Code not found" );
   }
-	err = lcb_store(private_instance, NULL, 1, &scmdlist);
+	err = lcb_store3(private_instance, NULL, &scmd);
 	if (err != LCB_SUCCESS) {
 		throw CouchbaseOperationException( lcb_strerror(private_instance, err) );
 	}
@@ -92,13 +84,12 @@ void CouchbaseAdmin::load_object ( const char * key )
 {
 	//Initialize the variables
 	lcb_error_t err;
-	lcb_get_cmd_t gcmd;
-	const lcb_get_cmd_t *gcmdlist = &gcmd;
-	gcmd.v.v0.key = key;
-	gcmd.v.v0.nkey = strlen(key);
+
+  lcb_CMDGET gcmd = { 0 };
+  LCB_CMD_SET_KEY(&gcmd, key, strlen(key));
 
 	//Schedule a Get operation
-	err = lcb_get(private_instance, NULL, 1, &gcmdlist);
+	err = lcb_get3(private_instance, NULL, &gcmd);
 	if (err != LCB_SUCCESS) {
 		throw CouchbaseOperationException( lcb_strerror(private_instance, err) );
 	}
@@ -128,11 +119,11 @@ void CouchbaseAdmin::create_string ( std::string key, std::string val ) {
 
 void CouchbaseAdmin::delete_object ( const char * key ) {
 	lcb_error_t err;
-	lcb_remove_cmd_t cmd;
-	const lcb_remove_cmd_t *cmdlist = &cmd;
-	cmd.v.v0.key = key;
-	cmd.v.v0.nkey = strlen(key);
-	err = lcb_remove(private_instance, NULL, 1, &cmdlist);
+
+  lcb_CMDREMOVE rcmd = { 0 };
+  LCB_CMD_SET_KEY(&rcmd, key, strlen(key));
+
+	err = lcb_remove3(private_instance, NULL, &rcmd);
 	if (err != LCB_SUCCESS) {
 		throw CouchbaseOperationException( lcb_strerror(private_instance, err) );
 	}

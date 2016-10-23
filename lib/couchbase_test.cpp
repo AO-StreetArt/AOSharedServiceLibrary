@@ -25,13 +25,14 @@ public:
   bool set_j(int new_j) {j = new_j; return true;}
   std::string to_json()
   {
-    std::string json_str = "{key:";
+    std::string json_str = "{\"key\":";
     std::string istr = std::to_string(i);
     std::string jstr = std::to_string(j);
+    json_str = json_str.append("\"");
     json_str = json_str.append(key);
-    json_str = json_str.append(", i:");
+    json_str = json_str.append("\", \"i\":");
     json_str = json_str.append(istr);
-    json_str = json_str.append(", j:");
+    json_str = json_str.append(", \"j\":");
     json_str = json_str.append(jstr);
     json_str = json_str.append("}");
     return json_str;
@@ -93,23 +94,25 @@ const char* obj_key = obj_ptr->get_key().c_str();
 
 //Build the Couchbase Admin (which will automatically connect to the DB)
 CouchbaseComponentFactory couchbase_factory;
-CouchbaseInterface *cb = couchbase_factory.get_couchbase_interface("couchbase://localhost/default");
+CouchbaseInterface *status = couchbase_factory.get_couchbase_interface("couchbase://localhost/default");
+CouchbaseInterface *cb = couchbase_factory.get_couchbase_interface("couchbase://localhost/test2");
+CouchbaseInterface *cb2 = couchbase_factory.get_couchbase_interface("couchbase://localhost/test");
 
 //Supports both password authentication and clustering
-printf("Connected to Couchbase");
+printf("Connected to Couchbase\n");
 //Bind callbacks
 cb->bind_get_callback(my_retrieval_callback);
 cb->bind_storage_callback(my_storage_callback);
 cb->bind_delete_callback(my_delete_callback);
-printf("Callbacks bound");
+printf("Callbacks bound\n");
 //Write the object to the DB
 cb->create_object ( obj_ptr );
 cb->wait();
-printf("Create Object Tested");
+printf("Create Object Tested\n");
 //Get the object from the DB
 cb->load_object ( obj_key );
 cb->wait();
-printf("Load Object Tested");
+printf("Load Object Tested\n");
 //Update the object in the DB
 obj_ptr->set_i ( 10 );
 cb->save_object ( obj_ptr );
@@ -121,10 +124,40 @@ cb->wait();
 //Delete the object
 cb->delete_object ( obj_key );
 cb->wait();
-printf("Delete Object Tested");
+printf("Delete Object Tested\n");
+
+//Test a secondary admin with bound callbacks
+cb2->bind_get_callback(my_retrieval_callback);
+cb2->bind_storage_callback(my_storage_callback);
+cb2->bind_delete_callback(my_delete_callback);
+
+std::string string_key = "abcdefgh-ijklmno-pqrstuv-wzyz";
+std::string string_val = "{\"key\": \"" + string_key + "\", " + "\"Segment\": \"Represents a segment of a mesh file, represented in ASCII or binary\"}";
+
+cb2->create_string ( string_key, string_val );
+cb2->wait();
+
+cb2->load_object ( string_key );
+cb2->wait();
+
+printf("Create String Tested\n");
+
+std::string new_string_val = "{\"key\": \"" + string_key + "\", " + "\"Segment\": \"Represents a different segment of a mesh file after update, represented in ASCII or binary\"}";
+
+cb2->save_string ( string_key, new_string_val );
+cb2->wait();
+
+cb2->load_object ( string_key );
+cb2->wait();
+printf("Save String Tested\n");
+
+cb2->delete_object( string_key );
+cb2->wait();
 
 cb->shutdown_session();
 delete cb;
+delete cb2;
+delete status;
 
 return 0;
 }

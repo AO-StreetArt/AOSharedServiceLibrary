@@ -37,16 +37,13 @@ public:
 
 extern CouchbaseSession *current_couchbase_session;
 
-//Transfer the callback information into a Request and call the registered callback
-static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t op,
-   lcb_error_t err, const lcb_store_resp_t *resp)
-{
+static void storage_callback(lcb_t instance, int cbtype, const lcb_RESPBASE *rb) {
 	//Build the request
 	Request *r = new Request();
   RequestError *rerr = r->req_err;
 
 	//Get the Key
-	char *key_data = (char*)resp->v.v0.key;
+	char *key_data = (char*)(rb->key);
 
 	//Store the key in the request
 	if (key_data)
@@ -56,9 +53,9 @@ static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t o
 	}
 
 	//Retrieve any errors
-  if (err != LCB_SUCCESS) {
+  if (rb->rc != LCB_SUCCESS) {
     rerr->err_code = COUCHBASE_BADREQUEST;
-		rerr->err_message = lcb_strerror(instance, err);
+		rerr->err_message = lcb_strerror(instance, rb->rc);
   }
   else {
     rerr->err_code = NOERROR;
@@ -69,15 +66,14 @@ static void storage_callback(lcb_t instance, const void *cookie, lcb_storage_t o
 	delete r;
 }
 
-static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
-   const lcb_get_resp_t *resp)
+static void get_callback(lcb_t instance, int cbtype, const lcb_RESPBASE *rb)
 {
 	//Build the request
 	Request *r = new Request();
   RequestError *rerr = r->req_err;
 
 	//Get the Key
-	char *key_data = (char*)resp->v.v0.key;
+	char *key_data = (char*)(rb->key);
 	if (key_data)
 	{
 		std::string key (key_data);
@@ -85,7 +81,8 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
 	}
 
 	//Get the retrieved value
-	char *data = (char*)resp->v.v0.bytes;
+	const lcb_RESPGET *rg = (const lcb_RESPGET *)rb;
+	char *data = (char*)(rg->value);
 	if (data)
 	{
 		std::string val (data);
@@ -93,9 +90,9 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
 	}
 
 	//Retrieve any errors
-  if (err != LCB_SUCCESS) {
+  if (rb->rc != LCB_SUCCESS) {
     rerr->err_code = COUCHBASE_BADREQUEST;
-		rerr->err_message = lcb_strerror(instance, err);
+		rerr->err_message = lcb_strerror(instance, rb->rc);
   }
   else {
     rerr->err_code = NOERROR;
@@ -106,14 +103,14 @@ static void get_callback(lcb_t instance, const void *cookie, lcb_error_t err,
 	delete r;
 }
 
-static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, const lcb_remove_resp_t *resp)
+static void del_callback(lcb_t instance, int cbtype, const lcb_RESPBASE *rb)
 {
 	//Build the request
 	Request *r = new Request();
   RequestError *rerr = r->req_err;
 
 	//Get the Key
-	char *key_data = (char*)resp->v.v0.key;
+	char *key_data = (char*)(rb->key);
 
 	//Store the key in the request
 	if (key_data) {
@@ -122,9 +119,9 @@ static void del_callback(lcb_t instance, const void *cookie, lcb_error_t err, co
 	}
 
 	//Retrieve any errors
-  if (err != LCB_SUCCESS) {
+  if (rb->rc != LCB_SUCCESS) {
     rerr->err_code = COUCHBASE_BADREQUEST;
-		rerr->err_message = lcb_strerror(instance, err);
+		rerr->err_message = lcb_strerror(instance, rb->rc);
   }
   else {
 		rerr->err_code = NOERROR;
