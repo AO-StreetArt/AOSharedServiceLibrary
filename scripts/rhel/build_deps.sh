@@ -49,6 +49,9 @@ if [ ! -f /usr/local/include/zmq.h ]; then
   #Configure, make, install
   cd ./zeromq-4.1.4 && ./configure --without-libsodium && make && sudo make install
 
+  #Add /usr/local/lib to linker path
+  sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/usrlib.conf'
+
 fi
 
 if [ ! -f /usr/local/include/zmq.hpp ]; then

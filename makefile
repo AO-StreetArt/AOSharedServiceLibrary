@@ -364,7 +364,7 @@ lib/redis_admin.o:  lib/redis_admin.cpp
 	$(CC) $(CFLAGS) -o $@ -c lib/redis_admin.cpp $(STD)
 
 # Create the object file couchbase_admin.o
-lib/couchbase_admin.o:  lib/couchbase_admin.cpp lib/include/logging.h lib/include/factory/db_admin.h lib/include/factory/writeable.h
+lib/couchbase_admin.o:  lib/couchbase_admin.cpp lib/include/couchbase_admin.h lib/include/logging.h lib/include/factory/db_admin.h lib/include/factory/writeable.h
 	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_admin.cpp $(STD)
 
 # Create the object file zmqio.o
