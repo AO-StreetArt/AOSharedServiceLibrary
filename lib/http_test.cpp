@@ -40,6 +40,18 @@ int main()
     std::cout << (ret_val) << std::endl;
   }
 
+  std::string ret_val2 = ha->get(get, 5);
+  if ( ret_val2.empty() )
+  {
+    //We now have the full response
+    assert(false);
+  }
+  else
+  {
+    std::cout << ("Retrieved:") << std::endl;
+    std::cout << (ret_val2) << std::endl;
+  }
+
   //-------------------------------PUT--------------------------------------//
 
   bool success = ha->put(put, "123", 5);
