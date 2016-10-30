@@ -41,6 +41,7 @@ bool HttpAdmin::send(std::string url, int timeout)
 
   curl_easy_cleanup(curl);
   curl = curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
   delete url_s;
   return ret;
 }
