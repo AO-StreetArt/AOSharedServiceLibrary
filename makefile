@@ -8,16 +8,17 @@ CC = g++
 SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
-OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/couchbase_admin.o lib/redis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o\
- lib/service.o lib/http_server.o lib/properties_reader.o lib/response.o
 NO_COUCHBASE = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/redis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o\
- lib/service.o lib/http_server.o lib/properties_reader.o lib/response.o
-TESTS = cli_test consul_test logging_test http_test zmqio_test couchbase_test redis_tests factory_test http_server_test properties_reader_test app_response_test uuid_test
-TESTS_NOCOUCHBASE = cli_test consul_test logging_test http_test zmqio_test redis_tests http_server_test properties_reader_test app_response_test uuid_test
-TESTS_RHEL = cli_test consul_test logging_test http_test zmqio_test couchbase_test factory_test_rhel http_server_test properties_reader_test app_response_test redis_tests_rhel uuid_test
-TESTS_RHEL_NOCOUCHBASE =cli_test consul_test logging_test http_test zmqio_test http_server_test properties_reader_test app_response_test redis_tests_rhel uuid_test
-BENCHMARKS = consul_benchmark logging_benchmark http_benchmark couchbase_benchmark redis_benchmark
-BENCHMARKS_RHEL = redis_benchmark_rhel consul_benchmark logging_benchmark http_benchmark couchbase_benchmark
+ lib/service.o lib/http_server.o lib/properties_reader.o lib/response.o lib/mongo_admin.o
+OBJS = $(NO_COUCHBASE) lib/couchbase_admin.o
+TESTS_NOCR = cli_test consul_test logging_test http_test zmqio_test http_server_test properties_reader_test app_response_test uuid_test mongo_test
+TESTS_NOCOUCHBASE = $(TESTS_NOCR) redis_tests
+TESTS = $(TESTS_NOCOUCHBASE) couchbase_test
+TESTS_RHEL_NOCOUCHBASE = $(TESTS_NOCR) redis_tests_rhel
+TESTS_RHEL = $(TESTS_NOCR) redis_tests_rhel couchbase_test
+BENCHMARKS_NOREDIS = consul_benchmark logging_benchmark http_benchmark couchbase_benchmark
+BENCHMARKS = $(BENCHMARKS_NOREDIS) redis_benchmark
+BENCHMARKS_RHEL = $(BENCHMARKS_NOREDIS) redis_benchmark_rhel
 INCL_NOCOUCHBASE = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/local/include/aossl/factory_uuid.h /usr/local/include/aossl/factory_redis.h\
  /usr/local/include/aossl/factory_props.h /usr/local/include/aossl/factory_logging.h /usr/local/include/aossl/factory_http_server.h /usr/local/include/aossl/factory_http_client.h\
   /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/factory_response.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/http_admin.h\
@@ -27,14 +28,18 @@ INCL_NOCOUCHBASE = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq
 		  /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h\
 			 /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h\
 			  /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h\
-				 /usr/local/include/aossl/response.h /usr/local/include/aossl/factory/response_interface.h
+				 /usr/local/include/aossl/response.h /usr/local/include/aossl/factory/response_interface.h /usr/local/include/aossl/mongo_admin.h\
+				   /usr/local/include/aossl/factory/mongo_interface.h /usr/local/include/aossl/factory_mongo.h
 INCL = $(INCL_NOCOUCHBASE) /usr/local/include/aossl/factory_couchbase.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/factory/couchbase_interface.h
 BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
 LIBS = -lpthread -llog4cpp
-FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent `pkg-config --cflags --libs hiredis`
-FULL_LIBS_RHEL = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lhiredis
-FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/factory_couchbase.h lib/include/factory_http_client.h lib/include/factory_http_server.h lib/include/factory_logging.h lib/include/factory_props.h lib/include/factory_redis.h lib/include/factory_uuid.h lib/include/factory_zmq.h
+FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lmongoc-1.0 -lbson-1.0 `pkg-config --cflags --libs hiredis`
+FULL_LIBS_RHEL = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lhiredis -lmongoc-1.0 -lbson-1.0
+FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/factory_couchbase.h lib/include/factory_http_client.h lib/include/factory_http_server.h lib/include/factory_logging.h\
+	lib/include/factory_props.h lib/include/factory_redis.h lib/include/factory_uuid.h lib/include/factory_zmq.h lib/include/factory_mongo.h
+INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0
+LINK_DIRS = -L/usr/local/lib
 
 # typing 'make' will invoke the first target entry in the file
 # (in this case the default target entry)
@@ -190,6 +195,15 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/include/aossl/factory/interpreter.h: lib/include/factory/interpreter.h
 	cp $< $@
 
+/usr/local/include/aossl/mongo_admin.h: lib/include/mongo_admin.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/mongo_interface.h: lib/include/factory/mongo_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_mongo.h: lib/include/factory_mongo.h
+	cp $< $@
+
 /usr/local/lib/libaossl.a: libaossl.a
 	cp $< $@
 
@@ -245,6 +259,13 @@ http_server_test: lib/http_server_test.o lib/http_server.o
 
 lib/http_server_test.o: lib/http_server_test.cpp lib/include/http_server.h
 	$(CC) $(CFLAGS) -o $@ -c lib/http_server_test.cpp $(STD)
+
+# Create the executable file mongo_test
+mongo_test: lib/mongo_test.o lib/mongo_admin.o
+	$(CC) $(CFLAGS) -o $@ $^ $(STD) -lmongoc-1.0 -lbson-1.0 $(INCL_DIRS) $(LINK_DIRS)
+
+lib/mongo_test.o: lib/mongo_test.cpp
+	$(CC) $(CFLAGS) -o $@ -c lib/mongo_test.cpp $(STD) $(INCL_DIRS)
 
 # Create the executable file cli_test
 cli_test: lib/cli_test.o lib/cli.o
@@ -347,6 +368,10 @@ libaossl.a:  $(OBJS)
 
 libaossl-no-couchbase: $(NO_COUCHBASE)
 	$(SLC) libaossl.a $(NO_COUCHBASE)
+
+# Create the object file mongo_admin.o
+lib/mongo_admin.o: lib/mongo_admin.cpp lib/include/mongo_admin.h lib/include/factory/mongo_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/mongo_admin.cpp $(STD) $(INCL_DIRS)
 
 # Create the object file consul_admin.o
 lib/consul_admin.o:  lib/consul_admin.cpp lib/include/factory/logging_interface.h lib/include/http_admin.h lib/include/service.h lib/include/factory/consul_interface.h

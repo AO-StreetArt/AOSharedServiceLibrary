@@ -31,8 +31,11 @@ RUN dpkg -i couchbase-release-1.0-2-amd64.deb
 
 #Get the Redis Dependencies
 RUN git clone https://github.com/redis/hiredis.git ./hiredis
-
 RUN cd ./hiredis && make && make install
+
+#Get the Mongo Dependencies
+RUN git clone https://github.com/mongodb/mongo-c-driver.git
+cd mongo-c-driver && ./autogen.sh --with-libbson=bundled && make && sudo make install
 
 #Get the ZMQ Dependencies
 RUN wget https://github.com/zeromq/zeromq4-1/releases/download/v4.1.4/zeromq-4.1.4.tar.gz

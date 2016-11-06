@@ -13,6 +13,7 @@ addons:
     - g++-5
 services:
   - redis-server
+  - mongodb
 before_install:
   - mkdir ../aossl_deps
   - sudo cp scripts/deb/build_deps.sh ../aossl_deps
@@ -42,6 +43,7 @@ script:
   - ./uuid_test
   - ./zmqio_test
   - ./redis_tests
+  - ./mongo_test
   - cd scripts && sudo ./test_http_server.sh
   - cd ..
   - ./couchbase_test
