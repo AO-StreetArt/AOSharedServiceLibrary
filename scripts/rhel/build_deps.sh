@@ -20,6 +20,18 @@ printf "Addressing pre-build requirements"
 #Ensure that specific build requirements are satisfied
 sudo yum -y install build-essential libtool pkg-config autoconf automake cmake make git wget gcc gcc-c++
 
+#Determine if we need Mongo Client
+if [ ! -d /usr/local/include/libmongoc-1.0 ]; then
+
+  printf "Building libmongoc"
+
+  mkdir $PRE/mongo
+  git clone https://github.com/mongodb/mongo-c-driver.git ./$PRE/mongo
+
+  cd ./$PRE/mongo && ./autogen.sh --with-libbson=bundled && make && sudo make install
+
+fi
+
 #Determine if we Need Redis Client
 if [ ! -d /usr/local/include/hiredis ]; then
 

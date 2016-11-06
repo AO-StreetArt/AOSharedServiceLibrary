@@ -20,8 +20,32 @@ printf "Addressing pre-build requirements"
 #Ensure that specific build requirements are satisfied
 sudo apt-get -y install build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev
 
+#Determine if we need the BSON Library
+if [ ! -d /usr/local/include/libbson-1.0 ]; then
+
+  printf "Building libmongoc"
+
+  mkdir $PRE/bson
+  git clone git://github.com/mongodb/libbson.git ./$PRE/bson
+
+  cd ./$PRE/bson && ./autogen.sh && make && sudo make install
+
+fi
+
+#Determine if we need Mongo Client
+if [ ! -d /usr/local/include/libmongoc-1.0 ]; then
+
+  printf "Building libmongoc"
+
+  mkdir $PRE/mongo
+  git clone https://github.com/mongodb/mongo-c-driver.git ./$PRE/mongo
+
+  cd ./$PRE/mongo && ./autogen.sh --with-libbson=bundled && make && sudo make install
+
+fi
+
 #Determine if we Need XRedis
-if [ ! -d /usr/local/include/xredis ]; then
+if [ ! -d /usr/local/include/hiredis ]; then
 
   printf "Building HiRedis"
 

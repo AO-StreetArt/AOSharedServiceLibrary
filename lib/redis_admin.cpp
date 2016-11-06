@@ -59,10 +59,17 @@ int RedisAdmin::return_int_reply(redisReply *reply)
 
 std::string RedisAdmin::return_string_reply(redisReply *reply)
 {
-  std::string reply_str (reply->str);
-  freeReplyObject(reply);
-  reply = NULL;
-  return reply_str;
+  if (reply->str) {
+    std::string reply_str (reply->str);
+    freeReplyObject(reply);
+    reply = NULL;
+    return reply_str;
+  }
+  else {
+    freeReplyObject(reply);
+    reply = NULL;
+    return "";
+  }
 }
 
 RedisAdmin::RedisAdmin(std::string hostname, int port)

@@ -3,10 +3,13 @@
 #ifndef ZMQ_INTERFACE
 #define ZMQ_INTERFACE
 
+const int REQ_RESP = 0;
+const int PUB_SUB = 1;
+
 //! An Interface for ZMQIO
 
-//! Defines the methods that the Req/Resp ZMQ Managers must implement
-//! send & recv
+//! Defines the methods that the ZMQ Managers must implement
+//! send & recv, as well as subscribe
 class Zmqio
 {
 public:
@@ -19,6 +22,9 @@ public:
 
   //! Send a string on the port
   virtual void send(std::string msg) = 0;
+
+  //! Subscribe on a particular filter (only effective for Pub/Sub)
+  virtual void subscribe(std::string filter) = 0;
 };
 
 //! An Outbound ZMQ Manager
@@ -42,6 +48,9 @@ public:
 
   //! Recieve a message on the port
   virtual std::string recv() = 0;
+
+  //! Subscribe on a particular filter (only effective for Pub/Sub)
+  virtual void subscribe(std::string filter) = 0;
 };
 
 //! An Inbound ZMQ Manager
@@ -65,5 +74,8 @@ public:
 
   //! Send a string on the port
   virtual void send(std::string msg) = 0;
+
+  //! Subscribe on a particular filter (only effective for Pub/Sub)
+  virtual void subscribe(std::string filter) = 0;
 };
 #endif
