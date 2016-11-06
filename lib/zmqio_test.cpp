@@ -14,8 +14,8 @@ int main()
   ZmqComponentFactory zmq_factory;
 
   //Set up the ZMQ Clients
-  zmqo = zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555");
-  zmqi = zmq_factory.get_zmq_inbound_interface("tcp://*:5555");
+  zmqo = zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555", REQ_RESP);
+  zmqi = zmq_factory.get_zmq_inbound_interface("tcp://*:5555", REQ_RESP);
 
   //Send a Message
   std::string msg = "Test";

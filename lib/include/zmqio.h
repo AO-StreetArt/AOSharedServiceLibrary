@@ -17,10 +17,11 @@ return std::string(static_cast<char*>(aMessage.data()), aMessage.size());
 //! Send, then Recieve
 class Zmqo: public ZmqOut
 {
+int conn_type;
 zmq::socket_t *zmqo;
 public:
   //! Build a new Outbound ZMQ Manager
-  Zmqo(zmq::context_t &context);
+  Zmqo(zmq::context_t &context, int connection_type);
 
   //! Destroy the ZMQO Manager
   ~Zmqo();
@@ -36,6 +37,8 @@ public:
 
   //! Recieve a message on the port
   std::string recv();
+
+  void subscribe(std::string filter) {}
 };
 
 //! An Inbound ZMQ Manager
@@ -44,10 +47,11 @@ public:
 //! Recieve, then Send
 class Zmqi: public ZmqIn
 {
+int conn_type;
 zmq::socket_t *zmqi;
 public:
   //! Build a new Inbound ZMQ Manager
-  Zmqi(zmq::context_t &context);
+  Zmqi(zmq::context_t &context, int connection_type);
 
   //! Destroy the ZMQI Manager
   ~Zmqi();
@@ -63,5 +67,8 @@ public:
 
   //! Send a string on the port
   void send(std::string msg);
+
+  //! Subscribe on a filter
+  void subscribe(std::string filter);
 };
 #endif

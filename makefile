@@ -38,7 +38,7 @@ FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lmongoc
 FULL_LIBS_RHEL = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lhiredis -lmongoc-1.0 -lbson-1.0
 FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/factory_couchbase.h lib/include/factory_http_client.h lib/include/factory_http_server.h lib/include/factory_logging.h\
 	lib/include/factory_props.h lib/include/factory_redis.h lib/include/factory_uuid.h lib/include/factory_zmq.h lib/include/factory_mongo.h
-INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0
+INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0
 LINK_DIRS = -L/usr/local/lib
 
 # typing 'make' will invoke the first target entry in the file

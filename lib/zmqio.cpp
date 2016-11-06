@@ -3,9 +3,15 @@
 //-------------------------Inbound ZMQ Admin----------------------------------//
 
 //Constructor & Destructor
-Zmqi::Zmqi(zmq::context_t &context)
+Zmqi::Zmqi(zmq::context_t &context, int connection_type)
 {
-  zmqi = new zmq::socket_t (context, ZMQ_REP);
+  if (connection_type == REQ_RESP) {
+    zmqi = new zmq::socket_t (context, ZMQ_REP);
+  }
+  else if (connection_type == PUB_SUB) {
+    zmqi = new zmq::socket_t (context, ZMQ_SUB);
+  }
+  conn_type = connection_type;
 }
 
 Zmqi::~Zmqi()
@@ -16,7 +22,12 @@ Zmqi::~Zmqi()
 //Bind the inbound socket
 void Zmqi::bind(std::string conn_str)
 {
-  zmqi->bind(conn_str);
+  if (conn_type == REQ_RESP) {
+    zmqi->bind(conn_str);
+  }
+  else if (conn_type == PUB_SUB) {
+    zmqi->connect(conn_str);
+  }
 }
 
 //Recieve an inbound message
@@ -52,12 +63,23 @@ void Zmqi::send(std::string msg)
   send(msg_cstr, msg.size());
 }
 
+void Zmqi::subscribe(std::string filter)
+{
+   zmqi->setsockopt(ZMQ_SUBSCRIBE, filter.c_str(), filter.size());
+}
+
 //-------------------------Outbound ZMQ Admin---------------------------------//
 
 //Constructor & Destructor
-Zmqo::Zmqo(zmq::context_t &context)
+Zmqo::Zmqo(zmq::context_t &context, int connection_type)
 {
-  zmqo = new zmq::socket_t (context, ZMQ_REQ);
+  if (connection_type == REQ_RESP) {
+    zmqo = new zmq::socket_t (context, ZMQ_REQ);
+  }
+  else if (connection_type == PUB_SUB) {
+    zmqo = new zmq::socket_t (context, ZMQ_PUB);
+  }
+  conn_type = connection_type;
 }
 
 Zmqo::~Zmqo()
@@ -68,7 +90,12 @@ Zmqo::~Zmqo()
 //Connect to the Socket
 void Zmqo::connect(std::string conn_str)
 {
-  zmqo->connect(conn_str);
+  if (conn_type == REQ_RESP) {
+    zmqo->connect(conn_str);
+  }
+  else if (conn_type == PUB_SUB) {
+    zmqo->bind(conn_str);
+  }
 }
 
 //Send a message
@@ -94,7 +121,7 @@ std::string Zmqo::recv()
   //  Get the reply.
   zmq::message_t rep;
   zmqo->recv (&rep);
-  
+
   //Process the reply
   std::string r_str = hexDump(rep);
   return r_str;
