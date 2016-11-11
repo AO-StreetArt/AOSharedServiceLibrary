@@ -8,6 +8,8 @@ You will need libhiredis, which can be found [here] (https://github.com/redis/hi
 
 You will need Couchbase drivers installed.  Couchbase drivers can be found [here] (http://developer.couchbase.com/documentation/server/4.1/sdks/c-2.4/overview.html)
 
+You will need libmongoc and libbson for Mongo connections, follow the instructions [here] (http://mongoc.org/libmongoc/1.3.0/installing.html)
+
 We rely also on a set of base libraries which are installable via most package managers:
 * libuuid
 * libcurl
@@ -21,6 +23,7 @@ We use several external services which are necessary to use the respective eleme
 
 * [Redis] (http://redis.io/) - Key/Value Store
 * [Couchbase] (http://www.couchbase.com/) - Document Based Database
+* [Mongo] (https://www.mongodb.com) - Document Based Database
 * [Consul] (https://www.consul.io/) - Service Discovery, Distributed Configuration, Health Monitoring
 
 

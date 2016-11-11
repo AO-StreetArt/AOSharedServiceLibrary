@@ -44,9 +44,16 @@ If pkg-config is set up and libhiredis is installed correctly, we can also use:
 
     `pkg-config --cflags --libs hiredis`
 
+### Mongo
+Mongo utilizes both the Mongo C Driver libmongoc as well as libbson for json to bson conversions.
+
+    -lmongoc-1.0 -lbson-1.0
+
 ## Standard
 
-AO Shared Service Library is coded to the c++11 standard
+AO Shared Service Library is coded to the c++11 standard.
+
+-std=c++11
 
 ## Tests
 Please continue on to the [Tests] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/tests) section of the documentation to learn about the libraries automated tests.
