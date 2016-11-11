@@ -4,7 +4,7 @@ AOSSL Uses Travis-CI for automated builds and tests, for full history please see
 
 ## Manually Executing Tests
 
-Once we follow the commands in the quickstart for building from source, we have a set of executables that end with "test" which run some basic tests on the libraries to ensure they function correctly.  Please note that the Redis, Couchbase, and Consul tests will require an active server/agent for the respective service.
+Once we follow the commands in the quickstart for building from source, we have a set of executables that end with "test" which run some basic tests on the libraries to ensure they function correctly.  Please note that the Redis, Couchbase, Consul, and Mongo tests will require an active server/agent for the respective service.
 
     ./cli_test name=test
     ./consul_test
@@ -15,6 +15,7 @@ Once we follow the commands in the quickstart for building from source, we have 
     ./uuid_test
     ./zmqio_test
     ./http_server_test
+    ./mongo_test
 
 You can hit the http_server_test with curl from the command line with:
 `curl --request GET 'http://0.0.0.0:12345/'`

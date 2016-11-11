@@ -25,8 +25,12 @@ virtual void \hyperlink{classCouchbaseInterface_a1aee19796f864ff531cbb55f42764bf
 \item 
 virtual void \hyperlink{classCouchbaseInterface_ab4ea907f469d14323e451ffdccb213c2}{save\-\_\-object} (\hyperlink{classWriteable}{Writeable} $\ast$obj)=0
 \begin{DoxyCompactList}\small\item\em Save a J\-S\-O\-N Object to the Couchbase D\-B. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCouchbaseInterface_a2282fc90812d3397a0c4d31fb31b7dab}{save\-\_\-string} (std\-::string key, std\-::string val)=0
+\begin{DoxyCompactList}\small\item\em Save a string to the Couchbase D\-B. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCouchbaseInterface_a7ac9545e6f7a45d24e8e41ccae1f6112}{create\-\_\-object} (\hyperlink{classWriteable}{Writeable} $\ast$obj)=0
 \begin{DoxyCompactList}\small\item\em Create a J\-S\-O\-N Object in the Couchbase D\-B. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCouchbaseInterface_a8c706d3865fad2f5908167403b5d3101}{create\-\_\-string} (std\-::string key, std\-::string val)=0
+\begin{DoxyCompactList}\small\item\em Create a string in the Couchbase D\-B. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCouchbaseInterface_a99ec66952f649bb84c80b20487e82839}{delete\-\_\-object} (const char $\ast$key)=0
 \begin{DoxyCompactList}\small\item\em Delete a J\-S\-O\-N Object from the Couchbase D\-B. \end{DoxyCompactList}\item 
 virtual void \hyperlink{classCouchbaseInterface_aa45552deeb14c1eafca33eaccb85e094}{delete\-\_\-object} (std\-::string key)=0
@@ -39,7 +43,10 @@ virtual void \hyperlink{classCouchbaseInterface_a48f4eb1863cc7750c75de7227f11ad8
 \begin{DoxyCompactList}\small\item\em Bind the Removal Callback. \end{DoxyCompactList}\item 
 \hypertarget{classCouchbaseInterface_ae901a3e383a82044679d0b77702c7e2c}{virtual void \hyperlink{classCouchbaseInterface_ae901a3e383a82044679d0b77702c7e2c}{wait} ()=0}\label{classCouchbaseInterface_ae901a3e383a82044679d0b77702c7e2c}
 
-\begin{DoxyCompactList}\small\item\em Blocking call until the transaction stack is empty. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Blocking call until the transaction stack is empty. \end{DoxyCompactList}\item 
+\hypertarget{classCouchbaseInterface_afa5795fb0d9f34b9069d903c75ca84fe}{virtual void \hyperlink{classCouchbaseInterface_afa5795fb0d9f34b9069d903c75ca84fe}{shutdown\-\_\-session} ()=0}\label{classCouchbaseInterface_afa5795fb0d9f34b9069d903c75ca84fe}
+
+\begin{DoxyCompactList}\small\item\em Should be called by the last Couchbase Interface prior to deletion. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -96,7 +103,19 @@ The requested object is saved and, when complete, the method bound with bind\-\_
 
 Implements \hyperlink{classDBAdmin_aa8915761b88c5ef2df51171ff425c963}{D\-B\-Admin}.
 
-\hypertarget{classCouchbaseInterface_a99ec66952f649bb84c80b20487e82839}{\index{Couchbase\-Interface@{Couchbase\-Interface}!delete\-\_\-object@{delete\-\_\-object}}
+\hypertarget{classCouchbaseInterface_a8c706d3865fad2f5908167403b5d3101}{\index{Couchbase\-Interface@{Couchbase\-Interface}!create\-\_\-string@{create\-\_\-string}}
+\index{create\-\_\-string@{create\-\_\-string}!CouchbaseInterface@{Couchbase\-Interface}}
+\subsubsection[{create\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Couchbase\-Interface\-::create\-\_\-string (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{key, }
+\item[{std\-::string}]{val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classCouchbaseInterface_a8c706d3865fad2f5908167403b5d3101}
+
+
+Create a string in the Couchbase D\-B. 
+
+The requested object is saved and, when complete, the method bound with bind\-\_\-storage\-\_\-callback will be executed \hypertarget{classCouchbaseInterface_a99ec66952f649bb84c80b20487e82839}{\index{Couchbase\-Interface@{Couchbase\-Interface}!delete\-\_\-object@{delete\-\_\-object}}
 \index{delete\-\_\-object@{delete\-\_\-object}!CouchbaseInterface@{Couchbase\-Interface}}
 \subsubsection[{delete\-\_\-object}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Couchbase\-Interface\-::delete\-\_\-object (
 \begin{DoxyParamCaption}
@@ -155,7 +174,19 @@ The requested object is saved and, when complete, the method bound with bind\-\_
 
 Implements \hyperlink{classDBAdmin_a29372700a0be4c34ef7ffb956927d9cd}{D\-B\-Admin}.
 
+\hypertarget{classCouchbaseInterface_a2282fc90812d3397a0c4d31fb31b7dab}{\index{Couchbase\-Interface@{Couchbase\-Interface}!save\-\_\-string@{save\-\_\-string}}
+\index{save\-\_\-string@{save\-\_\-string}!CouchbaseInterface@{Couchbase\-Interface}}
+\subsubsection[{save\-\_\-string}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Couchbase\-Interface\-::save\-\_\-string (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{key, }
+\item[{std\-::string}]{val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classCouchbaseInterface_a2282fc90812d3397a0c4d31fb31b7dab}
 
+
+Save a string to the Couchbase D\-B. 
+
+The requested object is saved and, when complete, the method bound with bind\-\_\-storage\-\_\-callback will be executed 
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
 \item 

@@ -27,13 +27,16 @@ Inheritance diagram for Zmqio\-:\begin{figure}[H]
 \begin{DoxyCompactList}\small\item\em Send a message on the port. \end{DoxyCompactList}\item 
 \hypertarget{classZmqio_a079f5752b553ddb2e5a2da565bcf162c}{virtual void \hyperlink{classZmqio_a079f5752b553ddb2e5a2da565bcf162c}{send} (std\-::string msg)=0}\label{classZmqio_a079f5752b553ddb2e5a2da565bcf162c}
 
-\begin{DoxyCompactList}\small\item\em Send a string on the port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Send a string on the port. \end{DoxyCompactList}\item 
+\hypertarget{classZmqio_aa315934401c5a3ba2eb502c16a3a6aca}{virtual void \hyperlink{classZmqio_aa315934401c5a3ba2eb502c16a3a6aca}{subscribe} (std\-::string filter)=0}\label{classZmqio_aa315934401c5a3ba2eb502c16a3a6aca}
+
+\begin{DoxyCompactList}\small\item\em Subscribe on a particular filter (only effective for Pub/\-Sub) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 An Interface for Z\-M\-Q\-I\-O. 
 
-Defines the methods that the Req/\-Resp Z\-M\-Q Managers must implement send \& recv 
+Defines the methods that the Z\-M\-Q Managers must implement send \& recv, as well as subscribe 
 
 The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
 \item 

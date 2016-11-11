@@ -6,7 +6,7 @@
 
 Welcome to the AO Shared Service Library.  This is a framework for constructing C++ Microservices.
 This means smaller, more focused programs that perform a single function well and rely on inter-process
-communications.  
+communications to perform complex tasks.  
 
 ### Why use AOSSL?
 
@@ -32,20 +32,23 @@ rapid development of new capabilities.
 * ZeroMQ Service Framework
 
 #### Connections to Critical External Tools
-* Couchbase Administrator with cluster support
-* Redis Administrator
-* Consul Administrator
 
-#### Basic Tools that all good services need
+* Couchbase Interface
+* Mongo Interface
+* Redis Interface
+* Consul Interface
+
+#### Basic Tools
 * Asynchronous Logging Module
 * Universally Unique ID Generator
-* A Command Line Argument Parser
+* Command Line Argument Parser
+* Properties File Parser
 
 #### Platform Support
 * Support for Ubuntu 14.04, Debian 7, CentOS 7, RHEL 7
 * Easy to construct Docker Images with templates
 
-In order to use the respective administrators, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Couchbase] (http://www.couchbase.com/) and [Redis] (http://redis.io/) to connect to.
+In order to use the respective interfaces, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Couchbase] (http://www.couchbase.com/), [Redis] (http://redis.io/), and/or [Mongo] (https://www.mongodb.com) to connect to.
 
 Full API Documentation is available via doxygen, and the latest execution is stored in the docs/html folder.
 
