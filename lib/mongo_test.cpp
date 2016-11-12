@@ -148,5 +148,60 @@ main (int   argc,
     std::cout << "Error deleting document from Mongo DB" << std::endl;
   }
 
+  //Failure Tests
+  MongoInterface *bad_mongo = mongo_factory.get_mongo_interface("mongodb://localhost:27018/", "mydb", "mycoll");
+
+  key1 = "";
+  success = false;
+
+  try {
+    key1 = bad_mongo->create_document(json);
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+  }
+
+  if ( !(key1.empty()) ) {
+    std::cout << "Document written to Mongo DB" << std::endl;
+    assert( false );
+  }
+
+  //Load Test
+  std::string json_doc_fail = "";
+  try {
+    json_doc_fail = bad_mongo->load_document(key1);
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+  }
+
+  std::cout << "Document Loaded from Mongo: " << json_doc_fail << std::endl;
+  assert( json_doc_fail.empty() );
+
+  //Update Test
+  try {
+    success = bad_mongo->save_document(json2, key1);
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+  }
+
+  if (success) {
+    std::cout << "Document written to Mongo DB" << std::endl;
+    assert( false );
+  }
+  //Delete Test
+  try {
+    success = bad_mongo->delete_document(key1);
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+  }
+
+  if (success) {
+    std::cout << "Document deleted from Mongo DB" << std::endl;
+    assert(false);
+  }
+
   return 0;
 }
