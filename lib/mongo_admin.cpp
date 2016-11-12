@@ -57,6 +57,10 @@ bson_destroy (doc);
 if ( success && !(new_key.empty()) ) {
   return new_key;
 }
+else if ( !(success) ) {
+  throw MongoException(error.message);
+  return "";
+}
 else {
   return "";
 }
@@ -89,6 +93,9 @@ if (!doc) {
   }
   //Destroy the bson document
   bson_destroy (doc);
+  if (!success) {
+    throw MongoException(error.message);
+  }
   return success;
 }
 

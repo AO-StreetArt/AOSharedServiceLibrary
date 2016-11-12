@@ -9,9 +9,9 @@ SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
 NO_COUCHBASE = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/redis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o\
- lib/service.o lib/http_server.o lib/properties_reader.o lib/response.o lib/mongo_admin.o
+ lib/service.o lib/http_server.o lib/properties_reader.o lib/mongo_admin.o
 OBJS = $(NO_COUCHBASE) lib/couchbase_admin.o
-TESTS_NOCR = cli_test consul_test logging_test http_test zmqio_test http_server_test properties_reader_test app_response_test uuid_test mongo_test
+TESTS_NOCR = cli_test consul_test logging_test http_test zmqio_test http_server_test properties_reader_test uuid_test mongo_test
 TESTS_NOCOUCHBASE = $(TESTS_NOCR) redis_tests
 TESTS = $(TESTS_NOCOUCHBASE) couchbase_test
 TESTS_RHEL_NOCOUCHBASE = $(TESTS_NOCR) redis_tests_rhel
@@ -21,14 +21,14 @@ BENCHMARKS = $(BENCHMARKS_NOREDIS) redis_benchmark
 BENCHMARKS_RHEL = $(BENCHMARKS_NOREDIS) redis_benchmark_rhel
 INCL_NOCOUCHBASE = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/local/include/aossl/factory_uuid.h /usr/local/include/aossl/factory_redis.h\
  /usr/local/include/aossl/factory_props.h /usr/local/include/aossl/factory_logging.h /usr/local/include/aossl/factory_http_server.h /usr/local/include/aossl/factory_http_client.h\
-  /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/factory_response.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/http_admin.h\
+  /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/http_admin.h\
 	 /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/redis_admin.h /usr/local/include/aossl/zmqio.h\
 	  /usr/local/include/aossl/http_server.h /usr/local/include/aossl/properties_reader.h /usr/local/include/aossl/factory/properties_reader_interface.h\
 		 /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/db_admin.h\
 		  /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h\
 			 /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h\
 			  /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h\
-				 /usr/local/include/aossl/response.h /usr/local/include/aossl/factory/response_interface.h /usr/local/include/aossl/mongo_admin.h\
+				  /usr/local/include/aossl/mongo_admin.h\
 				   /usr/local/include/aossl/factory/mongo_interface.h /usr/local/include/aossl/factory_mongo.h
 INCL = $(INCL_NOCOUCHBASE) /usr/local/include/aossl/factory_couchbase.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/factory/couchbase_interface.h
 BASE_DIR = /usr/local/include/aossl
@@ -111,9 +111,6 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/include/aossl/factory_zmq.h: lib/include/factory_zmq.h
 	cp $< $@
 
-/usr/local/include/aossl/factory_response.h: lib/include/factory_response.h
-	cp $< $@
-
 /usr/local/include/aossl/cli.h: lib/include/cli.h
 	cp $< $@
 
@@ -145,12 +142,6 @@ clean: clean_local clean_tests clean_benchmarks
 	cp $< $@
 
 /usr/local/include/aossl/properties_reader.h: lib/include/properties_reader.h
-	cp $< $@
-
-/usr/local/include/aossl/response.h: lib/include/response.h
-	cp $< $@
-
-/usr/local/include/aossl/factory/response_interface.h: lib/include/factory/response_interface.h
 	cp $< $@
 
 /usr/local/include/aossl/factory/properties_reader_interface.h: lib/include/factory/properties_reader_interface.h
@@ -343,14 +334,6 @@ properties_reader_test: lib/properties_reader_test.o lib/properties_reader.o
 lib/properties_reader_test.o: lib/properties_reader_test.cpp lib/properties_reader.cpp lib/include/properties_reader.h
 	$(CC) $(CFLAGS) -o $@ -c lib/properties_reader_test.cpp $(STD)
 
-# Create the executable file app_response_test
-app_response_test: lib/response.o lib/app_response_test.o
-	$(CC) $(CFLAGS) -o $@ $^ $(STD)
-
-# Create the object file app_response_test.o
-lib/app_response_test.o: lib/response.o lib/app_response_test.cpp
-	$(CC) $(CFLAGS) -o $@ -c lib/app_response_test.cpp $(STD)
-
 factory_test: lib/factory_test.o $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(FULL_LIBS) $(STD)
 
@@ -415,10 +398,6 @@ lib/cli.o:  lib/cli.cpp lib/include/cli.h lib/include/factory/commandline_interf
 # Create the object file properties_reader.o
 lib/properties_reader.o: lib/properties_reader.cpp lib/include/properties_reader.h lib/include/factory/properties_reader_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/properties_reader.cpp $(STD)
-
-#Create the object file response.o
-lib/response.o: lib/response.cpp lib/include/response.h lib/include/factory/response_interface.h
-	$(CC) $(CFLAGS) -o $@ -c lib/response.cpp $(STD)
 
 lib/logging_interface.o: lib/logging_interface.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/logging_interface.cpp $(STD)
