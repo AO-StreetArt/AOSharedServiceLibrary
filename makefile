@@ -69,6 +69,9 @@ rhel-benchmarks: $(BENCHMARKS_RHEL)
 # typing 'sudo make install' will install the libraries into system paths
 install: /usr/local/lib/libaossl.a $(INCL)
 
+# typing 'sudo make install' will install the libraries into system paths
+install-no-couchbase: libaossl-no-couchbase $(INCL_NOCOUCHBASE)
+
 # To start over from scratch, type 'make clean', then 'sudo make uninstall'.  This
 # removes the executable file, as well as old .o object
 # files and *~ backup files:
