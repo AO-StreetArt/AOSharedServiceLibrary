@@ -20,10 +20,18 @@ printf "Addressing pre-build requirements"
 #Ensure that specific build requirements are satisfied
 sudo apt-get -y install build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev
 
+#Determine if we need the neo4j-client library
+printf "Building libneo4j"
+
+mkdir $PRE/neo
+git clone https://github.com/cleishm/libneo4j-client.git ./$PRE/neo
+
+cd ./$PRE/neo && ./autogen.sh && ./configure --disable-tools && make clean check && sudo make install
+
 #Determine if we need the BSON Library
 if [ ! -d /usr/local/include/libbson-1.0 ]; then
 
-  printf "Building libmongoc"
+  printf "Building libbson"
 
   mkdir $PRE/bson
   git clone git://github.com/mongodb/libbson.git ./$PRE/bson

@@ -25,6 +25,13 @@ RUN apt-get update
 #Ensure that specific build requirements are satisfied
 RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git software-properties-common
 
+#Get the Neo4j dependencies
+
+RUN mkdir neo
+RUN git clone https://github.com/cleishm/libneo4j-client.git neo
+
+RUN cd neo && ./autogen.sh && ./configure --disable-tools && make clean check && sudo make install
+
 #Get the Couchbase dependecies
 RUN wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
 RUN dpkg -i couchbase-release-1.0-2-amd64.deb

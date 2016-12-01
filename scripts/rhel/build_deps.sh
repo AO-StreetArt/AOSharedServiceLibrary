@@ -20,6 +20,14 @@ printf "Addressing pre-build requirements"
 #Ensure that specific build requirements are satisfied
 sudo yum -y install build-essential libtool pkg-config autoconf automake cmake make git wget gcc gcc-c++
 
+#Determine if we need the neo4j-client library
+printf "Building libneo4j"
+
+mkdir $PRE/neo
+git clone https://github.com/cleishm/libneo4j-client.git ./$PRE/neo
+
+cd ./$PRE/neo && ./autogen.sh && ./configure --disable-tools && make clean check && sudo make install
+
 #Determine if we need Mongo Client
 if [ ! -d /usr/local/include/libmongoc-1.0 ]; then
 

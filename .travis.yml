@@ -14,6 +14,7 @@ addons:
 services:
   - redis-server
   - mongodb
+  - neo4j
 before_install:
   - mkdir ../aossl_deps
   - sudo cp scripts/deb/build_deps.sh ../aossl_deps
@@ -46,3 +47,4 @@ script:
   - cd ..
   - ./couchbase_test
   - ./consul_test
+  - ./neo4j_test
