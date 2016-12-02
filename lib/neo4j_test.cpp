@@ -148,7 +148,7 @@ int main() {
 
 //Start the Neo4j Administrator
 Neo4jComponentFactory neo4j_factory;
-neo = neo4j_factory.get_neo4j_interface("neo4j://neo4j:neo4j@localhost:7687");
+neo = neo4j_factory.get_neo4j_interface("neo4j://localhost:7687");
 
 //Hello World
 run_test("RETURN 'hello world'", "Hello World");
