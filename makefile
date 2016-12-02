@@ -9,9 +9,9 @@ SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
 NO_COUCHBASE = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/redis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o\
- lib/service.o lib/http_server.o lib/properties_reader.o lib/mongo_admin.o
+ lib/service.o lib/http_server.o lib/properties_reader.o lib/mongo_admin.o lib/neo4j_admin.o
 OBJS = $(NO_COUCHBASE) lib/couchbase_admin.o
-TESTS_NOCR = cli_test consul_test logging_test http_test zmqio_test http_server_test properties_reader_test uuid_test mongo_test
+TESTS_NOCR = cli_test consul_test logging_test http_test zmqio_test http_server_test properties_reader_test uuid_test mongo_test neo4j_test
 TESTS_NOCOUCHBASE = $(TESTS_NOCR) redis_tests
 TESTS = $(TESTS_NOCOUCHBASE) couchbase_test
 TESTS_RHEL_NOCOUCHBASE = $(TESTS_NOCR) redis_tests_rhel
@@ -28,16 +28,16 @@ INCL_NOCOUCHBASE = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq
 		  /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h\
 			 /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h\
 			  /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h\
-				  /usr/local/include/aossl/mongo_admin.h\
-				   /usr/local/include/aossl/factory/mongo_interface.h /usr/local/include/aossl/factory_mongo.h
+				  /usr/local/include/aossl/mongo_admin.h /usr/local/include/aossl/factory/mongo_interface.h /usr/local/include/aossl/factory_mongo.h\
+						/usr/local/include/aossl/neo4j_admin.h /usr/local/include/aossl/factory/neo4j_interface.h /usr/local/include/aossl/factory_neo4j.h
 INCL = $(INCL_NOCOUCHBASE) /usr/local/include/aossl/factory_couchbase.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/factory/couchbase_interface.h
 BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
 LIBS = -lpthread -llog4cpp
-FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lmongoc-1.0 -lbson-1.0 `pkg-config --cflags --libs hiredis`
-FULL_LIBS_RHEL = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lhiredis -lmongoc-1.0 -lbson-1.0
+FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lmongoc-1.0 -lbson-1.0 -lneo4j-client -lssl -lcrypto -lm `pkg-config --cflags --libs hiredis`
+FULL_LIBS_RHEL = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lhiredis -lmongoc-1.0 -lbson-1.0 -lneo4j-client -lssl -lcrypto -lm
 FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/factory_couchbase.h lib/include/factory_http_client.h lib/include/factory_http_server.h lib/include/factory_logging.h\
-	lib/include/factory_props.h lib/include/factory_redis.h lib/include/factory_uuid.h lib/include/factory_zmq.h lib/include/factory_mongo.h
+	lib/include/factory_props.h lib/include/factory_redis.h lib/include/factory_uuid.h lib/include/factory_zmq.h lib/include/factory_mongo.h lib/include/factory_neo4j.h
 INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0
 LINK_DIRS = -L/usr/local/lib
 
@@ -112,6 +112,15 @@ clean: clean_local clean_tests clean_benchmarks
 	cp $< $@
 
 /usr/local/include/aossl/factory_zmq.h: lib/include/factory_zmq.h
+	cp $< $@
+
+/usr/local/include/aossl/neo4j_admin.h: lib/include/neo4j_admin.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/neo4j_interface.h: lib/include/neo4j_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_neo4j.h: lib/include/factory_neo4j.h
 	cp $< $@
 
 /usr/local/include/aossl/cli.h: lib/include/cli.h
@@ -250,6 +259,13 @@ zmqio_benchmark: lib/zmqio_benchmark.o lib/logging.o lib/zmqio.o lib/logging_int
 lib/zmqio_benchmark.o: lib/zmqio_benchmark.cpp lib/include/factory/zmq_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/zmqio_benchmark.cpp $(STD)
 
+# Create the executable neo4j_test
+neo4j_test: lib/neo4j_test.o lib/neo4j_admin.o
+	$(CC) $(CFLAGS) -o $@ $^  $(STD) -lneo4j-client -lssl -lcrypto -lm
+
+lib/neo4j_test.o: lib/neo4j_test.cpp lib/include/neo4j_admin.h
+	$(CC) $(CFLAGS) -o $@ -c lib/neo4j_test.cpp $(STD)
+
 # Create the executable http_server_test
 http_server_test: lib/http_server_test.o lib/http_server.o
 	$(CC) $(CFLAGS) -o $@ $^ -levent $(STD)
@@ -357,6 +373,10 @@ libaossl.a:  $(OBJS)
 
 libaossl-no-couchbase: $(NO_COUCHBASE)
 	$(SLC) libaossl.a $(NO_COUCHBASE)
+
+# Create the object file neo4j_admin.o
+lib/neo4j_admin.o: lib/neo4j_admin.cpp lib/include/neo4j_admin.h lib/include/factory/neo4j_interface.h
+	$(CC) $(CFLAGS) -o $@ -c lib/neo4j_admin.cpp $(STD)
 
 # Create the object file mongo_admin.o
 lib/mongo_admin.o: lib/mongo_admin.cpp lib/include/mongo_admin.h lib/include/factory/mongo_interface.h

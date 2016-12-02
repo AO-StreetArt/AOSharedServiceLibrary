@@ -10,25 +10,39 @@ mkdir $PRE
 
 printf "Calling apt-get update"
 
+#Add a repository for the lastest version of autoconf
+#Fix for Travis CI Builds which don't have latest version installed
+sudo add-apt-repository ppa:dns/gnu -y
+
 #Update the Ubuntu Server
-sudo apt-get -y update
+sudo apt-get -y -q update
 
 #Build the dependencies and place them in the correct places
 
 printf "Addressing pre-build requirements"
 
+sudo apt-get install --only-upgrade autoconf
+
 #Ensure that specific build requirements are satisfied
-sudo apt-get -y install build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev
+sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev
+
+#Determine if we need the neo4j-client library
+printf "Building libneo4j"
+
+mkdir $PRE/neo
+git clone https://github.com/cleishm/libneo4j-client.git ./$PRE/neo
+
+cd $PRE/neo && ./autogen.sh && ./configure --disable-tools && make clean check && sudo make install
 
 #Determine if we need the BSON Library
 if [ ! -d /usr/local/include/libbson-1.0 ]; then
 
-  printf "Building libmongoc"
+  printf "Building libbson"
 
   mkdir $PRE/bson
   git clone git://github.com/mongodb/libbson.git ./$PRE/bson
 
-  cd ./$PRE/bson && ./autogen.sh && make && sudo make install
+  cd $PRE/bson && ./autogen.sh && make && sudo make install
 
 fi
 
@@ -40,7 +54,7 @@ if [ ! -d /usr/local/include/libmongoc-1.0 ]; then
   mkdir $PRE/mongo
   git clone https://github.com/mongodb/mongo-c-driver.git ./$PRE/mongo
 
-  cd ./$PRE/mongo && ./autogen.sh --with-libbson=bundled && make && sudo make install
+  cd $PRE/mongo && ./autogen.sh --with-libbson=bundled && make && sudo make install
 
 fi
 
