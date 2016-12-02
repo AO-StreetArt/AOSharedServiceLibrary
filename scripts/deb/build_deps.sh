@@ -12,7 +12,7 @@ printf "Calling apt-get update"
 
 #Add a repository for the lastest version of autoconf
 #Fix for Travis CI Builds which don't have latest version installed
-sudo add-apt-repository ppa:dns/gnu
+sudo add-apt-repository ppa:dns/gnu -y
 
 #Update the Ubuntu Server
 sudo apt-get -y -q update
@@ -24,7 +24,7 @@ printf "Addressing pre-build requirements"
 sudo apt-get install --only-upgrade autoconf
 
 #Ensure that specific build requirements are satisfied
-sudo apt-get -y -q install build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev
+sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev
 
 #Determine if we need the neo4j-client library
 printf "Building libneo4j"
