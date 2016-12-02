@@ -6,7 +6,7 @@
 #ifndef HTTP_INTERFACE
 #define HTTP_INTERFACE
 
-//! An Implementation of std::exception that denotes an error in Couchbase during bootstrap
+//! An Implementation of std::exception that denotes an error during an http operation
 struct HttpRequestException: public std::exception
 {
   //! An error message passed on initialization
@@ -14,7 +14,7 @@ struct HttpRequestException: public std::exception
 
   //! Create a HTTP Request Exception, and store the given error message
   HttpRequestException (std::string msg) {int_msg = msg;}
-  
+
   HttpRequestException () {}
   ~HttpRequestException() throw () {}
 
