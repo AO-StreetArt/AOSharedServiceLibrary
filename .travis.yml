@@ -14,7 +14,7 @@ addons:
 services:
   - redis-server
   - mongodb
-  - neo4j
+  - docker
 before_install:
   #Install g++ 5 to allow for c++11 support
   - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
@@ -23,15 +23,20 @@ before_install:
   - mkdir ../aossl_deps
   - sudo cp scripts/deb/build_deps.sh ../aossl_deps
   - cd ../aossl_deps && sudo ./build_deps.sh
-  #Install
+  #Install ssl
   - cd $TRAVIS_BUILD_DIR
   - sudo apt-get install libssl-dev
 install:
+  #Install & Start Couchbase
   - cd scripts/deb/ubuntu-12.04 && sudo ./install_couchbase.sh
   - cd $TRAVIS_BUILD_DIR
+  #Install & Start Consul
   - wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
   - unzip consul_0.6.4_linux_amd64.zip
   - ./consul agent -dev &
+  #Start Neo4j
+  - docker pull neo4j
+  - docker run --publish=7474:7474 --publish=7687:7687 --env=NEO4J_AUTH=none --volume=$HOME/neo4j/data:/data neo4j
 script:
   - gcc --version
   - make
