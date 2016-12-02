@@ -32,7 +32,7 @@ printf "Building libneo4j"
 mkdir $PRE/neo
 git clone https://github.com/cleishm/libneo4j-client.git ./$PRE/neo
 
-cd ./$PRE/neo && ./autogen.sh && ./configure --disable-tools && make clean check && sudo make install
+cd $PRE/neo && ./autogen.sh && ./configure --disable-tools && make clean check && sudo make install
 
 #Determine if we need the BSON Library
 if [ ! -d /usr/local/include/libbson-1.0 ]; then
@@ -42,7 +42,7 @@ if [ ! -d /usr/local/include/libbson-1.0 ]; then
   mkdir $PRE/bson
   git clone git://github.com/mongodb/libbson.git ./$PRE/bson
 
-  cd ./$PRE/bson && ./autogen.sh && make && sudo make install
+  cd $PRE/bson && ./autogen.sh && make && sudo make install
 
 fi
 
@@ -54,7 +54,7 @@ if [ ! -d /usr/local/include/libmongoc-1.0 ]; then
   mkdir $PRE/mongo
   git clone https://github.com/mongodb/mongo-c-driver.git ./$PRE/mongo
 
-  cd ./$PRE/mongo && ./autogen.sh --with-libbson=bundled && make && sudo make install
+  cd $PRE/mongo && ./autogen.sh --with-libbson=bundled && make && sudo make install
 
 fi
 
