@@ -1,6 +1,6 @@
 # Use new trusty images, should yield newer compilers and packages
 sudo: required
-dist: precise
+dist: trusty
 language: cpp
 
 sudo: required
@@ -15,14 +15,7 @@ services:
   - redis-server
   - mongodb
   - neo4j
-jdk:
-  - oraclejdk7
 before_install:
-  # install Neo4j locally:
-  - wget dist.neo4j.org/neo4j-community-2.2.0-unix.tar.gz
-  - tar -xzf neo4j-community-2.2.0-unix.tar.gz
-  - sed -i.bak s/dbms.security.auth_enabled=true/dbms.security.auth_enabled=false/g neo4j-community-2.2.0/conf/neo4j-server.properties
-  - neo4j-community-2.2.0/bin/neo4j start
   #Install g++ 5 to allow for c++11 support
   - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
   - sudo unlink /usr/bin/g++ && sudo ln -s /usr/bin/g++-5 /usr/bin/g++
@@ -30,7 +23,7 @@ before_install:
   - mkdir ../aossl_deps
   - sudo cp scripts/deb/build_deps.sh ../aossl_deps
   - cd ../aossl_deps && sudo ./build_deps.sh
-  #Install libssl
+  #Install
   - cd $TRAVIS_BUILD_DIR
   - sudo apt-get install libssl-dev
 install:
