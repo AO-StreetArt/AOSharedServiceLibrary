@@ -80,6 +80,9 @@ public:
   //! Get the size of the map
   virtual unsigned int size() = 0;
 
+  //! Does an element exist in the map
+  virtual bool element_exists(std::string key) = 0;
+
   //! Get a string element out of a map
   virtual std::string get_string_element(std::string key, int char_buffer_size) = 0;
 
@@ -107,8 +110,8 @@ public:
 
 //! A Neo4j Object
 
-//! This is returned from a result tree
-//! and represents either a node or an edge
+//! This is returned from a result tree and
+//! represents either a node, an edge, or a path
 class DbObjectInterface {
 public:
 
@@ -117,14 +120,20 @@ public:
   //! Is this a node?
 
   //! Return true if this is a node object.
-  //! Return false if this is an edge object.
+  //! Return false if this is an edge or path object.
   virtual bool is_node() = 0;
 
   //! Is this an edge?
 
-  //! Return false if this is a node object.
+  //! Return false if this is a node or path object.
   //! Return true if this is an edge object.
   virtual bool is_edge() = 0;
+
+  //! Is this a path?
+
+  //! Return false if this is a node or edge object.
+  //! Return true if this is a path object.
+  virtual bool is_path() = 0;
 
   //! Get the string representation of the object
   virtual std::string to_string() = 0;
@@ -146,6 +155,24 @@ public:
   //! This functions only for edge
   //! objects
   virtual std::string type() = 0;
+
+  //! Was the edge traversed in it's natural direction?
+
+  //! This functions only for edge objects which
+  //! were taken from a Path
+  virtual bool forward() = 0;
+
+  //! Get the size of the path
+
+  //! This functions only for path
+  //! objects
+  virtual unsigned int size() = 0;
+
+  //! Get an element from a path object
+
+  //! Get an element from a path at the specified index.
+  //! This functions only for path objects
+  virtual DbObjectInterface* get_path_element(int path_index) = 0;
 };
 
 //! Tree of Query Results

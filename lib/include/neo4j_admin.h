@@ -20,6 +20,7 @@ typedef neo4j_value_t (*IndexGenerationFunction)(neo4j_value_t, unsigned int);
 class DbList: public DbListInterface {
 neo4j_result_t *result = NULL;
 int index;
+int path_index;
 ValueGenerationFunction list_function;
 std::vector<KeyGenerationFunction> map_functions;
 std::vector<IndexGenerationFunction> list_functions;
@@ -32,6 +33,9 @@ public:
   DbList(neo4j_result_t *r, unsigned int ind, ValueGenerationFunction lf) {result=r;index=ind;list_function=lf;}
   DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs);
   DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, std::vector<unsigned int> inds, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, std::vector<IndexGenerationFunction> lfs);
+  DbList(neo4j_result_t *r, unsigned int ind, ValueGenerationFunction lf, unsigned int pindex) {result=r;index=ind;list_function=lf;path_index=pindex;}
+  DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, unsigned int pindex);
+  DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, std::vector<unsigned int> inds, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, std::vector<IndexGenerationFunction> lfs, unsigned int pindex);
   ~DbList() {}
   DbListInterface* get_list_element(unsigned int ind);
   bool get_bool_element(unsigned int ind);
@@ -46,6 +50,7 @@ public:
 class DbMap: public DbMapInterface {
 neo4j_result_t *result = NULL;
 int index;
+int path_index;
 ValueGenerationFunction map_function;
 std::vector<KeyGenerationFunction> map_functions;
 std::vector<std::string> keys;
@@ -53,9 +58,12 @@ neo4j_value_t get_map();
 neo4j_value_t get_map_value(std::string key);
 public:
   DbMap(neo4j_result_t *r, int ind, ValueGenerationFunction mf) {result=r;index=ind;map_function =mf;}
+  DbMap(neo4j_result_t *r, int ind, ValueGenerationFunction mf, int pindex) {result=r;index=ind;map_function =mf;path_index=pindex;}
   DbMap(neo4j_result_t *r, int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs);
+  DbMap(neo4j_result_t *r, int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, int pindex);
   ~DbMap() {}
   unsigned int size();
+  bool element_exists(std::string key);
   std::string get_string_element(std::string key, int char_buffer_size);
   std::string get_string_element(std::string key) {return get_string_element(key, 128);}
   bool get_bool_element(std::string key);
@@ -66,23 +74,29 @@ public:
   std::string to_string();
 };
 
-//Represents a single node or edge
+//Represents a single node, edge, or path
 class DbObject: public DbObjectInterface {
 neo4j_result_t *result = NULL;
 int index;
+int path_index;
 neo4j_value_t get_value();
 bool is_instance_of(neo4j_type_t type);
 public:
-  DbObject(neo4j_result_t *r, int ind) {result=r;index=ind;}
+  DbObject(neo4j_result_t *r, int ind) {result=r;index=ind;path_index=-1;}
+  DbObject(neo4j_result_t *r, int ind, int ind2) {result=r;index=ind;path_index=ind2;}
   ~DbObject() {}
   bool is_node() {return is_instance_of(NEO4J_NODE);}
   bool is_edge() {return is_instance_of(NEO4J_RELATIONSHIP);}
+  bool is_path() {return is_instance_of(NEO4J_PATH);}
   std::string to_string();
   DbMapInterface* properties();
   DbListInterface* labels();
   std::string type();
+  bool forward();
   neo4j_value_t get_identity();
   bool is_equal_to(DbObject& comp_obj) {return neo4j_eq(get_identity(), comp_obj.get_identity());}
+  unsigned int size();
+  DbObjectInterface* get_path_element(int path_index) {return new DbObject(result, index, path_index);}
 };
 
 // Represents a single query Result, returned by the iterator

@@ -38,12 +38,25 @@ DbObjectInterface* ResultTree::get(int index) {
   result=r;
   index=ind;
   map_function = mf;
-  for (int i = 0; i < mfs.size(); i++) {
+  for (std::size_t i = 0; i < mfs.size(); i++) {
     map_functions.push_back(mfs[i]);
   }
-  for (int j = 0; j < key_list.size(); j++) {
+  for (std::size_t j = 0; j < key_list.size(); j++) {
     keys.push_back(key_list[j]);
   }
+}
+
+DbMap::DbMap(neo4j_result_t *r, int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, int pindex) {
+  result=r;
+  index=ind;
+  map_function = mf;
+  for (std::size_t i = 0; i < mfs.size(); i++) {
+    map_functions.push_back(mfs[i]);
+  }
+  for (std::size_t j = 0; j < key_list.size(); j++) {
+    keys.push_back(key_list[j]);
+  }
+  path_index = pindex;
 }
 
 //Get the value for this node/edge
@@ -52,14 +65,46 @@ if (!result) {
   return neo4j_null;
 }
 else {
+  //Get the query result field
   neo4j_value_t db_obj = neo4j_result_field(result, index);
+  //If the DB Value is a path, then we need to update it to the
+  //respective element based on the path index
+  if (path_index != -1) {
+    //Check if we have a node or relationship
+    if (path_index == 0) {
+      //We have a node
+      db_obj = neo4j_path_get_node(db_obj, path_index);
+    }
+    else if (path_index == 1) {
+      //We have a relationship
+      db_obj = neo4j_path_get_relationship(db_obj, 0, NULL);
+    }
+    else if (path_index % 2 == 0) {
+      //We have a node
+      db_obj = neo4j_path_get_node(db_obj, path_index/2);
+    }
+    else {
+      //We have a relationship
+      db_obj = neo4j_path_get_relationship(db_obj, (path_index-1)/2, NULL);
+    }
+  }
+  //Get to the Neo4j Map via the map functions
   neo4j_value_t map = (*(map_function))(db_obj);
-  for (int i = 0; i < map_functions.size(); i++) {
+  for (std::size_t i = 0; i < map_functions.size(); i++) {
     neo4j_value_t key_str = neo4j_string(keys[i].c_str());
     map = (*(map_functions[i]))(map, key_str);
   }
   return map;
 }
+}
+
+bool DbMap::element_exists(std::string key) {
+//Get the value from the map
+neo4j_value_t element = get_map_value(key);
+if (neo4j_eq(neo4j_null, element)) {
+  return false;
+}
+return true;
 }
 
 //Get a value out of the map
@@ -153,10 +198,10 @@ void DbList::initialize(neo4j_result_t *r, unsigned int ind, std::vector<std::st
   result=r;
   index=ind;
   list_function = mf;
-  for (int i = 0; i < mfs.size(); i++) {
+  for (std::size_t i = 0; i < mfs.size(); i++) {
     map_functions.push_back(mfs[i]);
   }
-  for (int j = 0; j < key_list.size(); j++) {
+  for (std::size_t j = 0; j < key_list.size(); j++) {
     keys.push_back(key_list[j]);
   }
 }
@@ -168,10 +213,10 @@ initialize(r, ind, key_list, mf, mfs);
 
 DbList::DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, std::vector<unsigned int> inds, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, std::vector<IndexGenerationFunction> lfs) {
 initialize(r, ind, key_list, mf, mfs);
-for (int i = 0; i < lfs.size(); i++) {
+for (std::size_t i = 0; i < lfs.size(); i++) {
   list_functions.push_back(lfs[i]);
 }
-for (int i = 0; i < inds.size(); i++) {
+for (std::size_t i = 0; i < inds.size(); i++) {
   indices.push_back(inds[i]);
 }
 }
@@ -182,13 +227,35 @@ if (!result) {
   return neo4j_null;
 }
 else {
+  //Get the DB Value
   neo4j_value_t db_obj = neo4j_result_field(result, index);
+  //If the DB Value is a path, then we need to update it to the
+  //respective element based on the path index
+  if (path_index != -1) {
+    //Check if we have a node or relationship
+    if (path_index == 0) {
+      //We have a node
+      db_obj = neo4j_path_get_node(db_obj, path_index);
+    }
+    else if (path_index == 1) {
+      //We have a relationship
+      db_obj = neo4j_path_get_relationship(db_obj, 0, NULL);
+    }
+    else if (path_index % 2 == 0) {
+      //We have a node
+      db_obj = neo4j_path_get_node(db_obj, path_index/2);
+    }
+    else {
+      //We have a relationship
+      db_obj = neo4j_path_get_relationship(db_obj, (path_index-1)/2, NULL);
+    }
+  }
   neo4j_value_t list = (*(list_function))(db_obj);
-  for (int i = 0; i < map_functions.size(); i++) {
+  for (std::size_t i = 0; i < map_functions.size(); i++) {
     neo4j_value_t key_str = neo4j_string(keys[i].c_str());
     list = (*(map_functions[i]))(list, key_str);
   }
-  for (int j=0; j < list_functions.size(); j++) {
+  for (std::size_t j=0; j < list_functions.size(); j++) {
     list = (*(list_functions[j]))(list, indices[j]);
   }
   return list;
@@ -281,7 +348,28 @@ if (!result) {
   return neo4j_null;
 }
 else {
-  return neo4j_result_field(result, index);
+  neo4j_value_t val = neo4j_result_field(result, index);
+  //Check if this is the result of getting a value from a path
+  if (path_index != -1) {
+    //Check if we have a node or relationship
+    if (path_index == 0) {
+      //We have a node
+      return neo4j_path_get_node(val, path_index);
+    }
+    else if (path_index == 1) {
+      //We have a relationship
+      return neo4j_path_get_relationship(val, 0, NULL);
+    }
+    else if (path_index % 2 == 0) {
+      //We have a node
+      return neo4j_path_get_node(val, path_index / 2);
+    }
+    else {
+      //We have a relationship
+      return neo4j_path_get_relationship(val, (path_index-1)/2, NULL);
+    }
+  }
+  return val;
 }
 }
 
@@ -314,10 +402,10 @@ return ret_val;
 //Get a map of the properties
 DbMapInterface* DbObject::properties() {
 if ( is_node() ) {
-  return new DbMap (result, index, neo4j_node_properties);
+  return new DbMap (result, index, neo4j_node_properties, path_index);
 }
 else if ( is_edge() ){
-  return new DbMap (result, index, neo4j_relationship_properties);
+  return new DbMap (result, index, neo4j_relationship_properties, path_index);
 }
 else {
   std::string err_msg = "Tried to retrieve properties for object that is neither a node or an edge";
@@ -328,7 +416,7 @@ else {
 //Get a list of node labels
 DbListInterface* DbObject::labels() {
 if ( is_node() ) {
-  return new DbList (result, index, neo4j_node_labels);
+  return new DbList (result, index, neo4j_node_labels, path_index);
 }
 else {
   std::string err_msg = "Tried to retrieve labels for object that is not a node";
@@ -340,13 +428,27 @@ else {
 std::string DbObject::type() {
 neo4j_value_t val = get_value();
 if ( is_edge() ){
+  neo4j_value_t rel_type = neo4j_relationship_type(val);
   char buf[256];
-  neo4j_string_value(val, buf, 256);
+  neo4j_string_value(rel_type, buf, 256);
   std::string ret_val (buf);
   return ret_val;
 }
 else {
   std::string err_msg = "Tried to retrieve type for object that is not an edge";
+  throw Neo4jException(err_msg);
+}
+}
+
+bool DbObject::forward() {
+neo4j_value_t val = get_value();
+if ( is_edge() && path_index != -1 ){
+  bool is_forward;
+  neo4j_path_get_relationship(val, path_index, &is_forward);
+  return is_forward;
+}
+else {
+  std::string err_msg = "Tried to retrieve relationship direction for object that is not an edge taken from a path";
   throw Neo4jException(err_msg);
 }
 }
@@ -361,6 +463,17 @@ else if ( is_edge() ){
 }
 else {
   std::string err_msg = "Tried to retrieve properties for object that is neither a node or an edge";
+  throw Neo4jException(err_msg);
+}
+}
+
+unsigned int DbObject::size() {
+neo4j_value_t val = get_value();
+if ( is_path() ) {
+  return (neo4j_path_length(val) * 2) + 1;
+}
+else {
+  std::string err_msg = "Tried to retrieve path length for object that is not a path";
   throw Neo4jException(err_msg);
 }
 }
