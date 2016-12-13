@@ -1,4 +1,5 @@
 #include <string>
+#include <unordered_map>
 #include <exception>
 
 #ifndef AOSSL_NEO4J_INTERFACE
@@ -218,6 +219,31 @@ public:
 ////----------------------Neo4j Admin--------------------------------
 ////-----------------------------------------------------------------
 
+//! Neo4j Query Parameter Interface
+
+//! A query parameter to be inserted into a
+//! Query prior to execution.
+class Neo4jQueryParameterInterface {
+public:
+
+  virtual ~Neo4jQueryParameterInterface() {};
+
+  //! Get the type of the query parameter
+  virtual int get_type() = 0;
+
+  //! Get the boolean value, if any
+  virtual bool get_boolean_value() = 0;
+
+  //! Get the string value, if any
+  virtual std::string get_string_value() = 0;
+
+  //! Get the integer value, if any
+  virtual int get_integer_value() = 0;
+
+  //! Get the double value, if any
+  virtual double get_double_value() = 0;
+};
+
 //! Neo4j Query Interface
 
 //! Executes queries against the Neo4j DB.
@@ -233,6 +259,12 @@ public:
 
   //! Execute the given Cypher Query
   virtual ResultsIteratorInterface* execute(std::string query) = 0;
+
+  //! Execute a given Cypher Query with an input map of parameters
+  virtual ResultsIteratorInterface* execute(const char * query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) = 0;
+
+  //! Execute a given Cypher Query with an input map of parameters
+  virtual ResultsIteratorInterface* execute(std::string query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) = 0;
 };
 
 #endif

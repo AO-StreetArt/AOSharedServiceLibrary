@@ -3,6 +3,7 @@
 #include <string>
 #include <exception>
 #include <vector>
+#include <unordered_map>
 
 #include "factory/neo4j_interface.h"
 
@@ -117,7 +118,14 @@ neo4j_result_stream_t *results;
 void clear_results() {neo4j_close_results(results);}
 public:
 
-  ResultsIterator(neo4j_result_stream_t *result_stream);
+  inline ResultsIterator(neo4j_result_stream_t *result_stream) {
+    results=result_stream;
+    if (!results) {
+      std::string err_msg (strerror(errno));
+      err_msg="Failed to fetch results"+err_msg;
+      throw Neo4jException(err_msg);
+    }
+  }
   ~ResultsIterator() {clear_results();}
   void clear() {clear_results();}
   bool empty() {if (!results) {return true;} return false;}
@@ -128,6 +136,30 @@ public:
 //-------------------------------------------------------------------
 ////----------------------Neo4j Admin--------------------------------
 ////-----------------------------------------------------------------
+
+const int _BOOL_TYPE = 0;
+const int _STR_TYPE = 1;
+const int _INT_TYPE = 2;
+const int _FLT_TYPE = 3;
+
+class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
+bool bool_value;
+std::string str_value;
+int int_value;
+double double_value;
+int type;
+public:
+  Neo4jQueryParameter(bool inp_bool) {bool_value = inp_bool; type = _BOOL_TYPE;}
+  Neo4jQueryParameter(std::string inp_str) {str_value = inp_str; type = _STR_TYPE;}
+  Neo4jQueryParameter(const char * inp_str) {std::string new_val (inp_str); str_value = new_val; type = _STR_TYPE;}
+  Neo4jQueryParameter(int inp_int) {int_value = inp_int; type = _INT_TYPE;}
+  Neo4jQueryParameter(double inp_double) {double_value = inp_double; type = _FLT_TYPE;}
+  int get_type() {return type;}
+  bool get_boolean_value() {return bool_value;}
+  std::string get_string_value() {return str_value;}
+  int get_integer_value() {return int_value;}
+  double get_double_value() {return double_value;}
+};
 
 class Neo4jAdmin: public Neo4jInterface {
 
@@ -144,6 +176,9 @@ public:
   ~Neo4jAdmin() {neo4j_end_session(session);neo4j_close(connection);neo4j_client_cleanup();}
   ResultsIterator* execute(const char * query);
   ResultsIterator* execute(std::string query) {return execute(query.c_str());}
+  ResultsIteratorInterface* execute(const char * query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params);
+  ResultsIteratorInterface* execute(std::string query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) {return execute(query.c_str(), query_params);}
+
 };
 
 #endif

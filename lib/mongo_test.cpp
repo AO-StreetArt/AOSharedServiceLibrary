@@ -4,7 +4,7 @@
 #include <assert.h>
 
 void print_vector(std::vector<std::string> inp) {
-  for (int i = 0; i < inp.size(); i++) {
+  for (unsigned int i = 0; i < inp.size(); i++) {
     std::cout << inp[i] << std::endl;
   }
 }

@@ -4,16 +4,6 @@
 //--------------------Results Iterator-----------------------------
 //-----------------------------------------------------------------
 
-//Constructor
-ResultsIterator::ResultsIterator(neo4j_result_stream_t *rs) {
-results=rs;
-if (!results) {
-  std::string err_msg (strerror(errno));
-  err_msg="Failed to fetch results"+err_msg;
-  throw Neo4jException(err_msg);
-}
-}
-
 //Get the next result from the iterator
 ResultTreeInterface* ResultsIterator::next() {
 neo4j_result_t *res = neo4j_fetch_next(results);
@@ -529,4 +519,64 @@ if (failure_check != 0) {
 
 //Return a results iterator for results access
 return new ResultsIterator (res);
+}
+
+//Insert a map of parameters into a query,
+//Execute the query and return the results in an iterator
+ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) {
+
+//Get lists of keys and values for query parameters
+std::vector<std::string> keys;
+keys.reserve(query_params.size());
+std::vector<Neo4jQueryParameterInterface*> vals;
+vals.reserve(query_params.size());
+
+for(auto kv : query_params) {
+    keys.push_back(kv.first);
+    vals.push_back(kv.second);
+}
+
+//Create an array of neo4j map entries
+neo4j_map_entry_t map_entries[keys.size()];
+
+for (unsigned int i = 0; i < keys.size(); i++) {
+  Neo4jQueryParameterInterface* val = vals[i];
+  int val_type = val->get_type();
+  if (val_type == _BOOL_TYPE) {
+    neo4j_value_t bool_val = neo4j_bool(val->get_boolean_value());
+    map_entries[i] = neo4j_map_entry(keys[i].c_str(), bool_val);
+  }
+  else if (val_type == _STR_TYPE) {
+    const char * cstr_value = val->get_string_value().c_str();
+    const char * cstr_keyval = keys[i].c_str();
+    neo4j_value_t str_val = neo4j_string(cstr_value);
+    map_entries[i] = neo4j_map_entry(cstr_keyval, str_val);
+  }
+  else if (val_type == _INT_TYPE) {
+    neo4j_value_t int_val = neo4j_int(val->get_integer_value());
+    map_entries[i] = neo4j_map_entry(keys[i].c_str(), int_val);
+  }
+  else if (val_type == _FLT_TYPE) {
+    neo4j_value_t float_val = neo4j_float(val->get_double_value());
+    map_entries[i] = neo4j_map_entry(keys[i].c_str(), float_val);
+  }
+}
+
+//Create a neo4j value of the map
+neo4j_value_t param_map = neo4j_map (map_entries, keys.size());
+
+//Execute the query
+neo4j_result_stream_t *res = neo4j_run(session, query, param_map);
+
+//Check for a failure
+int failure_check = neo4j_check_failure(res);
+if (failure_check != 0) {
+  const struct neo4j_failure_details *fd;
+  fd = neo4j_failure_details(res);
+  throw Neo4jException(fd->description);
+}
+
+//Return a results iterator for results access
+return new ResultsIterator (res);
+
 }
