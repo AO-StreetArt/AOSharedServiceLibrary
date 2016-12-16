@@ -1,4 +1,5 @@
 #include <string>
+#include <unordered_map>
 #include <exception>
 
 #ifndef AOSSL_NEO4J_INTERFACE
@@ -80,6 +81,9 @@ public:
   //! Get the size of the map
   virtual unsigned int size() = 0;
 
+  //! Does an element exist in the map
+  virtual bool element_exists(std::string key) = 0;
+
   //! Get a string element out of a map
   virtual std::string get_string_element(std::string key, int char_buffer_size) = 0;
 
@@ -107,8 +111,8 @@ public:
 
 //! A Neo4j Object
 
-//! This is returned from a result tree
-//! and represents either a node or an edge
+//! This is returned from a result tree and
+//! represents either a node, an edge, or a path
 class DbObjectInterface {
 public:
 
@@ -117,14 +121,20 @@ public:
   //! Is this a node?
 
   //! Return true if this is a node object.
-  //! Return false if this is an edge object.
+  //! Return false if this is an edge or path object.
   virtual bool is_node() = 0;
 
   //! Is this an edge?
 
-  //! Return false if this is a node object.
+  //! Return false if this is a node or path object.
   //! Return true if this is an edge object.
   virtual bool is_edge() = 0;
+
+  //! Is this a path?
+
+  //! Return false if this is a node or edge object.
+  //! Return true if this is a path object.
+  virtual bool is_path() = 0;
 
   //! Get the string representation of the object
   virtual std::string to_string() = 0;
@@ -146,6 +156,24 @@ public:
   //! This functions only for edge
   //! objects
   virtual std::string type() = 0;
+
+  //! Was the edge traversed in it's natural direction?
+
+  //! This functions only for edge objects which
+  //! were taken from a Path
+  virtual bool forward() = 0;
+
+  //! Get the size of the path
+
+  //! This functions only for path
+  //! objects
+  virtual unsigned int size() = 0;
+
+  //! Get an element from a path object
+
+  //! Get an element from a path at the specified index.
+  //! This functions only for path objects
+  virtual DbObjectInterface* get_path_element(int path_index) = 0;
 };
 
 //! Tree of Query Results
@@ -191,6 +219,31 @@ public:
 ////----------------------Neo4j Admin--------------------------------
 ////-----------------------------------------------------------------
 
+//! Neo4j Query Parameter Interface
+
+//! A query parameter to be inserted into a
+//! Query prior to execution.
+class Neo4jQueryParameterInterface {
+public:
+
+  virtual ~Neo4jQueryParameterInterface() {};
+
+  //! Get the type of the query parameter
+  virtual int get_type() = 0;
+
+  //! Get the boolean value, if any
+  virtual bool get_boolean_value() = 0;
+
+  //! Get the string value, if any
+  virtual std::string get_string_value() = 0;
+
+  //! Get the integer value, if any
+  virtual int get_integer_value() = 0;
+
+  //! Get the double value, if any
+  virtual double get_double_value() = 0;
+};
+
 //! Neo4j Query Interface
 
 //! Executes queries against the Neo4j DB.
@@ -206,6 +259,12 @@ public:
 
   //! Execute the given Cypher Query
   virtual ResultsIteratorInterface* execute(std::string query) = 0;
+
+  //! Execute a given Cypher Query with an input map of parameters
+  virtual ResultsIteratorInterface* execute(const char * query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) = 0;
+
+  //! Execute a given Cypher Query with an input map of parameters
+  virtual ResultsIteratorInterface* execute(std::string query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) = 0;
 };
 
 #endif
