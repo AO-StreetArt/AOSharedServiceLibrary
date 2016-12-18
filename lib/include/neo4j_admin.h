@@ -69,7 +69,7 @@ public:
   std::string get_string_element(std::string key) {return get_string_element(key, 128);}
   bool get_bool_element(std::string key);
   int get_int_element(std::string key);
-  float get_float_element(std::string key);
+  double get_float_element(std::string key);
   DbMapInterface* get_map_element(std::string key);
   DbListInterface* get_list_element(std::string key);
   std::string to_string();
