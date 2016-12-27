@@ -41,7 +41,7 @@ public:
   DbListInterface* get_list_element(unsigned int ind);
   bool get_bool_element(unsigned int ind);
   int get_int_element(unsigned int ind);
-  float get_float_element(unsigned int ind);
+  double get_float_element(unsigned int ind);
   std::string get_string_element(unsigned int ind, int char_buffer_size);
   std::string get_string_element(unsigned int ind) {return get_string_element(ind, 128);}
   std::string to_string();
@@ -69,7 +69,7 @@ public:
   std::string get_string_element(std::string key) {return get_string_element(key, 128);}
   bool get_bool_element(std::string key);
   int get_int_element(std::string key);
-  float get_float_element(std::string key);
+  double get_float_element(std::string key);
   DbMapInterface* get_map_element(std::string key);
   DbListInterface* get_list_element(std::string key);
   std::string to_string();

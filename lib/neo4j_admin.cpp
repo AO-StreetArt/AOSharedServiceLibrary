@@ -135,7 +135,7 @@ return neo4j_int_value(element);
 
 }
 
-float DbMap::get_float_element(std::string key) {
+double DbMap::get_float_element(std::string key) {
 
 //Get the value from the map
 neo4j_value_t element = get_map_value(key);
@@ -289,7 +289,7 @@ neo4j_value_t element = get_list_value(ind);
 return neo4j_int_value(element);
 }
 
-float DbList::get_float_element(unsigned int ind) {
+double DbList::get_float_element(unsigned int ind) {
 //Get the value from the map
 neo4j_value_t element = get_list_value(ind);
 

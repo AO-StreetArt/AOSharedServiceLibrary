@@ -117,7 +117,7 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/include/aossl/neo4j_admin.h: lib/include/neo4j_admin.h
 	cp $< $@
 
-/usr/local/include/aossl/factory/neo4j_interface.h: lib/include/neo4j_interface.h
+/usr/local/include/aossl/factory/neo4j_interface.h: lib/include/factory/neo4j_interface.h
 	cp $< $@
 
 /usr/local/include/aossl/factory_neo4j.h: lib/include/factory_neo4j.h
