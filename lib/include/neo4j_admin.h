@@ -41,7 +41,7 @@ public:
   DbListInterface* get_list_element(unsigned int ind);
   bool get_bool_element(unsigned int ind);
   int get_int_element(unsigned int ind);
-  float get_float_element(unsigned int ind);
+  double get_float_element(unsigned int ind);
   std::string get_string_element(unsigned int ind, int char_buffer_size);
   std::string get_string_element(unsigned int ind) {return get_string_element(ind, 128);}
   std::string to_string();

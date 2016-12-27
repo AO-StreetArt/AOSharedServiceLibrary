@@ -289,7 +289,7 @@ neo4j_value_t element = get_list_value(ind);
 return neo4j_int_value(element);
 }
 
-float DbList::get_float_element(unsigned int ind) {
+double DbList::get_float_element(unsigned int ind) {
 //Get the value from the map
 neo4j_value_t element = get_list_value(ind);
 

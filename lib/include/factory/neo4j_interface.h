@@ -54,7 +54,7 @@ public:
   virtual int get_int_element(unsigned int ind) = 0;
 
   //! Get a float element out of a list
-  virtual float get_float_element(unsigned int ind) = 0;
+  virtual double get_float_element(unsigned int ind) = 0;
 
   //! Get a list string out of a list
   virtual std::string get_string_element(unsigned int ind, int char_buffer_size) = 0;
