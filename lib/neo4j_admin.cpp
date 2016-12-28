@@ -157,16 +157,8 @@ std::string db_str (db_cstr);
 return db_str;
 }
 
-DbMapInterface* DbMap::get_map_element(std::string key) {
-  keys.push_back(key);
-  map_functions.push_back(neo4j_map_kget);
-  return new DbMap (result, index, keys, map_function, map_functions);
-}
-
 DbListInterface* DbMap::get_list_element(std::string key) {
-  keys.push_back(key);
-  map_functions.push_back(neo4j_map_kget);
-  return new DbList (result, index, keys, map_function, map_functions);
+  return new DbList (result, index, map_function, path_index, neo4j_map_kget, key);
 }
 
 std::string DbMap::to_string() {
@@ -183,33 +175,6 @@ return ret_val;
 //-----------------------------------------------------------------
 //------------------------DB List----------------------------------
 //-----------------------------------------------------------------
-
-void DbList::initialize(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs) {
-  result=r;
-  index=ind;
-  list_function = mf;
-  for (std::size_t i = 0; i < mfs.size(); i++) {
-    map_functions.push_back(mfs[i]);
-  }
-  for (std::size_t j = 0; j < key_list.size(); j++) {
-    keys.push_back(key_list[j]);
-  }
-}
-
-//Constructor
-DbList::DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs) {
-initialize(r, ind, key_list, mf, mfs);
-}
-
-DbList::DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, std::vector<unsigned int> inds, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, std::vector<IndexGenerationFunction> lfs) {
-initialize(r, ind, key_list, mf, mfs);
-for (std::size_t i = 0; i < lfs.size(); i++) {
-  list_functions.push_back(lfs[i]);
-}
-for (std::size_t i = 0; i < inds.size(); i++) {
-  indices.push_back(inds[i]);
-}
-}
 
 //Get the value for this node/edge
 neo4j_value_t DbList::get_list() {
@@ -241,12 +206,8 @@ else {
     }
   }
   neo4j_value_t list = (*(list_function))(db_obj);
-  for (std::size_t i = 0; i < map_functions.size(); i++) {
-    neo4j_value_t key_str = neo4j_string(keys[i].c_str());
-    list = (*(map_functions[i]))(list, key_str);
-  }
-  for (std::size_t j=0; j < list_functions.size(); j++) {
-    list = (*(list_functions[j]))(list, indices[j]);
+  if (map_function) {
+    return (*(map_function))(list, neo4j_string(map_key.c_str()));
   }
   return list;
 }
@@ -264,11 +225,8 @@ unsigned int DbList::size() {
 //Retrieve the DB Object
 neo4j_value_t db_obj = get_list();
 
-//Get the map from the value using the map function
-neo4j_value_t list = (*list_function)(db_obj);
-
 //Return the map size
-return neo4j_list_length(list);
+return neo4j_list_length(db_obj);
 }
 
 //Get an element out of the list
@@ -306,13 +264,6 @@ char db_cstr[char_buffer_size];
 neo4j_string_value(element, db_cstr, char_buffer_size);
 std::string db_str (db_cstr);
 return db_str;
-}
-
-//Get a list element out of the list
-DbListInterface* DbList::get_list_element(unsigned int ind) {
-  indices.push_back(ind);
-  list_functions.push_back(neo4j_list_get);
-  return new DbList (result, index, keys, indices, list_function, map_functions, list_functions);
 }
 
 std::string DbList::to_string() {

@@ -4,6 +4,7 @@
 #include <exception>
 #include <vector>
 #include <unordered_map>
+#include <iostream>
 
 #include "factory/neo4j_interface.h"
 
@@ -23,22 +24,15 @@ neo4j_result_t *result = NULL;
 int index;
 int path_index;
 ValueGenerationFunction list_function;
-std::vector<KeyGenerationFunction> map_functions;
-std::vector<IndexGenerationFunction> list_functions;
-std::vector<std::string> keys;
-std::vector<unsigned int> indices;
+KeyGenerationFunction map_function = NULL;
+std::string map_key;
 neo4j_value_t get_list();
-void initialize(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs);
 neo4j_value_t get_list_value(unsigned int ind);
 public:
   DbList(neo4j_result_t *r, unsigned int ind, ValueGenerationFunction lf) {result=r;index=ind;list_function=lf;}
-  DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs);
-  DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, std::vector<unsigned int> inds, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, std::vector<IndexGenerationFunction> lfs);
   DbList(neo4j_result_t *r, unsigned int ind, ValueGenerationFunction lf, unsigned int pindex) {result=r;index=ind;list_function=lf;path_index=pindex;}
-  DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, unsigned int pindex);
-  DbList(neo4j_result_t *r, unsigned int ind, std::vector<std::string> key_list, std::vector<unsigned int> inds, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs, std::vector<IndexGenerationFunction> lfs, unsigned int pindex);
+  DbList(neo4j_result_t *r, unsigned int ind, ValueGenerationFunction lf, unsigned int pindex, KeyGenerationFunction mf, std::string mf_key) {result=r;index=ind;list_function=lf;path_index=pindex;map_function=mf;map_key=mf_key;}
   ~DbList() {}
-  DbListInterface* get_list_element(unsigned int ind);
   bool get_bool_element(unsigned int ind);
   int get_int_element(unsigned int ind);
   double get_float_element(unsigned int ind);
@@ -70,7 +64,6 @@ public:
   bool get_bool_element(std::string key);
   int get_int_element(std::string key);
   double get_float_element(std::string key);
-  DbMapInterface* get_map_element(std::string key);
   DbListInterface* get_list_element(std::string key);
   std::string to_string();
 };

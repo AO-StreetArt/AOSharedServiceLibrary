@@ -81,6 +81,15 @@ void run_on_results(ResultsIteratorInterface *results) {
           if (map->element_exists("name")) {
             std::cout << map->get_string_element("name") << std::endl;
           }
+
+          std::cout << "Printing List Property" << std::endl;
+          if (map->element_exists("list")) {
+            DbListInterface *list_prop = map->get_list_element("list");
+            std::cout << "List Size: " << list_prop->size() << std::endl;
+            std::cout << "List Contents: [" << list_prop->get_int_element(0) << ", " << \
+              list_prop->get_int_element(1) << ", " << list_prop->get_int_element(2) << "]" << std::endl;
+            delete list_prop;
+          }
           delete map;
         }
         delete obj;
@@ -232,19 +241,19 @@ neo = neo4j_factory.get_neo4j_interface("neo4j://localhost:7687");
 run_test("RETURN 'hello world'", "Hello World");
 
 //Creation with Return
-run_test("CREATE (you:Person {name:'E'}) RETURN you", "Creation with return");
+run_test("CREATE (you:Person {name:'E', list: [1, 2, 3]}) RETURN you", "Creation with return");
 
 //Match
 run_test("MATCH (you:Person) WHERE you.name = 'E' RETURN you", "Match");
 
 //Match & Create
-run_test("MATCH (you:Person {name:'E'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j'}) RETURN you, like, neo", "Match & Create");
+run_test("MATCH (you:Person {name:'E'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j', list: [4, 5, 6]}) RETURN you, like, neo", "Match & Create");
 
 //Query Failure
-run_test("MATCH (you:Person {name:'E'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j') RETURN you, like, neo", "Bad Query");
+run_test("MATCH (you:Person {name:'E'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j', list: [1, 2, 3]) RETURN you, like, neo", "Bad Query");
 
 //Query Parameters
-run_test("CREATE (you:Gelatin {name:1}) RETURN you", "Query Parameters - Additional Data Addition");
+run_test("CREATE (you:Gelatin {name:1, list: [1, 2, 3]}) RETURN you", "Query Parameters - Additional Data Addition");
 std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params1;
 Neo4jQueryParameterInterface* name_param = neo4j_factory.get_neo4j_query_parameter(1);
 query_params1.emplace("inp_name", name_param);
@@ -256,9 +265,9 @@ query_params2.emplace("inp_name", name_param2);
 run_test("MATCH (you:Person) WHERE you.name = {inp_name} RETURN you", "String Query Parameters", query_params2);
 
 //Path Test
-run_test("CREATE (base:CoordinateSystem {name: '1'}) RETURN base", "Path Test - Create Base");
-run_test("MATCH (base:CoordinateSystem {name: '1'}) CREATE (base)-[transform:Transform {matrix: [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}]->(next:CoordinateSystem {name: '2'}) RETURN base, transform, next", "Path Test - Create First Connection");
-run_test("MATCH (base:CoordinateSystem {name: '1'})-[transform:Transform]->(next:CoordinateSystem {name: '2'}) CREATE (next)-[nexttransform:Transform {matrix: [1,1,0,1,0,1,0,1,1,0,1,1,0,0,0,1]}]->(final:CoordinateSystem {name: '3'}) RETURN base, transform, next, nexttransform, final", "Path Test - Create Second Connection");
+run_test("CREATE (base:CoordinateSystem {name: '1', list: [7, 8, 9]}) RETURN base", "Path Test - Create Base");
+run_test("MATCH (base:CoordinateSystem {name: '1'}) CREATE (base)-[transform:Transform {matrix: [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}]->(next:CoordinateSystem {name: '2', list: [10, 11, 12]}) RETURN base, transform, next", "Path Test - Create First Connection");
+run_test("MATCH (base:CoordinateSystem {name: '1'})-[transform:Transform]->(next:CoordinateSystem {name: '2'}) CREATE (next)-[nexttransform:Transform {matrix: [1,1,0,1,0,1,0,1,1,0,1,1,0,0,0,1]}]->(final:CoordinateSystem {name: '3', list: [1, 2, 3]}) RETURN base, transform, next, nexttransform, final", "Path Test - Create Second Connection");
 run_test("MATCH (base:CoordinateSystem {name:'1'}), (next:CoordinateSystem {name:'3'}), p = shortestPath((base)-[r*]-(next)) RETURN p", "Path Test");
 
 delete name_param;
