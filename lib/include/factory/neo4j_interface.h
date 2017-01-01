@@ -44,9 +44,6 @@ public:
 
   virtual ~DbListInterface() {}
 
-  //! Get a list element out of a list
-  virtual DbListInterface* get_list_element(unsigned int ind) = 0;
-
   //! Get a bool element out of a list
   virtual bool get_bool_element(unsigned int ind) = 0;
 
@@ -98,9 +95,6 @@ public:
 
   //! Get a float element out of a map
   virtual double get_float_element(std::string key) = 0;
-
-  //! Get a map element out of a map
-  virtual DbMapInterface* get_map_element(std::string key) = 0;
 
   //! Get a list element out of a map
   virtual DbListInterface* get_list_element(std::string key) = 0;
