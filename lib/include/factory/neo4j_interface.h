@@ -216,7 +216,8 @@ public:
 //! Neo4j Query Parameter Interface
 
 //! A query parameter to be inserted into a
-//! Query prior to execution.
+//! Query prior to execution.  This could be
+//! Either a single value or a list
 class Neo4jQueryParameterInterface {
 public:
 
@@ -228,14 +229,47 @@ public:
   //! Get the boolean value, if any
   virtual bool get_boolean_value() = 0;
 
-  //! Get the string value, if any
+  //! Get the boolean value at the specified index, if any
+  virtual bool get_boolean_value(int index) = 0;
+
+  //! Get the string value , if any
   virtual std::string get_string_value() = 0;
+
+  //! Get the string value at the specified index, if any
+  virtual std::string get_string_value(int index) = 0;
 
   //! Get the integer value, if any
   virtual int get_integer_value() = 0;
 
+  //! Get the integer valueat the specified index, if any
+  virtual int get_integer_value(int index) = 0;
+
   //! Get the double value, if any
   virtual double get_double_value() = 0;
+
+  //! Get the double value at the specified index, if any
+  virtual double get_double_value(int index) = 0;
+
+  //! Is the parameter a list?
+  virtual bool is_array() = 0;
+
+  //! The size of the list
+  virtual unsigned int size() = 0;
+
+  //! Add a boolean list value
+  virtual void add_value(bool new_val) = 0;
+
+  //! Add a string list value
+  virtual void add_value(std::string new_val) = 0;
+
+  //! Add a string list value
+  virtual void add_value(const char * new_val) = 0;
+
+  //! Add an integer list value
+  virtual void add_value(int new_val) = 0;
+
+  //! Add a float list value
+  virtual void add_value(float new_val) = 0;
 };
 
 //! Neo4j Query Interface

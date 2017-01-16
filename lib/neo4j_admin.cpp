@@ -420,6 +420,110 @@ else {
 }
 
 //-----------------------------------------------------------------
+//----------------Neo4j Query Parameters---------------------------
+//-----------------------------------------------------------------
+
+void Neo4jQueryParameter::add_value(bool new_val) {
+  std::string err_msg;
+  if (!is_list) {
+    err_msg = "Trying to add value to non-arry parameter";
+    throw Neo4jException(err_msg);
+  }
+  else {
+    if (type==-1 || type==_BOOL_TYPE) {
+      bool_values.push_back(new_val);
+      type=_BOOL_TYPE;
+    }
+    else {
+      err_msg = "Only single-type arrays are supported";
+      throw Neo4jException(err_msg);
+    }
+  }
+}
+
+void Neo4jQueryParameter::add_value(std::string new_val) {
+  std::string err_msg;
+  if (!is_list) {
+    err_msg = "Trying to add value to non-arry parameter";
+    throw Neo4jException(err_msg);
+  }
+  else {
+    if (type==-1 || type==_STR_TYPE) {
+      str_values.push_back(new_val);
+      type=_STR_TYPE;
+    }
+    else {
+      err_msg = "Only single-type arrays are supported";
+      throw Neo4jException(err_msg);
+    }
+  }
+}
+
+void Neo4jQueryParameter::add_value(const char * new_val) {
+  std::string new_str (new_val);
+  add_value(new_str);
+}
+
+void Neo4jQueryParameter::add_value(int new_val) {
+  std::string err_msg;
+  if (!is_list) {
+    err_msg = "Trying to add value to non-arry parameter";
+    throw Neo4jException(err_msg);
+  }
+  else {
+    if (type==-1 || type==_INT_TYPE) {
+      int_values.push_back(new_val);
+      type=_INT_TYPE;
+    }
+    else {
+      err_msg = "Only single-type arrays are supported";
+      throw Neo4jException(err_msg);
+    }
+  }
+}
+
+void Neo4jQueryParameter::add_value(float new_val) {
+  if (!is_list) {
+    std::string err_msg = "Trying to add value to non-arry parameter";
+    throw Neo4jException(err_msg);
+  }
+  else {
+    if (type==-1 || type==_FLT_TYPE) {
+      double_values.push_back(new_val);
+      type=_FLT_TYPE;
+    }
+    else {
+      std::string err_msg = "Only single-type arrays are supported";
+      throw Neo4jException(err_msg);
+    }
+  }
+}
+
+unsigned int Neo4jQueryParameter::size() {
+  if (!is_list) {
+    std::string err_msg = "Trying to take the size of a non-arry parameter";
+    throw Neo4jException(err_msg);
+  }
+  else {
+    if (type==_FLT_TYPE) {
+      return double_values.size();
+    }
+    else if (type==_INT_TYPE) {
+      return int_values.size();
+    }
+    else if (type==_STR_TYPE) {
+      return str_values.size();
+    }
+    else if (type==_BOOL_TYPE) {
+      return bool_values.size();
+    }
+    else {
+      return 0;
+    }
+  }
+}
+
+//-----------------------------------------------------------------
 //----------------------Neo4j Admin--------------------------------
 //-----------------------------------------------------------------
 
@@ -479,6 +583,8 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered
 //Get lists of keys and values for query parameters
 std::vector<std::string> keys;
 keys.reserve(query_params.size());
+
+
 std::vector<Neo4jQueryParameterInterface*> vals;
 vals.reserve(query_params.size());
 
@@ -493,7 +599,40 @@ neo4j_map_entry_t map_entries[keys.size()];
 for (unsigned int i = 0; i < keys.size(); i++) {
   Neo4jQueryParameterInterface* val = vals[i];
   int val_type = val->get_type();
-  if (val_type == _BOOL_TYPE) {
+  bool is_list = val->is_array();
+  if (is_list) {
+    //We have an array parameter
+    unsigned int list_size = val->size();
+    neo4j_value_t list_values[list_size];
+    //Boolean Array
+    if (val_type == _BOOL_TYPE) {
+      for (unsigned int j=0;j<list_size;j++) {
+        list_values[j] = neo4j_bool(val->get_boolean_value(j));
+      }
+    }
+    //String Array
+    else if (val_type == _STR_TYPE) {
+      for (unsigned int j=0;j<list_size;j++) {
+        list_values[j] = neo4j_string(val->get_string_value(j).c_str());
+      }
+    }
+    //Integer Array
+    else if (val_type == _INT_TYPE) {
+      for (unsigned int j=0;j<list_size;j++) {
+        list_values[j] = neo4j_int(val->get_integer_value(j));
+      }
+    }
+    //Float Array
+    else if (val_type == _FLT_TYPE) {
+      for (unsigned int j=0;j<list_size;j++) {
+        list_values[j] = neo4j_float(val->get_double_value(j));
+      }
+    }
+    neo4j_value_t array_val = neo4j_list(list_values, list_size);
+    map_entries[i] = neo4j_map_entry(keys[i].c_str(), array_val);
+  }
+  //We have single value parameter, and just need to determine the type
+  else if (val_type == _BOOL_TYPE) {
     neo4j_value_t bool_val = neo4j_bool(val->get_boolean_value());
     map_entries[i] = neo4j_map_entry(keys[i].c_str(), bool_val);
   }

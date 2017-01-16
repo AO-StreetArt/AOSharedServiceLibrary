@@ -135,23 +135,46 @@ const int _STR_TYPE = 1;
 const int _INT_TYPE = 2;
 const int _FLT_TYPE = 3;
 
+//TO-DO: Add list support
+//Lists support a single element type within them
+//add a list flag, then keep type identifier
+//add a blank constructor for lists
+//add_element method to push values onto lists
 class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
 bool bool_value;
 std::string str_value;
 int int_value;
 double double_value;
 int type;
+bool is_list;
+std::vector<bool> bool_values;
+std::vector<std::string> str_values;
+std::vector<int> int_values;
+std::vector<double> double_values;
+
 public:
-  Neo4jQueryParameter(bool inp_bool) {bool_value = inp_bool; type = _BOOL_TYPE;}
-  Neo4jQueryParameter(std::string inp_str) {str_value = inp_str; type = _STR_TYPE;}
-  Neo4jQueryParameter(const char * inp_str) {std::string new_val (inp_str); str_value = new_val; type = _STR_TYPE;}
-  Neo4jQueryParameter(int inp_int) {int_value = inp_int; type = _INT_TYPE;}
-  Neo4jQueryParameter(double inp_double) {double_value = inp_double; type = _FLT_TYPE;}
+  Neo4jQueryParameter() {is_list=true;type=-1;}
+  Neo4jQueryParameter(bool inp_bool) {bool_value = inp_bool; type = _BOOL_TYPE;is_list=false;}
+  Neo4jQueryParameter(std::string inp_str) {str_value = inp_str; type = _STR_TYPE;is_list=false;}
+  Neo4jQueryParameter(const char * inp_str) {std::string new_val (inp_str); str_value = new_val; type = _STR_TYPE;is_list=false;}
+  Neo4jQueryParameter(int inp_int) {int_value = inp_int; type = _INT_TYPE;is_list=false;}
+  Neo4jQueryParameter(double inp_double) {double_value = inp_double; type = _FLT_TYPE;is_list=false;}
   int get_type() {return type;}
-  bool get_boolean_value() {return bool_value;}
-  std::string get_string_value() {return str_value;}
-  int get_integer_value() {return int_value;}
-  double get_double_value() {return double_value;}
+  bool get_boolean_value() {if (!is_list) {return bool_value;} else {throw Neo4jException("Attempting to retrieve single value from array element");}}
+  bool get_boolean_value(int index) {if (is_list) {return bool_values[index];} else {throw Neo4jException("Attempting to retrieve indexed value from single element");}}
+  std::string get_string_value() {if (!is_list) {return str_value;} else {throw Neo4jException("Attempting to retrieve single value from array element");}}
+  std::string get_string_value(int index) {if (is_list) {return str_values[index];} else {throw Neo4jException("Attempting to retrieve indexed value from single element");}}
+  int get_integer_value() {if (!is_list) {return int_value;} else {throw Neo4jException("Attempting to retrieve full single from array element");}}
+  int get_integer_value(int index) {if (is_list) {return int_values[index];} else {throw Neo4jException("Attempting to retrieve indexed value from single element");}}
+  double get_double_value() {if (!is_list) {return double_value;} else {throw Neo4jException("Attempting to retrieve single value from array element");}}
+  double get_double_value(int index) {if (is_list) {return double_values[index];} else {throw Neo4jException("Attempting to retrieve indexed value from single element");}}
+  bool is_array() {return is_list;}
+  unsigned int size();
+  void add_value(bool new_val);
+  void add_value(std::string new_val);
+  void add_value(const char * new_val);
+  void add_value(int new_val);
+  void add_value(float new_val);
 };
 
 class Neo4jAdmin: public Neo4jInterface {

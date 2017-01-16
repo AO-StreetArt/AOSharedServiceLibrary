@@ -37,6 +37,7 @@ rapid development of new capabilities.
 * Mongo Interface
 * Redis Interface
 * Consul Interface
+* Neo4j Interface
 
 #### Basic Tools
 * Asynchronous Logging Module
