@@ -25,6 +25,8 @@ public:
   //! Get a Neo4j Interface instance
   Neo4jInterface* get_neo4j_interface(std::string conn_string) {return new Neo4jAdmin(conn_string);}
 
+  //! Get a Neo4j Array Query Parameter
+  Neo4jQueryParameterInterface* get_neo4j_query_parameter() {return new Neo4jQueryParameter();}
   //! Get a Neo4j Query Parameter
   Neo4jQueryParameterInterface* get_neo4j_query_parameter(bool inp_bool) {return new Neo4jQueryParameter(inp_bool);}
   //! Get a Neo4j Query Parameter

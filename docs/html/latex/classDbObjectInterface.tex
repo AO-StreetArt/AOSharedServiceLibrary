@@ -17,6 +17,8 @@ virtual bool \hyperlink{classDbObjectInterface_a3c1c9af939a1e038a082930e57c2afca
 \begin{DoxyCompactList}\small\item\em Is this a node? \end{DoxyCompactList}\item 
 virtual bool \hyperlink{classDbObjectInterface_af2ab883d4af94b4e7bd25a117bb1f39b}{is\-\_\-edge} ()=0
 \begin{DoxyCompactList}\small\item\em Is this an edge? \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classDbObjectInterface_ad4ec7a23a86d18fea543376dc6bf6c56}{is\-\_\-path} ()=0
+\begin{DoxyCompactList}\small\item\em Is this a path? \end{DoxyCompactList}\item 
 \hypertarget{classDbObjectInterface_a93c98f06ce3f5493525dd19b337cebbc}{virtual std\-::string \hyperlink{classDbObjectInterface_a93c98f06ce3f5493525dd19b337cebbc}{to\-\_\-string} ()=0}\label{classDbObjectInterface_a93c98f06ce3f5493525dd19b337cebbc}
 
 \begin{DoxyCompactList}\small\item\em Get the string representation of the object. \end{DoxyCompactList}\item 
@@ -25,16 +27,44 @@ virtual \hyperlink{classDbMapInterface}{Db\-Map\-Interface} $\ast$ \hyperlink{cl
 virtual \hyperlink{classDbListInterface}{Db\-List\-Interface} $\ast$ \hyperlink{classDbObjectInterface_a281232cca6b9f53f3881100b1a7e5915}{labels} ()=0
 \begin{DoxyCompactList}\small\item\em Get the labels of the node. \end{DoxyCompactList}\item 
 virtual std\-::string \hyperlink{classDbObjectInterface_a9c2f2de3322439ccdc8e16bd98388040}{type} ()=0
-\begin{DoxyCompactList}\small\item\em Get the type of the edge. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get the type of the edge. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classDbObjectInterface_aa3c62699db544791329860136732ddde}{forward} ()=0
+\begin{DoxyCompactList}\small\item\em Was the edge traversed in it's natural direction? \end{DoxyCompactList}\item 
+virtual unsigned int \hyperlink{classDbObjectInterface_a52f1decaf825e88d3f3e977770af58a0}{size} ()=0
+\begin{DoxyCompactList}\small\item\em Get the size of the path. \end{DoxyCompactList}\item 
+virtual \hyperlink{classDbObjectInterface}{Db\-Object\-Interface} $\ast$ \hyperlink{classDbObjectInterface_ac6e90274f7a162ffc9c49570ff8f69b6}{get\-\_\-path\-\_\-element} (int path\-\_\-index)=0
+\begin{DoxyCompactList}\small\item\em Get an element from a path object. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 A Neo4j Object. 
 
-This is returned from a result tree and represents either a node or an edge 
+This is returned from a result tree and represents either a node, an edge, or a path 
 
 \subsection{Member Function Documentation}
-\hypertarget{classDbObjectInterface_af2ab883d4af94b4e7bd25a117bb1f39b}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!is\-\_\-edge@{is\-\_\-edge}}
+\hypertarget{classDbObjectInterface_aa3c62699db544791329860136732ddde}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!forward@{forward}}
+\index{forward@{forward}!DbObjectInterface@{Db\-Object\-Interface}}
+\subsubsection[{forward}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Db\-Object\-Interface\-::forward (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classDbObjectInterface_aa3c62699db544791329860136732ddde}
+
+
+Was the edge traversed in it's natural direction? 
+
+This functions only for edge objects which were taken from a Path \hypertarget{classDbObjectInterface_ac6e90274f7a162ffc9c49570ff8f69b6}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!get\-\_\-path\-\_\-element@{get\-\_\-path\-\_\-element}}
+\index{get\-\_\-path\-\_\-element@{get\-\_\-path\-\_\-element}!DbObjectInterface@{Db\-Object\-Interface}}
+\subsubsection[{get\-\_\-path\-\_\-element}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Db\-Object\-Interface}$\ast$ Db\-Object\-Interface\-::get\-\_\-path\-\_\-element (
+\begin{DoxyParamCaption}
+\item[{int}]{path\-\_\-index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classDbObjectInterface_ac6e90274f7a162ffc9c49570ff8f69b6}
+
+
+Get an element from a path object. 
+
+Get an element from a path at the specified index. This functions only for path objects \hypertarget{classDbObjectInterface_af2ab883d4af94b4e7bd25a117bb1f39b}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!is\-\_\-edge@{is\-\_\-edge}}
 \index{is\-\_\-edge@{is\-\_\-edge}!DbObjectInterface@{Db\-Object\-Interface}}
 \subsubsection[{is\-\_\-edge}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Db\-Object\-Interface\-::is\-\_\-edge (
 \begin{DoxyParamCaption}
@@ -45,7 +75,7 @@ This is returned from a result tree and represents either a node or an edge
 
 Is this an edge? 
 
-Return false if this is a node object. Return true if this is an edge object. \hypertarget{classDbObjectInterface_a3c1c9af939a1e038a082930e57c2afca}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!is\-\_\-node@{is\-\_\-node}}
+Return false if this is a node or path object. Return true if this is an edge object. \hypertarget{classDbObjectInterface_a3c1c9af939a1e038a082930e57c2afca}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!is\-\_\-node@{is\-\_\-node}}
 \index{is\-\_\-node@{is\-\_\-node}!DbObjectInterface@{Db\-Object\-Interface}}
 \subsubsection[{is\-\_\-node}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Db\-Object\-Interface\-::is\-\_\-node (
 \begin{DoxyParamCaption}
@@ -56,7 +86,18 @@ Return false if this is a node object. Return true if this is an edge object. \h
 
 Is this a node? 
 
-Return true if this is a node object. Return false if this is an edge object. \hypertarget{classDbObjectInterface_a281232cca6b9f53f3881100b1a7e5915}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!labels@{labels}}
+Return true if this is a node object. Return false if this is an edge or path object. \hypertarget{classDbObjectInterface_ad4ec7a23a86d18fea543376dc6bf6c56}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!is\-\_\-path@{is\-\_\-path}}
+\index{is\-\_\-path@{is\-\_\-path}!DbObjectInterface@{Db\-Object\-Interface}}
+\subsubsection[{is\-\_\-path}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Db\-Object\-Interface\-::is\-\_\-path (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classDbObjectInterface_ad4ec7a23a86d18fea543376dc6bf6c56}
+
+
+Is this a path? 
+
+Return false if this is a node or edge object. Return true if this is a path object. \hypertarget{classDbObjectInterface_a281232cca6b9f53f3881100b1a7e5915}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!labels@{labels}}
 \index{labels@{labels}!DbObjectInterface@{Db\-Object\-Interface}}
 \subsubsection[{labels}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Db\-List\-Interface}$\ast$ Db\-Object\-Interface\-::labels (
 \begin{DoxyParamCaption}
@@ -78,7 +119,18 @@ This functions only for node objects \hypertarget{classDbObjectInterface_aeede74
 
 Get the properties of the object. 
 
-This functions for both node objects and edge objects \hypertarget{classDbObjectInterface_a9c2f2de3322439ccdc8e16bd98388040}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!type@{type}}
+This functions for both node objects and edge objects \hypertarget{classDbObjectInterface_a52f1decaf825e88d3f3e977770af58a0}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!size@{size}}
+\index{size@{size}!DbObjectInterface@{Db\-Object\-Interface}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}virtual unsigned int Db\-Object\-Interface\-::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classDbObjectInterface_a52f1decaf825e88d3f3e977770af58a0}
+
+
+Get the size of the path. 
+
+This functions only for path objects \hypertarget{classDbObjectInterface_a9c2f2de3322439ccdc8e16bd98388040}{\index{Db\-Object\-Interface@{Db\-Object\-Interface}!type@{type}}
 \index{type@{type}!DbObjectInterface@{Db\-Object\-Interface}}
 \subsubsection[{type}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\-::string Db\-Object\-Interface\-::type (
 \begin{DoxyParamCaption}
