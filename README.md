@@ -33,7 +33,6 @@ rapid development of new capabilities.
 
 #### Connections to Critical External Tools
 
-* Couchbase Interface
 * Mongo Interface
 * Redis Interface
 * Consul Interface
@@ -49,7 +48,7 @@ rapid development of new capabilities.
 * Support for Ubuntu 14.04, Debian 7, CentOS 7, RHEL 7
 * Easy to construct Docker Images with templates
 
-In order to use the respective interfaces, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Couchbase] (http://www.couchbase.com/), [Redis] (http://redis.io/), and/or [Mongo] (https://www.mongodb.com) to connect to.
+In order to use the respective interfaces, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Neo4j] (https://neo4j.com/), [Redis] (http://redis.io/), and/or [Mongo] (https://www.mongodb.com) to connect to.
 
 Full API Documentation is available via doxygen, and the latest execution is stored in the docs/html folder.
 

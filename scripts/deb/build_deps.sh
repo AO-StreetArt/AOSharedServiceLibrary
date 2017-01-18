@@ -105,15 +105,6 @@ if [ ! -f /usr/local/include/zmq.hpp ]; then
 
 fi
 
-if [ ! -f ./couchbase-release-1.0-2-amd64.deb ]; then
-
-  printf "Pulling Down Repositories for Couchbase Client"
-
-  #Get the Couchbase dependecies
-  wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
-
-fi
-
 printf "Building Hayai, optional, for benchmarks"
 
 #Install hayai, for compiling benchmarks
@@ -131,6 +122,6 @@ printf "Update cache and install final dependencies through apt-get"
 sudo apt-get -y update
 
 #Install the dependencies
-sudo apt-get -y install libcouchbase-dev libcouchbase2-bin liblog4cpp5-dev
+sudo apt-get -y install liblog4cpp5-dev
 
 printf "Finished installing dependencies"

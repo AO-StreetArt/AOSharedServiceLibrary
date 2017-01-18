@@ -37,8 +37,6 @@ Note: Be sure to delete anything you build with the factories!
 
 ### [Mongo Interface] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use/drivers/mongo)
 
-### [Couchbase Interface] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use/drivers/couchbase)
-
 ### [Redis Interface] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use/drivers/redis)
 
 ### [Neo4j Interface] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use/drivers/neo4j)

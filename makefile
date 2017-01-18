@@ -8,18 +8,15 @@ CC = g++
 SLC = ar rcs
 CFLAGS  = -g -Wall
 STD = -std=c++11
-NO_COUCHBASE = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/redis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o\
+OBJS = lib/cli.o lib/logging.o lib/http_admin.o lib/zmqio.o lib/redis_admin.o lib/consul_admin.o lib/logging_interface.o lib/uuid_admin.o\
  lib/service.o lib/http_server.o lib/properties_reader.o lib/mongo_admin.o lib/neo4j_admin.o
-OBJS = $(NO_COUCHBASE) lib/couchbase_admin.o
 TESTS_NOCR = cli_test consul_test logging_test http_test zmqio_test http_server_test properties_reader_test uuid_test mongo_test neo4j_test
-TESTS_NOCOUCHBASE = $(TESTS_NOCR) redis_tests
-TESTS = $(TESTS_NOCOUCHBASE) couchbase_test
-TESTS_RHEL_NOCOUCHBASE = $(TESTS_NOCR) redis_tests_rhel
-TESTS_RHEL = $(TESTS_NOCR) redis_tests_rhel couchbase_test
-BENCHMARKS_NOREDIS = consul_benchmark logging_benchmark http_benchmark couchbase_benchmark
+TESTS = $(TESTS_NOCR) redis_tests
+TESTS_RHEL = $(TESTS_NOCR) redis_tests_rhel
+BENCHMARKS_NOREDIS = consul_benchmark logging_benchmark http_benchmark
 BENCHMARKS = $(BENCHMARKS_NOREDIS) redis_benchmark
 BENCHMARKS_RHEL = $(BENCHMARKS_NOREDIS) redis_benchmark_rhel
-INCL_NOCOUCHBASE = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/local/include/aossl/factory_uuid.h /usr/local/include/aossl/factory_redis.h\
+INCL = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/local/include/aossl/factory_uuid.h /usr/local/include/aossl/factory_redis.h\
  /usr/local/include/aossl/factory_props.h /usr/local/include/aossl/factory_logging.h /usr/local/include/aossl/factory_http_server.h /usr/local/include/aossl/factory_http_client.h\
   /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/http_admin.h\
 	 /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/redis_admin.h /usr/local/include/aossl/zmqio.h\
@@ -30,13 +27,12 @@ INCL_NOCOUCHBASE = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq
 			  /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h\
 				  /usr/local/include/aossl/mongo_admin.h /usr/local/include/aossl/factory/mongo_interface.h /usr/local/include/aossl/factory_mongo.h\
 						/usr/local/include/aossl/neo4j_admin.h /usr/local/include/aossl/factory/neo4j_interface.h /usr/local/include/aossl/factory_neo4j.h
-INCL = $(INCL_NOCOUCHBASE) /usr/local/include/aossl/factory_couchbase.h /usr/local/include/aossl/couchbase_admin.h /usr/local/include/aossl/factory/couchbase_interface.h
 BASE_DIR = /usr/local/include/aossl
 INCL_DIR = /usr/local/include/aossl/factory
 LIBS = -lpthread -llog4cpp
-FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lmongoc-1.0 -lbson-1.0 -lneo4j-client -lssl -lcrypto -lm `pkg-config --cflags --libs hiredis`
-FULL_LIBS_RHEL = -lpthread -llog4cpp -lzmq -luuid -lcurl -lcouchbase -levent -lhiredis -lmongoc-1.0 -lbson-1.0 -lneo4j-client -lssl -lcrypto -lm
-FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/factory_couchbase.h lib/include/factory_http_client.h lib/include/factory_http_server.h lib/include/factory_logging.h\
+FULL_LIBS = -lpthread -llog4cpp -lzmq -luuid -lcurl -levent -lmongoc-1.0 -lbson-1.0 -lneo4j-client -lssl -lcrypto -lm `pkg-config --cflags --libs hiredis`
+FULL_LIBS_RHEL = -lpthread -llog4cpp -lzmq -luuid -lcurl -levent -lhiredis -lmongoc-1.0 -lbson-1.0 -lneo4j-client -lssl -lcrypto -lm
+FACTORIES = lib/include/factory_cli.h lib/include/factory_consul.h lib/include/factory_http_client.h lib/include/factory_http_server.h lib/include/factory_logging.h\
 	lib/include/factory_props.h lib/include/factory_redis.h lib/include/factory_uuid.h lib/include/factory_zmq.h lib/include/factory_mongo.h lib/include/factory_neo4j.h
 INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0
 LINK_DIRS = -L/usr/local/lib
@@ -48,17 +44,11 @@ LINK_DIRS = -L/usr/local/lib
 #
 default: libaossl.a
 
-no-couchbase: libaossl-no-couchbase
-
 # typing 'make test' will build the tests
 test: $(TESTS)
 
-test-no-couchbase: $(TESTS_NOCOUCHBASE)
-
 # 'make rhel-test' will build the tests on RHEL/CentOS
 rhel-test: $(TESTS_RHEL)
-
-rhel-test-no-couchbase: $(TESTS_RHEL_NOCOUCHBASE)
 
 # typing 'make benchmarks' will build the benchmarks
 benchmarks: $(BENCHMARKS)
@@ -68,9 +58,6 @@ rhel-benchmarks: $(BENCHMARKS_RHEL)
 
 # typing 'sudo make install' will install the libraries into system paths
 install: /usr/local/lib/libaossl.a $(INCL)
-
-# typing 'sudo make install' will install the libraries into system paths
-install-no-couchbase: libaossl-install-no-couchbase $(INCL_NOCOUCHBASE)
 
 # To start over from scratch, type 'make clean', then 'sudo make uninstall'.  This
 # removes the executable file, as well as old .o object
@@ -88,9 +75,6 @@ clean: clean_local clean_tests clean_benchmarks
 	cp $< $@
 
 /usr/local/include/aossl/factory_consul.h: lib/include/factory_consul.h
-	cp $< $@
-
-/usr/local/include/aossl/factory_couchbase.h: lib/include/factory_couchbase.h
 	cp $< $@
 
 /usr/local/include/aossl/factory_http_client.h: lib/include/factory_http_client.h
@@ -129,9 +113,6 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/include/aossl/consul_admin.h: lib/include/consul_admin.h
 	cp $< $@
 
-/usr/local/include/aossl/couchbase_admin.h: lib/include/couchbase_admin.h
-	cp $< $@
-
 /usr/local/include/aossl/http_admin.h: lib/include/http_admin.h
 	cp $< $@
 
@@ -166,9 +147,6 @@ clean: clean_local clean_tests clean_benchmarks
 	cp $< $@
 
 /usr/local/include/aossl/factory/consul_interface.h: lib/include/factory/consul_interface.h
-	cp $< $@
-
-/usr/local/include/aossl/factory/couchbase_interface.h: lib/include/factory/couchbase_interface.h
 	cp $< $@
 
 /usr/local/include/aossl/factory/db_admin.h: lib/include/factory/db_admin.h
@@ -210,21 +188,12 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/lib/libaossl.a: libaossl.a
 	cp $< $@
 
-libaossl-install-no-couchbase: libaossl-no-couchbase
-	cp libaossl.a /usr/local/lib/libaossl.a
-
 # Generate Benchmarks
 consul_benchmark: lib/consul_benchmark.o lib/logging.o lib/consul_admin.o lib/http_admin.o lib/logging_interface.o lib/service.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid -lcurl $(STD)
 
 lib/consul_benchmark.o: lib/consul_benchmark.cpp lib/include/factory/consul_interface.h lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_benchmark.cpp $(STD)
-
-couchbase_benchmark: lib/couchbase_benchmark.o lib/logging.o lib/couchbase_admin.o lib/logging_interface.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid -lcouchbase $(STD)
-
-lib/couchbase_benchmark.o: lib/couchbase_benchmark.cpp lib/include/factory/couchbase_interface.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
-	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_benchmark.cpp $(STD)
 
 http_benchmark: lib/http_benchmark.o lib/logging.o lib/http_admin.o lib/logging_interface.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -luuid -lcurl $(STD)
@@ -296,14 +265,6 @@ consul_test: lib/consul_test.o lib/consul_admin.o lib/http_admin.o lib/service.o
 lib/consul_test.o: lib/consul_test.cpp lib/include/consul_admin.h lib/include/http_admin.h lib/include/service.h
 	$(CC) $(CFLAGS) -o $@ -c lib/consul_test.cpp $(STD)
 
-# Create the executable file couchbase_test
-couchbase_test: lib/couchbase_admin.o lib/couchbase_test.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -lcouchbase $(STD)
-
-# Create the object file couchbase_test.o
-lib/couchbase_test.o: lib/couchbase_test.cpp lib/include/couchbase_admin.h lib/include/logging.h lib/include/factory/db_admin.h lib/include/factory/writeable.h lib/include/factory/logging_interface.h
-	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_test.cpp $(STD)
-
 # Create the executable file http_test
 http_test: lib/http_admin.o lib/http_test.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) -lcurl $(STD)
@@ -371,9 +332,6 @@ lib/factory_test.o: lib/factory_test.cpp $(FACTORIES)
 libaossl.a:  $(OBJS)
 	$(SLC) $@ $(OBJS)
 
-libaossl-no-couchbase: $(NO_COUCHBASE)
-	$(SLC) libaossl.a $(NO_COUCHBASE)
-
 # Create the object file neo4j_admin.o
 lib/neo4j_admin.o: lib/neo4j_admin.cpp lib/include/neo4j_admin.h lib/include/factory/neo4j_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/neo4j_admin.cpp $(STD)
@@ -396,10 +354,6 @@ lib/http_server.o: lib/http_server.cpp lib/include/http_server.h lib/include/fac
 # Create the object file redis_admin.o
 lib/redis_admin.o:  lib/redis_admin.cpp
 	$(CC) $(CFLAGS) -o $@ -c lib/redis_admin.cpp $(STD)
-
-# Create the object file couchbase_admin.o
-lib/couchbase_admin.o:  lib/couchbase_admin.cpp lib/include/couchbase_admin.h lib/include/logging.h lib/include/factory/db_admin.h lib/include/factory/writeable.h
-	$(CC) $(CFLAGS) -o $@ -c lib/couchbase_admin.cpp $(STD)
 
 # Create the object file zmqio.o
 lib/zmqio.o:  lib/zmqio.cpp lib/include/factory/logging_interface.h

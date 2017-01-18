@@ -32,10 +32,6 @@ RUN git clone https://github.com/cleishm/libneo4j-client.git neo
 
 RUN cd neo && ./autogen.sh && ./configure --disable-tools && make clean check && sudo make install
 
-#Get the Couchbase dependecies
-RUN wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-2-amd64.deb
-RUN dpkg -i couchbase-release-1.0-2-amd64.deb
-
 #Get the Redis Dependencies
 RUN git clone https://github.com/redis/hiredis.git ./hiredis
 RUN cd ./hiredis && make && make install
@@ -72,7 +68,7 @@ RUN apt-add-repository -y ppa:bruun/hayai
 RUN apt-get update
 
 #Install the dependencies
-RUN apt-get install -y libcouchbase-dev libcouchbase2-bin build-essential liblog4cpp5-dev libhayai-dev
+RUN apt-get install -y build-essential liblog4cpp5-dev libhayai-dev
 
 #Expose some of the default ports
 EXPOSE 22
