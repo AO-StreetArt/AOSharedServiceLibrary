@@ -8,6 +8,7 @@
 #include <string.h>
 #include <sstream>
 #include <curl/curl.h>
+#include <mutex>
 
 #include "factory/http_interface.h"
 
@@ -26,6 +27,7 @@ size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
 class HttpAdmin: public HttpInterface
 {
 CURL* curl;
+std::mutex data_mutex;
 bool send(std::string url, int timeout);
 public:
 
