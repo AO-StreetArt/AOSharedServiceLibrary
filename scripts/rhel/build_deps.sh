@@ -1,8 +1,7 @@
 #!/bin/bash
-#This script will attempt to build CLyman dependencies
+#This script will attempt to build AOSSL dependencies
 
 #Based on CentOS 7
-#Not intended for use with other OS (should function correctly with Redhat 7, untested)
 
 printf "Creating Dependency Folder"
 PRE=./downloads
@@ -10,7 +9,7 @@ mkdir $PRE
 
 printf "Calling apt-get update"
 
-#Update the Ubuntu Server
+#Update the Server
 sudo yum -y update
 
 #Build the dependencies and place them in the correct places

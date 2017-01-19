@@ -1,8 +1,7 @@
 #!/bin/bash
-#This script will attempt to build CLyman dependencies
+#This script will attempt to build AOSSL dependencies
 
 #Based on Ubuntu 14.04 LTS
-#Not intended for use with other OS (should function correctly with Debian 7, untested)
 
 printf "Creating Dependency Folder"
 PRE=./downloads
