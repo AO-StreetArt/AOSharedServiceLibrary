@@ -22,14 +22,40 @@ public:
   //! Delete a Service Component Factory
   ~RedisComponentFactory() {}
 
+  //! Get a Redis Interface Instance
   inline RedisInterface* get_redis_interface(std::string hostname, int port, int timeout_seconds, int timeout_microseconds)
   {
     return new RedisAdmin( hostname, port, timeout_seconds, timeout_microseconds);
   }
 
+  //! Get a Redis Interface Instance
   inline RedisInterface* get_redis_interface(std::string hostname, int port)
   {
     return new RedisAdmin( hostname, port);
+  }
+
+  //! Get a Redis Interface Instance
+  inline RedisInterface* get_redis_interface(std::string hostname, int port, int pool_size)
+  {
+    return new RedisAdmin( hostname, port, pool_size);
+  }
+
+  //! Get a Redis Interface Instance
+  inline RedisInterface* get_redis_interface(std::string hostname, int port, int timeout_seconds, int timeout_microseconds, int pool_size)
+  {
+    return new RedisAdmin( hostname, port, timeout_seconds, timeout_microseconds, pool_size);
+  }
+
+  //! Get a Redis Interface Instance
+  inline RedisInterface* get_redis_interface(RedisConnChain connection_list)
+  {
+    return new RedisAdmin( connection_list );
+  }
+
+  //! Get a Redis Interface Instance
+  inline RedisInterface* get_redis_interface(RedisConnChain connection_list, int pool_size)
+  {
+    return new RedisAdmin( connection_list, pool_size );
   }
 
   //! Get a Redis Cluster Interface instance

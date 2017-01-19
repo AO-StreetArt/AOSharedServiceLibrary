@@ -27,9 +27,6 @@ before_install:
   - cd $TRAVIS_BUILD_DIR
   - sudo apt-get install libssl-dev
 install:
-  #Install & Start Couchbase
-  - cd scripts/deb/ubuntu-12.04 && sudo ./install_couchbase.sh
-  - cd $TRAVIS_BUILD_DIR
   #Install & Start Consul
   - wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
   - unzip consul_0.6.4_linux_amd64.zip
@@ -53,6 +50,5 @@ script:
   - ./mongo_test
   - cd scripts && sudo ./test_http_server.sh
   - cd ..
-  - ./couchbase_test
   - ./consul_test
   - ./neo4j_test

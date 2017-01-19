@@ -4,27 +4,11 @@
 
 ## Overview
 
-Welcome to the AO Shared Service Library.  This is a framework for constructing C++ Microservices.
+Welcome to the AO Shared Service Library.  This is a framework designed for constructing C++ Microservices.
 This means smaller, more focused programs that perform a single function well and rely on inter-process
 communications to perform complex tasks.  
 
-### Why use AOSSL?
-
-Over the last twenty years, most enterprise scale applications have been built as 'monoliths', a single,
-large piece of software that must be deployed all at once.  This has a host of limitations, such as scalability
-and difficulty of highly-available systems.
-
-Microservices offer a different design, instead relying on many different programs that all communicate
-in order to provide all of the services once provided by the monolithic application.  This lets us
-scale by starting up more instances of programs, and introduces a system with no single point of failure.
-
-The AO Shared Service Library provides frameworks for microservices, ranging from communications protocols to
-useful tools all services need.  This is meant to reduce time-to-market on C++ Services, and is designed
-to be reliable and robust while maintaining high performance standards.
-
-It also provides a plug-and-play architecture, allowing users to pick elements of the framework they would
-like to use and exclude others.  This also promotes extensibility, as careful interface design allows for
-rapid development of new capabilities.
+While designed with a Microservice architecture in mind, AOSSL also seeks to maintain enough flexibility to allow for use with any program architecture and any other libraries.  AOSSL uses a plug-and-play architecture to allow users to pick and choose components they would like to use, and exclude others.  This is meant to reduce time-to-market on C++ Services, and is designed to be easy to use and reliable, while maintaining high performance standards.
 
 ### Features:
 #### Core Frameworks revolving around inter-service messaging protocols
@@ -33,7 +17,6 @@ rapid development of new capabilities.
 
 #### Connections to Critical External Tools
 
-* Couchbase Interface
 * Mongo Interface
 * Redis Interface
 * Consul Interface
@@ -46,10 +29,10 @@ rapid development of new capabilities.
 * Properties File Parser
 
 #### Platform Support
-* Support for Ubuntu 14.04, Debian 7, CentOS 7, RHEL 7
+* Support for Ubuntu 14.04, Ubuntu 16.04, Debian 7, Debian 8, CentOS 7, RHEL 7
 * Easy to construct Docker Images with templates
 
-In order to use the respective interfaces, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Couchbase] (http://www.couchbase.com/), [Redis] (http://redis.io/), and/or [Mongo] (https://www.mongodb.com) to connect to.
+In order to use the respective interfaces, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Neo4j] (https://neo4j.com/), [Redis] (http://redis.io/), and/or [Mongo] (https://www.mongodb.com) to connect to.
 
 Full API Documentation is available via doxygen, and the latest execution is stored in the docs/html folder.
 
@@ -60,3 +43,14 @@ Full API Documentation is available via doxygen, and the latest execution is sto
 * [Dependency Resolution] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps)
 * [Tests] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/tests)
 * [Building Documentation] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs)
+
+## Contributing
+
+All contributors are welcome, including (but not limited to) pull requests, issues, documentation, examples, and feature requests.  Please see the Code of Conduct file for an overview on the expectations for all contributors.
+
+There are a number of topics which have been identified as areas needing development, and contributors are encouraged to work on these areas as well.  
+
+* Sentinel & Cluster support for Redis Drivers
+* Benchmarks for Mongo & Neo4j
+* Expanded ZeroMQ Pub/Sub Architecture automated tests
+* Library testing with OSX and/or other Linux Distributions not already supported

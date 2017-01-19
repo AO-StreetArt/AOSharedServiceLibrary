@@ -89,17 +89,6 @@ fi
 
 if [ ! -f ./couchbase-release-1.0-2-amd64.deb ]; then
 
-  printf "Pulling Down Repositories for Couchbase Client"
-
-  #Get the Couchbase dependecies
-  # Only needed during first-time setup:
-  wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-0-x86_64.rpm
-  sudo rpm -ivh couchbase-release-1.0-0-x86_64.rpm
-
-fi
-
-if [ ! -f ./couchbase-release-1.0-2-amd64.deb ]; then
-
 printf "Building Hayai, optional, for benchmarks"
 
 #Install hayai, for compiling benchmarks
@@ -123,7 +112,7 @@ sudo rpm -Uvh log4cpp-devel-1.1.1-1.el7.x86_64.rpm
 sudo yum -y update
 
 #Install the dependencies
-sudo yum -y install libcouchbase-devel libcouchbase2-bin libuuid-devel libcurl-devel libevent-devel
+sudo yum -y install libuuid-devel libcurl-devel libevent-devel
 
 #Run ldconfig to ensure that all built libraries are on the linker path
 sudo ldconfig

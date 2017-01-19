@@ -3,15 +3,57 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <exception>
+#include <mutex>
+
+//TO-DO: Update Redis Admin to use connection pool
+//TO-DO: When an operation fails, it should automatically detect whether there are
+//Sentinels available and, if so, try to failover to another Redis Node.
 
 #ifndef REDIS_ADMIN
 #define REDIS_ADMIN
 
+//A struct containing the objects needed to run a query
+struct RedisSession {
+  redisContext *connection = NULL;
+  int index = -1;
+};
+
+//A Connection pool to ensure thread safety
+class RedisConnectionPool {
+//A pool of neo4j connections
+std::vector<RedisSession> connections;
+//Array of ints (0/1) which determine which connections are open vs closed
+int *slots;
+//Internal integers
+int connection_limit = 1;
+int start_connections = 1;
+int current_connection = -1;
+int current_max_connection = 1;
+int connection_creation_batch = 1;
+int timeout_seconds = 5;
+int timeout_microseconds = 0;
+std::string connection_string;
+std::string password;
+int port;
+std::mutex get_conn_mutex;
+void init_slots();
+void init_connections(const char * conn_str, const char * passwd, int con_port, int timeout_secs, int timeout_microsecs);
+public:
+  RedisConnectionPool(int size, const char * conn_str, const char * passwd, int con_port) {connection_limit=size;init_slots();init_connections(conn_str, passwd, con_port, timeout_seconds, timeout_microseconds);}
+  RedisConnectionPool(int size, const char * conn_str, const char * passwd, int con_port, int timeout_secs, int timeout_microsecs) {connection_limit=size;init_slots();init_connections(conn_str, passwd, con_port, timeout_secs, timeout_microsecs);}
+  RedisConnectionPool(int size, const char * conn_str, const char * passwd, int con_port, int timeout_secs, int timeout_microsecs, int start_conns) {init_slots();start_connections=start_conns;connection_limit=size;init_connections(conn_str, passwd, con_port, timeout_secs, timeout_microsecs);}
+  RedisConnectionPool(int size, const char * conn_str, const char * passwd, int con_port, int timeout_secs, int timeout_microsecs, int start_conns, int batch_size) {init_slots();start_connections=start_conns;connection_limit=size;connection_creation_batch=batch_size;init_connections(conn_str, passwd, con_port, timeout_secs, timeout_microsecs);}
+  ~RedisConnectionPool();
+  RedisSession* get_connection();
+  void release_connection(RedisSession *conn);
+};
+
+//The Redis Administrator that exposes key methods
 class RedisAdmin : public RedisInterface
 {
-redisContext *c = NULL;
-redisReply *reply = NULL;
-void init(std::string hostname, int port, int timeout_seconds, int timeout_microseconds);
+RedisConnectionPool *pool = NULL;
+void init(std::string hostname, std::string passwd, int port, int timeout_seconds, int timeout_microseconds, int pool_size);
 bool process_std_string_reply(redisReply *reply);
 bool process_std_int_reply(redisReply *reply);
 int return_int_reply(redisReply *reply);
@@ -21,13 +63,18 @@ public:
 
   //Constructors for single Redis Connections
   RedisAdmin(std::string hostname, int port);
+  RedisAdmin(std::string hostname, int port, int pool_size);
   RedisAdmin(std::string hostname, int port, int timeout_seconds, int timeout_microseconds);
+  RedisAdmin(std::string hostname, int port, int timeout_seconds, int timeout_microseconds, int pool_size);
 
   //Constructors for lists of Redis Connections (Sentinels)
   RedisAdmin(RedisConnChain connection_list);
 
+  //Constructors for lists of Redis Connections (Sentinels)
+  RedisAdmin(RedisConnChain connection_list, int pool_size);
+
   //Destructor
-  ~RedisAdmin();
+  ~RedisAdmin() {if (pool) {delete pool;}}
 
   //! Load a value from Redis
   std::string load ( std::string key );
@@ -53,7 +100,7 @@ public:
 
   bool setex ( std::string key, std::string val, unsigned int second);
 
-  bool append ( std::string key, std::string val );
+  int append ( std::string key, std::string val );
 
   int len ( std::string key );
 

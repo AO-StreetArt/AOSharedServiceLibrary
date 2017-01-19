@@ -5,11 +5,49 @@
 #include <vector>
 #include <unordered_map>
 #include <iostream>
+#include <mutex>
 
 #include "factory/neo4j_interface.h"
 
 #ifndef AOSSL_NEO4J_ADMIN
 #define AOSSL_NEO4J_ADMIN
+
+//-------------------------------------------------------------------
+////------------------Connection Pooling-----------------------------
+////-----------------------------------------------------------------
+
+//A struct containing the objects needed to run a query
+struct Neo4jQuerySession {
+  neo4j_connection_t *connection = NULL;
+  neo4j_session_t *session = NULL;
+  int index = -1;
+};
+
+//A Connection pool to ensure thread safety
+class Neo4jConnectionPool {
+//A pool of neo4j connections
+std::vector<Neo4jQuerySession> connections;
+//Array of ints (0/1) which determine which connections are open vs closed
+int *slots;
+//Internal integers
+int connection_limit = 1;
+int start_connections = 1;
+int current_connection = -1;
+int current_max_connection = 1;
+int connection_creation_batch = 1;
+bool secure = false;
+std::string connection_string;
+std::mutex get_conn_mutex;
+void init_slots();
+void init_connections(const char * conn_str, bool secure);
+public:
+  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect) {connection_limit=size;std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();neo4j_client_init();init_connections(conn_str, secure);}
+  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect, int start_conns) {std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();start_connections=start_conns;connection_limit=size;init_connections(conn_str, secure);}
+  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect, int start_conns, int batch_size) {std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();start_connections=start_conns;connection_limit=size;connection_creation_batch=batch_size;init_connections(conn_str, secure);}
+  ~Neo4jConnectionPool();
+  Neo4jQuerySession* get_connection();
+  void release_connection(Neo4jQuerySession *conn);
+};
 
 //-------------------------------------------------------------------
 ////---------------------Query Results-------------------------------
@@ -106,20 +144,26 @@ public:
 // Results Iterator, accepts a result stream as an input,
 // Returns Results Trees for each entry that matches in the query
 // Deletes it when finished
+// Also responsible for releasing the database connection with the pool after usage
 class ResultsIterator: public ResultsIteratorInterface {
 neo4j_result_stream_t *results;
+Neo4jQuerySession *s;
+Neo4jConnectionPool *p;
 void clear_results() {neo4j_close_results(results);}
 public:
 
-  inline ResultsIterator(neo4j_result_stream_t *result_stream) {
+  inline ResultsIterator(neo4j_result_stream_t *result_stream, Neo4jQuerySession *session, Neo4jConnectionPool *pool) {
     results=result_stream;
     if (!results) {
       std::string err_msg (strerror(errno));
       err_msg="Failed to fetch results"+err_msg;
+      p->release_connection(s);
       throw Neo4jException(err_msg);
     }
+    s=session;
+    p=pool;
   }
-  ~ResultsIterator() {clear_results();}
+  ~ResultsIterator() {clear_results();p->release_connection(s);}
   void clear() {clear_results();}
   bool empty() {if (!results) {return true;} return false;}
   unsigned int length() {return neo4j_nfields(results);}
@@ -135,11 +179,7 @@ const int _STR_TYPE = 1;
 const int _INT_TYPE = 2;
 const int _FLT_TYPE = 3;
 
-//TO-DO: Add list support
-//Lists support a single element type within them
-//add a list flag, then keep type identifier
-//add a blank constructor for lists
-//add_element method to push values onto lists
+//A Query parameter to be inserted into cypher queries
 class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
 bool bool_value;
 std::string str_value;
@@ -178,18 +218,17 @@ public:
 };
 
 class Neo4jAdmin: public Neo4jInterface {
-
-neo4j_connection_t *connection = NULL;
-neo4j_session_t *session = NULL;
-void initialize(const char * conn_str, bool secure);
-
+Neo4jConnectionPool *pool = NULL;
+void initialize(const char * conn_str, bool secure, int conn_pool_size);
 public:
 
-  Neo4jAdmin(const char * conn_str, bool secure) {initialize(conn_str, secure);}
-  Neo4jAdmin(std::string conn_str, bool secure) {initialize(conn_str.c_str(), secure);}
-  Neo4jAdmin(const char * conn_str) {initialize(conn_str, false);}
-  Neo4jAdmin(std::string conn_str) {initialize(conn_str.c_str(), false);}
-  ~Neo4jAdmin() {neo4j_end_session(session);neo4j_close(connection);neo4j_client_cleanup();}
+  Neo4jAdmin(const char * conn_str, bool secure, int pool_size) {initialize(conn_str, secure, pool_size);}
+  Neo4jAdmin(std::string conn_str, bool secure, int pool_size) {initialize(conn_str.c_str(), secure, pool_size);}
+  Neo4jAdmin(const char * conn_str, bool secure) {initialize(conn_str, secure, 5);}
+  Neo4jAdmin(std::string conn_str, bool secure) {initialize(conn_str.c_str(), secure, 5);}
+  Neo4jAdmin(const char * conn_str) {initialize(conn_str, false, 5);}
+  Neo4jAdmin(std::string conn_str) {initialize(conn_str.c_str(), false, 5);}
+  ~Neo4jAdmin() {if (pool) {delete pool;}}
   ResultsIterator* execute(const char * query);
   ResultsIterator* execute(std::string query) {return execute(query.c_str());}
   ResultsIteratorInterface* execute(const char * query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params);

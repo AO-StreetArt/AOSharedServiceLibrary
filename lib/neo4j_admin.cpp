@@ -528,52 +528,31 @@ unsigned int Neo4jQueryParameter::size() {
 //-----------------------------------------------------------------
 
 //Start the admin
-void Neo4jAdmin::initialize(const char * conn_str, bool secure) {
+void Neo4jAdmin::initialize(const char * conn_str, bool secure, int pool_size) {
 
-// Initialize the Neo4j Client
-neo4j_client_init();
-
-// Start up the connection
-if (!secure) {
-  connection = neo4j_connect(conn_str, NULL, NEO4J_INSECURE);
-}
-
-//Check if the connection was successful
-if (!connection) {
-  const char * err_string = strerror(errno);
-  std::string err_msg (err_string);
-  err_msg = "Error establishing connection: " + err_msg;
-  throw Neo4jException(err_msg);
-}
-
-//Start a new session
-session = neo4j_new_session(connection);
-
-//Check if session creation was successful
-if (!session) {
-  const char * err_string = strerror(errno);
-  std::string err_msg (err_string);
-  err_msg = "Error starting session: " + err_msg;
-  throw Neo4jException(err_msg);
-}
+// Initialize the Neo4j Database pool
+pool = new Neo4jConnectionPool(pool_size, conn_str, secure, 1, 1);
 }
 
 //Execute a query and return the results in an iterator
 ResultsIterator* Neo4jAdmin::execute(const char * query) {
 
+Neo4jQuerySession *qs = pool->get_connection();
+
 //Execute the query
-neo4j_result_stream_t *res = neo4j_run(session, query, neo4j_null);
+neo4j_result_stream_t *res = neo4j_run(qs->session, query, neo4j_null);
 
 //Check for a failure
 int failure_check = neo4j_check_failure(res);
 if (failure_check != 0) {
   const struct neo4j_failure_details *fd;
   fd = neo4j_failure_details(res);
+  //pool->release_connection(qs);
   throw Neo4jException(fd->description);
 }
 
 //Return a results iterator for results access
-return new ResultsIterator (res);
+return new ResultsIterator (res, qs, pool);
 }
 
 //Insert a map of parameters into a query,
@@ -655,18 +634,154 @@ for (unsigned int i = 0; i < keys.size(); i++) {
 //Create a neo4j value of the map
 neo4j_value_t param_map = neo4j_map (map_entries, keys.size());
 
+//Retrieve a database connection from the pool
+Neo4jQuerySession *qs = pool->get_connection();
+
 //Execute the query
-neo4j_result_stream_t *res = neo4j_run(session, query, param_map);
+neo4j_result_stream_t *res = neo4j_run(qs->session, query, param_map);
 
 //Check for a failure
 int failure_check = neo4j_check_failure(res);
 if (failure_check != 0) {
   const struct neo4j_failure_details *fd;
   fd = neo4j_failure_details(res);
+  pool->release_connection(qs);
   throw Neo4jException(fd->description);
 }
 
 //Return a results iterator for results access
-return new ResultsIterator (res);
+return new ResultsIterator (res, qs, pool);
 
+}
+
+//-----------------------Connection Pool--------------------------------------//
+
+void Neo4jConnectionPool::init_slots() {
+  slots = new int[connection_limit];
+  for (int i=0;i<connection_limit;i++) {
+    slots[i] = 0;
+  }
+}
+
+//Initialize the connections required to start the connection pool
+void Neo4jConnectionPool::init_connections(const char * conn_str, bool secure) {
+
+  for (int i = 0;i<start_connections;i++) {
+    Neo4jQuerySession qs;
+
+    //Create the connection
+    if (!secure) {
+      qs.connection = neo4j_connect(conn_str, NULL, NEO4J_INSECURE);
+    }
+    else {
+      qs.connection = neo4j_connect(conn_str, NULL, NEO4J_CONNECT_DEFAULT);
+    }
+
+    //Check if the connection was successful
+    if (!(qs.connection)) {
+      const char * err_string = strerror(errno);
+      std::string err_msg (err_string);
+      err_msg = "Error establishing connection: " + err_msg;
+      throw Neo4jException(err_msg);
+    }
+
+    //Establish a new session with the current connection
+    qs.session = neo4j_new_session(qs.connection);
+
+    //Check if session creation was successful
+    if (!(qs.session)) {
+      const char * err_string = strerror(errno);
+      std::string err_msg (err_string);
+      err_msg = "Error starting session: " + err_msg;
+      throw Neo4jException(err_msg);
+    }
+
+    connections.push_back(qs);
+  }
+  current_max_connection = start_connections - 1;
+}
+
+Neo4jConnectionPool::~Neo4jConnectionPool() {
+  for (int i = 0;i<current_max_connection;i++) {
+    //Release the session
+    neo4j_end_session(connections[i].session);
+    //Release the connection
+    neo4j_close(connections[i].connection);
+  }
+  neo4j_client_cleanup();
+}
+
+Neo4jQuerySession* Neo4jConnectionPool::get_connection() {
+  //Get the mutex to ensure we get a unique connection
+  std::lock_guard<std::mutex> lock(get_conn_mutex);
+
+  //Find the next available connection slot
+  //If none are available, wait until one is freed
+  bool connection_found = false;
+  while (!connection_found) {
+    for (int j=0;j<connection_limit;j++) {
+      if (slots[j] == 0) {
+        //slot is available
+        current_connection=j;
+        connection_found=true;
+        break;
+      }
+    }
+  }
+
+  //Create new connections if necessary
+  if (current_connection>current_max_connection) {
+    for (int i = current_max_connection;i<current_max_connection+connection_creation_batch;i++) {
+      Neo4jQuerySession qs;
+      if (!secure) {
+        qs.connection = neo4j_connect(connection_string.c_str(), NULL, NEO4J_INSECURE);
+      }
+      else {
+        qs.connection = neo4j_connect(connection_string.c_str(), NULL, NEO4J_CONNECT_DEFAULT);
+      }
+
+      //Check if the connection was successful
+      if (!(qs.connection)) {
+      const char * err_string = strerror(errno);
+      std::string err_msg (err_string);
+      err_msg = "Error establishing connection: " + err_msg;
+      throw Neo4jException(err_msg);
+      }
+
+      //Establish a new session with the current connection
+      qs.session = neo4j_new_session(qs.connection);
+
+      //Check if session creation was successful
+      if (!(qs.session)) {
+        const char * err_string = strerror(errno);
+        std::string err_msg (err_string);
+        err_msg = "Error starting session: " + err_msg;
+        throw Neo4jException(err_msg);
+      }
+
+      connections.push_back(qs);
+    }
+    current_max_connection=current_max_connection+connection_creation_batch;
+  }
+
+  //Pack the connection & session into the return object
+  Neo4jQuerySession *s = new Neo4jQuerySession;
+  s->connection = connections[current_connection].connection;
+  s->session = connections[current_connection].session;
+  s->index = current_connection;
+
+  //Reserve the slot
+  slots[current_connection] = 1;
+
+  //Return the latest connection information
+  //When we leave the method, the mutex lock is released automatically
+  return s;
+}
+
+//Release a connection for re-use
+void Neo4jConnectionPool::release_connection(Neo4jQuerySession *conn) {
+  //Release the slot
+  slots[conn->index] = 0;
+  //Delete the query session pointer, but not it's contents
+  delete conn;
 }
