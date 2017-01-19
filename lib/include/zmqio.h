@@ -1,5 +1,6 @@
 #include <string>
 #include <stdlib.h>
+#include <mutex>
 #include <zmq.hpp>
 #include "factory/zmq_interface.h"
 
@@ -19,6 +20,7 @@ class Zmqo: public ZmqOut
 {
 int conn_type;
 zmq::socket_t *zmqo;
+std::mutex send_mutex;
 public:
   //! Build a new Outbound ZMQ Manager
   Zmqo(zmq::context_t &context, int connection_type);

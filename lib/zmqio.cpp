@@ -101,6 +101,7 @@ void Zmqo::connect(std::string conn_str)
 //Send a message
 void Zmqo::send(const char * msg, int msg_size)
 {
+  std::lock_guard<std::mutex> lock(send_mutex);
   //Set up the message to go out on 0MQ
   zmq::message_t req (msg_size);
   memcpy (req.data (), msg, msg_size);
