@@ -4,8 +4,13 @@ Easy and quick Universally Unique ID Generation:
 
     #include "include/factory_uuid.h"
     #include "include/factory/uuid_interface.h"
+    #include <iostream>
 
-    uuidComponentFactory uuid_factory;
-    uuidInterface *uuid = uuid_factory.get_uuid_interface();
+    uuidComponentFactory id_factory;
+    //Initialize the UUID Admin
+    uuidInterface *uuid = id_factory.get_uuid_interface();
 
-    std::string uuid_str = uuid->generate();
+    //Generate a UUID
+    UuidContainer id_container = uuid->generate();
+    std::cout << id_container.id << std::endl;
+    std::cout << id_container.err << std::endl;
