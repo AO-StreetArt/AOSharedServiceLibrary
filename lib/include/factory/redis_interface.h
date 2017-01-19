@@ -45,7 +45,7 @@ struct RedisOperationException: public std::exception
 
   //! Create a Redis Operation Exception, and store the given error message
   RedisOperationException (const char * msg_cstr) {std::string msg (msg_cstr);int_msg = msg;}
-  
+
   RedisOperationException () {}
   ~RedisOperationException() throw () {}
 
@@ -132,7 +132,7 @@ public:
   virtual bool setex ( std::string key, std::string val, unsigned int second) = 0;
 
   //! Append a value to a Redis value on the given key
-  virtual bool append ( std::string key, std::string val ) = 0;
+  virtual int append ( std::string key, std::string val ) = 0;
 
   //! Return the length of the string value stored at key
   virtual int len ( std::string key ) = 0;

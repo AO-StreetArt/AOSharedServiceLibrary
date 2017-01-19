@@ -41,7 +41,7 @@ std::mutex get_conn_mutex;
 void init_slots();
 void init_connections(const char * conn_str, bool secure);
 public:
-  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect) {std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();neo4j_client_init();init_connections(conn_str, secure);}
+  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect) {connection_limit=size;std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();neo4j_client_init();init_connections(conn_str, secure);}
   Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect, int start_conns) {std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();start_connections=start_conns;connection_limit=size;init_connections(conn_str, secure);}
   Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect, int start_conns, int batch_size) {std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();start_connections=start_conns;connection_limit=size;connection_creation_batch=batch_size;init_connections(conn_str, secure);}
   ~Neo4jConnectionPool();

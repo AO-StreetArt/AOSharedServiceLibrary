@@ -1,25 +1,16 @@
 #include "include/mongo_admin.h"
 
-void MongoClient::initialize(const char * url, const char * db, const char * collection_name)
+void MongoClient::initialize(const char * url, const char * db, const char * collection_name, int size)
 {
-  //Initialize the Mongo C-Driver
-  mongoc_init ();
-
-  //Connect to the Mongo Instance
-  client = mongoc_client_new (url);
-
-  //Get a collection from Mongo
-  collection = mongoc_client_get_collection (client, db, collection_name);
-
-  //Set up the current DB Name
-  db_name = db;
+  std::string url_str (url);
+  std::string db_str (db);
+  std::string col_str (collection_name);
+  pool = new MongoConnectionPool(size, url_str, db_str, col_str, 1, 1);
 }
 
 MongoClient::~MongoClient()
 {
-  mongoc_collection_destroy (collection);
-  mongoc_client_destroy (client);
-  mongoc_cleanup ();
+  if (pool) {delete pool;}
 }
 
 std::string MongoClient::create_document(const char * document)
@@ -47,8 +38,14 @@ else {
   bson_oid_to_string(&oid, c_str);
   new_key.assign(c_str, 25);
 
+  //Retrieve a database connection from the pool
+  MongoSession *ms = pool->get_connection();
+
   //Actually insert the document
-  success = mongoc_collection_insert (collection, MONGOC_INSERT_NONE, doc, NULL, &error);
+  success = mongoc_collection_insert (ms->collection, MONGOC_INSERT_NONE, doc, NULL, &error);
+
+  //Release the database connection
+  pool->release_connection(ms);
 }
 
 //Destroy the bson document
@@ -88,8 +85,14 @@ if (!doc) {
     bson_oid_init_from_string (&oid, key);
     BSON_APPEND_OID (doc, "_id", &oid);
 
+    //Retrieve a database connection from the pool
+    MongoSession *ms = pool->get_connection();
+
     //Actually insert the document
-    success = mongoc_collection_save (collection, doc, NULL, &error);
+    success = mongoc_collection_save (ms->collection, doc, NULL, &error);
+
+    //Release the database connection
+    pool->release_connection(ms);
   }
   //Destroy the bson document
   bson_destroy (doc);
@@ -111,8 +114,14 @@ doc = bson_new();
 bson_oid_init_from_string (&oid, key);
 BSON_APPEND_OID (doc, "_id", &oid);
 
+//Retrieve a database connection from the pool
+MongoSession *ms = pool->get_connection();
+
 //Execute the query
-bool success = mongoc_collection_remove(collection, MONGOC_REMOVE_SINGLE_REMOVE, doc, NULL, &error);
+bool success = mongoc_collection_remove(ms->collection, MONGOC_REMOVE_SINGLE_REMOVE, doc, NULL, &error);
+
+//Release the database connection
+pool->release_connection(ms);
 
 bson_destroy(doc);
 
@@ -121,11 +130,14 @@ return success;
 
 void MongoClient::switch_collection(const char * collection_name)
 {
-//Disconnect from the old collection
-mongoc_collection_destroy (collection);
+  std::string coll_cstr (collection_name);
+  pool->switch_collection(coll_cstr);
+}
 
-//Connect to the new collection
-collection = mongoc_client_get_collection (client, db_name, collection_name);
+void MongoClient::switch_database(const char * database_name)
+{
+  std::string db_cstr (database_name);
+  pool->switch_database(db_cstr);
 }
 
 std::string MongoClient::load_document(const char * key)
@@ -142,7 +154,10 @@ query = bson_new();
 bson_oid_init_from_string (&oid, key);
 BSON_APPEND_OID (query, "_id", &oid);
 
-cursor = mongoc_collection_find (collection, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+//Retrieve a database connection from the pool
+MongoSession *ms = pool->get_connection();
+
+cursor = mongoc_collection_find (ms->collection, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 
 std::vector<std::string> ret_vals;
 
@@ -156,6 +171,9 @@ while (mongoc_cursor_next (cursor, &doc)) {
 
 bson_destroy (query);
 mongoc_cursor_destroy (cursor);
+
+//Release the database connection
+pool->release_connection(ms);
 
 //Set up the return value
 int num_docs = ret_vals.size();
@@ -184,7 +202,10 @@ char * str;
 //Write a new bson query with the key provided
 q = bson_new_from_json ((const uint8_t *)query_str, -1, &error);
 
-cursor = mongoc_collection_find (collection, MONGOC_QUERY_NONE, 0, 0, 0, q, NULL, NULL);
+//Retrieve a database connection from the pool
+MongoSession *ms = pool->get_connection();
+
+cursor = mongoc_collection_find (ms->collection, MONGOC_QUERY_NONE, 0, 0, 0, q, NULL, NULL);
 
 std::vector<std::string> ret_vals;
 
@@ -199,5 +220,102 @@ while (mongoc_cursor_next (cursor, &doc)) {
 bson_destroy (q);
 mongoc_cursor_destroy (cursor);
 
+//Release the database connection
+pool->release_connection(ms);
+
 return ret_vals;
+}
+
+//-----------------------Connection Pool--------------------------------------//
+
+void MongoConnectionPool::init_slots() {
+  slots = new int[connection_limit];
+  for (int i=0;i<connection_limit;i++) {
+    slots[i] = 0;
+  }
+}
+
+//Initialize the connections required to start the connection pool
+void MongoConnectionPool::init_connections(std::string conn_str, std::string db, std::string coll) {
+
+  connection_string=conn_str;
+  db_name_string=db;
+  db_coll_string=coll;
+
+  //Initialize the Mongo C-Driver
+  mongoc_init();
+
+  const char * conn_cstr = conn_str.c_str();
+  for (int i = 0;i<start_connections;i++) {
+    MongoSession ms;
+
+    //Create the connection
+    ms.connection = mongoc_client_new (conn_cstr);
+    connections.push_back(ms);
+  }
+  current_max_connection = start_connections - 1;
+}
+
+MongoConnectionPool::~MongoConnectionPool() {
+  for (int i = 0;i<current_max_connection;i++) {
+    //Release the connection
+    mongoc_client_destroy (connections[i].connection);
+  }
+  mongoc_cleanup ();
+}
+
+MongoSession* MongoConnectionPool::get_connection() {
+  //Get the mutex to ensure we get a unique connection
+  std::lock_guard<std::mutex> lock(get_conn_mutex);
+
+  //Find the next available connection slot
+  //If none are available, wait until one is freed
+  bool connection_found = false;
+  while (!connection_found) {
+    for (int j=0;j<connection_limit;j++) {
+      if (slots[j] == 0) {
+        //slot is available
+        current_connection=j;
+        connection_found=true;
+        break;
+      }
+    }
+  }
+
+  //Create new connections if necessary
+  if (current_connection>current_max_connection) {
+    const char * conn_cstr = connection_string.c_str();
+    for (int i = current_max_connection;i<current_max_connection+connection_creation_batch;i++) {
+      MongoSession ms;
+
+      //Create the connection
+      ms.connection = mongoc_client_new (conn_cstr);
+      connections.push_back(ms);
+    }
+    current_max_connection=current_max_connection+connection_creation_batch;
+  }
+
+  //Pack the connection & collection into the return object
+  MongoSession *s = new MongoSession;
+  s->connection = connections[current_connection].connection;
+  s->collection = mongoc_client_get_collection (connections[current_connection].connection,\
+    db_name_string.c_str(), db_coll_string.c_str());
+  s->index = current_connection;
+
+  //Reserve the slot
+  slots[current_connection] = 1;
+
+  //Return the latest connection information
+  //When we leave the method, the mutex lock is released automatically
+  return s;
+}
+
+//Release a connection for re-use
+void MongoConnectionPool::release_connection(MongoSession *conn) {
+  //Release the slot
+  slots[conn->index] = 0;
+  //Release the collection
+  mongoc_collection_destroy (conn->collection);
+  //Delete the query session pointer, but not it's contents
+  delete conn;
 }

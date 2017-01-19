@@ -3,6 +3,7 @@
 #include <string>
 #include <exception>
 #include <vector>
+#include <mutex>
 
 #include "factory/mongo_interface.h"
 
@@ -11,19 +12,60 @@
 #ifndef AOSSL_MONGO_CLIENT
 #define AOSSL_MONGO_CLIENT
 
+//-------------------------------------------------------------------
+////------------------Connection Pooling-----------------------------
+////-----------------------------------------------------------------
+
+//A struct containing the objects needed to run a query
+struct MongoSession {
+  mongoc_client_t *connection = NULL;
+  mongoc_collection_t *collection = NULL;
+  int index = -1;
+};
+
+//A Connection pool to ensure thread safety
+class MongoConnectionPool {
+//A pool of neo4j connections
+std::vector<MongoSession> connections;
+//Array of ints (0/1) which determine which connections are open vs closed
+int *slots;
+//Internal integers
+int connection_limit = 1;
+int start_connections = 1;
+int current_connection = -1;
+int current_max_connection = 1;
+int connection_creation_batch = 1;
+std::string connection_string;
+std::string db_name_string;
+std::string db_coll_string;
+std::mutex get_conn_mutex;
+void init_slots();
+void init_connections(std::string conn_str, std::string db, std::string coll);
+public:
+  MongoConnectionPool(int size, std::string conn_str, std::string db, std::string coll) {connection_limit=size;init_slots();init_connections(conn_str, db, coll);}
+  MongoConnectionPool(int size, std::string conn_str, std::string db, std::string coll, int start_conns) {init_slots();start_connections=start_conns;connection_limit=size;init_connections(conn_str, db, coll);}
+  MongoConnectionPool(int size, std::string conn_str, std::string db, std::string coll, int start_conns, int batch_size) {init_slots();start_connections=start_conns;connection_limit=size;connection_creation_batch=batch_size;init_connections(conn_str, db, coll);}
+  ~MongoConnectionPool();
+  MongoSession* get_connection();
+  void release_connection(MongoSession *conn);
+  void switch_collection(std::string new_col) {db_coll_string=new_col;}
+  void switch_database(std::string new_db) {db_name_string=new_db;}
+  std::string get_conn_str() {return connection_string;}
+  std::string get_db_name() {return db_name_string;}
+  std::string get_db_coll() {return db_coll_string;}
+};
+
+//-------------------------------------------------------------------
+////---------------------Mongo Client--------------------------------
+////-----------------------------------------------------------------
+
 class MongoClient: public MongoInterface {
 
 //The internal mongoc client
-mongoc_client_t *client;
-
-//The current DB
-const char * db_name;
-
-//The current collection
-mongoc_collection_t *collection;
+MongoConnectionPool *pool = NULL;
 
 //Initialize the client
-void initialize(const char * url, const char * db, const char * collection_name);
+void initialize(const char * url, const char * db, const char * collection_name, int size);
 
 public:
 
@@ -31,11 +73,19 @@ public:
   void switch_collection(const char * collection_name);
   void switch_collection(std::string collection_name) {switch_collection(collection_name.c_str());}
 
+  //Switch the current database
+  void switch_database(const char * database_name);
+  void switch_database(std::string database_name) {switch_database(database_name.c_str());}
+
   //Constructor
-  MongoClient(const char * url, const char * db, const char * collection_name) {initialize(url, db, collection_name);}
-  MongoClient(std::string url, std::string db, std::string collection_name) {initialize(url.c_str(), db.c_str(), collection_name.c_str());}
-  MongoClient(const char * url, const char * db) {initialize(url, db, "default");}
-  MongoClient(std::string url, std::string db) {initialize(url.c_str(), db.c_str(), "default");}
+  MongoClient(const char * url, const char * db, const char * collection_name) {initialize(url, db, collection_name, 5);}
+  MongoClient(std::string url, std::string db, std::string collection_name) {initialize(url.c_str(), db.c_str(), collection_name.c_str(), 5);}
+  MongoClient(const char * url, const char * db) {initialize(url, db, "default", 5);}
+  MongoClient(std::string url, std::string db) {initialize(url.c_str(), db.c_str(), "default", 5);}
+  MongoClient(const char * url, const char * db, const char * collection_name, int pool_size) {initialize(url, db, collection_name, pool_size);}
+  MongoClient(std::string url, std::string db, std::string collection_name, int pool_size) {initialize(url.c_str(), db.c_str(), collection_name.c_str(), pool_size);}
+  MongoClient(const char * url, const char * db, int pool_size) {initialize(url, db, "default", pool_size);}
+  MongoClient(std::string url, std::string db, int pool_size) {initialize(url.c_str(), db.c_str(), "default", pool_size);}
 
   //Destructor
   ~MongoClient();
