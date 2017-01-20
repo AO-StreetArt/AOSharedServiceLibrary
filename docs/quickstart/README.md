@@ -24,15 +24,22 @@ Then, you can access the container with the following:
 
 ### Docker Images of External Tools
 
-Docker images are also available for many/all of the external tools connected to within the library.
+Docker images are also available for many of the external tools connected to within the library.
 
-These are great tools for development, but you should follow the guidelines of each respective service when deploying to production.
+#### Mongo
 
-#### Couchbase
+In times when you need to connect to an instance of [Mongo] (https://www.mongodb.com), you can use the docker image (full instructions can be found [here] (https://hub.docker.com/_/mongo/)).
 
-In times when you need to connect to an instance of [Couchbase] (http://www.couchbase.com/), you can use the docker image (full instructions can be found [here] (https://docs.docker.com/engine/examples/couchbase)).
+    docker run --name some-mongo -d mongo
 
-`docker run -d --name db -p 8091-8093:8091-8093 -p 11210:11210 couchbase`
+#### Neo4j
+
+In times when you need to connect to an instance of [Neo4j] (https://neo4j.com/), you can use the docker image (full instructions can be found [here] (https://hub.docker.com/_/neo4j/)).
+
+    docker run \
+        --publish=7474:7474 --publish=7687:7687 \
+        --volume=$HOME/neo4j/data:/data \
+        neo4j
 
 #### Redis
 
@@ -46,7 +53,31 @@ In times when you need to connect to an instance of [Consul] (https://www.consul
 
 `docker run -d --name=dev-consul consul`
 
-### Connecting the Docker Images
+### Connecting Docker Images
+
+In order to connect a docker image of AOSSL with it's respective component, we can use the --link option when we start it's container.  For example:
+
+    docker run --name some-mongo -d mongo
+    docker run --name aossl -d -P aostreetart/ao-services
+    docker run --name aossl --link some-mongo:mongo -d -P aostreetart/ao-services
+
+## Use Latest Release
+
+Please see the [releases] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/releases) page to download the latest release of the library.  Once downloaded, unpack the tar/zip file and cd into the main directory.  Then, run the following command:
+
+    sudo ./easy_install
+
+You will be prompted for your sudo password, after which the script will attempt to install all of the necessary dependencies, and then the library itself.  If you prefer, you can simply run:
+
+    sudo make install
+
+This will install the library without installing the dependencies.  You may execute the install dependencies script separately if desired via:
+
+    cd deps && sudo ./build_deps.sh
+
+You may uninstall the library by executing:
+
+    sudo make uninstall
 
 ## Build from Source
 

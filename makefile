@@ -21,9 +21,9 @@ INCL = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/loca
   /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/http_admin.h\
 	 /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/redis_admin.h /usr/local/include/aossl/zmqio.h\
 	  /usr/local/include/aossl/http_server.h /usr/local/include/aossl/properties_reader.h /usr/local/include/aossl/factory/properties_reader_interface.h\
-		 /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h /usr/local/include/aossl/factory/db_admin.h\
+		 /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h\
 		  /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h\
-			 /usr/local/include/aossl/factory/writeable.h /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h\
+		 	 /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h\
 			  /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h\
 				  /usr/local/include/aossl/mongo_admin.h /usr/local/include/aossl/factory/mongo_interface.h /usr/local/include/aossl/factory_mongo.h\
 						/usr/local/include/aossl/neo4j_admin.h /usr/local/include/aossl/factory/neo4j_interface.h /usr/local/include/aossl/factory_neo4j.h
@@ -149,9 +149,6 @@ clean: clean_local clean_tests clean_benchmarks
 /usr/local/include/aossl/factory/consul_interface.h: lib/include/factory/consul_interface.h
 	cp $< $@
 
-/usr/local/include/aossl/factory/db_admin.h: lib/include/factory/db_admin.h
-	cp $< $@
-
 /usr/local/include/aossl/factory/http_interface.h: lib/include/factory/http_interface.h
 	cp $< $@
 
@@ -159,9 +156,6 @@ clean: clean_local clean_tests clean_benchmarks
 	cp $< $@
 
 /usr/local/include/aossl/factory/uuid_interface.h: lib/include/factory/uuid_interface.h
-	cp $< $@
-
-/usr/local/include/aossl/factory/writeable.h: lib/include/factory/writeable.h
 	cp $< $@
 
 /usr/local/include/aossl/factory/redis_interface.h: lib/include/factory/redis_interface.h
