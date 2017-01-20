@@ -86,16 +86,12 @@ if [ ! -f /usr/local/include/zmq.hpp ]; then
 
 fi
 
-if [ ! -f ./couchbase-release-1.0-2-amd64.deb ]; then
-
 printf "Building Hayai, optional, for benchmarks"
 
 #Install hayai, for compiling benchmarks
 mkdir $PRE/hayai
 git clone https://github.com/nickbruun/hayai.git ./$PRE/hayai
 cd ./$PRE/hayai && cmake . && make && sudo make install
-
-fi
 
 printf "Update cache and install final dependencies through apt-get"
 

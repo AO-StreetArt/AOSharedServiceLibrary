@@ -33,7 +33,9 @@ While designed with a Microservice architecture in mind, AOSSL also seeks to mai
 * Easy to construct Docker Images with templates
 
 #### Backwards Compatibility
-Starting from the release of v1.0, backwards compatibility with future versions is guaranteed, provided users code to the interfaces (found in lib/include/factory) rather than the implementation files.  Examples may be found in the 'Use' section of the documentation.
+Starting from the release of v1.0, backwards compatibility with future versions is guaranteed up to v2.0, provided users code to the interfaces (found in lib/include/factory) rather than the implementation files.  Examples may be found in the 'Use' section of the documentation.
+
+Any interface breaking changes within the next major version will be clearly documented with the release notes.
 
 In order to use the respective interfaces, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Neo4j] (https://neo4j.com/), [Redis] (http://redis.io/), and/or [Mongo] (https://www.mongodb.com) to connect to.
 
