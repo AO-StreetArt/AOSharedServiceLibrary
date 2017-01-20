@@ -9,6 +9,6 @@ cd ./deps && sudo ./build_deps.sh
 printf "Attempting to install core library"
 
 # Install the library
-sudo make install
+cd ../ && sudo make install
 
 printf "Finished installing AOSSL"
