@@ -1,0 +1,150 @@
+# Makefile that only includes release installation & removal
+
+# define some Makefile variables for the compiler and compiler flags
+# to use Makefile variables later in the Makefile: $()
+#
+#  -g    adds debugging information to the executable file
+#  -Wall turns on most, but not all, compiler warnings
+#
+
+INCL = /usr/local/include/aossl /usr/local/include/aossl/factory_zmq.h /usr/local/include/aossl/factory_uuid.h /usr/local/include/aossl/factory_redis.h\
+ /usr/local/include/aossl/factory_props.h /usr/local/include/aossl/factory_logging.h /usr/local/include/aossl/factory_http_server.h /usr/local/include/aossl/factory_http_client.h\
+  /usr/local/include/aossl/factory_consul.h /usr/local/include/aossl/factory_cli.h /usr/local/include/aossl/cli.h /usr/local/include/aossl/consul_admin.h /usr/local/include/aossl/http_admin.h\
+	 /usr/local/include/aossl/logging.h /usr/local/include/aossl/service.h /usr/local/include/aossl/uuid_admin.h /usr/local/include/aossl/redis_admin.h /usr/local/include/aossl/zmqio.h\
+	  /usr/local/include/aossl/http_server.h /usr/local/include/aossl/properties_reader.h /usr/local/include/aossl/factory/properties_reader_interface.h\
+		 /usr/local/include/aossl/factory/commandline_interface.h /usr/local/include/aossl/factory/consul_interface.h\
+		  /usr/local/include/aossl/factory/http_interface.h /usr/local/include/aossl/factory/logging_interface.h /usr/local/include/aossl/factory/uuid_interface.h\
+		 	 /usr/local/include/aossl/factory/redis_interface.h /usr/local/include/aossl/factory/zmq_interface.h\
+			  /usr/local/include/aossl/factory/http_server_interface.h /usr/local/include/aossl/factory/callbacks.h /usr/local/include/aossl/factory/interpreter.h\
+				  /usr/local/include/aossl/mongo_admin.h /usr/local/include/aossl/factory/mongo_interface.h /usr/local/include/aossl/factory_mongo.h\
+						/usr/local/include/aossl/neo4j_admin.h /usr/local/include/aossl/factory/neo4j_interface.h /usr/local/include/aossl/factory_neo4j.h
+BASE_DIR = /usr/local/include/aossl
+INCL_DIR = /usr/local/include/aossl/factory
+
+# typing 'make' will invoke the first target entry in the file
+# (in this case the default target entry)
+# you can name this target entry anything, but "default" or "all"
+# are the most commonly used names by convention
+#
+default: /usr/local/lib/libaossl.a $(INCL)
+
+/usr/local/include/aossl:
+	mkdir $(BASE_DIR)
+	mkdir $(INCL_DIR)
+
+/usr/local/include/aossl/factory_cli.h: lib/include/factory_cli.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_consul.h: lib/include/factory_consul.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_http_client.h: lib/include/factory_http_client.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_http_server.h: lib/include/factory_http_server.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_logging.h: lib/include/factory_logging.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_props.h: lib/include/factory_props.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_redis.h: lib/include/factory_redis.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_uuid.h: lib/include/factory_uuid.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_zmq.h: lib/include/factory_zmq.h
+	cp $< $@
+
+/usr/local/include/aossl/neo4j_admin.h: lib/include/neo4j_admin.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/neo4j_interface.h: lib/include/factory/neo4j_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_neo4j.h: lib/include/factory_neo4j.h
+	cp $< $@
+
+/usr/local/include/aossl/cli.h: lib/include/cli.h
+	cp $< $@
+
+/usr/local/include/aossl/consul_admin.h: lib/include/consul_admin.h
+	cp $< $@
+
+/usr/local/include/aossl/http_admin.h: lib/include/http_admin.h
+	cp $< $@
+
+/usr/local/include/aossl/logging.h: lib/include/logging.h
+	cp $< $@
+
+/usr/local/include/aossl/service.h: lib/include/service.h
+	cp $< $@
+
+/usr/local/include/aossl/uuid_admin.h: lib/include/uuid_admin.h
+	cp $< $@
+
+/usr/local/include/aossl/redis_admin.h: lib/include/redis_admin.h
+	cp $< $@
+
+/usr/local/include/aossl/zmqio.h: lib/include/zmqio.h
+	cp $< $@
+
+/usr/local/include/aossl/http_server.h: lib/include/http_server.h
+	cp $< $@
+
+/usr/local/include/aossl/properties_reader.h: lib/include/properties_reader.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/properties_reader_interface.h: lib/include/factory/properties_reader_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/callbacks.h: lib/include/factory/callbacks.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/commandline_interface.h: lib/include/factory/commandline_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/consul_interface.h: lib/include/factory/consul_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/http_interface.h: lib/include/factory/http_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/logging_interface.h: lib/include/factory/logging_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/uuid_interface.h: lib/include/factory/uuid_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/redis_interface.h: lib/include/factory/redis_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/zmq_interface.h: lib/include/factory/zmq_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/http_server_interface.h: lib/include/factory/http_server_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/interpreter.h: lib/include/factory/interpreter.h
+	cp $< $@
+
+/usr/local/include/aossl/mongo_admin.h: lib/include/mongo_admin.h
+	cp $< $@
+
+/usr/local/include/aossl/factory/mongo_interface.h: lib/include/factory/mongo_interface.h
+	cp $< $@
+
+/usr/local/include/aossl/factory_mongo.h: lib/include/factory_mongo.h
+	cp $< $@
+
+/usr/local/lib/libaossl.a: libaossl.a
+	cp $< $@
+
+uninstall: clean_install
+
+clean_install:
+	$(RM) -r /usr/local/include/aossl
+	$(RM) /usr/local/lib/libaossl.a

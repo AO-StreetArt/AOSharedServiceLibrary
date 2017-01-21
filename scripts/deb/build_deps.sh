@@ -23,7 +23,7 @@ printf "Addressing pre-build requirements"
 sudo apt-get install --only-upgrade autoconf
 
 #Ensure that specific build requirements are satisfied
-sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev
+sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libssl-dev
 
 #Determine if we need the neo4j-client library
 printf "Building libneo4j"
@@ -31,7 +31,8 @@ printf "Building libneo4j"
 mkdir $PRE/neo
 git clone https://github.com/cleishm/libneo4j-client.git ./$PRE/neo
 
-cd $PRE/neo && ./autogen.sh && ./configure --disable-tools && make clean check && sudo make install
+cd $PRE/neo && sudo ./autogen.sh && sudo ./configure --disable-tools && sudo make clean check && sudo make install
+cd ../../
 
 #Determine if we need the BSON Library
 if [ ! -d /usr/local/include/libbson-1.0 ]; then
@@ -42,6 +43,7 @@ if [ ! -d /usr/local/include/libbson-1.0 ]; then
   git clone git://github.com/mongodb/libbson.git ./$PRE/bson
 
   cd $PRE/bson && ./autogen.sh && make && sudo make install
+  cd ../../
 
 fi
 
@@ -54,6 +56,7 @@ if [ ! -d /usr/local/include/libmongoc-1.0 ]; then
   git clone https://github.com/mongodb/mongo-c-driver.git ./$PRE/mongo
 
   cd $PRE/mongo && ./autogen.sh --with-libbson=bundled && make && sudo make install
+  cd ../../
 
 fi
 
@@ -66,6 +69,7 @@ if [ ! -d /usr/local/include/hiredis ]; then
   git clone https://github.com/redis/hiredis.git $PRE/hiredis
 
   cd $PRE/hiredis && make && sudo make install
+  cd ../../
 
 fi
 
@@ -85,6 +89,7 @@ if [ ! -f /usr/local/include/zmq.h ]; then
 
   #Configure, make, install
   cd ./zeromq-4.1.4 && ./configure --without-libsodium && make && sudo make install
+  cd ../
 
 fi
 
@@ -107,9 +112,10 @@ fi
 printf "Building Hayai, optional, for benchmarks"
 
 #Install hayai, for compiling benchmarks
-sudo apt-add-repository -y ppa:bruun/hayai
-sudo apt-get update -y
-sudo apt-get install -y libhayai-dev
+mkdir $PRE/hayai
+git clone https://github.com/nickbruun/hayai.git ./$PRE/hayai
+cd ./$PRE/hayai && cmake . && make && sudo make install
+cd ../../
 
 printf "Update cache and install final dependencies through apt-get"
 
