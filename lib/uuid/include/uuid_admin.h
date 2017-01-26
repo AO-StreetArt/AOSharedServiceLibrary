@@ -22,52 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//Tests for the Zmqio Module
+//An admin for generating UUID's
 
-#include "include/factory_zmq.h"
-#include "include/factory/zmq_interface.h"
+#include <string>
+#include <string.h>
+#include <uuid/uuid.h>
+#include "uuid_interface.h"
 
-#include <iostream>
+#ifndef UUID_ADMIN
+#define UUID_ADMIN
 
-int main()
+//! UUID Admin
+
+//! The UUID Admin is in charge of generating any Universally Unique
+//! ID's that are required throughout program execution
+class uuidAdmin: public uuidInterface
 {
+public:
+	uuidAdmin() {}
+	~uuidAdmin() {}
+	//! Generate a new UUID
 
-  //Set up the underlying variables
-  Zmqio *zmqo;
-  Zmqio *zmqi;
-  ZmqComponentFactory zmq_factory;
+	//! The method will generate on the means of generation present on your system
+	//! In some cases, this may result in UUID's being generated that pose a security
+	//! risk.  In this case, that fact will be clearly called out in the logs, and
+	//! it is recommended that production systems are tested to ensure that UUID's are
+	//! generated in a safe manner
+	UuidContainer generate();
+};
 
-  //Set up the ZMQ Clients
-  zmqo = zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555", REQ_RESP);
-  zmqi = zmq_factory.get_zmq_inbound_interface("tcp://*:5555", REQ_RESP);
-
-  //Send a Message
-  std::string msg = "Test";
-  zmqo->send(msg);
-  bool keep_going = true;
-
-  while (keep_going) {
-
-    //Convert the OMQ message into a string to be passed on the event
-    std::string req_string = zmqi->recv();
-    std::cout << req_string << std::endl;
-    assert ( req_string == "Test" );
-    std::string resp = "success";
-    //  Send reply back to client
-    zmqi->send(resp);
-
-    keep_going = false;
-
-  }
-
-  std::string response = zmqo->recv();
-  std::cout << response << std::endl;
-  assert ( response == "success" );
-
-  //Cleanup
-  delete zmqi;
-  delete zmqo;
-
-  return 0;
-
-}
+#endif

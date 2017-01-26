@@ -26,7 +26,7 @@ THE SOFTWARE.
 #include <stdlib.h>
 #include <mutex>
 #include <zmq.hpp>
-#include "factory/zmq_interface.h"
+#include "zmq_interface.h"
 
 #ifndef ZMQIO
 #define ZMQIO

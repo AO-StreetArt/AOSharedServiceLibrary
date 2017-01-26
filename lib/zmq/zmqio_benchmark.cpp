@@ -30,9 +30,7 @@ THE SOFTWARE.
 #include <fstream>
 #include <cstdlib>
 
-#include "include/factory/logging_interface.h"
-#include "include/factory/zmq_interface.h"
-#include "include/factory_logging.h"
+#include "include/zmq_interface.h"
 #include "include/factory_zmq.h"
 
 Zmqio *zmqo;
@@ -56,20 +54,18 @@ BENCHMARK(ZMQ, SendRecieve, 10, 100)
     std::string req_string = zmqi->recv();
 
     std::string resp = "success";
-    logging->debug("Object Update Event Emitted, response:");
-    logging->debug(resp);
+    std::cout << "Object Update Event Emitted, response:" << resp << std::endl;
 
     //  Send reply back to client
     zmqi->send(resp);
-    logging->debug("Response Sent");
+    std::cout << "Response Sent" << std::endl;
 
     keep_going = false;
 
   }
 
   std::string response = zmqo->recv();
-  logging->debug("Response Recieved");
-  logging->debug(response);
+  std::cout << "Response Recieved" << response << std::endl;
 
 }
 
@@ -80,16 +76,7 @@ BENCHMARK(ZMQ, SendRecieve, 10, 100)
 int main()
 {
 
-  ZmqComponentFactory zmq_factory;
-  LoggingComponentFactory logging_factory;
-
-//Read the Logging Configuration File
-std::string initFileName = "test/log4cpp_test.properties";
-logging = logging_factory.get_logging_interface( initFileName );
-//logging = new Logger(initFileName);
-
-//Set up internal variables
-logging->info("Internal Logging Intialized");
+ZmqComponentFactory zmq_factory;
 
 //Set up UUID Generator
 zmqo = zmq_factory.get_zmq_outbound_interface( "tcp://localhost:5555" );

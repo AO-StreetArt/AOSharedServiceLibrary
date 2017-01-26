@@ -30,9 +30,7 @@ THE SOFTWARE.
 #include <fstream>
 #include <cstdlib>
 
-#include "include/factory/logging_interface.h"
-#include "include/factory/uuid_interface.h"
-#include "include/factory_logging.h"
+#include "include/uuid_interface.h"
 #include "include/factory_uuid.h"
 
 uuidInterface *uuid;
@@ -64,12 +62,12 @@ logging = logging_factory.get_logging_interface( initFileName );
 //logging = new Logger(initFileName);
 
 //Set up internal variables
-logging->info("Internal Logging Intialized");
+std::cout << "Internal Logging Intialized" << std::endl;
 
 //Set up UUID Generator
 uuid = uuid_factory.get_uuid_interface();
 //uuid = new uuidAdmin;
-logging->info("UUID Generator Created");
+std::cout << "UUID Generator Created" << std::endl;
 
 //------------------------------Run Tests-------------------------------------//
 //----------------------------------------------------------------------------//

@@ -363,9 +363,18 @@ lib/zmqio.o:  lib/zmqio.cpp lib/include/factory/logging_interface.h
 lib/http_admin.o:  lib/http_admin.cpp lib/include/factory/logging_interface.h
 	$(CC) $(CFLAGS) -o $@ -c lib/http_admin.cpp $(STD)
 
-# Create the object file uuid_admin.o
-lib/uuid_admin.o:  lib/uuid_admin.cpp lib/include/factory/logging_interface.h
-	$(CC) $(CFLAGS) -o $@ -c lib/uuid_admin.cpp $(STD)
+	# Test
+	# Create the executable file zmqio_test
+	cli_test: cli.o cli_test.o
+		$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
+
+	# Create the object file zmqio_test.o
+	cli_test.o: cli_test.cpp
+		$(CC) $(CFLAGS) -o $@ -c zmqio_test.cpp $(STD)
+
+	# Build ZMQ Object file
+	cli.o: cli.cpp include/cli.h include/cli_interface.h
+		$(CC) $(CFLAGS) -o $@ -c zmqio.cpp $(STD)
 
 # Create the object file logging.o
 lib/logging.o:  lib/logging.cpp lib/include/factory/logging_interface.h

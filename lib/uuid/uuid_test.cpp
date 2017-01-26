@@ -22,33 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//An admin for generating UUID's
-
+#include "include/uuid_interface.h"
+#include "include/factory_uuid.h"
+#include <iostream>
+#include <assert.h>
 #include <string>
 #include <string.h>
-#include <uuid/uuid.h>
-#include "factory/uuid_interface.h"
 
-#ifndef UUID_ADMIN
-#define UUID_ADMIN
-
-//! UUID Admin
-
-//! The UUID Admin is in charge of generating any Universally Unique
-//! ID's that are required throughout program execution
-class uuidAdmin: public uuidInterface
+int main()
 {
-public:
-	uuidAdmin() {}
-	~uuidAdmin() {}
-	//! Generate a new UUID
+  uuidComponentFactory id_factory;
+  //Initialize the UUID Admin
+  uuidInterface *uuid = id_factory.get_uuid_interface();
 
-	//! The method will generate on the means of generation present on your system
-	//! In some cases, this may result in UUID's being generated that pose a security
-	//! risk.  In this case, that fact will be clearly called out in the logs, and
-	//! it is recommended that production systems are tested to ensure that UUID's are
-	//! generated in a safe manner
-	UuidContainer generate();
-};
-
-#endif
+  //Generate a UUID
+  UuidContainer id_container = uuid->generate();
+  std::string id_str = id_container.id;
+  assert ( !(id_str.empty()) );
+  std::cout << id_str << std::endl;
+  std::cout << id_container.err << std::endl;
+}
