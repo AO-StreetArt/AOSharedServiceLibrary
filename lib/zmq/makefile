@@ -40,14 +40,14 @@ zmqio_test: zmqio.o zmqio_test.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
 
 # Create the object file zmqio_test.o
-lib/zmqio_test.o: zmqio_test.cpp
+zmqio_test.o: zmqio_test.cpp
 	$(CC) $(CFLAGS) -o $@ -c zmqio_test.cpp $(STD)
 
 # Benchmark
 zmqio_benchmark: zmqio_benchmark.o zmqio.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
 
-lib/zmqio_benchmark.o: zmqio_benchmark.cpp
+zmqio_benchmark.o: zmqio_benchmark.cpp
 	$(CC) $(CFLAGS) -o $@ -c $^ $(STD)
 
 # Build ZMQ Object file

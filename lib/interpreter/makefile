@@ -20,7 +20,11 @@ clean:
 install: $(INCL)
 
 /usr/local/include/aossl/interpreter:
-	mkdir $@
+	mkdir $@ install_subdirs
 
 /usr/local/include/aossl/interpreter/interpreter.h: interpreter.h
 	cp $< $@
+
+install_subdirs:
+	cd cli && $(MAKE) install
+	cd properties_reader && $(MAKE) install

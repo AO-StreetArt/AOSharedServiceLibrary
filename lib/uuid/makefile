@@ -21,7 +21,7 @@ clean:
 
 # Makefile Instructions
 # Create the object file uuid_admin.o
-lib/uuid_admin.o:  uuid_admin.cpp include/uuid_admin.h include/uuid_interface.h
+uuid_admin.o:  uuid_admin.cpp include/uuid_admin.h include/uuid_interface.h
 	$(CC) $(CFLAGS) -o $@ -c uuid_admin.cpp $(STD)
 
 # Install

@@ -40,14 +40,14 @@ logging_test: logging.o logging_test.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
 
 # Create the object file zmqio_test.o
-lib/logging_test.o: logging_test.cpp
+logging_test.o: logging_test.cpp
 	$(CC) $(CFLAGS) -o $@ -c logging_test.cpp $(STD)
 
 # Benchmark
 logging_benchmark: logging_benchmark.o logging.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
 
-lib/logging_benchmark.o: logging_benchmark.cpp
+logging_benchmark.o: logging_benchmark.cpp
 	$(CC) $(CFLAGS) -o $@ -c $^ $(STD)
 
 # Build ZMQ Object file
