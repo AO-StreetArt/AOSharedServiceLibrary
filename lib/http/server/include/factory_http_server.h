@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "factory/http_server_interface.h"
+#include "http_server_interface.h"
 #include "http_server.h"
 #include <string.h>
 

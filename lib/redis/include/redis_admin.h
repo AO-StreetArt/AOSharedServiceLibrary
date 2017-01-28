@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 
 #include "hiredis/hiredis.h"
-#include "factory/redis_interface.h"
+#include "redis_interface.h"
 #include <string.h>
 #include <string>
 #include <vector>
@@ -45,24 +45,24 @@ struct RedisSession {
 
 //A Connection pool to ensure thread safety
 class RedisConnectionPool {
-//A pool of neo4j connections
-std::vector<RedisSession> connections;
-//Array of ints (0/1) which determine which connections are open vs closed
-int *slots;
-//Internal integers
-int connection_limit = 1;
-int start_connections = 1;
-int current_connection = -1;
-int current_max_connection = 1;
-int connection_creation_batch = 1;
-int timeout_seconds = 5;
-int timeout_microseconds = 0;
-std::string connection_string;
-std::string password;
-int port;
-std::mutex get_conn_mutex;
-void init_slots();
-void init_connections(const char * conn_str, const char * passwd, int con_port, int timeout_secs, int timeout_microsecs);
+  //A pool of neo4j connections
+  std::vector<RedisSession> connections;
+  //Array of ints (0/1) which determine which connections are open vs closed
+  int *slots;
+  //Internal integers
+  int connection_limit = 1;
+  int start_connections = 1;
+  int current_connection = -1;
+  int current_max_connection = 1;
+  int connection_creation_batch = 1;
+  int timeout_seconds = 5;
+  int timeout_microseconds = 0;
+  std::string connection_string;
+  std::string password;
+  int port;
+  std::mutex get_conn_mutex;
+  void init_slots();
+  void init_connections(const char * conn_str, const char * passwd, int con_port, int timeout_secs, int timeout_microsecs);
 public:
   RedisConnectionPool(int size, const char * conn_str, const char * passwd, int con_port) {connection_limit=size;init_slots();init_connections(conn_str, passwd, con_port, timeout_seconds, timeout_microseconds);}
   RedisConnectionPool(int size, const char * conn_str, const char * passwd, int con_port, int timeout_secs, int timeout_microsecs) {connection_limit=size;init_slots();init_connections(conn_str, passwd, con_port, timeout_secs, timeout_microsecs);}
@@ -76,12 +76,12 @@ public:
 //The Redis Administrator that exposes key methods
 class RedisAdmin : public RedisInterface
 {
-RedisConnectionPool *pool = NULL;
-void init(std::string hostname, std::string passwd, int port, int timeout_seconds, int timeout_microseconds, int pool_size);
-bool process_std_string_reply(redisReply *reply);
-bool process_std_int_reply(redisReply *reply);
-int return_int_reply(redisReply *reply);
-std::string return_string_reply(redisReply *reply);
+  RedisConnectionPool *pool = NULL;
+  void init(std::string hostname, std::string passwd, int port, int timeout_seconds, int timeout_microseconds, int pool_size);
+  bool process_std_string_reply(redisReply *reply);
+  bool process_std_int_reply(redisReply *reply);
+  int return_int_reply(redisReply *reply);
+  std::string return_string_reply(redisReply *reply);
 public:
   //TO-DO: Constructor accepting list of connections to Sentinels for HA setups
 
@@ -132,7 +132,7 @@ public:
   int rpush ( std::string key, std::string val );
 
   //! Pop a value from a Redis list on the given key
-	std::string lpop ( std::string key );
+  std::string lpop ( std::string key );
 
   //! Pop a value from a Redis list on the given key
   std::string rpop ( std::string key );

@@ -54,3 +54,4 @@ There are a number of topics which have been identified as areas needing develop
 * Benchmarks for Mongo & Neo4j
 * Expanded ZeroMQ Pub/Sub Architecture automated tests
 * Library testing with OSX and/or other Linux Distributions not already supported
+* CMake Support

@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 
 #include <string.h>
-#include "factory/consul_interface.h"
+#include "consul_interface.h"
 #include "service.h"
 #include "consul_admin.h"
 

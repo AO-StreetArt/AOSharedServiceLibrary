@@ -89,7 +89,7 @@ void Zmqi::send(std::string msg)
 
 void Zmqi::subscribe(std::string filter)
 {
-   zmqi->setsockopt(ZMQ_SUBSCRIBE, filter.c_str(), filter.size());
+  zmqi->setsockopt(ZMQ_SUBSCRIBE, filter.c_str(), filter.size());
 }
 
 //-------------------------Outbound ZMQ Admin---------------------------------//

@@ -81,7 +81,7 @@ PropertiesReader::PropertiesReader(std::string file_path) {
   }
 }
 
-  //Does a key exist?
+//Does a key exist?
 bool PropertiesReader::opt_exist( std::string key )
 {
   auto search = opts.find(key);
@@ -95,10 +95,10 @@ bool PropertiesReader::opt_exist( std::string key )
 //Does a key exist?
 bool PropertiesReader::list_exist( std::string key )
 {
-auto search = opt_lists.find(key);
-if (search != opt_lists.end())
-{
-  return true;
-}
-return false;
+  auto search = opt_lists.find(key);
+  if (search != opt_lists.end())
+  {
+    return true;
+  }
+  return false;
 }

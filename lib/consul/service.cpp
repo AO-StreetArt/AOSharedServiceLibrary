@@ -74,7 +74,7 @@ std::string Service::to_json()
 
   //Build the base JSON String
   std::string json_str = "{\"" + id_key + "\": \"" + id + "\", \"" +
-    name_key + "\": \"" + name + "\", \"";
+  name_key + "\": \"" + name + "\", \"";
 
   //Add in any service tags
   if (num_tags() > 0) {
@@ -86,10 +86,10 @@ std::string Service::to_json()
 
     json_str = json_str + "], \"";
   }
-
+  
   //Finish the base json string
   json_str = json_str + addr_key + "\": \"" + address + "\"" +
-    ", \"" + port_key + "\": " + port;
+  ", \"" + port_key + "\": " + port;
 
   //Add the Health Check
   if (!check.script.empty()) {

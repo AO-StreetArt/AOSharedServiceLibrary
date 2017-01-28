@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include <fstream>
 #include <cstdlib>
 
-#include "include/factory/logging_interface.h"
+#include "include/logging_interface.h"
 #include "include/factory_logging.h"
 
 //----------------------------------------------------------------------------//
@@ -40,21 +40,21 @@ THE SOFTWARE.
 BENCHMARK(LOGGING, Debug, 10, 100)
 {
 
-logging->debug("Testing");
+  logging->debug("Testing");
 
 }
 
 BENCHMARK(LOGGING, Error, 10, 100)
 {
 
-logging->error("Testing");
+  logging->error("Testing");
 
 }
 
 BENCHMARK(LOGGING, Info, 10, 100)
 {
 
-logging->info("Testing");
+  logging->info("Testing");
 
 }
 
@@ -65,29 +65,29 @@ logging->info("Testing");
 int main()
 {
 
-LoggingComponentFactory logging_factory;
+  LoggingComponentFactory logging_factory;
 
-//Read the Logging Configuration File
-std::string initFileName = "test/log4cpp_test.properties";
-logging = logging_factory.get_logging_interface( initFileName );
-//logging = new Logger(initFileName);
+  //Read the Logging Configuration File
+  std::string initFileName = "test/log4cpp_test.properties";
+  logging = logging_factory.get_logging_interface( initFileName );
+  //logging = new Logger(initFileName);
 
-//Set up internal variables
-logging->info("Internal Logging Intialized");
+  //Set up internal variables
+  logging->info("Internal Logging Intialized");
 
-//------------------------------Run Tests-------------------------------------//
-//----------------------------------------------------------------------------//
+  //------------------------------Run Tests-------------------------------------//
+  //----------------------------------------------------------------------------//
 
-hayai::ConsoleOutputter consoleOutputter;
+  hayai::ConsoleOutputter consoleOutputter;
 
-hayai::Benchmarker::AddOutputter(consoleOutputter);
-hayai::Benchmarker::RunAllTests();
+  hayai::Benchmarker::AddOutputter(consoleOutputter);
+  hayai::Benchmarker::RunAllTests();
 
-//-------------------------Post-Test Teardown---------------------------------//
-//----------------------------------------------------------------------------//
+  //-------------------------Post-Test Teardown---------------------------------//
+  //----------------------------------------------------------------------------//
 
-delete logging;
+  delete logging;
 
-return 0;
+  return 0;
 
 }

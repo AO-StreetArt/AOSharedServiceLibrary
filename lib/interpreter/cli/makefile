@@ -2,14 +2,15 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-INCL = /usr/local/include/aossl/cli/factory_cli.h	/usr/local/include/aossl/cli/cli.h /usr/local/include/aossl/cli/cli_interface.h
-INCL_DIR = /usr/local/include/aossl/cli
-RM = rm
+INCL = $(INSTALL_DIR)/cli/factory_cli.h	$(INSTALL_DIR)/cli/cli.h $(INSTALL_DIR)/cli/commandline_interface.h
+INCL_DIR = $(INSTALL_DIR)/cli
+RM = rm -f
+INCL_DIRS = -I$(CURDIR)/../
 
 #Makefile Targets
 default: cli.o
 
-test: cli_test
+tests: cli_test
 
 install: $(INCL_DIR) $(INCL)
 
@@ -19,27 +20,27 @@ clean:
 # Makefile Instructions
 
 # Install
-/usr/local/include/aossl/cli:
+$(INSTALL_DIR)/cli:
 	mkdir $@
 
-/usr/local/include/aossl/cli/factory_cli.h: include/factory_zmq.h
+$(INSTALL_DIR)/cli/factory_cli.h: include/factory_cli.h
 	cp $< $@
 
-/usr/local/include/aossl/cli/commandline_interface.h: include/zmqio.h
+$(INSTALL_DIR)/cli/cli.h: include/cli.h
 	cp $< $@
 
-/usr/local/include/aossl/cli/cli_interface.h: include/zmq_interface.h
+$(INSTALL_DIR)/cli/commandline_interface.h: include/commandline_interface.h
 	cp $< $@
 
 # Test
-# Create the executable file zmqio_test
+# Create the executable file cli_test
 cli_test: cli.o cli_test.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_DIRS)
 
-# Create the object file zmqio_test.o
+# Create the object file cli_test.o
 cli_test.o: cli_test.cpp
-	$(CC) $(CFLAGS) -o $@ -c zmqio_test.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c cli_test.cpp $(STD) $(INCL_DIRS)
 
 # Build ZMQ Object file
-cli.o: cli.cpp include/cli.h include/cli_interface.h
-	$(CC) $(CFLAGS) -o $@ -c zmqio.cpp $(STD)
+cli.o: cli.cpp include/cli.h include/commandline_interface.h
+	$(CC) $(CFLAGS) -o $@ -c cli.cpp $(STD) $(INCL_DIRS)

@@ -5,8 +5,8 @@ for services.
 
 We can start by including the necessary headers
 
-    #include "include/factory/mongo_interface.h"
-    #include "include/factory_mongo.h"
+    #include "include/aossl/mongo/mongo_interface.h"
+    #include "include/aossl/mongo/factory_mongo.h"
 
 While Mongo utilizes a special brand of json known as 'BSON', the interface will take care of the translation.
 This means we can define our objects as json, and then feed them back to the interface.

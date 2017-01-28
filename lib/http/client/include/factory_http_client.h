@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "factory/http_interface.h"
+#include "http_interface.h"
 #include "http_admin.h"
 
 #ifndef AOSSL_FACTORY_HTTP_CLIENT

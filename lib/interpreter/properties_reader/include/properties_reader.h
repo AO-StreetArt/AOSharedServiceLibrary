@@ -30,17 +30,17 @@ THE SOFTWARE.
 #include <sstream>
 #include <fstream>
 
-#include "factory/properties_reader_interface.h"
+#include "properties_reader_interface.h"
 
 #ifndef PROPS_READER
 #define PROPS_READER
 
 class PropertiesReader: public PropertiesReaderInterface
 {
-//An unordered map of options from the command line
-std::unordered_map<std::string, std::string> opts;
-std::unordered_map<std::string, std::vector<std::string>> opt_lists;
-std::string name;
+  //An unordered map of options from the command line
+  std::unordered_map<std::string, std::string> opts;
+  std::unordered_map<std::string, std::vector<std::string>> opt_lists;
+  std::string name;
 public:
 
   //! Create a new Command Line Interpreter

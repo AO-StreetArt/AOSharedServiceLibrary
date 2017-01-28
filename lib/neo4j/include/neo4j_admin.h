@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include <iostream>
 #include <mutex>
 
-#include "factory/neo4j_interface.h"
+#include "neo4j_interface.h"
 
 #ifndef AOSSL_NEO4J_ADMIN
 #define AOSSL_NEO4J_ADMIN
@@ -49,21 +49,21 @@ struct Neo4jQuerySession {
 
 //A Connection pool to ensure thread safety
 class Neo4jConnectionPool {
-//A pool of neo4j connections
-std::vector<Neo4jQuerySession> connections;
-//Array of ints (0/1) which determine which connections are open vs closed
-int *slots;
-//Internal integers
-int connection_limit = 1;
-int start_connections = 1;
-int current_connection = -1;
-int current_max_connection = 1;
-int connection_creation_batch = 1;
-bool secure = false;
-std::string connection_string;
-std::mutex get_conn_mutex;
-void init_slots();
-void init_connections(const char * conn_str, bool secure);
+  //A pool of neo4j connections
+  std::vector<Neo4jQuerySession> connections;
+  //Array of ints (0/1) which determine which connections are open vs closed
+  int *slots;
+  //Internal integers
+  int connection_limit = 1;
+  int start_connections = 1;
+  int current_connection = -1;
+  int current_max_connection = 1;
+  int connection_creation_batch = 1;
+  bool secure = false;
+  std::string connection_string;
+  std::mutex get_conn_mutex;
+  void init_slots();
+  void init_connections(const char * conn_str, bool secure);
 public:
   Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect) {connection_limit=size;std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();neo4j_client_init();init_connections(conn_str, secure);}
   Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect, int start_conns) {std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();start_connections=start_conns;connection_limit=size;init_connections(conn_str, secure);}
@@ -82,14 +82,14 @@ typedef neo4j_value_t (*KeyGenerationFunction)(neo4j_value_t, neo4j_value_t);
 typedef neo4j_value_t (*IndexGenerationFunction)(neo4j_value_t, unsigned int);
 
 class DbList: public DbListInterface {
-neo4j_result_t *result = NULL;
-int index;
-int path_index;
-ValueGenerationFunction list_function;
-KeyGenerationFunction map_function = NULL;
-std::string map_key;
-neo4j_value_t get_list();
-neo4j_value_t get_list_value(unsigned int ind);
+  neo4j_result_t *result = NULL;
+  int index;
+  int path_index;
+  ValueGenerationFunction list_function;
+  KeyGenerationFunction map_function = NULL;
+  std::string map_key;
+  neo4j_value_t get_list();
+  neo4j_value_t get_list_value(unsigned int ind);
 public:
   DbList(neo4j_result_t *r, unsigned int ind, ValueGenerationFunction lf) {result=r;index=ind;list_function=lf;}
   DbList(neo4j_result_t *r, unsigned int ind, ValueGenerationFunction lf, unsigned int pindex) {result=r;index=ind;list_function=lf;path_index=pindex;}
@@ -105,14 +105,14 @@ public:
 };
 
 class DbMap: public DbMapInterface {
-neo4j_result_t *result = NULL;
-int index;
-int path_index;
-ValueGenerationFunction map_function;
-std::vector<KeyGenerationFunction> map_functions;
-std::vector<std::string> keys;
-neo4j_value_t get_map();
-neo4j_value_t get_map_value(std::string key);
+  neo4j_result_t *result = NULL;
+  int index;
+  int path_index;
+  ValueGenerationFunction map_function;
+  std::vector<KeyGenerationFunction> map_functions;
+  std::vector<std::string> keys;
+  neo4j_value_t get_map();
+  neo4j_value_t get_map_value(std::string key);
 public:
   DbMap(neo4j_result_t *r, int ind, ValueGenerationFunction mf) {result=r;index=ind;map_function =mf;}
   DbMap(neo4j_result_t *r, int ind, ValueGenerationFunction mf, int pindex) {result=r;index=ind;map_function =mf;path_index=pindex;}
@@ -132,11 +132,11 @@ public:
 
 //Represents a single node, edge, or path
 class DbObject: public DbObjectInterface {
-neo4j_result_t *result = NULL;
-int index;
-int path_index;
-neo4j_value_t get_value();
-bool is_instance_of(neo4j_type_t type);
+  neo4j_result_t *result = NULL;
+  int index;
+  int path_index;
+  neo4j_value_t get_value();
+  bool is_instance_of(neo4j_type_t type);
 public:
   DbObject(neo4j_result_t *r, int ind) {result=r;index=ind;path_index=-1;}
   DbObject(neo4j_result_t *r, int ind, int ind2) {result=r;index=ind;path_index=ind2;}
@@ -158,7 +158,7 @@ public:
 // Represents a single query Result, returned by the iterator
 // Consists of a set of nodes and edges
 class ResultTree: public ResultTreeInterface {
-neo4j_result_t *result = NULL;
+  neo4j_result_t *result = NULL;
 public:
   ResultTree(neo4j_result_t *r) {result=r;}
   ~ResultTree() {}
@@ -170,10 +170,10 @@ public:
 // Deletes it when finished
 // Also responsible for releasing the database connection with the pool after usage
 class ResultsIterator: public ResultsIteratorInterface {
-neo4j_result_stream_t *results;
-Neo4jQuerySession *s;
-Neo4jConnectionPool *p;
-void clear_results() {neo4j_close_results(results);}
+  neo4j_result_stream_t *results;
+  Neo4jQuerySession *s;
+  Neo4jConnectionPool *p;
+  void clear_results() {neo4j_close_results(results);}
 public:
 
   inline ResultsIterator(neo4j_result_stream_t *result_stream, Neo4jQuerySession *session, Neo4jConnectionPool *pool) {
@@ -205,16 +205,16 @@ const int _FLT_TYPE = 3;
 
 //A Query parameter to be inserted into cypher queries
 class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
-bool bool_value;
-std::string str_value;
-int int_value;
-double double_value;
-int type;
-bool is_list;
-std::vector<bool> bool_values;
-std::vector<std::string> str_values;
-std::vector<int> int_values;
-std::vector<double> double_values;
+  bool bool_value;
+  std::string str_value;
+  int int_value;
+  double double_value;
+  int type;
+  bool is_list;
+  std::vector<bool> bool_values;
+  std::vector<std::string> str_values;
+  std::vector<int> int_values;
+  std::vector<double> double_values;
 
 public:
   Neo4jQueryParameter() {is_list=true;type=-1;}
@@ -242,8 +242,8 @@ public:
 };
 
 class Neo4jAdmin: public Neo4jInterface {
-Neo4jConnectionPool *pool = NULL;
-void initialize(const char * conn_str, bool secure, int conn_pool_size);
+  Neo4jConnectionPool *pool = NULL;
+  void initialize(const char * conn_str, bool secure, int conn_pool_size);
 public:
 
   Neo4jAdmin(const char * conn_str, bool secure, int pool_size) {initialize(conn_str, secure, pool_size);}

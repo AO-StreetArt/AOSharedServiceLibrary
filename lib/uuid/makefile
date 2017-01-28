@@ -2,15 +2,15 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-INCL = /usr/local/include/aossl/uuid/factory_uuid.h	/usr/local/include/aossl/uuid/uuid_admin.h /usr/local/include/aossl/uuid/uuid_interface.h
-INCL_DIR = /usr/local/include/aossl/uuid
+INCL = $(INSTALL_DIR)/uuid/factory_uuid.h	$(INSTALL_DIR)/uuid/uuid_admin.h $(INSTALL_DIR)/uuid/uuid_interface.h
+INCL_DIR = $(INSTALL_DIR)/uuid
 LIBS = -luuid
-RM = rm
+RM = rm -f
 
 #Makefile Targets
 default: uuid_admin.o
 
-test: uuid_test
+tests: uuid_test
 
 benchmark: uuid_benchmark
 
@@ -25,16 +25,16 @@ uuid_admin.o:  uuid_admin.cpp include/uuid_admin.h include/uuid_interface.h
 	$(CC) $(CFLAGS) -o $@ -c uuid_admin.cpp $(STD)
 
 # Install
-/usr/local/include/aossl/uuid:
+$(INSTALL_DIR)/uuid:
 	mkdir $@
 
-/usr/local/include/aossl/uuid/factory_uuid.h: include/factory_uuid.h
+$(INSTALL_DIR)/uuid/factory_uuid.h: include/factory_uuid.h
 	cp $< $@
 
-/usr/local/include/aossl/uuid/uuid_admin.h: include/uuid_admin.h
+$(INSTALL_DIR)/uuid/uuid_admin.h: include/uuid_admin.h
 	cp $< $@
 
-/usr/local/include/aossl/uuid/uuid_interface.h: include/uuid_interface.h
+$(INSTALL_DIR)/uuid/uuid_interface.h: include/uuid_interface.h
 	cp $< $@
 
 # Test

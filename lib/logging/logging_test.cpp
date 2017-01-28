@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 
 #include "include/factory_logging.h"
-#include "include/factory/logging_interface.h"
+#include "include/logging_interface.h"
 #include <string>
 #include <string.h>
 

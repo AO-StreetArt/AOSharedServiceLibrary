@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "factory/http_server_interface.h"
+#include "http_server_interface.h"
 #include <vector>
 #include <string>
 #include <exception>
-#include "factory/callbacks.h"
+#include "callbacks.h"
 #include <iostream>
 #include <unordered_map>
 
@@ -41,9 +41,9 @@ void process_request(struct evhttp_request *req, void *arg);
 
 class HttpServer: public HttpServerInterface
 {
-struct event_base *base;
-std::string internal_url;
-int internal_port;
+  struct event_base *base;
+  std::string internal_url;
+  int internal_port;
 public:
   HttpServer(std::string base_addr, int base_port);
   ~HttpServer();

@@ -5,8 +5,8 @@ This is the most common framework used for services in other languages.
 
 The HTTP Server binds callbacks to URL's and allows for distinguishing between types of requests.
 
-    #include "aossl/factory_http_server.h"
-    #include "aossl/factory/http_server_interface.h"
+    #include "aossl/http/server/factory_http_server.h"
+    #include "aossl/http/server/http_server_interface.h"
 
     //Set up the HTTP Server
     HttpServerFactory http_server_factory;
@@ -63,3 +63,5 @@ And we distinguish between the types via the req_type pointer, as above.
 
 We can also bind a default callback, which get's called whenever a bound URI is not found.
 This can be particular useful for allowing access to things like key-value stores
+
+You can see further details on the callbacks for the server [here] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use/drivers/http_server/callbacks)

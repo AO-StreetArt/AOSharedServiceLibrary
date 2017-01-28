@@ -31,9 +31,7 @@ THE SOFTWARE.
 #include <cstdlib>
 #include <uuid/uuid.h>
 
-#include "include/factory/logging_interface.h"
-#include "include/factory/http_interface.h"
-#include "include/factory_logging.h"
+#include "include/http_interface.h"
 #include "include/factory_http_client.h"
 
 //----------------------------------------------------------------------------//
@@ -59,7 +57,7 @@ BENCHMARK(HTTP, Get, 10, 100)
   std::string ret_val = http->get(get, 5);
   if (ret_val.empty())
   {
-    logging->error("Get Request Failed");
+    std::cout <<"Get Request Failed" << std::endl;
   }
 
 }
@@ -73,7 +71,7 @@ BENCHMARK(HTTP, Put, 10, 100)
   if (!success)
   {
     //We now have the full response
-    logging->error("Put Request Failed");
+    std::cout <<"Put Request Failed" << std::endl;
   }
 
 }
@@ -86,7 +84,7 @@ BENCHMARK(HTTP, Post, 10, 100)
   if (!success)
   {
     //We now have the full response
-    logging->error("Post Request Failed");
+    std::cout <<"Post Request Failed" << std::endl;
   }
 
 }
@@ -99,7 +97,7 @@ BENCHMARK(HTTP, Delete, 10, 100)
   if (!success)
   {
     //We now have the full response
-    logging->error("Delete Request Failed");
+    std::cout <<"Delete Request Failed" << std::endl;
   }
 
 }
@@ -112,33 +110,27 @@ int main()
 {
 
   HttpClientFactory http_client_factory;
-  LoggingComponentFactory logging_factory;
 
-//Read the Logging Configuration File
-std::string initFileName = "test/log4cpp_test.properties";
-logging = logging_factory.get_logging_interface( initFileName );
+  //Set up internal variables
+  std::cout << "Internal Logging Intialized" <<std::endl;
 
-//Set up internal variables
-logging->info("Internal Logging Intialized");
+  //Set up HTTP Client
+  http = http_client_factory.get_http_interface();
+  std::cout << "HTTP Outbound Interface Created" << std::endl;
 
-//Set up HTTP Client
-http = http_client_factory.get_http_interface();
-logging->info("HTTP Outbound Interface Created");
+  //------------------------------Run Tests-------------------------------------//
+  //----------------------------------------------------------------------------//
 
-//------------------------------Run Tests-------------------------------------//
-//----------------------------------------------------------------------------//
+  hayai::ConsoleOutputter consoleOutputter;
 
-hayai::ConsoleOutputter consoleOutputter;
+  hayai::Benchmarker::AddOutputter(consoleOutputter);
+  hayai::Benchmarker::RunAllTests();
 
-hayai::Benchmarker::AddOutputter(consoleOutputter);
-hayai::Benchmarker::RunAllTests();
+  //-------------------------Post-Test Teardown---------------------------------//
+  //----------------------------------------------------------------------------//
 
-//-------------------------Post-Test Teardown---------------------------------//
-//----------------------------------------------------------------------------//
+  delete http;
 
-delete http;
-delete logging;
-
-return 0;
+  return 0;
 
 }

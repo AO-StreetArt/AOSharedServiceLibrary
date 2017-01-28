@@ -22,9 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "include/http_admin.h"
 #include "include/factory_http_client.h"
-#include "include/factory/http_interface.h"
+#include "include/http_interface.h"
 #include <string>
 #include <string.h>
 #include <stdlib.h>
@@ -60,8 +59,8 @@ int main()
   }
   else
   {
-    std::cout << ("Retrieved:") << std::endl;
-    std::cout << (ret_val) << std::endl;
+    std::cout << "Retrieved:" << std::endl;
+    std::cout << ret_val << std::endl;
   }
 
   std::string ret_val2 = ha->get(get, 5);
@@ -72,8 +71,8 @@ int main()
   }
   else
   {
-    std::cout << ("Retrieved:") << std::endl;
-    std::cout << (ret_val2) << std::endl;
+    std::cout << "Retrieved:" << std::endl;
+    std::cout << ret_val2 << std::endl;
   }
 
   //-------------------------------PUT--------------------------------------//

@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "factory/commandline_interface.h"
+#include "commandline_interface.h"
 #include "cli.h"
 
 #ifndef AOSSL_FACTORY_COMMANDLINE

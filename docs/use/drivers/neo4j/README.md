@@ -2,6 +2,9 @@
 
 Neo4j is a graph based database which stores data in Nodes & Edges.  We start by retrieving our component factory & interface.
 
+    #include "include/aossl/neo4j/neo4j_interface.h"
+    #include "include/aossl/neo4j/factory_neo4j.h"
+
     Neo4jComponentFactory neo4j_factory;
     Neo4jInterface *neo = neo4j_factory.get_neo4j_interface("neo4j://localhost:7687");
 

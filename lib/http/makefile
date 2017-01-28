@@ -11,6 +11,15 @@ client/http_admin.o:
 server/http_server.o:
 	cd server && $(MAKE)
 
+# tests
+tests:
+	cd client && $(MAKE) tests
+	cd server && $(MAKE) tests
+
+# benchmarks
+benchmark:
+	cd client && $(MAKE) benchmark
+
 # Step into each subdirectory and make clean
 clean:
 	cd client && $(MAKE) clean

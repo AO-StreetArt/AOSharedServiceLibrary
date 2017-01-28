@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 
 #include <string.h>
-#include "factory/logging_interface.h"
+#include "logging_interface.h"
 #include "logging.h"
 
 #ifndef AOSSL_FACTORY_LOGGING

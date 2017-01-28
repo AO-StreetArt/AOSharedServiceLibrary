@@ -50,8 +50,8 @@ struct Neo4jException: public std::exception
   //! Show the error message in readable format
   const char * what() const throw ()
   {
-  std::string what_str = "Error in Neo4j Request: " + int_msg;
-  return what_str.c_str();
+    std::string what_str = "Error in Neo4j Request: " + int_msg;
+    return what_str.c_str();
   }
 };
 

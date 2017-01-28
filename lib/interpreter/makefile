@@ -11,6 +11,11 @@ cli/cli.o:
 properties_reader/properties_reader.o:
 	cd properties_reader && $(MAKE)
 
+# Tests
+tests:
+	cd cli && $(MAKE) tests
+	cd properties_reader && $(MAKE) tests
+
 # Step into each subdirectory and make clean
 clean:
 	cd cli && $(MAKE) clean

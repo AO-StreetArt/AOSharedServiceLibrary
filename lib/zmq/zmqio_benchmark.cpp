@@ -76,27 +76,26 @@ BENCHMARK(ZMQ, SendRecieve, 10, 100)
 int main()
 {
 
-ZmqComponentFactory zmq_factory;
+  ZmqComponentFactory zmq_factory;
 
-//Set up UUID Generator
-zmqo = zmq_factory.get_zmq_outbound_interface( "tcp://localhost:5555" );
-zmqi = zmq_factory.get_zmq_inbound_interface( "tcp://*:5555" );
+  //Set up UUID Generator
+  zmqo = zmq_factory.get_zmq_outbound_interface( "tcp://localhost:5555", REQ_RESP );
+  zmqi = zmq_factory.get_zmq_inbound_interface( "tcp://*:5555", REQ_RESP );
 
-//------------------------------Run Tests-------------------------------------//
-//----------------------------------------------------------------------------//
+  //------------------------------Run Tests-------------------------------------//
+  //----------------------------------------------------------------------------//
 
-hayai::ConsoleOutputter consoleOutputter;
+  hayai::ConsoleOutputter consoleOutputter;
 
-hayai::Benchmarker::AddOutputter(consoleOutputter);
-hayai::Benchmarker::RunAllTests();
+  hayai::Benchmarker::AddOutputter(consoleOutputter);
+  hayai::Benchmarker::RunAllTests();
 
-//-------------------------Post-Test Teardown---------------------------------//
-//----------------------------------------------------------------------------//
+  //-------------------------Post-Test Teardown---------------------------------//
+  //----------------------------------------------------------------------------//
 
-delete zmqo;
-delete zmqi;
-delete logging;
+  delete zmqo;
+  delete zmqi;
 
-return 0;
+  return 0;
 
 }

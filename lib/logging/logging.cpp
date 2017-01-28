@@ -61,7 +61,7 @@ void Logger::end_log()
 //Constructor from a file
 Logger::Logger(std::string initFileName)
 {
-start_log_from_file(initFileName);
+  start_log_from_file(initFileName);
 }
 
 //Destructor

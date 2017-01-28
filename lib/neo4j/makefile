@@ -2,15 +2,15 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-INCL = /usr/local/include/aossl/neo4j/factory_neo4j.h	/usr/local/include/aossl/neo4j/neo4j_admin.h /usr/local/include/aossl/neo4j/neo4j_interface.h
-INCL_DIR = /usr/local/include/aossl/neo4j
+INCL = $(INSTALL_DIR)/neo4j/factory_neo4j.h	$(INSTALL_DIR)/neo4j/neo4j_admin.h $(INSTALL_DIR)/neo4j/neo4j_interface.h
+INCL_DIR = $(INSTALL_DIR)/neo4j
 LIBS = -lneo4j-client -lssl -lcrypto -lm
-RM = rm
+RM = rm -f
 
 #Makefile Targets
 default: neo4j_admin.o
 
-test: neo4j_test
+tests: neo4j_test
 
 install: $(INCL_DIR) $(INCL)
 
@@ -23,16 +23,16 @@ neo4j_admin.o:  neo4j_admin.cpp include/neo4j_admin.h include/neo4j_interface.h
 	$(CC) $(CFLAGS) -o $@ -c neo4j_admin.cpp $(STD)
 
 # Install
-/usr/local/include/aossl/neo4j:
+$(INSTALL_DIR)/neo4j:
 	mkdir $@
 
-/usr/local/include/aossl/neo4j/factory_neo4j.h: include/factory_neo4j.h
+$(INSTALL_DIR)/neo4j/factory_neo4j.h: include/factory_neo4j.h
 	cp $< $@
 
-/usr/local/include/aossl/neo4j/neo4j_admin.h: include/neo4j_admin.h
+$(INSTALL_DIR)/neo4j/neo4j_admin.h: include/neo4j_admin.h
 	cp $< $@
 
-/usr/local/include/aossl/neo4j/neo4j_interface.h: include/neo4j_interface.h
+$(INSTALL_DIR)/neo4j/neo4j_interface.h: include/neo4j_interface.h
 	cp $< $@
 
 # Test

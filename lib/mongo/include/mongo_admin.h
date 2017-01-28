@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include <vector>
 #include <mutex>
 
-#include "factory/mongo_interface.h"
+#include "mongo_interface.h"
 
 //Stable, C++11 Mongo Client
 
@@ -49,22 +49,22 @@ struct MongoSession {
 
 //A Connection pool to ensure thread safety
 class MongoConnectionPool {
-//A pool of neo4j connections
-std::vector<MongoSession> connections;
-//Array of ints (0/1) which determine which connections are open vs closed
-int *slots;
-//Internal integers
-int connection_limit = 1;
-int start_connections = 1;
-int current_connection = -1;
-int current_max_connection = 1;
-int connection_creation_batch = 1;
-std::string connection_string;
-std::string db_name_string;
-std::string db_coll_string;
-std::mutex get_conn_mutex;
-void init_slots();
-void init_connections(std::string conn_str, std::string db, std::string coll);
+  //A pool of neo4j connections
+  std::vector<MongoSession> connections;
+  //Array of ints (0/1) which determine which connections are open vs closed
+  int *slots;
+  //Internal integers
+  int connection_limit = 1;
+  int start_connections = 1;
+  int current_connection = -1;
+  int current_max_connection = 1;
+  int connection_creation_batch = 1;
+  std::string connection_string;
+  std::string db_name_string;
+  std::string db_coll_string;
+  std::mutex get_conn_mutex;
+  void init_slots();
+  void init_connections(std::string conn_str, std::string db, std::string coll);
 public:
   MongoConnectionPool(int size, std::string conn_str, std::string db, std::string coll) {connection_limit=size;init_slots();init_connections(conn_str, db, coll);}
   MongoConnectionPool(int size, std::string conn_str, std::string db, std::string coll, int start_conns) {init_slots();start_connections=start_conns;connection_limit=size;init_connections(conn_str, db, coll);}
@@ -85,11 +85,11 @@ public:
 
 class MongoClient: public MongoInterface {
 
-//The internal mongoc client
-MongoConnectionPool *pool = NULL;
+  //The internal mongoc client
+  MongoConnectionPool *pool = NULL;
 
-//Initialize the client
-void initialize(const char * url, const char * db, const char * collection_name, int size);
+  //Initialize the client
+  void initialize(const char * url, const char * db, const char * collection_name, int size);
 
 public:
 

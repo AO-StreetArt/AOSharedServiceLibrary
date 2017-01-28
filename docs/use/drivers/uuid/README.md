@@ -2,8 +2,8 @@
 
 Easy and quick Universally Unique ID Generation:
 
-    #include "include/factory_uuid.h"
-    #include "include/factory/uuid_interface.h"
+    #include "aossl/uuid/factory_uuid.h"
+    #include "aossl/uuid/uuid_interface.h"
     #include <iostream>
 
     uuidComponentFactory id_factory;

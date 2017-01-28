@@ -12,8 +12,8 @@ The Zmqio object exposes these methods:
 
 In order to connect to a socket, we ask the factory to create one:
 
-    #include "aossl/factory/zmq_interface.h"
-    #include "aossl/factory_zmq.h"
+    #include "aossl/zmq/zmq_interface.h"
+    #include "aossl/zmq/factory_zmq.h"
 
     ZmqComponentFactory zmq_factory;
 

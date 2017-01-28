@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 
 #include <string.h>
-#include "factory/redis_interface.h"
+#include "redis_interface.h"
 #include "redis_admin.h"
 
 #ifndef AOSSL_FACTORY_REDIS

@@ -2,8 +2,8 @@
 Logging exposes a pointer to a Logger instance, which can log directly itself or
 provide categories to log to.
 
-    #include "include/factory_logging.h"
-    #include "include/factory/logging_interface.h"
+    #include "include/aossl/logging/factory_logging.h"
+    #include "include/aossl/logging/logging_interface.h"
 
     LoggingComponentFactory logging_factory;
 

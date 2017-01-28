@@ -43,10 +43,10 @@ void process_request(struct evhttp_request *req, void *arg){
   //Get the data out of the evhttp request buffer
   try
   {
-  	size_t len = evbuffer_get_length(evhttp_request_get_input_buffer(req));
-  	struct evbuffer *in_evb = evhttp_request_get_input_buffer(req);
-  	char *data = (char*)malloc(len);
-  	evbuffer_copyout(in_evb, data, len);
+    size_t len = evbuffer_get_length(evhttp_request_get_input_buffer(req));
+    struct evbuffer *in_evb = evhttp_request_get_input_buffer(req);
+    char *data = (char*)malloc(len);
+    evbuffer_copyout(in_evb, data, len);
 
     //Put the data into the universal request struct
     std::string rdata(data, len);
@@ -61,25 +61,25 @@ void process_request(struct evhttp_request *req, void *arg){
 
   //Determine the Request type
   if (req->type == 1)
-	{
-		//Get Request
+  {
+    //Get Request
     r->req_type = HTTP_GET;
-	}
-	else if (req->type == 2)
-	{
-		//Post Request
+  }
+  else if (req->type == 2)
+  {
+    //Post Request
     r->req_type = HTTP_POST;
-	}
-	else if (req->type == 8)
-	{
-  	//Put Request
+  }
+  else if (req->type == 8)
+  {
+    //Put Request
     r->req_type = HTTP_PUT;
-	}
-	else if (req->type == 16)
-	{
-	   //Delete Request
-     r->req_type = HTTP_DELETE;
-	}
+  }
+  else if (req->type == 16)
+  {
+    //Delete Request
+    r->req_type = HTTP_DELETE;
+  }
   else
   {
     //Unknown Request type
@@ -127,13 +127,13 @@ void process_request(struct evhttp_request *req, void *arg){
   }
 
   struct evbuffer *buf = evbuffer_new();
-	if (buf != NULL) {
-	  evbuffer_add_printf(buf, resp.c_str(), uri_cstr);
+  if (buf != NULL) {
+    evbuffer_add_printf(buf, resp.c_str(), uri_cstr);
 
     //Send a success response if no error is detected
     if (r->req_err->err_code == NOERROR)
     {
-  	   evhttp_send_reply(req, HTTP_OK, "OK", buf);
+      evhttp_send_reply(req, HTTP_OK, "OK", buf);
     }
     //Send a failure response
     else

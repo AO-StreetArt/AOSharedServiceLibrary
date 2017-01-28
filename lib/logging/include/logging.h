@@ -29,17 +29,17 @@ THE SOFTWARE.
 #include <unordered_map>
 #include <vector>
 
-#include "factory/logging_interface.h"
+#include "logging_interface.h"
 
 #ifndef AOSSL_LOG
 #define AOSSL_LOG
 
 class LoggingCategory: public LoggingCategoryInterface
 {
-std::string name;
-log4cpp::Category *int_category;
-void start_log_from_file(std::string initFileName);
-void end_log();
+  std::string name;
+  log4cpp::Category *int_category;
+  void start_log_from_file(std::string initFileName);
+  void end_log();
 public:
 
   //! Build a new Logger from the given configuration file
@@ -98,9 +98,9 @@ public:
 
 class Logger: public LoggingInterface
 {
-log4cpp::Category *root_log;
-void start_log_from_file(std::string initFileName);
-void end_log();
+  log4cpp::Category *root_log;
+  void start_log_from_file(std::string initFileName);
+  void end_log();
 public:
 
   //! Build a new Logger from the given configuration file

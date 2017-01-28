@@ -27,8 +27,8 @@ THE SOFTWARE.
 
 #include "http_admin.h"
 
-#include "factory/consul_interface.h"
-#include "factory/http_interface.h"
+#include "consul_interface.h"
+#include "http_interface.h"
 #include "factory_http_client.h"
 #include "service.h"
 
@@ -45,14 +45,14 @@ THE SOFTWARE.
 //! Note that the values returned from the Key-Value store will be stored in base64 format
 class ConsulAdmin: public ConsulInterface
 {
-HttpInterface *ha = NULL;
-std::string consul_addr;
-int timeout;
-std::string build_url(std::string request_url_segment);
-std::string query(std::string query_url);
-static bool is_base64(unsigned char c) {
-  return (isalnum(c) || (c == '+') || (c == '/'));
-}
+  HttpInterface *ha = NULL;
+  std::string consul_addr;
+  int timeout;
+  std::string build_url(std::string request_url_segment);
+  std::string query(std::string query_url);
+  static bool is_base64(unsigned char c) {
+    return (isalnum(c) || (c == '+') || (c == '/'));
+  }
 public:
 
   std::string base64_decode(std::string const& encoded_string);

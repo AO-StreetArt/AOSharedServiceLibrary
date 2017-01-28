@@ -127,30 +127,30 @@ public:
 
   virtual ~RedisInterface() {}
 
-//----------------------------------------------------------------------------//
-//---------------------------Standard Operations------------------------------//
-//----------------------------------------------------------------------------//
+  //----------------------------------------------------------------------------//
+  //---------------------------Standard Operations------------------------------//
+  //----------------------------------------------------------------------------//
 
-	//! Load a value from Redis
-	virtual std::string load ( std::string key ) = 0;
+  //! Load a value from Redis
+  virtual std::string load ( std::string key ) = 0;
 
-	//! Save a value to Redis
-	virtual bool save ( std::string key, std::string msg ) = 0;
+  //! Save a value to Redis
+  virtual bool save ( std::string key, std::string msg ) = 0;
 
   //! Set a value in Redis, only if the key does not exist
-	virtual bool setnx ( std::string key, std::string msg ) = 0;
+  virtual bool setnx ( std::string key, std::string msg ) = 0;
 
-	//! Does a key exist in Redis?
-	virtual bool exists ( std::string key ) = 0;
+  //! Does a key exist in Redis?
+  virtual bool exists ( std::string key ) = 0;
 
-	//! Delete a value from Redis
-	virtual bool del ( std::string key ) = 0;
+  //! Delete a value from Redis
+  virtual bool del ( std::string key ) = 0;
 
-	//! Expire a value in Redis after a specified number of seconds
-	virtual bool expire ( std::string key, unsigned int second) = 0;
+  //! Expire a value in Redis after a specified number of seconds
+  virtual bool expire ( std::string key, unsigned int second) = 0;
 
   //! Prevent a value from being expired in Redis
-	virtual bool persist ( std::string key ) = 0;
+  virtual bool persist ( std::string key ) = 0;
 
   //! Set and add an expiration to an object in a single operation
   virtual bool setex ( std::string key, std::string val, unsigned int second) = 0;
@@ -161,9 +161,9 @@ public:
   //! Return the length of the string value stored at key
   virtual int len ( std::string key ) = 0;
 
-//----------------------------------------------------------------------------//
-//----------------------------Counter Operations------------------------------//
-//----------------------------------------------------------------------------//
+  //----------------------------------------------------------------------------//
+  //----------------------------Counter Operations------------------------------//
+  //----------------------------------------------------------------------------//
 
   //! Increment a Counter value in Redis
   virtual int incr ( std::string key ) = 0;
@@ -177,18 +177,18 @@ public:
   //! Decriment a Counter value in Redis
   virtual int decr ( std::string key, int decr_amt ) = 0;
 
-//----------------------------------------------------------------------------//
-//-----------------------------List Operations--------------------------------//
-//----------------------------------------------------------------------------//
+  //----------------------------------------------------------------------------//
+  //-----------------------------List Operations--------------------------------//
+  //----------------------------------------------------------------------------//
 
   //! Push a value to a Redis list on the given key
-	virtual int lpush ( std::string key, std::string val ) = 0;
+  virtual int lpush ( std::string key, std::string val ) = 0;
 
   //! Push a value to a Redis list on the given key
   virtual int rpush ( std::string key, std::string val ) = 0;
 
   //! Pop a value from a Redis list on the given key
-	virtual std::string lpop ( std::string key ) = 0;
+  virtual std::string lpop ( std::string key ) = 0;
 
   //! Pop a value from a Redis list on the given key
   virtual std::string rpop ( std::string key ) = 0;
@@ -208,9 +208,9 @@ public:
   //! Trim a list to the specified start and end index
   virtual bool ltrim ( std::string key, int start_index, int end_index) = 0;
 
-//----------------------------------------------------------------------------//
-//-----------------------------Bulk Operations--------------------------------//
-//----------------------------------------------------------------------------//
+  //----------------------------------------------------------------------------//
+  //-----------------------------Bulk Operations--------------------------------//
+  //----------------------------------------------------------------------------//
 
   //! Get a set of string replies
   virtual std::vector<std::string> mget ( std::vector<std::string> keys ) = 0;

@@ -22,6 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "include/factory/logging_interface.h"
+#include "include/logging_interface.h"
 
 LoggingInterface *logging = NULL;

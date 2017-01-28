@@ -37,7 +37,7 @@ THE SOFTWARE.
 //! to be independent of the implementations.
 class ZmqComponentFactory
 {
-zmq::context_t *context;
+  zmq::context_t *context;
 public:
 
   //! Create a new Service Component Factory

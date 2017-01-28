@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 #include <string.h>
 
-#include "factory/properties_reader_interface.h"
+#include "properties_reader_interface.h"
 #include "properties_reader.h"
 
 #ifndef AOSSL_FACTORY_PROPFILE

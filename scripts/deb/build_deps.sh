@@ -23,7 +23,7 @@ printf "Addressing pre-build requirements"
 sudo apt-get install --only-upgrade autoconf
 
 #Ensure that specific build requirements are satisfied
-sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev
+sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev libssl-dev autoconf cmake make git wget gcc gcc-c++
 
 #Determine if we need the neo4j-client library
 printf "Building libneo4j"
@@ -107,9 +107,10 @@ fi
 printf "Building Hayai, optional, for benchmarks"
 
 #Install hayai, for compiling benchmarks
-sudo apt-add-repository -y ppa:bruun/hayai
-sudo apt-get update -y
-sudo apt-get install -y libhayai-dev
+mkdir $PRE/hayai
+git clone https://github.com/nickbruun/hayai.git ./$PRE/hayai
+cd ./$PRE/hayai && cmake . && make && sudo make install
+cd ../../
 
 printf "Building Couchbase Client"
 

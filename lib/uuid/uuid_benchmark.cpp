@@ -42,7 +42,7 @@ uuidInterface *uuid;
 BENCHMARK(UUID, Generate, 10, 100)
 {
 
-UuidContainer uuid_str = uuid->generate();
+  UuidContainer uuid_str = uuid->generate();
 
 }
 
@@ -54,35 +54,25 @@ int main()
 {
 
   uuidComponentFactory uuid_factory;
-  LoggingComponentFactory logging_factory;
 
-//Read the Logging Configuration File
-std::string initFileName = "test/log4cpp_test.properties";
-logging = logging_factory.get_logging_interface( initFileName );
-//logging = new Logger(initFileName);
+  //Set up UUID Generator
+  uuid = uuid_factory.get_uuid_interface();
+  //uuid = new uuidAdmin;
+  std::cout << "UUID Generator Created" << std::endl;
 
-//Set up internal variables
-std::cout << "Internal Logging Intialized" << std::endl;
+  //------------------------------Run Tests-------------------------------------//
+  //----------------------------------------------------------------------------//
 
-//Set up UUID Generator
-uuid = uuid_factory.get_uuid_interface();
-//uuid = new uuidAdmin;
-std::cout << "UUID Generator Created" << std::endl;
+  hayai::ConsoleOutputter consoleOutputter;
 
-//------------------------------Run Tests-------------------------------------//
-//----------------------------------------------------------------------------//
+  hayai::Benchmarker::AddOutputter(consoleOutputter);
+  hayai::Benchmarker::RunAllTests();
 
-hayai::ConsoleOutputter consoleOutputter;
+  //-------------------------Post-Test Teardown---------------------------------//
+  //----------------------------------------------------------------------------//
 
-hayai::Benchmarker::AddOutputter(consoleOutputter);
-hayai::Benchmarker::RunAllTests();
+  delete uuid;
 
-//-------------------------Post-Test Teardown---------------------------------//
-//----------------------------------------------------------------------------//
-
-delete uuid;
-delete logging;
-
-return 0;
+  return 0;
 
 }

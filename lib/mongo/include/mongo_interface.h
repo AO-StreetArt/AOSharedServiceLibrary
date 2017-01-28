@@ -43,8 +43,8 @@ struct MongoException: public std::exception
   //! Show the error message in readable format
   const char * what() const throw ()
   {
-  std::string what_str = "Error in Mongo Request: " + int_msg;
-  return what_str.c_str();
+    std::string what_str = "Error in Mongo Request: " + int_msg;
+    return what_str.c_str();
   }
 };
 

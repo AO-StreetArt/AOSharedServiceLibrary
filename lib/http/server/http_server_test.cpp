@@ -23,8 +23,8 @@ THE SOFTWARE.
 */
 
 #include "include/factory_http_server.h"
-#include "include/factory/http_server_interface.h"
-#include "include/factory/callbacks.h"
+#include "include/http_server_interface.h"
+#include "include/callbacks.h"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -87,32 +87,32 @@ void shutdown()
 
 //Catch a Signal (for example, keyboard interrupt)
 void my_signal_handler(int s){
-   std::cout << ("Caught signal") << std::endl;
-   std::string signal_type = std::to_string(s);
-   std::cout << (signal_type) << std::endl;
-   shutdown();
-   exit(1);
+	std::cout << ("Caught signal") << std::endl;
+	std::string signal_type = std::to_string(s);
+	std::cout << (signal_type) << std::endl;
+	shutdown();
+	exit(1);
 }
 
 int main()
 {
 
-//Set up a handler for any signal events so that we always shutdown gracefully
-struct sigaction sigIntHandler;
-sigIntHandler.sa_handler = my_signal_handler;
-sigemptyset(&sigIntHandler.sa_mask);
-sigIntHandler.sa_flags = 0;
-sigaction(SIGINT, &sigIntHandler, NULL);
+	//Set up a handler for any signal events so that we always shutdown gracefully
+	struct sigaction sigIntHandler;
+	sigIntHandler.sa_handler = my_signal_handler;
+	sigemptyset(&sigIntHandler.sa_mask);
+	sigIntHandler.sa_flags = 0;
+	sigaction(SIGINT, &sigIntHandler, NULL);
 
-HttpServerFactory server_factory;
+	HttpServerFactory server_factory;
 
-//Set up the HTTP Server
-http = server_factory.get_http_server_interface("127.0.0.1", 12345);
-http->bind_callback("/", process_request);
-http->bind_callback("/test", process_test_request);
+	//Set up the HTTP Server
+	http = server_factory.get_http_server_interface("127.0.0.1", 12345);
+	http->bind_callback("/", process_request);
+	http->bind_callback("/test", process_test_request);
 
-//Listen for Requests
-http->recv();
+	//Listen for Requests
+	http->recv();
 
-return 0;
+	return 0;
 }

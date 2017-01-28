@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "factory/mongo_interface.h"
+#include "mongo_interface.h"
 #include "mongo_admin.h"
 
 #ifndef AOSSL_FACTORY_MONGO

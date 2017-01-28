@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "factory/consul_interface.h"
+#include "consul_interface.h"
 #include <string>
 #include <string.h>
 #include <vector>
@@ -36,12 +36,12 @@ THE SOFTWARE.
 //! passed to the consul admin to register and de-register
 class Service: public ServiceInterface
 {
-std::string id;
-std::string name;
-std::vector<std::string> tags;
-std::string address;
-std::string port;
-HealthCheck check;
+  std::string id;
+  std::string name;
+  std::vector<std::string> tags;
+  std::string address;
+  std::string port;
+  HealthCheck check;
 
 public:
   //! Construct a Service
@@ -91,9 +91,9 @@ public:
   //Add a tag
   void add_tag(std::string new_tag) {tags.push_back(new_tag);}
   //Clear the tags
-	void clear_tags(){tags.clear();}
-	//How many tags are there?
-	int num_tags() const {return tags.size();}
+  void clear_tags(){tags.clear();}
+  //How many tags are there?
+  int num_tags() const {return tags.size();}
 
   //Get the health checks
   HealthCheck get_check() {return check;}

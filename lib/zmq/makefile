@@ -2,15 +2,15 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-INCL = /usr/local/include/aossl/zmq/factory_zmq.h	/usr/local/include/aossl/zmq/zmqio.h /usr/local/include/aossl/zmq/zmq_interface.h
-INCL_DIR = /usr/local/include/aossl/zmq
+INCL = $(INSTALL_DIR)/zmq/factory_zmq.h	$(INSTALL_DIR)/zmq/zmqio.h $(INSTALL_DIR)/zmq/zmq_interface.h
+INCL_DIR = $(INSTALL_DIR)/zmq
 LIBS = -lzmq
-RM = rm
+RM = rm -f
 
 #Makefile Targets
 default: zmqio.o
 
-test: zmqio_test
+tests: zmqio_test
 
 benchmark: zmqio_benchmark
 
@@ -22,16 +22,16 @@ clean:
 # Makefile Instructions
 
 # Install
-/usr/local/include/aossl/zmq:
+$(INCL_DIR):
 	mkdir $@
 
-/usr/local/include/aossl/zmq/factory_zmq.h: include/factory_zmq.h
+$(INSTALL_DIR)/factory_zmq.h: include/factory_zmq.h
 	cp $< $@
 
-/usr/local/include/aossl/zmq/zmqio.h: include/zmqio.h
+$(INSTALL_DIR)/zmq/zmqio.h: include/zmqio.h
 	cp $< $@
 
-/usr/local/include/aossl/zmq/zmq_interface.h: include/zmq_interface.h
+$(INSTALL_DIR)/zmq/zmq_interface.h: include/zmq_interface.h
 	cp $< $@
 
 # Test

@@ -87,9 +87,9 @@ public:
   //! Add a tag
   virtual void add_tag(std::string new_tag) = 0;
   //! Clear the tags
-	virtual void clear_tags() = 0;
-	//! How many tags are there?
-	virtual int num_tags() const = 0;
+  virtual void clear_tags() = 0;
+  //! How many tags are there?
+  virtual int num_tags() const = 0;
 
   //! Get the health checks
   virtual HealthCheck get_check() = 0;

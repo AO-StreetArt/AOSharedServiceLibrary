@@ -2,17 +2,17 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-INCL = /usr/local/include/aossl/mongo/factory_mongo.h	/usr/local/include/aossl/mongo/mongo_admin.h /usr/local/include/aossl/mongo/mongo_interface.h
-INCL_DIR = /usr/local/include/aossl/mongo
+INCL = $(INSTALL_DIR)/mongo/factory_mongo.h	$(INSTALL_DIR)/mongo/mongo_admin.h $(INSTALL_DIR)/mongo/mongo_interface.h
+INCL_DIR = $(INSTALL_DIR)/mongo
 LIBS = -lmongoc-1.0 -lbson-1.0
 INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0
 LINK_DIRS = -L/usr/local/lib
-RM = rm
+RM = rm -f
 
 #User Targets
 default: mongo_admin.o
 
-test: mongo_test
+tests: mongo_test
 
 install: $(INCL_DIR) $(INCL)
 
@@ -25,16 +25,16 @@ mongo_admin.o:  mongo_admin.cpp include/mongo_admin.h include/mongo_interface.h
 	$(CC) $(CFLAGS) -o $@ -c mongo_admin.cpp $(STD) $(INCL_DIRS)
 
 # Install Targets
-/usr/local/include/aossl/mongo:
+$(INSTALL_DIR)/mongo:
 	mkdir $@
 
-/usr/local/include/aossl/mongo/factory_mongo.h: include/factory_mongo.h
+$(INSTALL_DIR)/mongo/factory_mongo.h: include/factory_mongo.h
 	cp $< $@
 
-/usr/local/include/aossl/mongo/mongo_admin.h: include/mongo_admin.h
+$(INSTALL_DIR)/mongo/mongo_admin.h: include/mongo_admin.h
 	cp $< $@
 
-/usr/local/include/aossl/mongo/mongo_interface.h: include/mongo_interface.h
+$(INSTALL_DIR)/mongo/mongo_interface.h: include/mongo_interface.h
 	cp $< $@
 
 # Test targets

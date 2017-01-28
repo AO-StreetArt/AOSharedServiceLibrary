@@ -29,11 +29,10 @@ THE SOFTWARE.
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <assert.h>
 
-#include "include/factory/logging_interface.h"
-#include "include/factory/consul_interface.h"
+#include "include/consul_interface.h"
 #include "include/factory_consul.h"
-#include "include/factory_logging.h"
 
 ConsulInterface *consul;
 ServiceInterface *service;
@@ -53,15 +52,15 @@ int delete_counter = 0;
 BENCHMARK(CONSUL, RegisterService, 10, 100)
 {
 
-//Set the new ID of the service
-std::string uuid_str = uuid_list[register_counter];
-service->set_id(uuid_str);
+  //Set the new ID of the service
+  std::string uuid_str = uuid_list[register_counter];
+  service->set_id(uuid_str);
 
-//Register the service
-consul->register_service(*service);
+  //Register the service
+  consul->register_service(*service);
 
-//Update the register counter
-register_counter = register_counter + 1;
+  //Update the register counter
+  register_counter = register_counter + 1;
 
 }
 
@@ -69,15 +68,15 @@ register_counter = register_counter + 1;
 BENCHMARK(CONSUL, DeregisterService, 10, 100)
 {
 
-//Set the new ID of the service
-std::string uuid_str = uuid_list[deregister_counter];
-service->set_id(uuid_str);
+  //Set the new ID of the service
+  std::string uuid_str = uuid_list[deregister_counter];
+  service->set_id(uuid_str);
 
-//Register the service
-consul->deregister_service(*service);
+  //Register the service
+  consul->deregister_service(*service);
 
-//Update the register counter
-deregister_counter = deregister_counter + 1;
+  //Update the register counter
+  deregister_counter = deregister_counter + 1;
 
 }
 
@@ -86,7 +85,7 @@ BENCHMARK(CONSUL, GetConfigurationValue, 10, 100)
 {
 
   std::string test_val = consul->get_config_value("Test");
-  logging->debug(test_val);
+  std::cout << test_val << std::endl;
 
 }
 
@@ -129,50 +128,40 @@ BENCHMARK(CONSUL, DeleteConfigurationValue, 10, 100)
 int main()
 {
 
-ConsulComponentFactory consul_factory;
-LoggingComponentFactory logging_factory;
+  ConsulComponentFactory consul_factory;
 
-//Read the Logging Configuration File
-std::string initFileName = "test/log4cpp_test.properties";
-logging = logging_factory.get_logging_interface( initFileName );
-//logging = new Logger(initFileName);
+  //Set up UUID Generator
+  consul = consul_factory.get_consul_interface( "localhost:8500" );
 
-//Set up internal variables
-logging->info("Internal Logging Intialized");
+  service = consul_factory.get_service_interface( "1", "CLyman", "tcp://*", "5555" );
+  service->add_tag("Testing");
 
-//Set up UUID Generator
-consul = consul_factory.get_consul_interface( "localhost:8500" );
+  //Generate the UUID's for the benchmarks
+  int i=0;
+  for (i=0; i< 1001; i++) {
+    //Generate a new key for the object
+    std::string uuid_str = std::to_string(i);
+    uuid_list.push_back(uuid_str);
+  }
 
-service = consul_factory.get_service_interface( "1", "CLyman", "tcp://*", "5555" );
-service->add_tag("Testing");
+  //Test Key-Value Store
+  bool success = consul->set_config_value("Test", "123");
+  assert(success);
 
-//Generate the UUID's for the benchmarks
-int i=0;
-for (i=0; i< 1001; i++) {
-  //Generate a new key for the object
-  std::string uuid_str = std::to_string(i);
-  uuid_list.push_back(uuid_str);
-}
+  //------------------------------Run Tests-------------------------------------//
+  //----------------------------------------------------------------------------//
 
-//Test Key-Value Store
-bool success = consul->set_config_value("Test", "123");
-assert(success);
+  hayai::ConsoleOutputter consoleOutputter;
 
-//------------------------------Run Tests-------------------------------------//
-//----------------------------------------------------------------------------//
+  hayai::Benchmarker::AddOutputter(consoleOutputter);
+  hayai::Benchmarker::RunAllTests();
 
-hayai::ConsoleOutputter consoleOutputter;
+  //-------------------------Post-Test Teardown---------------------------------//
+  //----------------------------------------------------------------------------//
 
-hayai::Benchmarker::AddOutputter(consoleOutputter);
-hayai::Benchmarker::RunAllTests();
+  delete consul;
+  delete service;
 
-//-------------------------Post-Test Teardown---------------------------------//
-//----------------------------------------------------------------------------//
-
-delete consul;
-delete service;
-delete logging;
-
-return 0;
+  return 0;
 
 }
