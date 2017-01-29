@@ -32,7 +32,7 @@ int main( int argc, char** argv )
 {
 
   PropertyReaderFactory prop_factory;
-  PropertiesReaderInterface *reader = prop_factory.get_properties_reader_interface( "test/test.properties" );
+  PropertiesReaderInterface *reader = prop_factory.get_properties_reader_interface( "../../../test/test.properties" );
   if ( reader->opt_exist("DB_Password") ) {
     assert(reader->get_opt("DB_Password") == "default");
   }
