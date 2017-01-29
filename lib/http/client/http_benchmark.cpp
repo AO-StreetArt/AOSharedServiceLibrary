@@ -29,7 +29,6 @@ THE SOFTWARE.
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include <uuid/uuid.h>
 
 #include "include/http_interface.h"
 #include "include/factory_http_client.h"
