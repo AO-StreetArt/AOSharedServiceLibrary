@@ -46,7 +46,7 @@ script:
   - cd $TRAVIS_BUILD_DIR/lib/logging && ./logging_test
   - cd $TRAVIS_BUILD_DIR/lib/uuid && ./uuid_test
   - cd $TRAVIS_BUILD_DIR/lib/zmq && ./zmqio_test
-  - cd $TRAVIS_BUILD_DIR/lib/redis && ./redis_tests
+  - cd $TRAVIS_BUILD_DIR/lib/redis && ./redis_test
   - cd $TRAVIS_BUILD_DIR/lib/mongo && ./mongo_test
   - cd $TRAVIS_BUILD_DIR/scripts && sudo ./test_http_server.sh
   - cd $TRAVIS_BUILD_DIR/lib/consul && ./consul_test
