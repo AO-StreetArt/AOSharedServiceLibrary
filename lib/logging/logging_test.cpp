@@ -35,7 +35,7 @@ void test_func(std::string msg)
 int main()
 {
   LoggingComponentFactory log_factory;
-  std::string initFileName = "../../../test/logging_test.properties";
+  std::string initFileName = "logging_test.properties";
   logging = log_factory.get_logging_interface(initFileName);
 
   LoggingCategoryInterface *sub_category = logging->get_category("tertiary");

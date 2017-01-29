@@ -119,7 +119,7 @@ int main()
   //Read the Redis Configuration File
   //Open the file
   std::string line;
-  std::ifstream file ("../../../test/redis.properties");
+  std::ifstream file ("redis.properties");
 
   if (file.is_open()) {
     while (getline (file, line) ) {
