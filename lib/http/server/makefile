@@ -26,13 +26,13 @@ http_server.o:  http_server.cpp include/http_server.h include/http_server_interf
 $(INSTALL_DIR)/http/server:
 	mkdir $@
 
-$(INSTALL_DIR)/http/factory_http_server.h: include/factory_http_server.h
+$(INSTALL_DIR)/http/server/factory_http_server.h: include/factory_http_server.h
 	cp $< $@
 
-$(INSTALL_DIR)/http/http_server.h: include/http_server.h
+$(INSTALL_DIR)/http/server/http_server.h: include/http_server.h
 	cp $< $@
 
-$(INSTALL_DIR)/http/http_server_interface.h: include/http_server_interface.h
+$(INSTALL_DIR)/http/server/http_server_interface.h: include/http_server_interface.h
 	cp $< $@
 
 $(INSTALL_DIR)/http/server/callbacks.h: include/callbacks.h

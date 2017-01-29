@@ -16,6 +16,9 @@ benchmark: http_benchmark
 
 install: $(INCL_DIR) $(INCL)
 
+$(INCL_DIR):
+	mkdir $@
+
 clean:
 	$(RM) *.o *~ *_test *_benchmark
 
@@ -28,13 +31,13 @@ http_admin.o:  http_admin.cpp include/http_admin.h include/http_interface.h
 $(INSTALL_DIR)/http:
 	mkdir $@
 
-$(INSTALL_DIR)/http/factory_http_client.h: include/factory_http_client.h
+$(INSTALL_DIR)/http/client/factory_http_client.h: include/factory_http_client.h
 	cp $< $@
 
-$(INSTALL_DIR)/http/http_admin.h: include/http_admin.h
+$(INSTALL_DIR)/http/client/http_admin.h: include/http_admin.h
 	cp $< $@
 
-$(INSTALL_DIR)/http/http_interface.h: include/http_interface.h
+$(INSTALL_DIR)/http/client/http_interface.h: include/http_interface.h
 	cp $< $@
 
 # Test

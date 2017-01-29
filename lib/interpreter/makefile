@@ -1,6 +1,6 @@
 # Makefile Variables
 OBJS = cli/cli.o properties_reader/properties_reader.o
-INCL = /usr/local/include/aossl/interpreter /usr/local/include/aossl/interpreter/interpreter.h
+INCL = $(INSTALL_DIR)/interpreter $(INSTALL_DIR)/interpreter/interpreter.h
 
 # Execute the makefile of each interpreter subdirectory
 default: $(OBJS)
@@ -23,13 +23,11 @@ clean:
 
 # Install the library
 install: $(INCL)
-
-/usr/local/include/aossl/interpreter:
-	mkdir $@ install_subdirs
-
-/usr/local/include/aossl/interpreter/interpreter.h: interpreter.h
-	cp $< $@
-
-install_subdirs:
 	cd cli && $(MAKE) install
 	cd properties_reader && $(MAKE) install
+
+$(INSTALL_DIR)/interpreter:
+	mkdir $@
+
+$(INSTALL_DIR)/interpreter/interpreter.h: interpreter.h
+	cp $< $@

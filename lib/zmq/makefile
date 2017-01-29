@@ -25,7 +25,7 @@ clean:
 $(INCL_DIR):
 	mkdir $@
 
-$(INSTALL_DIR)/factory_zmq.h: include/factory_zmq.h
+$(INSTALL_DIR)/zmq/factory_zmq.h: include/factory_zmq.h
 	cp $< $@
 
 $(INSTALL_DIR)/zmq/zmqio.h: include/zmqio.h
