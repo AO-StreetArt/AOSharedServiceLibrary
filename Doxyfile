@@ -3,5 +3,5 @@ OUTPUT_DIRECTORY = docs/html
 WARNINGS         = YES
 INPUT            = interpreter/cli/include consul/include http/client/include http/server/include logging/include interpreter/properties_reader/include redis/include uuid/include zmq/include neo4j/include mongo/include
 FILE_PATTERNS    = factory_*.h *_interface.h
-INCLUDE_PATH     = lib
+INCLUDE_PATH     = aossl
 SEARCHENGINE     = NO
