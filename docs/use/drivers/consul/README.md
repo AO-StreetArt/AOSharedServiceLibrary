@@ -4,8 +4,8 @@ Consul is responsible for Service Registration & Discovery, as well as Key-Value
 
 We start by importing the necessary interfaces and the establish the service factory
 
-    #include "include/factory/consul_interface.h"
-    #include "include/factory_consul.h"
+    #include "aossl/consul/consul_interface.h"
+    #include "aossl/consul/factory_consul.h"
 
     ConsulComponentFactory consul_factory;
 

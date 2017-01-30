@@ -7,8 +7,8 @@ The HTTP Admin allows quick and easy HTTP Requests by exposing:
 * bool post(std::string url, std::string data, int timeout)
 * bool del(std::string url, int timeout)
 
-    #include "include/factory_http_client.h"
-    #include "include/factory/http_interface.h"
+    #include "aossl/http/client/factory_http_client.h"
+    #include "aossl/http/client/http_interface.h"
 
     HttpClientFactory http_client_factory;
 

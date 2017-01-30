@@ -29,9 +29,9 @@ mkdir ../$RELEASE_NAME
 mkdir ../$RELEASE_NAME/deps
 mkdir ../$RELEASE_NAME/examples
 mkdir ../$RELEASE_NAME/examples/hello_world
-mkdir ../$RELEASE_NAME/lib
-mkdir ../$RELEASE_NAME/lib/include
-mkdir ../$RELEASE_NAME/lib/include/factory
+mkdir ../$RELEASE_NAME/aossl
+mkdir ../$RELEASE_NAME/aossl/include
+mkdir ../$RELEASE_NAME/aossl/include/factory
 
 #Copy the correct dependency script into the release subfolder 'deps'
 printf "Copying Dependencies script into release folders"
@@ -47,9 +47,9 @@ cp LICENSE.txt ../$RELEASE_NAME
 cp CODE_OF_CONDUCT.md ../$RELEASE_NAME
 
 #Library files
-cp lib/*.cpp ../$RELEASE_NAME/lib
-cp lib/include/*.h ../$RELEASE_NAME/lib/include
-cp lib/include/factory/*.h ../$RELEASE_NAME/lib/include/factory
+cp aossl/*.cpp ../$RELEASE_NAME/aossl
+cp aossl/include/*.h ../$RELEASE_NAME/aossl/include
+cp aossl/include/factory/*.h ../$RELEASE_NAME/aossl/include/factory
 
 #Examples
 cp examples/hello_world/* ../$RELEASE_NAME/examples/hello_world

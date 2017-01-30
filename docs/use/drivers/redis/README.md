@@ -10,8 +10,8 @@ The Redis Admin allows for quick Redis access, and exposes the below methods to 
 * bool del ( const char * key )
 * bool expire ( const char * key, unsigned int second)
 
-    #include "include/factory_redis.h"
-    #include "include/factory/redis_interface.h"
+    #include "aossl/redis/factory_redis.h"
+    #include "aossl/redis/redis_interface.h"
 
     RedisComponentFactory redis_factory;
     RedisInterface *redis = redis_factory.get_redis_interface( "127.0.0.1", 6379 );

@@ -130,7 +130,7 @@ We can clean the build and remove all generated files with:
 
 Run the following to build the library test executables and the benchmarking apps
 
-    make test
+    make tests
     make benchmarks
 
 ##### CentOS 7/Redhat Enterprise Linux 7

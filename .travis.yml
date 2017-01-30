@@ -39,16 +39,15 @@ script:
   - make
   - make rhel-test
   - make rhel-benchmarks
-  - ./http_server_test &
-  - ./properties_reader_test
-  - ./cli_test name=test
-  - ./http_test
-  - ./logging_test
-  - ./uuid_test
-  - ./zmqio_test
-  - ./redis_tests
-  - ./mongo_test
-  - cd scripts && sudo ./test_http_server.sh
-  - cd ..
-  - ./consul_test
-  - ./neo4j_test
+  - cd $TRAVIS_BUILD_DIR/aossl/http/server && ./http_server_test &
+  - cd $TRAVIS_BUILD_DIR/aossl/interpreter/properties_reader && ./properties_reader_test
+  - cd $TRAVIS_BUILD_DIR/aossl/interpreter/cli && ./cli_test name=test
+  - cd $TRAVIS_BUILD_DIR/aossl/http/client && ./http_test
+  - cd $TRAVIS_BUILD_DIR/aossl/logging && ./logging_test
+  - cd $TRAVIS_BUILD_DIR/aossl/uuid && ./uuid_test
+  - cd $TRAVIS_BUILD_DIR/aossl/zmq && ./zmqio_test
+  - cd $TRAVIS_BUILD_DIR/aossl/redis && ./redis_test
+  - cd $TRAVIS_BUILD_DIR/aossl/mongo && ./mongo_test
+  - cd $TRAVIS_BUILD_DIR/scripts && sudo ./test_http_server.sh
+  - cd $TRAVIS_BUILD_DIR/aossl/consul && ./consul_test
+  - cd $TRAVIS_BUILD_DIR/aossl/neo4j && ./neo4j_test

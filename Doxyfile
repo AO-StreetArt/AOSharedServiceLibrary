@@ -1,7 +1,7 @@
 PROJECT_NAME     = AoSharedServiceLibrary
 OUTPUT_DIRECTORY = docs/html
 WARNINGS         = YES
-INPUT            = include/factory_cli.h include/factory_consul.h include/factory_http_client.h include/factory_http_server.h include/factory_logging.h include/factory_props.h include/factory_redis.h include/factory_uuid.h include/factory_zmq.h lib/include/factory
-FILE_PATTERNS    = *.cpp *.h
-INCLUDE_PATH     = lib
+INPUT            = interpreter/cli/include consul/include http/client/include http/server/include logging/include interpreter/properties_reader/include redis/include uuid/include zmq/include neo4j/include mongo/include
+FILE_PATTERNS    = factory_*.h *_interface.h
+INCLUDE_PATH     = aossl
 SEARCHENGINE     = NO

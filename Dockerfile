@@ -1,6 +1,6 @@
 ################################################################
 
-# Dockerfile to build CLyman Container Images
+# Dockerfile to build AOSSL Container Images
 # Based on Ubuntu-ssh
 
 ################################################################
