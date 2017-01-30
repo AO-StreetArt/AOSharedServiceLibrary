@@ -60,6 +60,9 @@ cp -r docs ../$RELEASE_NAME
 #Copy the easy install script into the release folder
 cp scripts/easy_install.sh ../$RELEASE_NAME
 
+#Copy the Installation Make file into the release folder
+cp scripts/make_install_release ../$RELEASE_NAME
+
 #Generate the Release tar files
 printf "Generate Release Tar Files"
 tar -czvf $RELEASE_NAME-$RELEASE_VERSION.tar.gz ../$RELEASE_NAME
