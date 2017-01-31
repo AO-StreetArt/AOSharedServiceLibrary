@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef PROPS_READER
+#define PROPS_READER
+
 #include <unordered_map>
 #include <string>
 #include <iterator>
@@ -31,9 +34,6 @@ THE SOFTWARE.
 #include <fstream>
 
 #include "properties_reader_interface.h"
-
-#ifndef PROPS_READER
-#define PROPS_READER
 
 class PropertiesReader: public PropertiesReaderInterface
 {

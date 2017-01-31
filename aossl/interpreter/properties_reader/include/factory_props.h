@@ -22,13 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <string.h>
+#ifndef AOSSL_FACTORY_PROPFILE
+#define AOSSL_FACTORY_PROPFILE
+
+#include <string>
 
 #include "properties_reader_interface.h"
 #include "properties_reader.h"
-
-#ifndef AOSSL_FACTORY_PROPFILE
-#define AOSSL_FACTORY_PROPFILE
 
 //! The Property File Reader Service Component Factory
 

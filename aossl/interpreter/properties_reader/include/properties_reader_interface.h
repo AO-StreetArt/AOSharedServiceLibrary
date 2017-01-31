@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <string>
-#include <vector>
-
 #ifndef PROPERTIES_READER_INTERFACE
 #define PROPERTIES_READER_INTERFACE
+
+#include <string>
+#include <vector>
 
 //! PropertiesReaderInterface
 
