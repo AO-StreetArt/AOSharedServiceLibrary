@@ -22,10 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <string>
-
 #ifndef ZMQ_INTERFACE
 #define ZMQ_INTERFACE
+
+#include <string>
 
 const int REQ_RESP = 0;
 const int PUB_SUB = 1;

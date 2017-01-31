@@ -22,10 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <string>
-
 #ifndef COMMAND_LINE_INTERFACE
 #define COMMAND_LINE_INTERFACE
+
+#include <string>
 
 //! CommandLineInterface
 

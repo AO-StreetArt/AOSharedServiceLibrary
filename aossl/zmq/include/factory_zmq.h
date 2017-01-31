@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef AOSSL_FACTORY_ZMQ
+#define AOSSL_FACTORY_ZMQ
+
 #include <zmq.hpp>
 #include "zmqio.h"
 #include "zmq_interface.h"
-
-#ifndef AOSSL_FACTORY_ZMQ
-#define AOSSL_FACTORY_ZMQ
 
 //! The ZMQ Service Component Factory
 

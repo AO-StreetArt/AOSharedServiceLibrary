@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef AOSSL_NEO4J_ADMIN
+#define AOSSL_NEO4J_ADMIN
+
 #include <neo4j-client.h>
 #include <errno.h>
 #include <string>
@@ -32,9 +35,6 @@ THE SOFTWARE.
 #include <mutex>
 
 #include "neo4j_interface.h"
-
-#ifndef AOSSL_NEO4J_ADMIN
-#define AOSSL_NEO4J_ADMIN
 
 //-------------------------------------------------------------------
 ////------------------Connection Pooling-----------------------------

@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef AOSSL_NEO4J_INTERFACE
+#define AOSSL_NEO4J_INTERFACE
+
 #include <string>
 #include <unordered_map>
 #include <exception>
-
-#ifndef AOSSL_NEO4J_INTERFACE
-#define AOSSL_NEO4J_INTERFACE
 
 //-----------------------------------------------------------------
 //--------------------Neo4jException-------------------------------

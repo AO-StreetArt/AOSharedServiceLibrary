@@ -24,12 +24,12 @@ THE SOFTWARE.
 
 //An admin using the xRedis C++ Drivers for Redis
 
+#ifndef REDIS_INTERFACE
+#define REDIS_INTERFACE
+
 #include <string.h>
 #include <string>
 #include <vector>
-
-#ifndef REDIS_INTERFACE
-#define REDIS_INTERFACE
 
 //----------------------------------------------------------------------------//
 //----------------------------------Errors------------------------------------//

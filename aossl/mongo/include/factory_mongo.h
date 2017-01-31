@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "mongo_interface.h"
-#include "mongo_admin.h"
-
 #ifndef AOSSL_FACTORY_MONGO
 #define AOSSL_FACTORY_MONGO
+
+#include "mongo_interface.h"
+#include "mongo_admin.h"
 
 //! The Mongo Service Component Factory
 

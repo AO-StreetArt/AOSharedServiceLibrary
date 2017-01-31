@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "neo4j_interface.h"
-#include "neo4j_admin.h"
-
 #ifndef AOSSL_FACTORY_NEO4J
 #define AOSSL_FACTORY_NEO4J
+
+#include "neo4j_interface.h"
+#include "neo4j_admin.h"
 
 //! The Neo4j Service Component Factory
 

@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef AOSSL_LOG
+#define AOSSL_LOG
+
 #include <log4cpp/Category.hh>
 #include <log4cpp/PropertyConfigurator.hh>
 #include <string>
@@ -30,9 +33,6 @@ THE SOFTWARE.
 #include <vector>
 
 #include "logging_interface.h"
-
-#ifndef AOSSL_LOG
-#define AOSSL_LOG
 
 class LoggingCategory: public LoggingCategoryInterface
 {

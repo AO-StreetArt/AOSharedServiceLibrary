@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef AOSSL_FACTORY_REDIS
+#define AOSSL_FACTORY_REDIS
+
 #include <string.h>
 #include "redis_interface.h"
 #include "redis_admin.h"
-
-#ifndef AOSSL_FACTORY_REDIS
-#define AOSSL_FACTORY_REDIS
 
 //! The Redis Service Component Factory
 

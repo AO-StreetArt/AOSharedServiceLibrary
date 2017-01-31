@@ -5,7 +5,7 @@ STD = -std=c++11
 INCL = $(INSTALL_DIR)/interpreter/properties_reader/include/factory_props.h	$(INSTALL_DIR)/interpreter/properties_reader/include/properties_reader_interface.h $(INSTALL_DIR)/interpreter/properties_reader/include/properties_reader.h
 INCL_DIR = $(INSTALL_DIR)/interpreter/properties_reader
 RM = rm -f
-INCL_DIRS = -I$(CURDIR)/../
+INCL_DIRS = -I$(CURDIR)/../../../
 
 #Makefile Targets
 default: properties_reader.o

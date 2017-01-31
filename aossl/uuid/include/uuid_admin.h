@@ -24,13 +24,13 @@ THE SOFTWARE.
 
 //An admin for generating UUID's
 
+#ifndef UUID_ADMIN
+#define UUID_ADMIN
+
 #include <string>
 #include <string.h>
 #include <uuid/uuid.h>
 #include "uuid_interface.h"
-
-#ifndef UUID_ADMIN
-#define UUID_ADMIN
 
 //! UUID Admin
 

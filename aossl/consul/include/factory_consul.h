@@ -22,13 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef AOSSL_FACTORY_CONSUL
+#define AOSSL_FACTORY_CONSUL
+
 #include <string.h>
 #include "consul_interface.h"
 #include "service.h"
 #include "consul_admin.h"
-
-#ifndef AOSSL_FACTORY_CONSUL
-#define AOSSL_FACTORY_CONSUL
 
 //! The Consul Service Component Factory
 

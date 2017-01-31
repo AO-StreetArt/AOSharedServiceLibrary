@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "commandline_interface.h"
-#include "cli.h"
-
 #ifndef AOSSL_FACTORY_COMMANDLINE
 #define AOSSL_FACTORY_COMMANDLINE
+
+#include "commandline_interface.h"
+#include "cli.h"
 
 //! The Command Line Interpreter Service Component Factory
 

@@ -24,12 +24,12 @@ THE SOFTWARE.
 
 //An admin for generating UUID's
 
+#ifndef UUID_INTERFACE
+#define UUID_INTERFACE
+
 #include <string>
 #include <string.h>
 #include <exception>
-
-#ifndef UUID_INTERFACE
-#define UUID_INTERFACE
 
 //! A return structure which captures any security error messages thrown by the framework
 struct UuidContainer {

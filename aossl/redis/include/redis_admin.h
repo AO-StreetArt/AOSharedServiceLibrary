@@ -22,6 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+//TO-DO: When an operation fails, it should automatically detect whether there are
+//Sentinels available and, if so, try to failover to another Redis Node.
+
+#ifndef REDIS_ADMIN
+#define REDIS_ADMIN
+
 #include "hiredis/hiredis.h"
 #include "redis_interface.h"
 #include <string.h>
@@ -29,13 +35,6 @@ THE SOFTWARE.
 #include <vector>
 #include <exception>
 #include <mutex>
-
-//TO-DO: Update Redis Admin to use connection pool
-//TO-DO: When an operation fails, it should automatically detect whether there are
-//Sentinels available and, if so, try to failover to another Redis Node.
-
-#ifndef REDIS_ADMIN
-#define REDIS_ADMIN
 
 //A struct containing the objects needed to run a query
 struct RedisSession {

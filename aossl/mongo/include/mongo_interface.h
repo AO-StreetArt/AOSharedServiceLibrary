@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef AOSSL_MONGO_INTERFACE
+#define AOSSL_MONGO_INTERFACE
+
 #include <string>
 #include <exception>
 #include <vector>
-
-#ifndef AOSSL_MONGO_INTERFACE
-#define AOSSL_MONGO_INTERFACE
 
 struct MongoException: public std::exception
 {

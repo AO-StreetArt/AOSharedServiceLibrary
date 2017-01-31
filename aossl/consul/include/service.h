@@ -22,13 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef AOSSL_SERVICE
+#define AOSSL_SERVICE
+
 #include "consul_interface.h"
 #include <string>
 #include <string.h>
 #include <vector>
-
-#ifndef AOSSL_SERVICE
-#define AOSSL_SERVICE
 
 //! A Service class which can be registered with Consul for each instance of a particular service
 

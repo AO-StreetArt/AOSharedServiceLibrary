@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "uuid_interface.h"
-#include "uuid_admin.h"
-
 #ifndef AOSSL_FACTORY_UUID
 #define AOSSL_FACTORY_UUID
+
+#include "uuid_interface.h"
+#include "uuid_admin.h"
 
 //! The UUID Service Component Factory
 

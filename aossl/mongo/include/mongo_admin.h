@@ -22,6 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+//Stable, C++11 Mongo Client
+
+#ifndef AOSSL_MONGO_CLIENT
+#define AOSSL_MONGO_CLIENT
+
 #include <bson.h>
 #include <mongoc.h>
 #include <string>
@@ -30,11 +35,6 @@ THE SOFTWARE.
 #include <mutex>
 
 #include "mongo_interface.h"
-
-//Stable, C++11 Mongo Client
-
-#ifndef AOSSL_MONGO_CLIENT
-#define AOSSL_MONGO_CLIENT
 
 //-------------------------------------------------------------------
 ////------------------Connection Pooling-----------------------------

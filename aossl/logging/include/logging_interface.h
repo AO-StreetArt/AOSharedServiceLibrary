@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <log4cpp/Category.hh>
-#include <string>
-
 #ifndef LOGGING_INTERFACE
 #define LOGGING_INTERFACE
+
+#include <log4cpp/Category.hh>
+#include <string>
 
 //! A Logging Category instantiated on a standard logging instance
 class LoggingCategoryInterface

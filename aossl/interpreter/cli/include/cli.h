@@ -22,14 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef COMMAND_LINE
+#define COMMAND_LINE
+
 #include <unordered_map>
 #include <string>
 #include <iterator>
 
 #include "commandline_interface.h"
-
-#ifndef COMMAND_LINE
-#define COMMAND_LINE
 
 class CommandLineInterpreter: public CommandLineInterface
 {

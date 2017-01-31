@@ -22,14 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef ZMQIO
+#define ZMQIO
+
 #include <string>
 #include <stdlib.h>
 #include <mutex>
 #include <zmq.hpp>
 #include "zmq_interface.h"
-
-#ifndef ZMQIO
-#define ZMQIO
 
 //! Convert a ZMQ Message to a std::string
 inline std::string hexDump ( zmq::message_t &aMessage ) {

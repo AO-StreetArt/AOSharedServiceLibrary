@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef AOSSL_FACTORY_LOGGING
+#define AOSSL_FACTORY_LOGGING
+
 #include <string.h>
 #include "logging_interface.h"
 #include "logging.h"
-
-#ifndef AOSSL_FACTORY_LOGGING
-#define AOSSL_FACTORY_LOGGING
 
 //! The Logging Service Component Factory
 
