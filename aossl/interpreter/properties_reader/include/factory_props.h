@@ -27,8 +27,9 @@ THE SOFTWARE.
 
 #include <string>
 
-#include "aossl/interpreter/properties_reader/include/properties_reader_interface.h"
 #include "aossl/interpreter/properties_reader/include/properties_reader.h"
+
+class PropertiesReaderInterface;
 
 //! The Property File Reader Service Component Factory
 
