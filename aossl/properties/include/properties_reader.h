@@ -33,7 +33,7 @@ THE SOFTWARE.
 #include <sstream>
 #include <fstream>
 
-#include "aossl/interpreter/properties_reader/include/properties_reader_interface.h"
+#include "properties_reader_interface.h"
 
 class PropertiesReader: public PropertiesReaderInterface
 {

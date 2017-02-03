@@ -30,8 +30,8 @@ THE SOFTWARE.
 #include "aossl/interpreter/cli/include/factory_cli.h"
 #include "aossl/interpreter/cli/include/commandline_interface.h"
 
-#include "aossl/logging/factory_logging.h"
-#include "aossl/logging/logging_interface.h"
+#include "aossl/logging/include/factory_logging.h"
+#include "aossl/logging/include/logging_interface.h"
 
 CommandLineInterface *cli = NULL;
 

@@ -2,8 +2,8 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-INCL = $(INSTALL_DIR)/interpreter/properties_reader/include/factory_props.h	$(INSTALL_DIR)/interpreter/properties_reader/include/properties_reader_interface.h $(INSTALL_DIR)/interpreter/properties_reader/include/properties_reader.h
-INCL_DIR = $(INSTALL_DIR)/interpreter/properties_reader
+INCL = $(INSTALL_DIR)/properties/include/factory_props.h	$(INSTALL_DIR)/properties/include/properties_reader_interface.h $(INSTALL_DIR)/properties/include/properties_reader.h
+INCL_DIR = $(INSTALL_DIR)/properties
 RM = rm -f
 INCL_DIRS = -I$(CURDIR)/../../../
 
@@ -20,17 +20,17 @@ clean:
 # Makefile Instructions
 
 # Install
-$(INSTALL_DIR)/interpreter/properties_reader:
+$(INSTALL_DIR)/properties:
 	mkdir $@
 	mkdir $@/include
 
-$(INSTALL_DIR)/interpreter/properties_reader/include/factory_props.h: include/factory_props.h
+$(INSTALL_DIR)/properties/include/factory_props.h: include/factory_props.h
 	cp $< $@
 
-$(INSTALL_DIR)/interpreter/properties_reader/include/properties_reader_interface.h: include/properties_reader.h
+$(INSTALL_DIR)/properties/include/properties_reader_interface.h: include/properties_reader_interface.h
 	cp $< $@
 
-$(INSTALL_DIR)/interpreter/properties_reader/include/properties_reader.h: include/properties_reader.h
+$(INSTALL_DIR)/properties/include/properties_reader.h: include/properties_reader.h
 	cp $< $@
 
 # Test

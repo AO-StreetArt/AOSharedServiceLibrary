@@ -3,7 +3,8 @@
 make_subfolders:
 	cd http && $(MAKE)
 	cd consul && $(MAKE)
-	cd interpreter && $(MAKE)
+	cd commandline && $(MAKE)
+	cd properties && $(MAKE)
 	cd logging && $(MAKE)
 	cd mongo && $(MAKE)
 	cd neo4j && $(MAKE)
@@ -14,7 +15,8 @@ make_subfolders:
 install:
 	cd http && $(MAKE) install
 	cd consul && $(MAKE) install
-	cd interpreter && $(MAKE) install
+	cd commandline && $(MAKE) install
+	cd properties && $(MAKE) install
 	cd logging && $(MAKE) install
 	cd mongo && $(MAKE) install
 	cd neo4j && $(MAKE) install
@@ -30,7 +32,8 @@ rhel-test: base_test
 
 base_test:
 	cd http && $(MAKE) tests
-	cd interpreter && $(MAKE) tests
+	cd commandline && $(MAKE) tests
+	cd properties && $(MAKE) tests
 	cd logging && $(MAKE) tests
 	cd mongo && $(MAKE) tests
 	cd neo4j && $(MAKE) tests
@@ -55,7 +58,8 @@ base_benchmarks:
 clean:
 	cd http && $(MAKE) clean
 	cd consul && $(MAKE) clean
-	cd interpreter && $(MAKE) clean
+	cd commandline && $(MAKE) clean
+	cd properties && $(MAKE) clean
 	cd logging && $(MAKE) clean
 	cd mongo && $(MAKE) clean
 	cd neo4j && $(MAKE) clean

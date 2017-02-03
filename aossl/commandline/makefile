@@ -2,8 +2,8 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-INCL = $(INSTALL_DIR)/interpreter/cli/include/factory_cli.h	$(INSTALL_DIR)/interpreter/cli/include/cli.h $(INSTALL_DIR)/interpreter/cli/include/commandline_interface.h
-INCL_DIR = $(INSTALL_DIR)/interpreter/cli
+INCL = $(INSTALL_DIR)/commandline/include/factory_cli.h	$(INSTALL_DIR)/commandline/include/cli.h $(INSTALL_DIR)/commandline/include/commandline_interface.h
+INCL_DIR = $(INSTALL_DIR)/commandline
 RM = rm -f
 INCL_DIRS = -I$(CURDIR)/../
 
@@ -20,17 +20,17 @@ clean:
 # Makefile Instructions
 
 # Install
-$(INSTALL_DIR)/interpreter/cli:
+$(INSTALL_DIR)/commandline:
 	mkdir $@
 	mkdir $@/include
 
-$(INSTALL_DIR)/interpreter/cli/include/factory_cli.h: include/factory_cli.h
+$(INSTALL_DIR)/commandline/include/factory_cli.h: include/factory_cli.h
 	cp $< $@
 
-$(INSTALL_DIR)/interpreter/cli/include/cli.h: include/cli.h
+$(INSTALL_DIR)/commandline/include/cli.h: include/cli.h
 	cp $< $@
 
-$(INSTALL_DIR)/interpreter/cli/include/commandline_interface.h: include/commandline_interface.h
+$(INSTALL_DIR)/commandline/include/commandline_interface.h: include/commandline_interface.h
 	cp $< $@
 
 # Test
