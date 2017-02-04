@@ -28,7 +28,7 @@ OBJS = aossl/commandline/cli.o aossl/logging/logging.o aossl/http/client/http_ad
 #
 default: libaossl.a
 
-# typing 'make test' will build the tests
+# typing 'make tests' will build the tests
 tests:
 	cd aossl && $(MAKE) tests
 

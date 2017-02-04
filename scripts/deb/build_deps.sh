@@ -35,32 +35,6 @@ git clone https://github.com/cleishm/libneo4j-client.git ./$PRE/neo
 cd $PRE/neo && sudo ./autogen.sh && sudo ./configure --disable-tools && sudo make clean check && sudo make install
 cd ../../
 
-#Determine if we need the BSON Library
-if [ ! -d /usr/local/include/libbson-1.0 ]; then
-
-  printf "Building libbson"
-
-  mkdir $PRE/bson
-  git clone git://github.com/mongodb/libbson.git ./$PRE/bson
-
-  cd $PRE/bson && ./autogen.sh && make && sudo make install
-  cd ../../
-
-fi
-
-#Determine if we need Mongo Client
-if [ ! -d /usr/local/include/libmongoc-1.0 ]; then
-
-  printf "Building libmongoc"
-
-  mkdir $PRE/mongo
-  git clone https://github.com/mongodb/mongo-c-driver.git ./$PRE/mongo
-
-  cd $PRE/mongo && ./autogen.sh --with-libbson=bundled && make && sudo make install
-  cd ../../
-
-fi
-
 #Determine if we Need XRedis
 if [ ! -d /usr/local/include/hiredis ]; then
 
@@ -124,6 +98,6 @@ printf "Update cache and install final dependencies through apt-get"
 sudo apt-get -y update
 
 #Install the dependencies
-sudo apt-get -y install liblog4cpp5-dev
+sudo apt-get -y install liblog4cpp5-dev libbson-1.0 libmongoc-1.0-0 libssl-dev libsasl2-dev
 
 printf "Finished installing dependencies"

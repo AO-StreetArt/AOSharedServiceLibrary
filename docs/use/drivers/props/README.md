@@ -5,8 +5,8 @@ The property file reader accepts properties file names and interprets them.  It 
     -list_name-list_value
     -list_name-list_value2
 
-    #include "aossl/interpreter/properties_reader/factory_props.h"
-    #include "aossl/interpreter/properties_reader/properties_reader_interface.h"
+    #include "aossl/properties/factory_props.h"
+    #include "aossl/properties/properties_reader_interface.h"
     #include <string>
     #include <vector>
 
