@@ -17,7 +17,7 @@ sudo yum -y update
 printf "Addressing pre-build requirements"
 
 #Ensure that specific build requirements are satisfied
-sudo yum -y install build-essential libtool pkg-config autoconf automake cmake make git wget gcc gcc-c++ openssl-devel cyrus-sasl-devel
+sudo yum -y install build-essential libtool pkg-config autoconf automake cmake make git wget gcc gcc-c++
 
 #Determine if we need the neo4j-client library
 printf "Building libneo4j"
@@ -29,6 +29,11 @@ git clone https://github.com/cleishm/libneo4j-client.git ./$PRE/neo
 
 cd $PRE/neo && sudo ./autogen.sh && sudo ./configure --disable-tools && sudo make clean check && sudo make install
 cd ../../
+
+printf "Building Mongo C Driver"
+wget https://github.com/mongodb/mongo-c-driver/releases/download/1.6.0/mongo-c-driver-1.6.0.tar.gz
+tar xzf mongo-c-driver-1.6.0.tar.gz
+cd mongo-c-driver-1.6.0 && ./configure --disable-automatic-init-and-cleanup && make && sudo make install
 
 #Determine if we Need Redis Client
 if [ ! -d /usr/local/include/hiredis ]; then
@@ -101,7 +106,7 @@ sudo rpm -Uvh log4cpp-devel-1.1.1-1.el7.x86_64.rpm
 sudo yum -y update
 
 #Install the dependencies
-sudo yum -y install libuuid-devel libcurl-devel libevent-devel mongo-c-driver libbson
+sudo yum -y install libuuid-devel libcurl-devel libevent-devel
 
 #Run ldconfig to ensure that all built libraries are on the linker path
 sudo ldconfig

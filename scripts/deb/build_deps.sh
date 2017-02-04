@@ -35,6 +35,11 @@ git clone https://github.com/cleishm/libneo4j-client.git ./$PRE/neo
 cd $PRE/neo && sudo ./autogen.sh && sudo ./configure --disable-tools && sudo make clean check && sudo make install
 cd ../../
 
+printf "Building Mongo C Driver"
+wget https://github.com/mongodb/mongo-c-driver/releases/download/1.6.0/mongo-c-driver-1.6.0.tar.gz
+tar xzf mongo-c-driver-1.6.0.tar.gz
+cd mongo-c-driver-1.6.0 && ./configure --disable-automatic-init-and-cleanup && make && sudo make install
+
 #Determine if we Need XRedis
 if [ ! -d /usr/local/include/hiredis ]; then
 
@@ -98,6 +103,6 @@ printf "Update cache and install final dependencies through apt-get"
 sudo apt-get -y update
 
 #Install the dependencies
-sudo apt-get -y install liblog4cpp5-dev libbson-1.0 libmongoc-1.0-0 libssl-dev libsasl2-dev
+sudo apt-get -y install liblog4cpp5-dev
 
 printf "Finished installing dependencies"
