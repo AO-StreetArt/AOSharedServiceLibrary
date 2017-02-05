@@ -18,7 +18,7 @@ else
   if [ $OPT = "-r" ]
   then
     printf "Attempting to uninstall core library"
-    sudo make uninstall -f make_install_release
+    sudo make uninstall
     printf "Finished uninstalling AOSSL"
   fi
 fi

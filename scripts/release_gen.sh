@@ -47,9 +47,7 @@ cp LICENSE.txt ../$RELEASE_NAME
 cp CODE_OF_CONDUCT.md ../$RELEASE_NAME
 
 #Library files
-cp aossl/*.cpp ../$RELEASE_NAME/aossl
-cp aossl/include/*.h ../$RELEASE_NAME/aossl/include
-cp aossl/include/factory/*.h ../$RELEASE_NAME/aossl/include/factory
+cp -r aossl/ ../$RELEASE_NAME/aossl
 
 #Examples
 cp examples/hello_world/* ../$RELEASE_NAME/examples/hello_world
@@ -59,9 +57,6 @@ cp -r docs ../$RELEASE_NAME
 
 #Copy the easy install script into the release folder
 cp scripts/easy_install.sh ../$RELEASE_NAME
-
-#Copy the Installation Make file into the release folder
-cp scripts/make_install_release ../$RELEASE_NAME
 
 #Generate the Release tar files
 printf "Generate Release Tar Files"
