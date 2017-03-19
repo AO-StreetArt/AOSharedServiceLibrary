@@ -50,7 +50,7 @@ size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
 //! Support for put, get post, and delete
 class HttpAdmin: public HttpInterface
 {
-  CURL* curl;
+  CURL* curl = NULL;
   std::mutex data_mutex;
   bool send(std::string url, int timeout);
 public:
@@ -59,7 +59,7 @@ public:
   HttpAdmin() {curl_global_init(CURL_GLOBAL_ALL);curl = curl_easy_init();curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);}
 
   //! Shutdown the admin
-  void shutdown() {curl_global_cleanup();}
+  void shutdown() {if (curl){curl_easy_cleanup(curl);} curl_global_cleanup();}
 
   ~HttpAdmin() {shutdown();}
 

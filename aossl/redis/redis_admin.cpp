@@ -61,17 +61,15 @@ void RedisConnectionPool::init_connections(const char * conn_str, const char * p
     struct timeval timeout = {timeout_secs, timeout_microsecs};
     rs.connection = redisConnectWithTimeout(conn_str, con_port, timeout);
 
-    if (rs.connection == NULL || rs.connection->err) {
-      if (rs.connection == NULL)
-      {
-        throw RedisConnectionException( "Error: Cannot Allocate Redis Instance" );
-      }
-      else if (rs.connection->err)
-      {
-        std::string err_msg (rs.connection->errstr);
-        err_msg = "Error:" + err_msg;
-        throw RedisConnectionException( err_msg );
-      }
+    if (!(rs.connection))
+    {
+      throw RedisConnectionException( "Error: Cannot Allocate Redis Instance" );
+    }
+    else if (rs.connection->err)
+    {
+      std::string err_msg (rs.connection->errstr);
+      err_msg = "Error:" + err_msg;
+      throw RedisConnectionException( err_msg );
     }
 
     //Check if we've been given a password to authenticate with
@@ -91,7 +89,7 @@ void RedisConnectionPool::init_connections(const char * conn_str, const char * p
 
     connections.push_back(rs);
   }
-  current_max_connection = start_connections - 1;
+  current_max_connection = start_connections;
 }
 
 //Clean up the connection pool
@@ -103,6 +101,7 @@ RedisConnectionPool::~RedisConnectionPool() {
       redisFree(connections[i].connection);
     }
   }
+  delete[] slots;
 }
 
 //Retrieve a connection
@@ -535,6 +534,7 @@ std::vector<std::string> RedisAdmin::mget ( std::vector<std::string> keys )
     }
   }
   pool->release_connection(rs);
+  freeReplyObject(reply);
   return reply_string;
 }
 

@@ -722,7 +722,7 @@ void Neo4jConnectionPool::init_connections(const char * conn_str, bool secure) {
 
     connections.push_back(qs);
   }
-  current_max_connection = start_connections - 1;
+  current_max_connection = start_connections;
 }
 
 Neo4jConnectionPool::~Neo4jConnectionPool() {
@@ -733,6 +733,7 @@ Neo4jConnectionPool::~Neo4jConnectionPool() {
     neo4j_close(connections[i].connection);
   }
   neo4j_client_cleanup();
+  delete[] slots;
 }
 
 Neo4jQuerySession* Neo4jConnectionPool::get_connection() {

@@ -46,7 +46,7 @@ PropertiesReader::PropertiesReader(std::string file_path) {
             if (eq_pos != std::string::npos) {
               std::string var_name = line.substr(0, eq_pos);
               std::string var_value = line.substr(eq_pos+1, line.length() - eq_pos);
-              opts.emplace(var_name, var_value);
+              opts.emplace(std::make_pair(var_name, var_value));
             }
             else
             {
@@ -61,15 +61,12 @@ PropertiesReader::PropertiesReader(std::string file_path) {
                   //Create a new list and add it to the map
                   std::vector<std::string> val_list;
                   val_list.push_back(list_value);
-                  opt_lists.emplace(list_name, val_list);
+                  opt_lists.emplace(std::make_pair(list_name, val_list));
                 }
                 else
                 {
                   //Add to an existing list in the map
-                  std::vector<std::string> val_list;
-                  val_list = get_list(list_name);
-                  val_list.push_back(list_value);
-                  opt_lists[list_name] = val_list;
+                  opt_lists[list_name].push_back(list_value);
                 }
               }
             }

@@ -277,7 +277,7 @@ void MongoConnectionPool::init_connections(std::string conn_str, std::string db,
     ms.connection = mongoc_client_new (conn_cstr);
     connections.push_back(ms);
   }
-  current_max_connection = start_connections - 1;
+  current_max_connection = start_connections;
 }
 
 MongoConnectionPool::~MongoConnectionPool() {
@@ -286,6 +286,7 @@ MongoConnectionPool::~MongoConnectionPool() {
     mongoc_client_destroy (connections[i].connection);
   }
   mongoc_cleanup ();
+  delete[] slots;
 }
 
 MongoSession* MongoConnectionPool::get_connection() {

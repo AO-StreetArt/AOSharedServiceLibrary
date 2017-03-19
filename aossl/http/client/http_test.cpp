@@ -102,8 +102,6 @@ int main()
     assert(false);
   }
 
-  ha->shutdown();
-
   delete ha;
 
   return 0;
