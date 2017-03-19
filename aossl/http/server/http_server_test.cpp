@@ -29,6 +29,7 @@ THE SOFTWARE.
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <cstdlib>
 #include <stdlib.h>
 #include <unistd.h>

@@ -27,8 +27,8 @@ THE SOFTWARE.
 #include <exception>
 #include <signal.h>
 
-#include "aossl/interpreter/cli/include/factory_cli.h"
-#include "aossl/interpreter/cli/include/commandline_interface.h"
+#include "aossl/commandline/include/factory_cli.h"
+#include "aossl/commandline/include/commandline_interface.h"
 
 #include "aossl/logging/include/factory_logging.h"
 #include "aossl/logging/include/logging_interface.h"
