@@ -50,5 +50,7 @@ int main( int argc, char** argv )
     assert(false);
   }
 
+  delete reader;
+
   return 0;
 }

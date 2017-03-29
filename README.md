@@ -43,11 +43,11 @@ Full API Documentation is available via doxygen, and the latest execution is sto
 
 ## Table of Contents
 
-* [Quickstart] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/quickstart)
-* [Use] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use)
-* [Dependency Resolution] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps)
-* [Tests] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/tests)
-* [Building Documentation] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs)
+* [Quickstart](https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/quickstart)
+* [Use](https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use)
+* [Dependency Resolution](https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps)
+* [Tests](https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/tests)
+* [Building Documentation](https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs)
 
 ## Contributing
 

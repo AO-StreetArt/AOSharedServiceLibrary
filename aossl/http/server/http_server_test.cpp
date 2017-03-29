@@ -36,6 +36,14 @@ THE SOFTWARE.
 #include <exception>
 #include <signal.h>
 
+HttpServerInterface *http;
+
+//Shutdown the application
+void shutdown()
+{
+	delete http;
+}
+
 std::string process_request(struct Request *req)
 {
 	std::string resp = "";
@@ -56,6 +64,10 @@ std::string process_request(struct Request *req)
 			resp = "Post Request";
 			std::cout << resp << std::endl;
 			std::cout << req->req_data << std::endl;
+			if (req->req_data == "shutdown") {
+				shutdown();
+				exit(1);
+			}
 		}
 		else if (req->req_type == HTTP_DELETE)
 		{
@@ -76,14 +88,6 @@ std::string process_test_request(struct Request *req)
 	std::cout << "Test Request" << std::endl;
 	std::cout << req->req_addr << std::endl;
 	return process_request(req);
-}
-
-HttpServerInterface *http;
-
-//Shutdown the application
-void shutdown()
-{
-	delete http;
 }
 
 //Catch a Signal (for example, keyboard interrupt)

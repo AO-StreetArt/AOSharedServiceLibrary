@@ -27,10 +27,16 @@ THE SOFTWARE.
 #include <iostream>
 #include <assert.h>
 
-void print_vector(std::vector<std::string> inp) {
-  for (unsigned int i = 0; i < inp.size(); i++) {
-    std::cout << inp[i] << std::endl;
+int print_iterator(MongoIteratorInterface *iter) {
+  int num_iterations = 0;
+  MongoResponseInterface *resp = iter->next();
+  while (resp) {
+    num_iterations = num_iterations + 1;
+    std::cout << resp->get_value() << std::endl;
+    delete resp;
+    resp = iter->next();
   }
+  return num_iterations;
 }
 
 int
@@ -48,138 +54,237 @@ main (int   argc,
     std::string key2;
     std::string key3;
     std::string key4;
-    bool success;
+    std::string json_doc;
 
     MongoComponentFactory mongo_factory;
     MongoInterface *mongo = mongo_factory.get_mongo_interface("mongodb://localhost:27017/", "mydb", "mycoll");
 
+    MongoResponseInterface *resp1 = NULL;
+    MongoResponseInterface *resp2 = NULL;
+    MongoResponseInterface *resp3 = NULL;
+    MongoResponseInterface *resp4 = NULL;
+    MongoResponseInterface *resp5 = NULL;
+    MongoResponseInterface *resp6 = NULL;
+    MongoResponseInterface *resp7 = NULL;
+    MongoResponseInterface *resp8 = NULL;
+    MongoResponseInterface *resp9 = NULL;
+    MongoResponseInterface *resp10 = NULL;
+    MongoResponseInterface *resp11 = NULL;
+
+    MongoIteratorInterface *iter1 = NULL;
+    MongoIteratorInterface *iter2 = NULL;
+
     //Creation Test
     std::cout << "Writing Document to Mongo DB" << std::endl;
 
-    key1 = mongo->create_document(json);
-
-    if ( !(key1.empty()) ) {
-      std::cout << "Document written to Mongo DB" << std::endl;
+    try {
+      resp1 = mongo->create_document(json);
+      key1 = resp1->get_value();
     }
-    else {
-      std::cout << "Error writing document to Mongo DB" << std::endl;
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
       assert( false );
     }
 
+    std::cout << "Document written to Mongo DB: " << key1 << std::endl;
+    if (resp1) {
+      delete resp1;
+    }
+
     //Load Test
-    std::string json_doc = mongo->load_document(key1);
+    try {
+      resp2 = mongo->load_document(key1);
+      json_doc = resp2->get_value();
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
 
     std::cout << "Document Loaded from Mongo: " << json_doc << std::endl;
     assert( !(json_doc.empty()) );
+    if (resp2) {
+      delete resp2;
+    }
 
     //Update Test
-    success = mongo->save_document(json2, key1);
+    try {
+       mongo->save_document(json2, key1);
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
 
-    if (success) {
-      std::cout << "Document written to Mongo DB" << std::endl;
-    }
-    else {
-      std::cout << "Error writing document to Mongo DB" << std::endl;
-      assert( success );
-    }
+    std::cout << "Document written to Mongo DB" << std::endl;
 
     json_doc.clear();
-    json_doc = mongo->load_document(key1);
+    try {
+      resp3 = mongo->load_document(key1);
+      json_doc = resp3->get_value();
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
 
     std::cout << "Document Loaded from Mongo: " << json_doc << std::endl;
     assert( !(json_doc.empty()) );
+    if (resp3) {
+      delete resp3;
+    }
 
     //Delete Test
-    success = mongo->delete_document(key1);
+    try {
+      mongo->delete_document(key1);
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
 
-    if (success) {
-      std::cout << "Document deleted from Mongo DB" << std::endl;
-    }
-    else {
-      std::cout << "Error deleting document from Mongo DB" << std::endl;
-      assert(success);
-    }
+    std::cout << "Document deleted from Mongo DB" << std::endl;
 
     json_doc.clear();
-    json_doc = mongo->load_document(key1);
+    try {
+      resp4 = mongo->load_document(key1);
+      assert( !resp4 );
+      //json_doc = resp4->get_value();
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
     assert( json_doc.empty() );
 
     std::cout << "Document Loaded from Mongo: " << json_doc << std::endl;
 
+    if (resp4) {
+      delete resp4;
+    }
+
     //Secondary Collection tests
-    key2 = mongo->create_document(json3, "newcoll");
-    key3 = mongo->create_document(json4);
-    key4 = mongo->create_document(json5);
-
-    if ( !(key2.empty() || key3.empty()) ) {
-      std::cout << "Document written to Mongo DB" << std::endl;
+    try {
+      resp5 = mongo->create_document(json3, "newcoll");
+      key2 = resp5->get_value();
+      resp6 = mongo->create_document(json4);
+      key3 = resp6->get_value();
+      resp7 = mongo->create_document(json5);
+      key4 = resp7->get_value();
     }
-    else {
-      std::cout << "Error writing document to Mongo DB" << std::endl;
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
+
+    std::cout << "Documents Created: " << key2 << ", " << key3 << ", " << key4 << std::endl;
+    assert( !(key2.empty()) );
+    assert( !(key3.empty()) );
+    assert( !(key4.empty()) );
+    if (resp5) {
+      delete resp5;
+    }
+    if (resp6) {
+      delete resp6;
+    }
+    if (resp7) {
+      delete resp7;
     }
 
     json_doc.clear();
-    json_doc = mongo->load_document(key2);
+    try {
+      resp8 = mongo->load_document(key2);
+      json_doc = resp8->get_value();
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
 
     std::cout << "Document Loaded from Mongo: " << json_doc << std::endl;
+
+    if (resp8) {
+      delete resp8;
+    }
 
     json_doc.clear();
-    json_doc = mongo->load_document(key3);
+    try {
+      resp9 = mongo->load_document(key3);
+      json_doc = resp9->get_value();
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
 
     std::cout << "Document Loaded from Mongo: " << json_doc << std::endl;
+
+    if (resp9) {
+      delete resp9;
+    }
 
     //Query Tests
-    std::vector<std::string> query_response;
     std::string query_string1 = "{\"number\": 1}";
     std::string query_string2 = "{\"name\": {\"first\":\"Keasha\", \"last\":\"Norton\"}}";
 
     std::cout << "Executing Query:" << query_string1 << std::endl;
-    query_response = mongo->query(query_string1);
-    print_vector(query_response);
-    assert(query_response.size() == 2);
-
-    query_response.clear();
+    try {
+      iter1 = mongo->query(query_string1);
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
+    if (iter1) {
+      assert( print_iterator(iter1) == 2 );
+      delete iter1;
+    }
 
     std::cout << "Executing Query:" << query_string2 << std::endl;
-    query_response = mongo->query(query_string2);
-    print_vector(query_response);
-    assert(query_response.size() == 2);
-
-    success = mongo->delete_document(key2);
-
-    if (success) {
-      std::cout << "Document deleted from Mongo DB" << std::endl;
+    try {
+      iter2 = mongo->query(query_string2);
     }
-    else {
-      std::cout << "Error deleting document from Mongo DB" << std::endl;
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
     }
-
-    success = mongo->delete_document(key3);
-
-    if (success) {
-      std::cout << "Document deleted from Mongo DB" << std::endl;
-    }
-    else {
-      std::cout << "Error deleting document from Mongo DB" << std::endl;
+    if (iter2) {
+      assert( print_iterator(iter2) == 2 );
+      delete iter2;
     }
 
-    success = mongo->delete_document(key4);
-
-    if (success) {
-      std::cout << "Document deleted from Mongo DB" << std::endl;
+    try {
+      mongo->delete_document(key2);
     }
-    else {
-      std::cout << "Error deleting document from Mongo DB" << std::endl;
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
+
+    try {
+      mongo->delete_document(key3);
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
+    }
+
+    try {
+      mongo->delete_document(key4);
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+      assert( false );
     }
 
     //Failure Tests
     MongoInterface *bad_mongo = mongo_factory.get_mongo_interface("mongodb://localhost:27018/", "mydb", "mycoll");
 
     key1 = "";
-    success = false;
 
     try {
-      key1 = bad_mongo->create_document(json);
+      resp10 = bad_mongo->create_document(json);
+      key1 = resp10->get_value();
     }
     catch (std::exception& e) {
       std::cout << e.what() << std::endl;
@@ -187,44 +292,55 @@ main (int   argc,
 
     if ( !(key1.empty()) ) {
       std::cout << "Document written to Mongo DB" << std::endl;
+      if (resp10) {delete resp10;}
       assert( false );
     }
+    if (resp10) {delete resp10;}
+
+    key1 = "abcdef";
 
     //Load Test
     std::string json_doc_fail = "";
     try {
-      json_doc_fail = bad_mongo->load_document(key1);
+      resp11 = mongo->load_document(key1);
+      if (resp11) {
+        json_doc_fail = resp11->get_value();
+      }
     }
     catch (std::exception& e) {
       std::cout << e.what() << std::endl;
     }
 
     std::cout << "Document Loaded from Mongo: " << json_doc_fail << std::endl;
-    assert( json_doc_fail.empty() );
+    if ( !(json_doc_fail.empty()) ) {
+      if (resp11) {delete resp11;}
+      assert(false);
+    }
+    if (resp11) {delete resp11;}
 
     //Update Test
     try {
-      success = bad_mongo->save_document(json2, key1);
-    }
-    catch (std::exception& e) {
-      std::cout << e.what() << std::endl;
-    }
-
-    if (success) {
-      std::cout << "Document written to Mongo DB" << std::endl;
+      bad_mongo->save_document(json2, key1);
       assert( false );
     }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+    }
+
     //Delete Test
     try {
-      success = bad_mongo->delete_document(key1);
+      bad_mongo->delete_document(key1);
+      assert( false );
     }
     catch (std::exception& e) {
       std::cout << e.what() << std::endl;
     }
 
-    if (success) {
-      std::cout << "Document deleted from Mongo DB" << std::endl;
-      assert(false);
+    if (mongo) {
+      delete mongo;
+    }
+    if (bad_mongo) {
+      delete bad_mongo;
     }
 
     return 0;

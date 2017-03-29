@@ -140,6 +140,7 @@ void process_request(struct evhttp_request *req, void *arg){
     {
       evhttp_send_reply(req, err->err_code, err->err_message.c_str(), buf);
     }
+    evbuffer_free(buf);
   }
 
   delete r;

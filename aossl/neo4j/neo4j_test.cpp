@@ -38,18 +38,22 @@ void print_results(ResultTreeInterface* result, int index) {
 }
 
 //Check the types of the element in the tree
-void check_types(ResultTreeInterface* result, int index) {
+int check_types(ResultTreeInterface* result, int index) {
   DbObjectInterface* obj = result->get(index);
+  int ret_val = -1;
   if ( obj->is_edge() ) {
     std::cout << "Element " << index << " found to be an edge." << std::endl;
+    ret_val = 0;
   }
   else if ( obj->is_node() ) {
     std::cout << "Element " << index << " found to be a node." << std::endl;
+    ret_val = 1;
   }
   else {
     std::cout << "Element " << index << " type not found." << std::endl;
   }
   delete obj;
+  return ret_val;
 }
 
 void run_on_results(ResultsIteratorInterface *results) {
@@ -86,7 +90,9 @@ void run_on_results(ResultsIteratorInterface *results) {
         std::cout << map->to_string() << std::endl;
         delete map;
       }
-      delete obj;
+      if (obj) {
+        delete obj;
+      }
     }
 
     std::cout << "Printing Name Property" << std::endl;
@@ -116,6 +122,8 @@ void run_on_results(ResultsIteratorInterface *results) {
           }
           delete map;
         }
+      }
+      if (obj) {
         delete obj;
       }
     }
@@ -136,7 +144,9 @@ void run_on_results(ResultsIteratorInterface *results) {
         std::cout << list->to_string() << std::endl;
         delete list;
       }
-      delete obj;
+      if (obj) {
+        delete obj;
+      }
     }
 
     std::cout << "Printing Label" << std::endl;
@@ -146,15 +156,15 @@ void run_on_results(ResultsIteratorInterface *results) {
       if ( obj->is_node() ) {
         try {
           list = obj->labels();
+          std::cout << list->get_string_element(0) << std::endl;
+          delete list;
         }
         catch (std::exception& e) {
           std::cout << "Exception Caught while printing label list" << std::endl;
           std::cout << e.what() << std::endl;
         }
-        if (list) {
-          std::cout << list->get_string_element(0) << std::endl;
-          delete list;
-        }
+      }
+      if (obj) {
         delete obj;
       }
     }
@@ -193,6 +203,8 @@ void run_on_results(ResultsIteratorInterface *results) {
           for (int i = 0; i < label_list_size; i++) {
             std::cout << list->get_string_element(i) << std::endl;
           }
+          delete list;
+          list = NULL;
         }
         //We have an edge
         else {
@@ -207,8 +219,14 @@ void run_on_results(ResultsIteratorInterface *results) {
           std::cout << std::endl;
         }
 
-        delete path_obj;
-        path_obj = NULL;
+        if (path_obj) {
+          delete path_obj;
+          path_obj = NULL;
+        }
+        if (map) {
+          delete map;
+          map = NULL;
+        }
       }
     }
     else {
@@ -218,7 +236,6 @@ void run_on_results(ResultsIteratorInterface *results) {
 
     //Cleanup
     delete result;
-    delete results;
   }
 }
 
@@ -235,23 +252,27 @@ void run_test(std::string query, std::string test_name) {
   catch (std::exception& e) {
     std::cout << "Error running Query: " << e.what() << std::endl;
   }
+
   run_on_results(results);
+  if (results) {delete results;}
 }
 
 //Run a single test
 void run_test(std::string query, std::string test_name, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) {
 
   std::cout << "Running Test: " << test_name << std::endl;
-
   //Execute a query
   ResultsIteratorInterface *results = NULL;
+
   try {
     results = neo->execute(query, query_params);
   }
   catch (std::exception& e) {
     std::cout << "Error running Query: " << e.what() << std::endl;
   }
+
   run_on_results(results);
+  if (results) {delete results;}
 }
 
 //Main Method

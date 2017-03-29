@@ -41,4 +41,6 @@ int main()
   assert ( !(id_str.empty()) );
   std::cout << id_str << std::endl;
   std::cout << id_container.err << std::endl;
+
+  delete uuid;
 }

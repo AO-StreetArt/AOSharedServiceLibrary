@@ -63,10 +63,9 @@ bool HttpAdmin::send(std::string url, int timeout)
 		throw HttpRequestException(out.str());
 	}
 
-	curl_easy_cleanup(curl);
-	curl = curl_easy_init();
+	curl_easy_reset(curl);
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
-	delete url_s;
+	delete[] url_s;
 	return ret;
 }
 
@@ -80,7 +79,7 @@ bool HttpAdmin::put(std::string url, std::string data, int timeout)
 	curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data_s);
 	bool ret_val = send(url, timeout);
-	delete data_s;
+	delete[] data_s;
 	return ret_val;
 }
 
@@ -104,7 +103,7 @@ bool HttpAdmin::post(std::string url, std::string data, int timeout)
 	curl_easy_setopt(curl, CURLOPT_POST, 1L);
 	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data_s);
 	bool ret_val = send(url, timeout);
-	delete data_s;
+	delete[] data_s;
 	return ret_val;
 }
 

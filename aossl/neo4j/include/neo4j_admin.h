@@ -33,8 +33,37 @@ THE SOFTWARE.
 #include <unordered_map>
 #include <iostream>
 #include <mutex>
+#include <stdio.h>
 
 #include "neo4j_interface.h"
+
+//-----------------------------------------------------------------
+//--------------------Neo4jException-------------------------------
+//-----------------------------------------------------------------
+
+//! A Neo4j Exception
+
+//! A child class of std::exception
+//! which holds error information
+struct Neo4jException: public std::exception
+{
+  //! An error message passed on initialization
+  std::string int_msg;
+  const char * int_msg_cstr;
+  neo4j_result_stream_t *results = NULL;
+
+  //! Create a Neo4j Exception, and store the given error message
+  Neo4jException (std::string msg) {int_msg = "Error in Neo4j Request: " + msg;int_msg_cstr = int_msg.c_str();}
+  Neo4jException (std::string msg, neo4j_result_stream_t *r) {int_msg = "Error in Neo4j Request: " + msg;int_msg_cstr = int_msg.c_str();results=r;}
+
+  Neo4jException () {}
+  ~Neo4jException() throw () {if (results) {neo4j_close_results(results);}}
+  //! Show the error message in readable format
+  const char * what() const throw ()
+  {
+    return int_msg_cstr;
+  }
+};
 
 //-------------------------------------------------------------------
 ////------------------Connection Pooling-----------------------------
@@ -65,9 +94,9 @@ class Neo4jConnectionPool {
   void init_slots();
   void init_connections(const char * conn_str, bool secure);
 public:
-  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect) {connection_limit=size;std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();neo4j_client_init();init_connections(conn_str, secure);}
-  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect, int start_conns) {std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();start_connections=start_conns;connection_limit=size;init_connections(conn_str, secure);}
-  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect, int start_conns, int batch_size) {std::string con_str (conn_str);connection_string=con_str;secure=secure_connect;init_slots();start_connections=start_conns;connection_limit=size;connection_creation_batch=batch_size;init_connections(conn_str, secure);}
+  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect);
+  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect, int start_conns);
+  Neo4jConnectionPool(int size, const char * conn_str, bool secure_connect, int start_conns, int batch_size);
   ~Neo4jConnectionPool();
   Neo4jQuerySession* get_connection();
   void release_connection(Neo4jQuerySession *conn);
@@ -90,6 +119,10 @@ class DbList: public DbListInterface {
   std::string map_key;
   neo4j_value_t get_list();
   neo4j_value_t get_list_value(unsigned int ind);
+  char db_cstr[512] = "";
+  char buf[128] = "";
+  std::string elt = "";
+  std::string str_val = "";
 public:
   DbList(neo4j_result_t *r, unsigned int ind, ValueGenerationFunction lf) {result=r;index=ind;list_function=lf;}
   DbList(neo4j_result_t *r, unsigned int ind, ValueGenerationFunction lf, unsigned int pindex) {result=r;index=ind;list_function=lf;path_index=pindex;}
@@ -111,8 +144,16 @@ class DbMap: public DbMapInterface {
   ValueGenerationFunction map_function;
   std::vector<KeyGenerationFunction> map_functions;
   std::vector<std::string> keys;
-  neo4j_value_t get_map();
-  neo4j_value_t get_map_value(std::string key);
+  void get_map();
+  void get_map_value(std::string key);
+  char db_cstr[512] = "";
+  char buf[128] = "";
+  std::string elt = "";
+  std::string str_val = "";
+  neo4j_value_t db_obj;
+  neo4j_value_t map;
+  neo4j_value_t map_elt;
+  std::mutex data_mutex;
 public:
   DbMap(neo4j_result_t *r, int ind, ValueGenerationFunction mf) {result=r;index=ind;map_function =mf;}
   DbMap(neo4j_result_t *r, int ind, ValueGenerationFunction mf, int pindex) {result=r;index=ind;map_function =mf;path_index=pindex;}
@@ -122,7 +163,7 @@ public:
   unsigned int size();
   bool element_exists(std::string key);
   std::string get_string_element(std::string key, int char_buffer_size);
-  std::string get_string_element(std::string key) {return get_string_element(key, 128);}
+  std::string get_string_element(std::string key) {return get_string_element(key, key.size());}
   bool get_bool_element(std::string key);
   int get_int_element(std::string key);
   double get_float_element(std::string key);
@@ -137,6 +178,10 @@ class DbObject: public DbObjectInterface {
   int path_index;
   neo4j_value_t get_value();
   bool is_instance_of(neo4j_type_t type);
+  bool is_forward = true;
+  neo4j_value_t val;
+  std::string str_val = "";
+  char buf[128] = "";
 public:
   DbObject(neo4j_result_t *r, int ind) {result=r;index=ind;path_index=-1;}
   DbObject(neo4j_result_t *r, int ind, int ind2) {result=r;index=ind;path_index=ind2;}
@@ -173,12 +218,12 @@ class ResultsIterator: public ResultsIteratorInterface {
   neo4j_result_stream_t *results;
   Neo4jQuerySession *s;
   Neo4jConnectionPool *p;
-  void clear_results() {neo4j_close_results(results);}
+  void clear_results();
 public:
 
   inline ResultsIterator(neo4j_result_stream_t *result_stream, Neo4jQuerySession *session, Neo4jConnectionPool *pool) {
     results=result_stream;
-    if (!results) {
+    if ( !(results) || neo4j_nfields(results) < 0 ) {
       std::string err_msg (strerror(errno));
       err_msg="Failed to fetch results"+err_msg;
       p->release_connection(s);
@@ -223,6 +268,7 @@ public:
   Neo4jQueryParameter(const char * inp_str) {std::string new_val (inp_str); str_value = new_val; type = _STR_TYPE;is_list=false;}
   Neo4jQueryParameter(int inp_int) {int_value = inp_int; type = _INT_TYPE;is_list=false;}
   Neo4jQueryParameter(double inp_double) {double_value = inp_double; type = _FLT_TYPE;is_list=false;}
+  ~Neo4jQueryParameter() {bool_values.clear();str_values.clear();int_values.clear();double_values.clear();}
   int get_type() {return type;}
   bool get_boolean_value() {if (!is_list) {return bool_value;} else {throw Neo4jException("Attempting to retrieve single value from array element");}}
   bool get_boolean_value(int index) {if (is_list) {return bool_values[index];} else {throw Neo4jException("Attempting to retrieve indexed value from single element");}}
