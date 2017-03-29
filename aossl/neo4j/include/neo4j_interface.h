@@ -29,32 +29,6 @@ THE SOFTWARE.
 #include <unordered_map>
 #include <exception>
 
-//-----------------------------------------------------------------
-//--------------------Neo4jException-------------------------------
-//-----------------------------------------------------------------
-
-//! A Neo4j Exception
-
-//! A child class of std::exception
-//! which holds error information
-struct Neo4jException: public std::exception
-{
-  //! An error message passed on initialization
-  std::string int_msg;
-
-  //! Create a Neo4j Exception, and store the given error message
-  Neo4jException (std::string msg) {int_msg = msg;}
-
-  Neo4jException () {}
-  ~Neo4jException() throw () {}
-  //! Show the error message in readable format
-  const char * what() const throw ()
-  {
-    std::string what_str = "Error in Neo4j Request: " + int_msg;
-    return what_str.c_str();
-  }
-};
-
 //-------------------------------------------------------------------
 ////---------------------Query Results-------------------------------
 ////-----------------------------------------------------------------

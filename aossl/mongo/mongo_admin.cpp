@@ -24,6 +24,22 @@ THE SOFTWARE.
 
 #include "include/mongo_admin.h"
 
+MongoResponseInterface* MongoIterator::next()
+{
+
+  //Return the next result from the internal cursor
+  const bson_t *doc = NULL;
+  mongoc_cursor_next (cursor, &doc);
+
+  //If a document was returned from the cursor, then wrap it in a Mongo response
+  if (doc) {
+    return new MongoResponse( bson_as_json (doc, NULL), MONGO_RESPONSE_OTHER );
+  }
+  else {
+    return NULL;
+  }
+}
+
 void MongoClient::initialize(const char * url, const char * db, const char * collection_name, int size)
 {
   std::string url_str (url);
@@ -37,12 +53,12 @@ MongoClient::~MongoClient()
   if (pool) {delete pool;}
 }
 
-std::string MongoClient::create_document(const char * document)
+MongoResponseInterface* MongoClient::create_document(const char * document)
 {
   bson_t *doc = NULL;
   bson_error_t error;
   bson_oid_t oid;
-  std::string new_key;
+  char * c_str = new char[25];
 
   //Perform the conversion
   doc = bson_new_from_json ((const uint8_t *)document, -1, &error);
@@ -56,11 +72,9 @@ std::string MongoClient::create_document(const char * document)
   }
   else {
     //Append the key
-    char * c_str = new char[25];
     bson_oid_init (&oid, NULL);
     BSON_APPEND_OID (doc, "_id", &oid);
     bson_oid_to_string(&oid, c_str);
-    new_key.assign(c_str, 25);
 
     //Retrieve a database connection from the pool
     MongoSession *ms = pool->get_connection();
@@ -70,86 +84,115 @@ std::string MongoClient::create_document(const char * document)
 
     //Release the database connection
     pool->release_connection(ms);
+
+    //Free the BSON Document
+    bson_destroy(doc);
+
+    if (!success) {
+      delete[] c_str;
+      std::string err1 = "Error Creating Document: ";
+      std::string err2 (error.message);
+      throw MongoException(err1+err2);
+    }
   }
 
-  //Destroy the bson document
-  bson_destroy (doc);
-
-  if ( success && !(new_key.empty()) ) {
-    return new_key;
-  }
-  else if ( !(success) ) {
-    throw MongoException(error.message);
-    return "";
-  }
-  else {
-    return "";
-  }
+  return new MongoResponse(c_str, MONGO_RESPONSE_CRT);
 
 }
 
-bool MongoClient::save_document(const char * document, const char * key)
+void MongoClient::save_document(const char * document, const char * key)
 {
-  bson_t *doc = NULL;
-  bson_error_t error;
-  bson_oid_t oid;
+  if (key && key[0] != '\0') {
+    bson_t *doc = NULL;
+    bson_t *selector = NULL;
+    bson_error_t error;
+    bson_oid_t oid;
 
-  //Perform the conversion
-  doc = bson_new_from_json ((const uint8_t *)document, -1, &error);
+    //Perform the conversion
+    doc = bson_new_from_json ((const uint8_t *)document, -1, &error);
 
-  //Check if the conversion succeeded
-  bool success = false;
-  if (!doc) {
-    std::string err1 = "Error Converting JSON: ";
-    std::string err2 (error.message);
-    throw MongoException(err1+err2);
+    //Check if the conversion succeeded
+    bool success = false;
+    if (!doc) {
+      std::string err1 = "Error Converting JSON: ";
+      std::string err2 (error.message);
+      throw MongoException(err1+err2);
+    }
+    else {
+      //Copy our key into a character array in a memory safe manner
+      //Mongo OID will be returned as 24 bit hex-encoded string
+      char key_str[25];
+      strncpy(key_str, key, 25);
+      key_str[24] = '\0';
+
+      //Append the key
+      selector = bson_new();
+      bson_oid_init_from_string (&oid, key_str);
+      BSON_APPEND_OID (selector, "_id", &oid);
+
+      //Retrieve a database connection from the pool
+      MongoSession *ms = pool->get_connection();
+
+      //Actually insert the document
+      success = mongoc_collection_update(ms->collection, MONGOC_UPDATE_NONE, selector, doc, NULL, &error);
+
+      //Release the database connection
+      pool->release_connection(ms);
+
+      bson_destroy(doc);
+      bson_destroy(selector);
+
+      if (!success) {
+        std::string err1 = "Error Saving Document: ";
+        std::string err2 (error.message);
+        throw MongoException(err1+err2);
+      }
+    }
   }
   else {
-    //Append the key
-    bson_oid_init_from_string (&oid, key);
+    throw MongoException("No Key Passed to Delete Document Method");
+  }
+}
+
+void MongoClient::delete_document(const char * key)
+{
+  if (key && key[0] != '\0') {
+    //Setup necessary variables
+    bson_t *doc = NULL;
+    bson_error_t error;
+    bson_oid_t oid;
+
+    //Copy our key into a character array in a memory safe manner
+    //Mongo OID will be returned as 24 bit hex-encoded string
+    char key_str[25];
+    strncpy(key_str, key, 25);
+    key_str[24] = '\0';
+
+    //Write a new bson query with the key provided
+    doc = bson_new();
+    bson_oid_init_from_string (&oid, key_str);
     BSON_APPEND_OID (doc, "_id", &oid);
 
     //Retrieve a database connection from the pool
     MongoSession *ms = pool->get_connection();
 
-    //Actually insert the document
-    success = mongoc_collection_save (ms->collection, doc, NULL, &error);
+    //Execute the query
+    bool success = mongoc_collection_remove(ms->collection, MONGOC_REMOVE_SINGLE_REMOVE, doc, NULL, &error);
 
     //Release the database connection
     pool->release_connection(ms);
+
+    bson_destroy(doc);
+
+    if (!success) {
+      std::string err1 = "Error Deleting Document: ";
+      std::string err2 (error.message);
+      throw MongoException(err1+err2);
+    }
   }
-  //Destroy the bson document
-  bson_destroy (doc);
-  if (!success) {
-    throw MongoException(error.message);
+  else {
+    throw MongoException("No Key Passed to Delete Document Method");
   }
-  return success;
-}
-
-bool MongoClient::delete_document(const char * key)
-{
-  //Setup necessary variables
-  bson_t *doc = NULL;
-  bson_error_t error;
-  bson_oid_t oid;
-
-  //Write a new bson query with the key provided
-  doc = bson_new();
-  bson_oid_init_from_string (&oid, key);
-  BSON_APPEND_OID (doc, "_id", &oid);
-
-  //Retrieve a database connection from the pool
-  MongoSession *ms = pool->get_connection();
-
-  //Execute the query
-  bool success = mongoc_collection_remove(ms->collection, MONGOC_REMOVE_SINGLE_REMOVE, doc, NULL, &error);
-
-  //Release the database connection
-  pool->release_connection(ms);
-
-  bson_destroy(doc);
-
-  return success;
 }
 
 void MongoClient::switch_collection(const char * collection_name)
@@ -164,90 +207,91 @@ void MongoClient::switch_database(const char * database_name)
   pool->switch_database(db_cstr);
 }
 
-std::string MongoClient::load_document(const char * key)
+MongoResponseInterface* MongoClient::load_document(const char * key)
 {
-  //Setup necessary variables
-  const bson_t *doc = NULL;
-  bson_t *query = NULL;
-  bson_oid_t oid;
-  mongoc_cursor_t *cursor = NULL;
-  char * str;
+  if (key && key[0] != '\0') {
+    //Setup necessary variables
+    bson_t *query = NULL;
+    bson_oid_t oid;
+    mongoc_cursor_t *cursor = NULL;
+    MongoResponseInterface *ret_val = NULL;
 
-  //Write a new bson query with the key provided
-  query = bson_new();
-  bson_oid_init_from_string (&oid, key);
-  BSON_APPEND_OID (query, "_id", &oid);
+    //Copy our key into a character array in a memory safe manner
+    //Mongo OID will be returned as 24 bit hex-encoded string
+    char key_str[25];
+    strncpy(key_str, key, 25);
+    key_str[24] = '\0';
 
-  //Retrieve a database connection from the pool
-  MongoSession *ms = pool->get_connection();
+    //Write a new bson query with the key provided
+    query = bson_new();
+    bson_oid_init_from_string (&oid, key_str);
+    BSON_APPEND_OID (query, "_id", &oid);
 
-  cursor = mongoc_collection_find (ms->collection, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+    //Retrieve a database connection from the pool
+    MongoSession *ms = pool->get_connection();
 
-  std::vector<std::string> ret_vals;
+    //Execute the query on the key
+    cursor = mongoc_collection_find_with_opts (ms->collection, query, NULL, NULL);
 
-  //Cycle through the Mongo Cursor for all documents returned
-  while (mongoc_cursor_next (cursor, &doc)) {
-    str = bson_as_json (doc, NULL);
-    std::string ret_val (str);
-    ret_vals.push_back(ret_val);
-    bson_free (str);
-  }
+    //Pull the first result from the query
+    //In this special case, we will only ever get 1 value returned
+    //as we are only querying on key, and Mongo will guarantee these are unique.
 
-  bson_destroy (query);
-  mongoc_cursor_destroy (cursor);
-
-  //Release the database connection
-  pool->release_connection(ms);
-
-  //Set up the return value
-  int num_docs = ret_vals.size();
-
-  if (num_docs > 1) {
-    throw MongoException("Multiple Documents returned on key");
-  }
-  else if (num_docs < 1) {
-    return "";
+    //The iterator will handle closing the cursor and the DB Connection
+    if (cursor) {
+      MongoIteratorInterface *iter = new MongoIterator (cursor, pool, ms);
+      //The response interface will be returned to the user
+      ret_val = iter->next();
+      //Cleanup
+      delete iter;
+    }
+    else {
+      pool->release_connection(ms);
+    }
+    bson_destroy (query);
+    return ret_val;
   }
   else {
-    return ret_vals[0];
+    throw MongoException("No Key Passed to Load Document Method");
   }
-
 }
 
-std::vector<std::string> MongoClient::query(const char * query_str)
+MongoIteratorInterface* MongoClient::query(const char * query_str, const char * opts_str)
 {
-  //Setup necessary variables
-  const bson_t *doc = NULL;
-  bson_t *q = NULL;
-  bson_error_t error;
-  mongoc_cursor_t *cursor = NULL;
-  char * str;
+  if (query_str && query_str[0] != '\0') {
+    //Setup necessary variables
+    bson_t *q = NULL;
+    bson_t *o = NULL;
+    bson_error_t error;
+    mongoc_cursor_t *cursor = NULL;
 
-  //Write a new bson query with the key provided
-  q = bson_new_from_json ((const uint8_t *)query_str, -1, &error);
+    //Write a new bson query with the key provided
+    q = bson_new_from_json ((const uint8_t *)query_str, -1, &error);
 
-  //Retrieve a database connection from the pool
-  MongoSession *ms = pool->get_connection();
+    if (!q) {throw MongoException(error.message);}
 
-  cursor = mongoc_collection_find (ms->collection, MONGOC_QUERY_NONE, 0, 0, 0, q, NULL, NULL);
+    if (opts_str) {
+      o = bson_new_from_json ((const uint8_t *)query_str, -1, &error);
+      if (!o) {throw MongoException(error.message);}
+    }
 
-  std::vector<std::string> ret_vals;
+    //Retrieve a database connection from the pool
+    MongoSession *ms = pool->get_connection();
 
-  //Cycle through the Mongo Cursor for all documents returned
-  while (mongoc_cursor_next (cursor, &doc)) {
-    str = bson_as_json (doc, NULL);
-    std::string ret_val (str);
-    ret_vals.push_back(ret_val);
-    bson_free (str);
+    cursor = mongoc_collection_find_with_opts (ms->collection, q, o, NULL);
+
+    MongoIteratorInterface *iter = new MongoIterator (cursor, pool, ms);
+
+    if (o) {
+      bson_destroy (o);
+    }
+    bson_destroy (q);
+
+    return iter;
   }
-
-  bson_destroy (q);
-  mongoc_cursor_destroy (cursor);
-
-  //Release the database connection
-  pool->release_connection(ms);
-
-  return ret_vals;
+  else {
+    throw MongoException("No Query Passed to Query Method");
+  }
 }
 
 //-----------------------Connection Pool--------------------------------------//

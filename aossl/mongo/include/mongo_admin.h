@@ -36,6 +36,9 @@ THE SOFTWARE.
 
 #include "mongo_interface.h"
 
+const int MONGO_RESPONSE_CRT = 0;
+const int MONGO_RESPONSE_OTHER = 1;
+
 //-------------------------------------------------------------------
 ////------------------Connection Pooling-----------------------------
 ////-----------------------------------------------------------------
@@ -80,6 +83,39 @@ public:
 };
 
 //-------------------------------------------------------------------
+////--------------------Mongo Responses------------------------------
+////-----------------------------------------------------------------
+
+class MongoResponse: public MongoResponseInterface {
+  //Internal String variables for storing response data
+  int type;
+  char * cval = NULL;
+  std::string val;
+public:
+  //Build the mongo response from a C String passed back by libmongo
+  MongoResponse(char * cstring, int resp_type) {cval = cstring;val.assign(cval);type=resp_type;}
+  //Free the internal C String on delete
+  ~MongoResponse() {if (cval) {if (type==MONGO_RESPONSE_CRT) {delete[] cval;} else {bson_free(cval);}}}
+  //Retrieve the stored value for the response
+  std::string get_value() {return val;}
+};
+
+//! Returned from Queries in order to iterate over results
+class MongoIterator: public MongoIteratorInterface {
+  mongoc_cursor_t *cursor = NULL;
+  MongoConnectionPool *pool = NULL;
+  MongoSession *session = NULL;
+public:
+  MongoIterator(mongoc_cursor_t *c, MongoConnectionPool *p, MongoSession *s) {cursor=c;pool=p;session=s;}
+  ~MongoIterator() {mongoc_cursor_destroy (cursor);pool->release_connection(session);}
+  //! Get the next value from the iterator.
+
+  //! Will return a Mongo Response Interface when available,
+  //! Otherwise will return NULL.
+  MongoResponseInterface* next();
+};
+
+//-------------------------------------------------------------------
 ////---------------------Mongo Client--------------------------------
 ////-----------------------------------------------------------------
 
@@ -118,37 +154,40 @@ public:
 
   //Create JSON Document
   //Returns the document key
-  std::string create_document(const char * doc);
-  std::string create_document(std::string doc) {return create_document(doc.c_str());}
-  std::string create_document(const char * doc, const char * collection_name) {switch_collection(collection_name);return create_document(doc);}
-  std::string create_document(std::string doc, std::string collection_name) {switch_collection(collection_name);return create_document(doc.c_str());}
+  MongoResponseInterface* create_document(const char * doc);
+  MongoResponseInterface* create_document(std::string doc) {return create_document(doc.c_str());}
+  MongoResponseInterface* create_document(const char * doc, const char * collection_name) {switch_collection(collection_name);return create_document(doc);}
+  MongoResponseInterface* create_document(std::string doc, std::string collection_name) {switch_collection(collection_name);return create_document(doc.c_str());}
 
   //Delete a JSON Document
-  bool delete_document(const char * key);
-  bool delete_document(std::string key) {return delete_document(key.c_str());}
-  bool delete_document(const char * key, const char * collection_name) {switch_collection(collection_name);return delete_document(key);}
-  bool delete_document(std::string key, std::string collection_name) {return delete_document(key.c_str(), collection_name.c_str());}
+  void delete_document(const char * key);
+  void delete_document(std::string key) {return delete_document(key.c_str());}
+  void delete_document(const char * key, const char * collection_name) {switch_collection(collection_name);return delete_document(key);}
+  void delete_document(std::string key, std::string collection_name) {return delete_document(key.c_str(), collection_name.c_str());}
 
   //Retrieve a JSON Document
-  std::string load_document(const char * key);
-  std::string load_document(std::string key) {return load_document(key.c_str());}
-  std::string load_document(const char * key, const char * collection_name) {switch_collection(collection_name);return load_document(key);}
-  std::string load_document(std::string key, std::string collection_name){return load_document(key.c_str(), collection_name.c_str());}
+  MongoResponseInterface* load_document(const char * key);
+  MongoResponseInterface* load_document(std::string key) {return load_document(key.c_str());}
+  MongoResponseInterface* load_document(const char * key, const char * collection_name) {switch_collection(collection_name);return load_document(key);}
+  MongoResponseInterface* load_document(std::string key, std::string collection_name){return load_document(key.c_str(), collection_name.c_str());}
 
   //Save Document
   //If the document has an '_id' field it will be updated.  Otherwise it will be inserted
-  bool save_document(const char * doc, const char * key);
-  bool save_document(std::string doc, std::string key) {return save_document(doc.c_str(), key.c_str());}
-  bool save_document(const char * doc, const char * key, const char * collection_name) {switch_collection(collection_name);return save_document(doc, key);}
-  bool save_document(std::string doc, std::string key, std::string collection_name) {return save_document(doc.c_str(), key.c_str(), collection_name.c_str());}
+  void save_document(const char * doc, const char * key);
+  void save_document(std::string doc, std::string key) {return save_document(doc.c_str(), key.c_str());}
+  void save_document(const char * doc, const char * key, const char * collection_name) {switch_collection(collection_name);return save_document(doc, key);}
+  void save_document(std::string doc, std::string key, std::string collection_name) {return save_document(doc.c_str(), key.c_str(), collection_name.c_str());}
 
   //Advanced Operations
 
   //Queries, accept the query in JSON format
-  std::vector<std::string> query(const char * query_str);
-  std::vector<std::string> query(std::string query_str) {return query(query_str.c_str());}
-  std::vector<std::string> query(const char * query_str, const char * collection_name) {switch_collection(collection_name); return query(query_str);}
-  std::vector<std::string> query(std::string query_str, std::string collection_name) {switch_collection(collection_name); return query(query_str.c_str());}
+  //May also include options in JSON format
+  MongoIteratorInterface* query(const char * query_str, const char * opts_str);
+  MongoIteratorInterface* query(std::string query_str, std::string opts_str) {return query(query_str.c_str(), opts_str.c_str());}
+  MongoIteratorInterface* query(const char * query_str, const char * opts_str, const char * collection_name) {switch_collection(collection_name); return query(query_str, opts_str);}
+  MongoIteratorInterface* query(std::string query_str, std::string opts_str, std::string collection_name) {switch_collection(collection_name); return query(query_str.c_str(), opts_str.c_str());}
+  MongoIteratorInterface* query(const char * query_str) {return query(query_str, NULL);}
+  MongoIteratorInterface* query(std::string query_str) {return query(query_str.c_str());}
 
 };
 
