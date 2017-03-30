@@ -67,9 +67,23 @@ same manner as before
 
 We also have the ability to run queries against the DB
 
-    std::vector<std::string> query_response;
-    std::string query_string1 = "{\"number\": 1}";
+    MongoIteratorInterface *iter = NULL;
+    std::string query_string = "{\"number\": 1}";
 
-    std::cout << "Executing Query:" << query_string1 << std::endl;
-    query_response = mongo->query(query_string1);
-    std::cout << query_response[0] << " " << query_response[1] << std::endl;
+    std::cout << "Executing Query:" << query_string << std::endl;
+    try {
+      iter = mongo->query(query_string);
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+    }
+
+    if (iter) {
+      MongoResponseInterface *resp = iter->next();
+      while (resp) {
+        std::cout << resp->get_value() << std::endl;
+        delete resp;
+        resp = iter->next();
+      }
+      delete iter;
+    }

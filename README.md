@@ -37,7 +37,7 @@ Starting from the release of v1.0, backwards compatibility with future versions 
 
 Any interface breaking changes within the next major version will be clearly documented with the release notes.
 
-In order to use the respective interfaces, you should have an active [Consul] (https://www.consul.io/) Agent, as well as servers of [Neo4j] (https://neo4j.com/), [Redis] (http://redis.io/), and/or [Mongo] (https://www.mongodb.com) to connect to.
+In order to use the respective interfaces, you should have an active [Consul](https://www.consul.io/) Agent, as well as servers of [Neo4j](https://neo4j.com/), [Redis](http://redis.io/), and/or [Mongo](https://www.mongodb.com) to connect to.
 
 Full API Documentation is available via doxygen, and the latest execution is stored in the docs/html folder.
 
