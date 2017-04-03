@@ -660,10 +660,17 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered
       map_entries[i] = neo4j_map_entry(keys[i].c_str(), bool_val);
     }
     else if (val_type == _STR_TYPE) {
-      const char * cstr_value = val->get_string_value().c_str();
-      const char * cstr_keyval = keys[i].c_str();
-      neo4j_value_t str_val = neo4j_string(cstr_value);
-      map_entries[i] = neo4j_map_entry(cstr_keyval, str_val);
+      std::string val_str = val->get_string_value();
+      if (val_str.empty()) {
+        throw Neo4jException("Attempted to enter a blank string as a query parameter.  String query parameters must have length 1 or greater.");
+      }
+      else {
+        if (keys[i].empty()) {
+          throw Neo4jException("Attempted to enter a blank string as a query parameter key.  query parameter keys must have length 1 or greater.");
+        }
+        neo4j_value_t str_val = neo4j_string(val->get_string_value().c_str());
+        map_entries[i] = neo4j_map_entry(keys[i].c_str(), str_val);
+      }
     }
     else if (val_type == _INT_TYPE) {
       neo4j_value_t int_val = neo4j_int(val->get_integer_value());
@@ -686,16 +693,25 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered
 
   //Check for a failure
   int failure_check = neo4j_check_failure(res);
+
+  //If a failure is found
   if (failure_check != 0) {
-    const struct neo4j_failure_details *fd;
-    fd = neo4j_failure_details(res);
+
+    //Release the connection from the pool
     pool->release_connection(qs);
-    if (fd && fd->description) {
-      throw Neo4jException(fd->description, res);
+
+    //If our failure was related to the statement, then throw
+    //a related exception
+    if (failure_check == NEO4J_STATEMENT_EVALUATION_FAILED) {
+      const struct neo4j_failure_details *fd;
+      fd = neo4j_failure_details(res);
+      if (fd && fd->description) {
+        throw Neo4jException(fd->description, res);
+      }
     }
-    else {
-      throw Neo4jException("Unknown error encountered running query", res);
-    }
+
+    //If we weren't able to retrieve failure details, throw a general exception
+    throw Neo4jException("Unknown error encountered running query", res);
   }
 
   //Return a results iterator for results access
