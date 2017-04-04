@@ -236,6 +236,9 @@ public:
   //! Get the string value at the specified index, if any
   virtual std::string get_string_value(int index) = 0;
 
+  //! Get the string value as a c string
+  virtual const char * get_cstring_value() = 0;
+
   //! Get the integer value, if any
   virtual int get_integer_value() = 0;
 
