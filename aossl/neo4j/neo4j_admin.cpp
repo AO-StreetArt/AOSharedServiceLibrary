@@ -618,46 +618,15 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered
 
   //Create an array of neo4j map entries
   neo4j_map_entry_t map_entries[keys.size()];
+  neo4j_value_t map_values[vals.size()];
 
   for (unsigned int i = 0; i < keys.size(); i++) {
     Neo4jQueryParameterInterface* val = vals[i];
     int val_type = val->get_type();
-    bool is_list = val->is_array();
-    if (is_list) {
-      //We have an array parameter
-      unsigned int list_size = val->size();
-      neo4j_value_t list_values[list_size];
-      //Boolean Array
-      if (val_type == _BOOL_TYPE) {
-        for (unsigned int j=0;j<list_size;j++) {
-          list_values[j] = neo4j_bool(val->get_boolean_value(j));
-        }
-      }
-      //String Array
-      else if (val_type == _STR_TYPE) {
-        for (unsigned int j=0;j<list_size;j++) {
-          list_values[j] = neo4j_string(val->get_string_value(j).c_str());
-        }
-      }
-      //Integer Array
-      else if (val_type == _INT_TYPE) {
-        for (unsigned int j=0;j<list_size;j++) {
-          list_values[j] = neo4j_int(val->get_integer_value(j));
-        }
-      }
-      //Float Array
-      else if (val_type == _FLT_TYPE) {
-        for (unsigned int j=0;j<list_size;j++) {
-          list_values[j] = neo4j_float(val->get_double_value(j));
-        }
-      }
-      neo4j_value_t array_val = neo4j_list(list_values, list_size);
-      map_entries[i] = neo4j_map_entry(keys[i].c_str(), array_val);
-    }
     //We have single value parameter, and just need to determine the type
-    else if (val_type == _BOOL_TYPE) {
-      neo4j_value_t bool_val = neo4j_bool(val->get_boolean_value());
-      map_entries[i] = neo4j_map_entry(keys[i].c_str(), bool_val);
+    if (val_type == _BOOL_TYPE) {
+      map_values[i] = neo4j_bool(val->get_boolean_value());
+      map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
     }
     else if (val_type == _STR_TYPE) {
       std::string val_str = val->get_string_value();
@@ -668,17 +637,17 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered
         if (keys[i].empty()) {
           throw Neo4jException("Attempted to enter a blank string as a query parameter key.  query parameter keys must have length 1 or greater.");
         }
-        neo4j_value_t str_val = neo4j_string(val->get_string_value().c_str());
-        map_entries[i] = neo4j_map_entry(keys[i].c_str(), str_val);
+        map_values[i] = neo4j_string(val->get_string_value().c_str());
+        map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
       }
     }
     else if (val_type == _INT_TYPE) {
-      neo4j_value_t int_val = neo4j_int(val->get_integer_value());
-      map_entries[i] = neo4j_map_entry(keys[i].c_str(), int_val);
+      map_values[i] = neo4j_int(val->get_integer_value());
+      map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
     }
     else if (val_type == _FLT_TYPE) {
-      neo4j_value_t float_val = neo4j_float(val->get_double_value());
-      map_entries[i] = neo4j_map_entry(keys[i].c_str(), float_val);
+      map_values[i] = neo4j_float(val->get_double_value());
+      map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
     }
   }
 

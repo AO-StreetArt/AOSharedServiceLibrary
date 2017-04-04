@@ -318,17 +318,6 @@ int main(int argc, char** argv) {
   query_params2.emplace("inp_name", name_param2);
   run_test("MATCH (you:Person) WHERE you.name = {inp_name} RETURN you", "String Query Parameters", query_params2);
 
-  //List Query Parameters
-  std::unordered_map<std::string, Neo4jQueryParameterInterface*> list_params;
-  Neo4jQueryParameterInterface* list_name = neo4j_factory.get_neo4j_query_parameter("E");
-  list_params.emplace("inp_name", list_name);
-  Neo4jQueryParameterInterface* list_param = neo4j_factory.get_neo4j_query_parameter();
-  list_param->add_value(2);
-  list_param->add_value(3);
-  list_param->add_value(4);
-  list_params.emplace("lp", list_param);
-  run_test("MATCH (you:Person {name: {inp_name}}) SET you.list = {lp} RETURN you", "List Query Parameters", list_params);
-
   //Path Test
   run_test("CREATE (base:CoordinateSystem {name: '1', list: [7, 8, 9]}) RETURN base", "Path Test - Create Base");
   run_test("MATCH (base:CoordinateSystem {name: '1'}) CREATE (base)-[transform:Transform {matrix: [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}]->(next:CoordinateSystem {name: '2', list: [10, 11, 12]}) RETURN base, transform, next", "Path Test - Create First Connection");
@@ -337,8 +326,6 @@ int main(int argc, char** argv) {
 
   delete name_param;
   delete name_param2;
-  delete list_name;
-  delete list_param;
   delete neo;
 
 }
