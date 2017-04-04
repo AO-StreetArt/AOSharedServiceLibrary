@@ -629,8 +629,8 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered
       map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
     }
     else if (val_type == _STR_TYPE) {
-      std::string val_str = val->get_string_value();
-      if (val_str.empty()) {
+      const char * val_str = val->get_cstring_value();
+      if (!val_str) {
         throw Neo4jException("Attempted to enter a blank string as a query parameter.  String query parameters must have length 1 or greater.");
       }
       else {
