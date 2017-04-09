@@ -35,9 +35,10 @@ struct HttpRequestException: public std::exception
 {
   //! An error message passed on initialization
   std::string int_msg;
+  const char * int_msg_cstr;
 
   //! Create a HTTP Request Exception, and store the given error message
-  HttpRequestException (std::string msg) {int_msg = msg;}
+  HttpRequestException (std::string msg) {int_msg = "Error Sending HTTP Request: " + msg;int_msg_cstr=int_msg.c_str();}
 
   HttpRequestException () {}
   ~HttpRequestException() throw () {}
@@ -45,8 +46,7 @@ struct HttpRequestException: public std::exception
   //! Show the error message in readable format
   const char * what() const throw ()
   {
-    std::string what_str = "Error Sending HTTP Request: " + int_msg;
-    return what_str.c_str();
+    return int_msg_cstr;
   }
 };
 

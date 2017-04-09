@@ -53,6 +53,33 @@ public:
 
   //! Log at an info level to the root category
   virtual void info(const char * msg) = 0;
+
+  //! Log at an debug level to the root category
+  virtual void debug(int msg) = 0;
+
+  //! Log at an error level to the root category
+  virtual void error(int msg) = 0;
+
+  //! Log at an info level to the root category
+  virtual void info(int msg) = 0;
+
+  //! Log at an debug level to the root category
+  virtual void debug(float msg) = 0;
+
+  //! Log at an error level to the root category
+  virtual void error(float msg) = 0;
+
+  //! Log at an info level to the root category
+  virtual void info(float msg) = 0;
+
+  //! Log at an debug level to the root category
+  virtual void debug(double msg) = 0;
+
+  //! Log at an error level to the root category
+  virtual void error(double msg) = 0;
+
+  //! Log at an info level to the root category
+  virtual void info(double msg) = 0;
 };
 
 //! An overall logging interface, which can generate logging categories
@@ -81,6 +108,33 @@ public:
 
   //! Log at an info level to the root category
   virtual void info(const char * msg) = 0;
+
+  //! Log at an debug level to the root category
+  virtual void debug(int msg) = 0;
+
+  //! Log at an error level to the root category
+  virtual void error(int msg) = 0;
+
+  //! Log at an info level to the root category
+  virtual void info(int msg) = 0;
+
+  //! Log at an debug level to the root category
+  virtual void debug(float msg) = 0;
+
+  //! Log at an error level to the root category
+  virtual void error(float msg) = 0;
+
+  //! Log at an info level to the root category
+  virtual void info(float msg) = 0;
+
+  //! Log at an debug level to the root category
+  virtual void debug(double msg) = 0;
+
+  //! Log at an error level to the root category
+  virtual void error(double msg) = 0;
+
+  //! Log at an info level to the root category
+  virtual void info(double msg) = 0;
 
   //! Pull down different categories by name
   virtual LoggingCategoryInterface* get_category(std::string name) = 0;
