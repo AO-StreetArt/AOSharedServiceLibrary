@@ -31,11 +31,6 @@ THE SOFTWARE.
 #include <zmq.hpp>
 #include "zmq_interface.h"
 
-//! Convert a ZMQ Message to a std::string
-inline std::string hexDump ( zmq::message_t &aMessage ) {
-  return std::string(static_cast<char*>(aMessage.data()), aMessage.size());
-}
-
 //! An Outbound ZMQ Manager
 
 //! Acts as the Requestor (Client) in the ZMQ Sockets
@@ -44,7 +39,10 @@ class Zmqo: public ZmqOut
 {
   int conn_type;
   zmq::socket_t *zmqo;
+  zmq::message_t request;
   std::mutex send_mutex;
+  std::string r_str;
+  const char * msg_cstr;
 public:
   //! Build a new Outbound ZMQ Manager
   Zmqo(zmq::context_t &context, int connection_type);
@@ -75,6 +73,9 @@ class Zmqi: public ZmqIn
 {
   int conn_type;
   zmq::socket_t *zmqi;
+  zmq::message_t request;
+  std::string req_string;
+  const char * msg_cstr;
 public:
   //! Build a new Inbound ZMQ Manager
   Zmqi(zmq::context_t &context, int connection_type);

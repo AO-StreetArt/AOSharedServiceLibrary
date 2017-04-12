@@ -57,14 +57,16 @@ void Zmqi::bind(std::string conn_str)
 //Recieve an inbound message
 std::string Zmqi::recv()
 {
-  zmq::message_t request;
+  // Rebuild the ZeroMQ Message Object
+  // Close the message object and then re-build, this means that
+  // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
+  request.rebuild();
 
   //  Wait for next request from client
   zmqi->recv (&request);
 
   //Convert the OMQ message into a string to be passed
-  std::string req_string;
-  req_string = hexDump (request);
+  req_string.assign(static_cast<char*>(request.data()), request.size());
   return req_string;
 }
 
@@ -83,7 +85,7 @@ void Zmqi::send(const char * msg, int msg_size)
 //Send a string response
 void Zmqi::send(std::string msg)
 {
-  const char * msg_cstr = msg.c_str();
+  msg_cstr = msg.c_str();
   send(msg_cstr, msg.size());
 }
 
@@ -136,18 +138,21 @@ void Zmqo::send(const char * msg, int msg_size)
 
 //Send a string message
 void Zmqo::send(std::string msg) {
-  const char * msg_cstr = msg.c_str();
+  msg_cstr = msg.c_str();
   send(msg_cstr, msg.size());
 }
 
 //Recieve a Response
 std::string Zmqo::recv()
 {
+  // Rebuild the ZeroMQ Message Object
+  // Close the message object and then re-build, this means that
+  // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
+  request.rebuild();
   //  Get the reply.
-  zmq::message_t rep;
-  zmqo->recv (&rep);
+  zmqo->recv (&request);
 
   //Process the reply
-  std::string r_str = hexDump(rep);
+  r_str.assign(static_cast<char*>(request.data()), request.size());
   return r_str;
 }
