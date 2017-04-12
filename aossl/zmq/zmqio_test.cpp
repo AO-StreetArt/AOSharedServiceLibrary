@@ -64,6 +64,13 @@ int main()
   std::cout << response << std::endl;
   assert ( response == "success" );
 
+  //Send a Message
+  std::string cmsg = "This is a test message.  Woohoo!";
+  zmqo->send(cmsg);
+
+  char * req_cstr = zmqi->crecv();
+  std::cout << req_cstr << std::endl;
+
   //Cleanup
   delete zmqi;
   delete zmqo;

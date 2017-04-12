@@ -43,6 +43,7 @@ class Zmqo: public ZmqOut
   std::mutex send_mutex;
   std::string r_str;
   const char * msg_cstr;
+  char * rcv_cstr = NULL;
 public:
   //! Build a new Outbound ZMQ Manager
   Zmqo(zmq::context_t &context, int connection_type);
@@ -62,6 +63,9 @@ public:
   //! Recieve a message on the port
   std::string recv();
 
+  //! Recieve a message on the port
+  char * crecv();
+
   void subscribe(std::string filter) {}
 };
 
@@ -76,6 +80,7 @@ class Zmqi: public ZmqIn
   zmq::message_t request;
   std::string req_string;
   const char * msg_cstr;
+  char * rcv_cstr;
 public:
   //! Build a new Inbound ZMQ Manager
   Zmqi(zmq::context_t &context, int connection_type);
@@ -88,6 +93,9 @@ public:
 
   //! Recieve a message on the port
   std::string recv();
+
+  //! Recieve a message on the port
+  char * crecv();
 
   //! Send a message on the port
   void send(const char * msg, int msg_size);
