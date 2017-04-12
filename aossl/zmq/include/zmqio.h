@@ -80,7 +80,7 @@ class Zmqi: public ZmqIn
   zmq::message_t request;
   std::string req_string;
   const char * msg_cstr;
-  char * rcv_cstr;
+  char * rcv_cstr = NULL;
 public:
   //! Build a new Inbound ZMQ Manager
   Zmqi(zmq::context_t &context, int connection_type);
