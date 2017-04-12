@@ -44,6 +44,7 @@ class Zmqo: public ZmqOut
   std::string r_str;
   const char * msg_cstr;
   char * rcv_cstr = NULL;
+  bool started = false;
 public:
   //! Build a new Outbound ZMQ Manager
   Zmqo(zmq::context_t &context, int connection_type);
@@ -81,6 +82,7 @@ class Zmqi: public ZmqIn
   std::string req_string;
   const char * msg_cstr;
   char * rcv_cstr = NULL;
+  bool started = false;
 public:
   //! Build a new Inbound ZMQ Manager
   Zmqi(zmq::context_t &context, int connection_type);
