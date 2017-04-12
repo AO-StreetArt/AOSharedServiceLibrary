@@ -252,6 +252,7 @@ const int _FLT_TYPE = 3;
 class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
   bool bool_value;
   std::string str_value;
+  const char * cstr_value;
   int int_value;
   double double_value;
   int type;
@@ -264,7 +265,7 @@ class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
 public:
   Neo4jQueryParameter() {is_list=true;type=-1;}
   Neo4jQueryParameter(bool inp_bool) {bool_value = inp_bool; type = _BOOL_TYPE;is_list=false;}
-  Neo4jQueryParameter(std::string inp_str) {str_value = inp_str; type = _STR_TYPE;is_list=false;}
+  Neo4jQueryParameter(std::string inp_str) {str_value = inp_str; type = _STR_TYPE;is_list=false;cstr_value=str_value.c_str();}
   Neo4jQueryParameter(const char * inp_str) {std::string new_val (inp_str); str_value = new_val; type = _STR_TYPE;is_list=false;}
   Neo4jQueryParameter(int inp_int) {int_value = inp_int; type = _INT_TYPE;is_list=false;}
   Neo4jQueryParameter(double inp_double) {double_value = inp_double; type = _FLT_TYPE;is_list=false;}
@@ -274,6 +275,7 @@ public:
   bool get_boolean_value(int index) {if (is_list) {return bool_values[index];} else {throw Neo4jException("Attempting to retrieve indexed value from single element");}}
   std::string get_string_value() {if (!is_list) {return str_value;} else {throw Neo4jException("Attempting to retrieve single value from array element");}}
   std::string get_string_value(int index) {if (is_list) {return str_values[index];} else {throw Neo4jException("Attempting to retrieve indexed value from single element");}}
+  const char * get_cstring_value() {return cstr_value;}
   int get_integer_value() {if (!is_list) {return int_value;} else {throw Neo4jException("Attempting to retrieve full single from array element");}}
   int get_integer_value(int index) {if (is_list) {return int_values[index];} else {throw Neo4jException("Attempting to retrieve indexed value from single element");}}
   double get_double_value() {if (!is_list) {return double_value;} else {throw Neo4jException("Attempting to retrieve single value from array element");}}
