@@ -10,7 +10,7 @@ RM = rm -f
 #Makefile Targets
 default: zmqio.o
 
-tests: zmqio_test
+tests: zmqio_test zmq_test_client zmq_test_server
 
 benchmark: zmqio_benchmark
 
@@ -43,6 +43,22 @@ zmqio_test: zmqio.o zmqio_test.o
 # Create the object file zmqio_test.o
 zmqio_test.o: zmqio_test.cpp
 	$(CC) $(CFLAGS) -o $@ -c zmqio_test.cpp $(STD)
+
+# Create the executable file zmq_test_client
+zmq_test_client: zmqio.o zmq_test_client.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
+
+# Create the object file zmq_test_client.o
+zmq_test_client.o: zmq_test_client.cpp
+	$(CC) $(CFLAGS) -o $@ -c zmq_test_client.cpp $(STD)
+
+# Create the executable file zmq_test_server
+zmq_test_server: zmqio.o zmq_test_server.o
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
+
+# Create the object file zmq_test_server.o
+zmq_test_server.o: zmq_test_server.cpp
+	$(CC) $(CFLAGS) -o $@ -c zmq_test_server.cpp $(STD)
 
 # Benchmark
 zmqio_benchmark: zmqio_benchmark.o zmqio.o
