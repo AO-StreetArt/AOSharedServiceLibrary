@@ -17,7 +17,7 @@ benchmark: zmqio_benchmark
 install: $(INCL_DIR) $(INCL)
 
 clean:
-	$(RM) *.o *~ *_test *_benchmark
+	$(RM) *.o *~ *_test *_benchmark *test_server *test_client
 
 # Makefile Instructions
 
