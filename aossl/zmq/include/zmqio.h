@@ -78,7 +78,8 @@ class Zmqi: public ZmqIn
 {
   int conn_type;
   zmq::socket_t *zmqi;
-  zmq::message_t request;
+  //Perhaps we need to store this as a pointer?
+  zmq::message_t *request = NULL;
   std::string req_string;
   const char * msg_cstr;
   char * rcv_cstr = NULL;

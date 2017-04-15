@@ -36,11 +36,13 @@ Zmqi::Zmqi(zmq::context_t &context, int connection_type)
     zmqi = new zmq::socket_t (context, ZMQ_SUB);
   }
   conn_type = connection_type;
+  request = new zmq::message_t;
 }
 
 Zmqi::~Zmqi()
 {
   delete zmqi;
+  delete request;
   if (rcv_cstr) {delete rcv_cstr;}
 }
 
@@ -62,14 +64,14 @@ std::string Zmqi::recv()
   // Close the message object and then re-build, this means that
   // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
   if (!started) {
-    request.rebuild();
+    request->rebuild();
   }
 
   //  Wait for next request from client
-  zmqi->recv (&request);
+  zmqi->recv (request);
 
   //Convert the OMQ message into a string to be passed
-  req_string.assign(static_cast<char*>(request.data()), request.size());
+  req_string.assign(static_cast<char*>(request->data()), request->size());
   started = true;
   return req_string;
 }
@@ -80,17 +82,17 @@ char * Zmqi::crecv() {
   // Close the message object and then re-build, this means that
   // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
   if (!started) {
-    request.rebuild();
+    request->rebuild();
   }
 
   if (rcv_cstr) {delete rcv_cstr;rcv_cstr=NULL;}
 
   // Wait for next request from client
-  zmqi->recv (&request);
+  zmqi->recv (request);
 
   // Take the data out of the message
-  rcv_cstr = new char [request.size()];
-  std::memcpy(rcv_cstr, request.data(), request.size());
+  rcv_cstr = new char [request->size()];
+  std::memcpy(rcv_cstr, request->data(), request->size());
 
   started = true;
 
