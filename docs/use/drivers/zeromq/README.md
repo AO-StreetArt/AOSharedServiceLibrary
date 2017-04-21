@@ -22,3 +22,9 @@ In order to connect to a socket, we ask the factory to create one:
 
     //Set up the inbound ZMQ Client
     Zmqio *zmqi = zmq_factory.get_zmq_inbound_interface("tcp://*:5555");
+
+# Thread Safety
+
+The outbound and inbound ZeroMQ Managers both have a mutex around the send() functions.
+
+When using the recv() function with multiple threads, keep in mind that the resources allocated in the message MAY NOT BE PRESENT once the next message has been received.  You should ensure that you take a deep copy of the message prior to passing off to another thread.

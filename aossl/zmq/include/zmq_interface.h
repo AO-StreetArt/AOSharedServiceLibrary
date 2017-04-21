@@ -41,6 +41,9 @@ public:
   //! Recieve a message on the port
   virtual std::string recv() = 0;
 
+  //! Recieve a message on the port
+  virtual char * crecv() = 0;
+
   //! Send a message on the port
   virtual void send(const char * msg, int msg_size) = 0;
 
@@ -73,6 +76,9 @@ public:
   //! Recieve a message on the port
   virtual std::string recv() = 0;
 
+  //! Recieve a message on the port
+  virtual char * crecv() = 0;
+
   //! Subscribe on a particular filter (only effective for Pub/Sub)
   virtual void subscribe(std::string filter) = 0;
 };
@@ -92,6 +98,9 @@ public:
 
   //! Recieve a message on the port
   virtual std::string recv() = 0;
+
+  //! Recieve a message on the port
+  virtual char * crecv() = 0;
 
   //! Send a message on the port
   virtual void send(const char * msg, int msg_size) = 0;

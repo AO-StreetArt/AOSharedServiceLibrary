@@ -4,6 +4,8 @@
 *.cc
 *.pb.*
 *_test
+*test_server
+*test_client
 *_tests
 *_benchmark
 *.a

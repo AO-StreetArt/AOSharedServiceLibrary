@@ -31,11 +31,6 @@ THE SOFTWARE.
 #include <zmq.hpp>
 #include "zmq_interface.h"
 
-//! Convert a ZMQ Message to a std::string
-inline std::string hexDump ( zmq::message_t &aMessage ) {
-  return std::string(static_cast<char*>(aMessage.data()), aMessage.size());
-}
-
 //! An Outbound ZMQ Manager
 
 //! Acts as the Requestor (Client) in the ZMQ Sockets
@@ -44,7 +39,12 @@ class Zmqo: public ZmqOut
 {
   int conn_type;
   zmq::socket_t *zmqo;
+  zmq::message_t request;
   std::mutex send_mutex;
+  std::string r_str;
+  const char * msg_cstr;
+  char * rcv_cstr = NULL;
+  bool started = false;
 public:
   //! Build a new Outbound ZMQ Manager
   Zmqo(zmq::context_t &context, int connection_type);
@@ -64,6 +64,9 @@ public:
   //! Recieve a message on the port
   std::string recv();
 
+  //! Recieve a message on the port
+  char * crecv();
+
   void subscribe(std::string filter) {}
 };
 
@@ -75,6 +78,12 @@ class Zmqi: public ZmqIn
 {
   int conn_type;
   zmq::socket_t *zmqi;
+  //Perhaps we need to store this as a pointer?
+  zmq::message_t *request = NULL;
+  std::string req_string;
+  const char * msg_cstr;
+  char * rcv_cstr = NULL;
+  bool started = false;
 public:
   //! Build a new Inbound ZMQ Manager
   Zmqi(zmq::context_t &context, int connection_type);
@@ -87,6 +96,9 @@ public:
 
   //! Recieve a message on the port
   std::string recv();
+
+  //! Recieve a message on the port
+  char * crecv();
 
   //! Send a message on the port
   void send(const char * msg, int msg_size);
