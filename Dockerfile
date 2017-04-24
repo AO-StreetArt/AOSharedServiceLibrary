@@ -27,9 +27,9 @@ RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid
 
 #Get the Neo4j dependencies
 
-RUN add-apt-repository ppa:cleishm/neo4j
+RUN add-apt-repository -y ppa:cleishm/neo4j
 RUN apt-get update
-RUN apt-get install neo4j-client
+RUN apt-get install -y neo4j-client
 
 #Get the Redis Dependencies
 RUN git clone https://github.com/redis/hiredis.git ./hiredis
