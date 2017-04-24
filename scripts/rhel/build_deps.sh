@@ -22,11 +22,10 @@ sudo yum -y install build-essential libtool pkg-config autoconf automake cmake m
 #Determine if we need the neo4j-client library
 printf "Building libneo4j"
 
-printf "Building libneo4j"
-
 mkdir $PRE/neo
-git clone https://github.com/cleishm/libneo4j-client.git ./$PRE/neo
+wget https://github.com/cleishm/libneo4j-client/releases/download/v1.2.1/libneo4j-client-1.2.1.tar.gz -P ./$PRE
 
+tar -zxvf $PRE/libneo4j-client-1.2.1.tar.gz -C $PRE/neo4j
 cd $PRE/neo && sudo ./autogen.sh && sudo ./configure --disable-tools && sudo make clean check && sudo make install
 cd ../../
 
