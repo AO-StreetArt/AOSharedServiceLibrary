@@ -27,10 +27,9 @@ RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid
 
 #Get the Neo4j dependencies
 
-RUN mkdir neo
-RUN git clone https://github.com/cleishm/libneo4j-client.git neo
-
-RUN cd neo && ./autogen.sh && ./configure --disable-tools && make clean check && sudo make install
+RUN add-apt-repository ppa:cleishm/neo4j
+RUN apt-get update
+RUN apt-get install neo4j-client
 
 #Get the Redis Dependencies
 RUN git clone https://github.com/redis/hiredis.git ./hiredis
