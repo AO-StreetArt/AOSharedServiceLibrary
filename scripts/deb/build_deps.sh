@@ -29,9 +29,9 @@ sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev 
 #Determine if we need the neo4j-client library
 printf "Building libneo4j"
 
-sudo add-apt-repository ppa:cleishm/neo4j
+sudo add-apt-repository -y ppa:cleishm/neo4j
 sudo apt-get update
-sudo apt-get install neo4j-client
+sudo apt-get install -y neo4j-client
 
 printf "Building Mongo C Driver"
 wget https://github.com/mongodb/mongo-c-driver/releases/download/1.6.0/mongo-c-driver-1.6.0.tar.gz
