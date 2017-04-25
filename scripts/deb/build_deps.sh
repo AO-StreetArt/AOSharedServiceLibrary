@@ -33,7 +33,7 @@ mkdir $PRE/neo
 wget https://github.com/cleishm/libneo4j-client/releases/download/v1.2.1/libneo4j-client-1.2.1.tar.gz -P ./$PRE
 
 tar -zxvf ./$PRE/libneo4j-client-1.2.1.tar.gz -C $PRE/neo
-cd $PRE/neo && sudo ./configure --disable-tools && sudo make clean check && sudo make install
+cd $PRE/neo/libneo4j-client-1.2.1 && sudo ./configure --disable-tools && sudo make clean check && sudo make install
 cd ../../
 
 printf "Building Mongo C Driver"
