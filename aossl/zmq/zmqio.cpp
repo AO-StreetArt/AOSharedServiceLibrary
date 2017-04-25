@@ -63,18 +63,15 @@ std::string Zmqi::recv()
   // Rebuild the ZeroMQ Message Object
   // Close the message object and then re-build, this means that
   // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
-  if (!started) {request->rebuild();}
-  if (rcv_cstr) {delete rcv_cstr;rcv_cstr=NULL;}
+  if (!started) {
+    request->rebuild();
+  }
 
   //  Wait for next request from client
   zmqi->recv (request);
 
-  // Take the data out of the message
-  rcv_cstr = new char [request->size()];
-  std::memcpy(rcv_cstr, request->data(), request->size());
-
   //Convert the OMQ message into a string to be passed
-  req_string.assign(rcv_cstr);
+  req_string.assign(static_cast<char*>(request->data()), request->size());
   started = true;
   return req_string;
 }
@@ -95,6 +92,9 @@ char * Zmqi::crecv() {
   std::memcpy(rcv_cstr, request->data(), request->size());
 
   started = true;
+
+  //Convert the OMQ message into a string to be passed
+  //rcv_cstr = static_cast<char*>(request.data()), request.size();
   return rcv_cstr;
 }
 
