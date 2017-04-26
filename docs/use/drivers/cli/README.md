@@ -1,11 +1,18 @@
 # Command Line Argument Parser
 
 The CommandLineInterpreter makes working with input parameters easier.  With it,
-we get access to command line arguments in the form:
+we get access to command line arguments that are entered in the form:
 
 `./example name=abc`
 
-We have access to an opt_exist method to determine if an option was entered.  We can also use get_opt to pull parameter values, and get_program_name to return the current program name executing on this instance.
+## Multi-Threading
+
+The Command Line Interpreter is threadsafe, but it is recommended that you utilize a single interpreter and have each thread access the arguments in it, to ensure that the input parameters are only parsed once.
+
+## Use
+
+We start by importing the necessary interfaces and establish the service factory.
+
     #include "include/commandline/factory_cli.h"
     #include "include/commandline/commandline_interface.h"
 
@@ -13,7 +20,13 @@ We have access to an opt_exist method to determine if an option was entered.  We
     {
     CommandLineInterpreterFactory cli_factory;
     CommandLineInterface *cli = cli_factory.get_command_line_interface( argc, argv );
+
+We can utilize get_program_name to return the current program name executing on this instance.
+
     std::cout << cli->get_program_name() << std::endl;
+
+We have access to an opt_exist method to determine if an option was entered, and we can use get_opt to pull parameter values.
+
     if ( cli->opt_exist("name") ) {
       std::cout << cli->get_opt("name") << std::endl;
     }

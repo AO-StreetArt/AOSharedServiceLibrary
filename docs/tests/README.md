@@ -1,6 +1,6 @@
 # Tests
 
-AOSSL Uses Travis-CI for automated builds and tests, for full history please see the [Travis CI Homepage] (https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary).  Automated builds are also performed by [Docker Hub] (https://hub.docker.com/r/aostreetart/ao-services).  Tests and benchmarks can be run manually as well.
+AOSSL Uses Travis-CI for automated builds and tests, for full history please see the [Travis CI Homepage](https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary).  Automated builds are also performed by [Docker Hub](https://hub.docker.com/r/aostreetart/ao-services).  An example Jenkinsfile is provided, but not yet utilized.  Tests and benchmarks can be run manually as well.
 
 ## Manually Executing Tests
 
@@ -22,11 +22,10 @@ You can hit the http_server_test with curl from the command line with:
 
 ## Manually Executing Benchmarks
 
-We will also have a set of benchmark programs which are built on the [hayai] (https://github.com/nickbruun/hayai) framework.
+We will also have a set of benchmark programs which are built on the [hayai](https://github.com/nickbruun/hayai) framework.
 These systematically test each element within the framework to provide realistic benchmarks on any given system.
 
     ./consul_benchmark
-    ./couchbase_benchmark
     ./http_benchmark
     ./logging_benchmark
     ./redis_benchmark
@@ -34,9 +33,9 @@ These systematically test each element within the framework to provide realistic
     ./zmqio_benchmark
 
 # Where to Go From Here
-Please continue on to the [Dependencies] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps) section of the documentation to see a discussion of the libraries dependencies for building on other operating systems.
+Please continue on to the [Dependencies](https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps) section of the documentation to see a discussion of the libraries dependencies for building on other operating systems.
 
-See the automatically generated [API Documentation] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/html) for detailed documentation on the library.
+See the automatically generated [API Documentation](https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/html) for detailed documentation on the library.
 
 
-[Go Home] (https://github.com/AO-StreetArt/AOSharedServiceLibrary)
+[Go Home](https://github.com/AO-StreetArt/AOSharedServiceLibrary)
