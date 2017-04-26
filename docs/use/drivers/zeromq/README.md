@@ -6,7 +6,8 @@ This provides Request/Reply Managers for both Inbound and Outbound sockets.
 
 The Zmqio object exposes these methods:
 
-* recv() - a blocking call to wait for a message
+* crecv() - a blocking call to wait for a message, and return a C-style string
+* recv() - a blocking call to wait for a message, and return a std::string
 * send(const char * msg, int msg_size)
 * send(std::string msg)
 

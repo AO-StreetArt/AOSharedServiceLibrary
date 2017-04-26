@@ -22,4 +22,4 @@ The Redis Admin allows for quick Redis access, and exposes the below methods to 
     std::string strValue = redis->load("Test");
     redis->del("Test");
 
-The Redis Administrator suports a number of other operations, all of which are covered in [Redis' documentation] (http://redis.io/commands).  A full list of supported operations can be found in this libraries HTML documentation, found in the html folder of the docs on this repository.  You are free to download it and view it in a web browser.
+The Redis Administrator suports a number of other operations, all of which are covered in [Redis' documentation] (http://redis.io/commands).  A full list of supported operations can be found in this libraries API documentation.

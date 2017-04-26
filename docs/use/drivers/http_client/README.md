@@ -7,6 +7,10 @@ The HTTP Admin allows quick and easy HTTP Requests by exposing:
 * bool post(std::string url, std::string data, int timeout)
 * bool del(std::string url, int timeout)
 
+## Use
+
+We start by importing the necessary interfaces and establish the service factory.
+
     #include "aossl/http/client/factory_http_client.h"
     #include "aossl/http/client/http_interface.h"
 
@@ -15,16 +19,22 @@ The HTTP Admin allows quick and easy HTTP Requests by exposing:
     //Declare the admin
     HttpInterface *ha = http_client_factory.get_http_interface();
 
-    //-------------------------------GET--------------------------------------//
+Send a get request:
 
-    //Send the request
     std::string returned_string = ha->get(GETURL, 5);
 
-    //-------------------------------PUT--------------------------------------//
-    success = ha->put(PUTURL, "123", 5);
+Send a put request:
 
-    //-------------------------------POST-------------------------------------//
+    bool success = ha->put(PUTURL, "123", 5);
+
+Send a post request:
+
     success = ha->post(POSTURL, "CLYMAN", 5);
 
-    //------------------------------DELETE------------------------------------//
+Send a delete request:
+
     success = ha->del(DELETEURL, 5);
+
+## Multi-Threading
+
+The HTTP Admin has a mutex around the internal send() method, called by all exposed API methods.  This means that the HTTP Administrator is thread-safe, but only one thread may use it at a time.

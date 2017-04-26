@@ -7,7 +7,7 @@ This page is meant to be an overview of functionality, for complete documentatio
 The Service Component Factories are components which allow us to build instances of the interfaces exposed by the library.
 
 It's important that we use the factory to get instances of the interfaces as the interfaces guarantee backwards-compatibility.  While particular implementations may change,
-the interfaces will remain the same across versions of the library.  For example:
+the interfaces will remain the same across major versions of the library.  For example:
 
     #include "include/factory_cli.h"
     #include "include/factory/commandline_interface.h"

@@ -2,7 +2,7 @@
 
 ## Docker
 
-The AO Shared Service Library is available as a docker image.  This allows developers to get a fully functional build environment with a single command, and offers a head-start on making production docker files.  Docker is the recommended method of deployment for Services, as it allows for easy horizontal scaling.
+The AO Shared Service Library is available as a docker image.  This allows developers to get a fully functional build environment with a single command, and offers a head-start on making application docker files.
 
 ### Setup
 
@@ -63,7 +63,7 @@ Then, we utilize the --network option when starting containers to connect them t
 
 `docker run -d --name=registry --network=my-network consul`
 
-When we start another docker container and connect it to my-network, we can access the first container by using it's container name as the hostname.
+When we start another docker container and connect it to my-network, we can access the first container by using it's container name as the hostname.  For example, we'd access the consul agent started above from another docker container in the network at the address 'registry:8500'.
 
 ## Use Latest Release
 
@@ -78,6 +78,8 @@ You will be prompted for your sudo password, after which the script will attempt
 This will install the library without installing the dependencies.  You may execute the install dependencies script separately if desired via:
 
     cd deps && sudo ./build_deps.sh
+
+Or, you may refer to the [Dependency Resolution](https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/deps) section of the documentation on how to install necessary dependencies manually.
 
 You may uninstall the library by executing:
 
@@ -155,6 +157,6 @@ We can uninstall the libraries with:
 `sudo make uninstall`
 
 ## Use
-Please continue on to the [Use] (https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use) section of the documentation to see example uses of the library.
+Please continue on to the [Use](https://github.com/AO-StreetArt/AOSharedServiceLibrary/tree/master/docs/use) section of the documentation to see example uses of the library.
 
-[Go Home] (https://github.com/AO-StreetArt/AOSharedServiceLibrary)
+[Go Home](https://github.com/AO-StreetArt/AOSharedServiceLibrary)
