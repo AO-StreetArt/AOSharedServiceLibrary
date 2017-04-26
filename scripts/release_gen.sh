@@ -32,6 +32,11 @@ mkdir ../$RELEASE_NAME/examples/hello_world
 mkdir ../$RELEASE_NAME/aossl
 mkdir ../$RELEASE_NAME/aossl/include
 mkdir ../$RELEASE_NAME/aossl/include/factory
+mkdir ../$RELEASE_NAME/licenses
+
+#Copy the dependency licenses into the licenses folder
+printf "Copying Dependency Licenses"
+cp licenses/*.txt ../$RELEASE_NAME/licenses
 
 #Copy the correct dependency script into the release subfolder 'deps'
 printf "Copying Dependencies script into release folders"
