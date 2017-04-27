@@ -19,6 +19,15 @@ printf "Addressing pre-build requirements"
 #Ensure that specific build requirements are satisfied
 sudo yum -y install build-essential libtool pkg-config autoconf automake cmake make git wget gcc gcc-c++
 
+#By default, Redhat/CentOS come installed with gcc 4.x
+#Unfortunately, this version has a bug which prevents compilation of certain modules
+#As a result, we need to install the latest version
+sudo yum install centos-release-scl
+sudo yum install devtoolset-4-gcc*
+scl enable devtoolset-4 bash
+which gcc
+gcc --version
+
 #Determine if we need the neo4j-client library
 printf "Building libneo4j"
 
@@ -26,7 +35,7 @@ mkdir $PRE/neo
 wget https://github.com/cleishm/libneo4j-client/releases/download/v1.2.1/libneo4j-client-1.2.1.tar.gz -P ./$PRE
 
 tar -zxvf $PRE/libneo4j-client-1.2.1.tar.gz -C $PRE/neo
-cd $PRE/neo && sudo ./configure --disable-tools && sudo make clean check && sudo make install
+cd $PRE/neo/libneo4j-client-1.2.1 && sudo ./configure --disable-tools --without-tls && sudo make clean check && sudo make install
 cd ../../
 
 printf "Building Mongo C Driver"
@@ -83,6 +92,11 @@ if [ ! -f /usr/local/include/zmq.hpp ]; then
 
 fi
 
+printf "Building Libevent"
+wget https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz
+tar -xvzf libevent-2.1.8-stable.tar.gz
+cd libevent-2.1.8-stable && make && sudo make install
+
 printf "Building Hayai, optional, for benchmarks"
 
 #Install hayai, for compiling benchmarks
@@ -105,7 +119,7 @@ sudo rpm -Uvh log4cpp-devel-1.1.1-1.el7.x86_64.rpm
 sudo yum -y update
 
 #Install the dependencies
-sudo yum -y install libuuid-devel libcurl-devel libevent-devel
+sudo yum -y install libuuid-devel libcurl-devel
 
 #Run ldconfig to ensure that all built libraries are on the linker path
 sudo ldconfig
