@@ -207,6 +207,7 @@ class ResultTree: public ResultTreeInterface {
 public:
   ResultTree(neo4j_result_t *r) {result=r;}
   ~ResultTree() {}
+   bool exists() {if (result) {return true;} else {return false;}}
   DbObjectInterface* get(int index);
 };
 

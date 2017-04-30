@@ -179,6 +179,8 @@ public:
 
   //! Get the node/edge at the specified index
   virtual DbObjectInterface* get(int index) = 0;
+
+  virtual bool exists() = 0;
 };
 
 //! Results Iterator for viewing query results
