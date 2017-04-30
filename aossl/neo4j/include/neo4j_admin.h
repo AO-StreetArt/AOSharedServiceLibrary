@@ -163,7 +163,7 @@ public:
   unsigned int size();
   bool element_exists(std::string key);
   std::string get_string_element(std::string key, int char_buffer_size);
-  std::string get_string_element(std::string key) {return get_string_element(key, key.size());}
+  std::string get_string_element(std::string key) {return get_string_element(key, 512);}
   bool get_bool_element(std::string key);
   int get_int_element(std::string key);
   double get_float_element(std::string key);
