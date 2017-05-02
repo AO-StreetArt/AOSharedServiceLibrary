@@ -1,6 +1,6 @@
 # Compiling your Application
 
-g++ is the recommended compiler for building applications using AOSSL, with a version supporting c++11.
+g++ is the recommended compiler for building applications using AOSSL, version 5.0 or greater.
 
 ## Linking
 When linking your to AOSSL, you will also need to link to certain dependencies in many cases.  In all cases, you will need to link to aossl directly:
