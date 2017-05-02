@@ -31,7 +31,8 @@ THE SOFTWARE.
 //Get the next result from the iterator
 ResultTreeInterface* ResultsIterator::next() {
   neo4j_result_t *res = neo4j_fetch_next(results);
-  return new ResultTree (res);
+  if (!res) {return NULL;}
+  else {return new ResultTree (res);}
 }
 
 void ResultsIterator::clear_results() {
