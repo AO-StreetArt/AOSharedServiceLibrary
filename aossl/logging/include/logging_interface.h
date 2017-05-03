@@ -27,6 +27,27 @@ THE SOFTWARE.
 
 #include <log4cpp/Category.hh>
 #include <string>
+#include <exception>
+
+//! Mongo Exception, used to store errors passed from Mongo
+struct LoggingException: public std::exception
+{
+  //! An error message passed on initialization
+  std::string int_msg;
+  const char * what_str;
+
+  //! Create a Mongo Exception, and store the given error message
+  LoggingException (std::string msg) {int_msg = "Error in Logging Driver: " + msg;what_str = int_msg.c_str();}
+
+  LoggingException () {}
+  ~LoggingException() throw () {}
+
+  //! Show the error message in readable format
+  const char * what() const throw ()
+  {
+    return what_str;
+  }
+};
 
 //! A Logging Category instantiated on a standard logging instance
 class LoggingCategoryInterface
