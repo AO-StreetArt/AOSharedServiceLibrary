@@ -1,6 +1,4 @@
-# define some Makefile variables for the compiler and compiler flags
-# to use Makefile variables later in the Makefile: $()
-#
+# Makefile Variables
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
@@ -11,20 +9,33 @@ INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr
 LINK_DIRS = -L/usr/local/lib
 RM = rm -f
 
-# -------------------------- Central Targets --------------------------------- #
+.PHONY: mksrc mktest
 
-all: src main.o
+# Central Targets
+
+all: src main.o main
+
+mksrc:
 	@$(MAKE) -C src
+
+main.o: main.cpp src/include/app_utils.h
+	$(CC) $(CFLAGS) -o $@ -c main.cpp $(STD) $(INCL_DIRS)
+
+main:
 	$(CC) $(CFLAGS) -o app $(OBJS) $(FULL_LIBS) $(STD) $(INCL_DIRS) $(LINK_DIRS)
 
-test:
+# Tests
+
+test: mktest configuration_test
+
+mktest:
 	@$(MAKE) -C tests
+
+configuration_test:
 	$(CC) $(CFLAGS) -o configuration_test src/app_log.o src/configuration_manager.o tests/configuration_test.o $(FULL_LIBS) $(STD) -Isrc/include
+
+# Cleanup
 
 clean:
 	$(RM) app *.o src/*.o *~ *.log *.log.* *_test tests/*.o
 
-# ---------------------------- Main Project ---------------------------------- #
-
-main.o: main.cpp src/include/app_utils.h
-	$(CC) $(CFLAGS) -o $@ -c main.cpp $(STD) $(INCL_DIRS)
