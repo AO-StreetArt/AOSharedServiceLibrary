@@ -3,7 +3,7 @@ CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
 OBJS = src/app_log.o src/configuration_manager.o src/globals.o main.o
-TESTS = configuration_test
+TESTS = configuration_test log_test utils_test
 FULL_LIBS = -laossl -lcurl -lpthread -lzmq -lneo4j-client -lssl -lcrypto -lm -llog4cpp -luuid -lmongoc-1.0 -lbson-1.0 -lhiredis `pkg-config --cflags --libs protobuf`
 INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0
 LINK_DIRS = -L/usr/local/lib
@@ -13,7 +13,7 @@ RM = rm -f
 
 # Central Targets
 
-all: src main.o main
+all: mksrc main.o main
 
 mksrc:
 	@$(MAKE) -C src
@@ -26,13 +26,19 @@ main:
 
 # Tests
 
-test: mktest configuration_test
+test: mktest $(TESTS)
 
 mktest:
 	@$(MAKE) -C tests
 
 configuration_test:
-	$(CC) $(CFLAGS) -o configuration_test src/app_log.o src/configuration_manager.o tests/configuration_test.o $(FULL_LIBS) $(STD) -Isrc/include
+	$(CC) $(CFLAGS) -o $@ src/app_log.o src/configuration_manager.o tests/configuration_test.o $(FULL_LIBS) $(STD) -Isrc/include
+
+log_test:
+	$(CC) $(CFLAGS) -o $@ src/app_log.o tests/log_test.o $(FULL_LIBS) $(STD) -Isrc/include
+
+utils_test:
+	$(CC) $(CFLAGS) -o $@ tests/utils_test.o $(STD) -Isrc/include
 
 # Cleanup
 

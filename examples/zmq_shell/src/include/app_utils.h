@@ -9,8 +9,8 @@
 #include <locale>
 #include <string.h>
 
-#ifndef IVAN_UTILS
-#define IVAN_UTILS
+#ifndef APP_UTILS
+#define APP_UTILS
 
 //Universal Event Types
 const int OBJ_CRT = 0;
@@ -31,16 +31,6 @@ const int INSUFF_DATA_ERROR = 122;
 
 //Trim String methods
 
-// remove non-ascii characters
-inline bool invalidChar (char c)
-{
-    return !(c>=0 && c <128);
-}
-inline void stripUnicode(std::string &str)
-{
-    str.erase(std::remove_if(str.begin(),str.end(), invalidChar), str.end());
-}
-
 // trim from start
 static inline std::string &ltrim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(),
@@ -59,9 +49,5 @@ static inline std::string &rtrim(std::string &s) {
 static inline std::string &trim(std::string &s) {
     return ltrim(rtrim(s));
 }
-
-/*Reliable To String Method*/
-#define SSTR( x ) static_cast< std::ostringstream & >( \
-        ( std::ostringstream() << std::dec << x ) ).str()
 
 #endif
