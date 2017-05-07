@@ -10,3 +10,4 @@
 *_benchmark
 *.a
 examples/hello_world/simple_app
+examples/zmq_shell/app

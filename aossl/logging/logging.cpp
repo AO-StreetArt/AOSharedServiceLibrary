@@ -32,9 +32,8 @@ void Logger::start_log_from_file(std::string initFileName)
     log4cpp::PropertyConfigurator::configure(initFileName);
   }
   catch ( log4cpp::ConfigureFailure &e ) {
-    std::cout << "[log4cpp::ConfigureFailure] caught while reading" << initFileName << std::endl;
-    std::cout << e.what();
-    exit(1);
+    std::string err_msg = "[log4cpp::ConfigureFailure] caught while reading" + initFileName;
+    throw LoggingException(err_msg);
   }
 
   //Find the categories defined in the file
