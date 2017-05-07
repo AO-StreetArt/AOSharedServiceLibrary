@@ -39,6 +39,8 @@ script:
   - make
   - make rhel-test
   - make rhel-benchmarks
+  - sudo make install
+  - make examples
   - cd $TRAVIS_BUILD_DIR/aossl/http/server && ./http_server_test &
   - cd $TRAVIS_BUILD_DIR/aossl/properties && ./properties_reader_test
   - cd $TRAVIS_BUILD_DIR/aossl/commandline && ./cli_test name=test
@@ -51,5 +53,3 @@ script:
   - cd $TRAVIS_BUILD_DIR/scripts && sudo ./test_http_server.sh
   - cd $TRAVIS_BUILD_DIR/aossl/consul && ./consul_test
   - cd $TRAVIS_BUILD_DIR/aossl/neo4j && ./neo4j_test
-  - sudo make install
-  - make examples
