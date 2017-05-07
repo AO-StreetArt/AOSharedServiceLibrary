@@ -6,9 +6,6 @@
 #include "aossl/commandline/include/commandline_interface.h"
 #include "aossl/commandline/include/factory_cli.h"
 
-#include "aossl/neo4j/include/neo4j_interface.h"
-#include "aossl/neo4j/include/factory_neo4j.h"
-
 #include "aossl/mongo/include/mongo_interface.h"
 #include "aossl/mongo/include/factory_mongo.h"
 
@@ -34,7 +31,6 @@
 extern ConfigurationManager *config;
 
 //Globals from the AO Shared Service Library
-extern Neo4jInterface *neo;
 extern MongoInterface *mongo;
 extern RedisInterface *red;
 extern uuidInterface *uid;
@@ -43,7 +39,6 @@ extern CommandLineInterface *cli;
 
 //Global Factory Objects
 extern CommandLineInterpreterFactory *cli_factory;
-extern Neo4jComponentFactory *neo4j_factory;
 extern MongoComponentFactory *mongo_factory;
 extern RedisComponentFactory *redis_factory;
 extern uuidComponentFactory *uuid_factory;
@@ -56,7 +51,6 @@ inline void shutdown()
   //Delete core objects
   if (mongo) delete mongo;
   if (red) delete red;
-  if (neo) delete neo;
   if (zmqi) delete zmqi;
   if (config) delete config;
   if (uid) delete uid;
@@ -73,7 +67,6 @@ inline void shutdown()
 
   //Delete factories
   if (cli_factory) delete cli_factory;
-  if (neo4j_factory) delete neo4j_factory;
   if (mongo_factory) delete mongo_factory;
   if (redis_factory) delete redis_factory;
   if (uuid_factory) delete uuid_factory;

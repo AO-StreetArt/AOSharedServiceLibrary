@@ -4,7 +4,7 @@ CFLAGS  = -g -Wall
 STD = -std=c++11
 OBJS = src/app_log.o src/configuration_manager.o src/globals.o main.o
 TESTS = configuration_test log_test utils_test
-FULL_LIBS = -laossl -lcurl -lpthread -lzmq -lneo4j-client -lssl -lcrypto -lm -llog4cpp -luuid -lmongoc-1.0 -lbson-1.0 -lhiredis `pkg-config --cflags --libs protobuf`
+FULL_LIBS = -laossl -lcurl -lpthread -lzmq -llog4cpp -luuid -lmongoc-1.0 -lbson-1.0 -lhiredis `pkg-config --cflags --libs protobuf`
 INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0
 LINK_DIRS = -L/usr/local/lib
 RM = rm -f

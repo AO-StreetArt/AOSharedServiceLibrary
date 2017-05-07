@@ -26,9 +26,6 @@
 #include "aossl/commandline/include/commandline_interface.h"
 #include "aossl/commandline/include/factory_cli.h"
 
-#include "aossl/neo4j/include/neo4j_interface.h"
-#include "aossl/neo4j/include/factory_neo4j.h"
-
 #include "aossl/logging/include/logging_interface.h"
 #include "aossl/logging/include/factory_logging.h"
 
@@ -66,11 +63,11 @@ void my_signal_handler(int s){
       sigaction(SIGINT, &sigIntHandler, NULL);
 
       cli_factory = new CommandLineInterpreterFactory;
-      neo4j_factory = new Neo4jComponentFactory;
       redis_factory = new RedisComponentFactory;
       uuid_factory = new uuidComponentFactory;
       zmq_factory = new ZmqComponentFactory;
       logging_factory = new LoggingComponentFactory;
+      mongo_factory = new MongoComponentFactory;
 
       //Set up our command line interpreter
       cli = cli_factory->get_command_line_interface( argc, argv );
@@ -157,15 +154,24 @@ void my_signal_handler(int s){
         main_logging->error("No Redis Connections found in configuration");
       }
 
-      //Set up the Neo4j Connection
-      std::string DBConnStr = config->get_dbconnstr();
-      try {
-        neo = neo4j_factory->get_neo4j_interface( DBConnStr );
-        main_logging->debug("Connected to Neo4j");
+      //Set up the Mongo Connection
+      std::string DBConnStr = config->get_mongoconnstr();
+      std::string DBName = config->get_dbname();
+      std::string DBHeaderCollection = config->get_dbheadercollection();
+      if ( !(DBConnStr.empty() || DBName.empty() || DBHeaderCollection.empty()) ) {
+        try {
+          mongo = mongo_factory->get_mongo_interface( DBConnStr, DBName, DBHeaderCollection );
+          main_logging->debug("Connected to Mongo");
+        }
+        catch (std::exception& e) {
+          main_logging->error("Exception encountered during Mongo Initialization");
+          main_logging->error(e.what());
+          shutdown();
+          exit(1);
+        }
       }
-      catch (std::exception& e) {
-        main_logging->error("Exception encountered during Neo4j Initialization");
-        main_logging->error(e.what());
+      else {
+        main_logging->error("Insufficient Mongo Connection Information Supplied");
         shutdown();
         exit(1);
       }

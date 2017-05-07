@@ -33,15 +33,20 @@ bool ConfigurationManager::configure_from_file (std::string file_path)
   //Get a properties file manager, which will give us access to the file in a hashmap
   PropertiesReaderInterface *props = props_factory->get_properties_reader_interface(file_path);
 
-  if (props->opt_exist("DB_ConnectionString")) {
-    DB_ConnStr=props->get_opt("DB_ConnectionString");
-    config_logging->info("DB Connection String:");
-    config_logging->info(DB_ConnStr);
-  }
   if (props->opt_exist("Mongo_ConnectionString")) {
     Mongo_ConnStr=props->get_opt("Mongo_ConnectionString");
     config_logging->info("Mongo Connection String:");
     config_logging->info(DB_ConnStr);
+  }
+  if (props->opt_exist("Mongo_ConnectionString")) {
+    Mongo_DbName=props->get_opt("Mongo_DbName");
+    config_logging->info("Mongo DB Name:");
+    config_logging->info(Mongo_DbName);
+  }
+  if (props->opt_exist("Mongo_ConnectionString")) {
+    Mongo_DbCollection=props->get_opt("Mongo_DbCollection");
+    config_logging->info("Mongo DB Collection:");
+    config_logging->info(Mongo_DbCollection);
   }
   if (props->opt_exist("0MQ_InboundConnectionString")) {
     OMQ_IBConnStr = props->get_opt("0MQ_InboundConnectionString");
@@ -248,13 +253,17 @@ bool ConfigurationManager::configure_from_consul (std::string consul_path, std::
   }
 
   //Step 2: Get the key-value information for deployment-wide config (Including OB ZeroMQ Connectivity)
-  DB_ConnStr=get_consul_config_value("DB_ConnectionString");
-  config_logging->debug("Database Connection String:");
-  config_logging->debug(DB_ConnStr);
-
   Mongo_ConnStr=get_consul_config_value("Mongo_ConnectionString");
   config_logging->debug("Mongo Connection String:");
   config_logging->debug(Mongo_ConnStr);
+
+  Mongo_DbName=get_consul_config_value("Mongo_DbName");
+  config_logging->debug("Mongo DB Name:");
+  config_logging->debug(Mongo_DbName);
+
+  Mongo_DbCollection=get_consul_config_value("Mongo_DbCollection");
+  config_logging->debug("Mongo DB Collection:");
+  config_logging->debug(Mongo_DbCollection);
 
   std::string tran_ids_active = get_consul_config_value("StampTransactionId");
   config_logging->debug("Transaction IDs Enabled:");
@@ -359,12 +368,14 @@ bool ConfigurationManager::configure ()
     bool ret_val = false;
 
     //See if we have any environment variables specified
-    const char * env_consul_addr = std::getenv("CRAZYIVAN_CONSUL_ADDR");
-    const char * env_ip = std::getenv("CRAZYIVAN_IP");
-    const char * env_port = std::getenv("CRAZYIVAN_PORT");
-    const char * env_db_addr = std::getenv("CRAZYIVAN_DB_ADDR");
-    const char * env_mongo_addr = std::getenv("MONGO_DB_ADDR");
-    const char * env_conf_file = std::getenv("CRAZYIVAN_CONFIG_FILE");
+    const char * env_consul_addr = std::getenv("AOSSL_APP_CONSUL_ADDR");
+    const char * env_ip = std::getenv("AOSSL_APP_IP");
+    const char * env_port = std::getenv("AOSSL_APP_PORT");
+    const char * env_db_addr = std::getenv("AOSSL_APP_DB_ADDR");
+    const char * env_mongo_addr = std::getenv("AOSSL_APP_MONGO_ADDR");
+    const char * env_mongo_db = std::getenv("AOSSL_APP_MONGO_DB");
+    const char * env_mongo_col = std::getenv("AOSSL_APP_MONGO_COL");
+    const char * env_conf_file = std::getenv("AOSSL_APP_CONFIG_FILE");
 
     //Check if we have a configuration file specified
     if ( env_conf_file ) {
@@ -420,6 +431,20 @@ bool ConfigurationManager::configure ()
     } else if (env_mongo_addr) {
       std::string env_mongo_addr_str (env_mongo_addr);
       Mongo_ConnStr = env_mongo_addr_str;
+    }
+
+    if ( cli->opt_exist("-mongo-db") ) {
+      Mongo_DbName = cli->get_opt("-mongo-db");
+    } else if (env_mongo_db) {
+      std::string env_mongo_db_str (env_mongo_db);
+      Mongo_DbName = env_mongo_db_str;
+    }
+
+    if ( cli->opt_exist("-mongo-col") ) {
+      Mongo_DbCollection = cli->get_opt("-mongo-col");
+    } else if (env_mongo_col) {
+      std::string env_mongo_col_str (env_mongo_col);
+      Mongo_DbCollection = env_mongo_col_str;
     }
 
     return ret_val;

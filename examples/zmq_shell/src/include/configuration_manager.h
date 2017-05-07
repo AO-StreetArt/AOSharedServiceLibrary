@@ -56,6 +56,8 @@ ServiceInterface *s = NULL;
 //Configuration Variables
 std::string DB_ConnStr;
 std::string Mongo_ConnStr;
+std::string Mongo_DbName;
+std::string Mongo_DbCollection;
 std::string OMQ_IBConnStr;
 std::vector<RedisConnChain> RedisConnectionList;
 int format_type;
@@ -84,18 +86,19 @@ public:
   //Constructor
   //Provides a set of default values
   ConfigurationManager(CommandLineInterface *c, std::string instance_id) {cli = c;\
-    DB_ConnStr="neo4j://localhost:7687"; OMQ_IBConnStr="tcp://*:5555";Mongo_ConnStr="";\
+    OMQ_IBConnStr="tcp://*:5555";Mongo_ConnStr="";Mongo_DbCollection="test";\
       isConsulActive=false;StampTransactionId=false;AtomicTransactions=false;\
         node_id=instance_id;consul_factory=new ConsulComponentFactory;\
-          props_factory = new PropertyReaderFactory;format_type=-1;}
+          props_factory = new PropertyReaderFactory;format_type=-1;Mongo_DbName="test";}
   ~ConfigurationManager();
 
   //Populate the configuration variables
   bool configure();
 
   //Get configuration values
-  std::string get_dbconnstr() {return DB_ConnStr;}
   std::string get_mongoconnstr() {return Mongo_ConnStr;}
+  std::string get_dbname() {return Mongo_DbName;}
+  std::string get_dbheadercollection() {return Mongo_DbCollection;}
   std::string get_ibconnstr() {return OMQ_IBConnStr;}
   std::vector<RedisConnChain> get_redisconnlist() {return RedisConnectionList;}
   bool get_transactionidsactive() {return StampTransactionId;}
