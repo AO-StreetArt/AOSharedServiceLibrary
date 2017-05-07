@@ -26,6 +26,9 @@ before_install:
   #Install ssl
   - cd $TRAVIS_BUILD_DIR
   - sudo apt-get install libssl-dev
+  #Install Rapidjson (for examples)
+  - git clone https://github.com/miloyip/rapidjson.git
+  - sudo cp -r rapidjson/include/rapidjson/ /usr/local/include
 install:
   #Install & Start Consul
   - wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
