@@ -203,12 +203,13 @@ void my_signal_handler(int s){
         //Trim the string recieved
         std::string recvd_msg (req_ptr);
         recvd_msg = trim(recvd_msg);
-        std::string clean_string = recvd_msg.substr(0, recvd_msg.find_last_of("}")+1);
 
         main_logging->debug("Input String Cleaned");
         main_logging->debug(clean_string);
 
         if (config->get_formattype() == JSON_FORMAT) {
+
+          std::string clean_string = recvd_msg.substr(0, recvd_msg.find_last_of("}")+1);
 
           try {
             d.Parse<rapidjson::kParseStopWhenDoneFlag>(clean_string.c_str());
