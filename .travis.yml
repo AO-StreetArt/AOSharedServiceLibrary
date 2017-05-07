@@ -51,3 +51,5 @@ script:
   - cd $TRAVIS_BUILD_DIR/scripts && sudo ./test_http_server.sh
   - cd $TRAVIS_BUILD_DIR/aossl/consul && ./consul_test
   - cd $TRAVIS_BUILD_DIR/aossl/neo4j && ./neo4j_test
+  - sudo make install
+  - make examples

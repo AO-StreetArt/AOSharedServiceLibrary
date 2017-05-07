@@ -4,6 +4,8 @@
 #  -Wall turns on most, but not all, compiler warnings
 #
 
+.PHONY: examples
+
 #Compilation Variables
 CC = g++
 SLC = ar rcs
@@ -47,6 +49,9 @@ rhel-benchmarks:
 # typing 'sudo make install' will install the libraries into system paths
 install: $(INSTALL_DIR) $(INSTALL_LIB_DIR)/libaossl.a install_subfolders
 
+# 'make examples' will build all of the examples
+examples:
+	@$(MAKE) -C examples
 
 $(INSTALL_DIR):
 	mkdir $@
@@ -64,6 +69,7 @@ install_subfolders:
 clean:
 	$(RM) libaossl.a *~
 	cd aossl && $(MAKE) clean
+	cd examples && $(MAKE) clean
 
 # To remove the installed library, type 'make uninstall'.
 uninstall:
