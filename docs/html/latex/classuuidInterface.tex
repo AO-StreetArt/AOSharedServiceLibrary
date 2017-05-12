@@ -1,0 +1,40 @@
+\hypertarget{classuuidInterface}{}\section{uuid\+Interface Class Reference}
+\label{classuuidInterface}\index{uuid\+Interface@{uuid\+Interface}}
+
+
+U\+U\+ID Admin.  
+
+
+
+
+{\ttfamily \#include $<$uuid\+\_\+interface.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{structUuidContainer}{Uuid\+Container} \hyperlink{classuuidInterface_ae77d609afc738681588cff1a647eb656}{generate} ()=0
+\begin{DoxyCompactList}\small\item\em Generate a new U\+U\+ID. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+U\+U\+ID Admin. 
+
+The U\+U\+ID Admin is in charge of generating any Universally Unique ID\textquotesingle{}s that are required throughout program execution 
+
+\subsection{Member Function Documentation}
+\index{uuid\+Interface@{uuid\+Interface}!generate@{generate}}
+\index{generate@{generate}!uuid\+Interface@{uuid\+Interface}}
+\subsubsection[{\texorpdfstring{generate()=0}{generate()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Uuid\+Container} uuid\+Interface\+::generate (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classuuidInterface_ae77d609afc738681588cff1a647eb656}{}\label{classuuidInterface_ae77d609afc738681588cff1a647eb656}
+
+
+Generate a new U\+U\+ID. 
+
+The method will generate on the means of generation present on your system In some cases, this may result in U\+U\+ID\textquotesingle{}s being generated that pose a security risk. In this case, that fact will be clearly called out in the logs, and it is recommended that production systems are tested to ensure that U\+U\+ID\textquotesingle{}s are generated in a safe manner 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+aossl/uuid/include/uuid\+\_\+interface.\+h\end{DoxyCompactItemize}

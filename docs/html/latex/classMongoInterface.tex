@@ -1,0 +1,145 @@
+\hypertarget{classMongoInterface}{}\section{Mongo\+Interface Class Reference}
+\label{classMongoInterface}\index{Mongo\+Interface@{Mongo\+Interface}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classMongoResponseInterface}{Mongo\+Response\+Interface} $\ast$ \hyperlink{classMongoInterface_a40a5973d65dd15c46df9f6c06fbb464a}{create\+\_\+document} (const char $\ast$doc, const char $\ast$collection\+\_\+name)=0\hypertarget{classMongoInterface_a40a5973d65dd15c46df9f6c06fbb464a}{}\label{classMongoInterface_a40a5973d65dd15c46df9f6c06fbb464a}
+
+\begin{DoxyCompactList}\small\item\em Create J\+S\+ON Document, returns the document key. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoResponseInterface}{Mongo\+Response\+Interface} $\ast$ \hyperlink{classMongoInterface_af621e8af8a4205e1cf06d1964ba36843}{create\+\_\+document} (const char $\ast$doc)=0\hypertarget{classMongoInterface_af621e8af8a4205e1cf06d1964ba36843}{}\label{classMongoInterface_af621e8af8a4205e1cf06d1964ba36843}
+
+\begin{DoxyCompactList}\small\item\em Create J\+S\+ON Document, returns the document key. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoResponseInterface}{Mongo\+Response\+Interface} $\ast$ \hyperlink{classMongoInterface_aaa549157c25eef7e9ed21b143c28bb64}{create\+\_\+document} (std\+::string doc)=0\hypertarget{classMongoInterface_aaa549157c25eef7e9ed21b143c28bb64}{}\label{classMongoInterface_aaa549157c25eef7e9ed21b143c28bb64}
+
+\begin{DoxyCompactList}\small\item\em Create J\+S\+ON Document, returns the document key. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoResponseInterface}{Mongo\+Response\+Interface} $\ast$ \hyperlink{classMongoInterface_a5870d9a0cb64044d195893cc4d59801f}{create\+\_\+document} (std\+::string doc, std\+::string collection\+\_\+name)=0\hypertarget{classMongoInterface_a5870d9a0cb64044d195893cc4d59801f}{}\label{classMongoInterface_a5870d9a0cb64044d195893cc4d59801f}
+
+\begin{DoxyCompactList}\small\item\em Create J\+S\+ON Document, returns the document key. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classMongoInterface_a9153c6d0c292aa76e51bf65c41d51f8d}{delete\+\_\+document} (const char $\ast$key)=0\hypertarget{classMongoInterface_a9153c6d0c292aa76e51bf65c41d51f8d}{}\label{classMongoInterface_a9153c6d0c292aa76e51bf65c41d51f8d}
+
+\begin{DoxyCompactList}\small\item\em Delete a J\+S\+ON Document, returns true if successful. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classMongoInterface_a9e15069c0c05f9aa89918fd39c0e7a94}{delete\+\_\+document} (std\+::string key)=0\hypertarget{classMongoInterface_a9e15069c0c05f9aa89918fd39c0e7a94}{}\label{classMongoInterface_a9e15069c0c05f9aa89918fd39c0e7a94}
+
+\begin{DoxyCompactList}\small\item\em Delete a J\+S\+ON Document, returns true if successful. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classMongoInterface_abc9fd636d41e508ede790754e4dbab86}{delete\+\_\+document} (const char $\ast$key, const char $\ast$collection\+\_\+name)=0\hypertarget{classMongoInterface_abc9fd636d41e508ede790754e4dbab86}{}\label{classMongoInterface_abc9fd636d41e508ede790754e4dbab86}
+
+\begin{DoxyCompactList}\small\item\em Delete a J\+S\+ON Document, returns true if successful. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classMongoInterface_ae00271d50df56c537627031c0ecef0d6}{delete\+\_\+document} (std\+::string key, std\+::string collection\+\_\+name)=0\hypertarget{classMongoInterface_ae00271d50df56c537627031c0ecef0d6}{}\label{classMongoInterface_ae00271d50df56c537627031c0ecef0d6}
+
+\begin{DoxyCompactList}\small\item\em Delete a J\+S\+ON Document, returns true if successful. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoResponseInterface}{Mongo\+Response\+Interface} $\ast$ \hyperlink{classMongoInterface_acc6a2b3cc3cf9dcbc0cdb44ddbd14674}{load\+\_\+document} (const char $\ast$key)=0\hypertarget{classMongoInterface_acc6a2b3cc3cf9dcbc0cdb44ddbd14674}{}\label{classMongoInterface_acc6a2b3cc3cf9dcbc0cdb44ddbd14674}
+
+\begin{DoxyCompactList}\small\item\em Retrieve a J\+S\+ON Document and return it in a std\+::string. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoResponseInterface}{Mongo\+Response\+Interface} $\ast$ \hyperlink{classMongoInterface_a19e569ead19f32799fa49805a6345551}{load\+\_\+document} (std\+::string key)=0\hypertarget{classMongoInterface_a19e569ead19f32799fa49805a6345551}{}\label{classMongoInterface_a19e569ead19f32799fa49805a6345551}
+
+\begin{DoxyCompactList}\small\item\em Retrieve a J\+S\+ON Document and return it in a std\+::string. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoResponseInterface}{Mongo\+Response\+Interface} $\ast$ \hyperlink{classMongoInterface_abb8bf5ca5eed49b76fd91adcf3a8dfc8}{load\+\_\+document} (const char $\ast$key, const char $\ast$collection\+\_\+name)=0\hypertarget{classMongoInterface_abb8bf5ca5eed49b76fd91adcf3a8dfc8}{}\label{classMongoInterface_abb8bf5ca5eed49b76fd91adcf3a8dfc8}
+
+\begin{DoxyCompactList}\small\item\em Retrieve a J\+S\+ON Document and return it in a std\+::string. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoResponseInterface}{Mongo\+Response\+Interface} $\ast$ \hyperlink{classMongoInterface_a7635ac63b0968306687632d037df5d4a}{load\+\_\+document} (std\+::string key, std\+::string collection\+\_\+name)=0\hypertarget{classMongoInterface_a7635ac63b0968306687632d037df5d4a}{}\label{classMongoInterface_a7635ac63b0968306687632d037df5d4a}
+
+\begin{DoxyCompactList}\small\item\em Retrieve a J\+S\+ON Document and return it in a std\+::string. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classMongoInterface_a05885b7361096a03b623da8c7b48e461}{save\+\_\+document} (const char $\ast$doc, const char $\ast$key)=0\hypertarget{classMongoInterface_a05885b7361096a03b623da8c7b48e461}{}\label{classMongoInterface_a05885b7361096a03b623da8c7b48e461}
+
+\begin{DoxyCompactList}\small\item\em Update an existing document, returns true if successful. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classMongoInterface_a35888cb594d1f46d52147649786e948f}{save\+\_\+document} (std\+::string doc, std\+::string key)=0\hypertarget{classMongoInterface_a35888cb594d1f46d52147649786e948f}{}\label{classMongoInterface_a35888cb594d1f46d52147649786e948f}
+
+\begin{DoxyCompactList}\small\item\em Update an existing document, returns true if successful. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classMongoInterface_a4d2c3e6a8fb172f8d07fc3dd710053ae}{save\+\_\+document} (const char $\ast$doc, const char $\ast$key, const char $\ast$collection\+\_\+name)=0\hypertarget{classMongoInterface_a4d2c3e6a8fb172f8d07fc3dd710053ae}{}\label{classMongoInterface_a4d2c3e6a8fb172f8d07fc3dd710053ae}
+
+\begin{DoxyCompactList}\small\item\em Update an existing document, returns true if successful. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classMongoInterface_a14f3c2a76a495777a1f48ed155831134}{save\+\_\+document} (std\+::string doc, std\+::string key, std\+::string collection\+\_\+name)=0\hypertarget{classMongoInterface_a14f3c2a76a495777a1f48ed155831134}{}\label{classMongoInterface_a14f3c2a76a495777a1f48ed155831134}
+
+\begin{DoxyCompactList}\small\item\em Update an existing document, returns true if successful. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoIteratorInterface}{Mongo\+Iterator\+Interface} $\ast$ \hyperlink{classMongoInterface_a15ceb9bc80b43bc09afd0d5e32cea4f7}{query} (const char $\ast$query\+\_\+str, const char $\ast$opts\+\_\+str)=0
+\begin{DoxyCompactList}\small\item\em Queries. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoIteratorInterface}{Mongo\+Iterator\+Interface} $\ast$ \hyperlink{classMongoInterface_a6f5d8758fe477e997df995028afe82a4}{query} (std\+::string query\+\_\+str, std\+::string opts\+\_\+str)=0
+\begin{DoxyCompactList}\small\item\em Queries. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoIteratorInterface}{Mongo\+Iterator\+Interface} $\ast$ \hyperlink{classMongoInterface_ab4aa9b1a60d96ffcf787114fc2d436b0}{query} (const char $\ast$query\+\_\+str, const char $\ast$opts\+\_\+str, const char $\ast$collection\+\_\+name)=0
+\begin{DoxyCompactList}\small\item\em Queries. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoIteratorInterface}{Mongo\+Iterator\+Interface} $\ast$ \hyperlink{classMongoInterface_a37fd750f45fc0a9b7360c3ad433c1747}{query} (std\+::string query\+\_\+str, std\+::string opts\+\_\+str, std\+::string collection\+\_\+name)=0
+\begin{DoxyCompactList}\small\item\em Queries. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoIteratorInterface}{Mongo\+Iterator\+Interface} $\ast$ \hyperlink{classMongoInterface_a53f62c62e8a54abcb6ead11e544b51d0}{query} (const char $\ast$query\+\_\+str)=0
+\begin{DoxyCompactList}\small\item\em Queries. \end{DoxyCompactList}\item 
+virtual \hyperlink{classMongoIteratorInterface}{Mongo\+Iterator\+Interface} $\ast$ \hyperlink{classMongoInterface_afbfd334e99d9c1861ea9c4623b326e48}{query} (std\+::string query\+\_\+str)=0
+\begin{DoxyCompactList}\small\item\em Queries. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\index{Mongo\+Interface@{Mongo\+Interface}!query@{query}}
+\index{query@{query}!Mongo\+Interface@{Mongo\+Interface}}
+\subsubsection[{\texorpdfstring{query(const char $\ast$query\+\_\+str, const char $\ast$opts\+\_\+str)=0}{query(const char *query_str, const char *opts_str)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Mongo\+Iterator\+Interface}$\ast$ Mongo\+Interface\+::query (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{query\+\_\+str, }
+\item[{const char $\ast$}]{opts\+\_\+str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classMongoInterface_a15ceb9bc80b43bc09afd0d5e32cea4f7}{}\label{classMongoInterface_a15ceb9bc80b43bc09afd0d5e32cea4f7}
+
+
+Queries. 
+
+Accept the query and query options in J\+S\+ON format. Return an iterator which can be used to access query results \index{Mongo\+Interface@{Mongo\+Interface}!query@{query}}
+\index{query@{query}!Mongo\+Interface@{Mongo\+Interface}}
+\subsubsection[{\texorpdfstring{query(std\+::string query\+\_\+str, std\+::string opts\+\_\+str)=0}{query(std::string query_str, std::string opts_str)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Mongo\+Iterator\+Interface}$\ast$ Mongo\+Interface\+::query (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{query\+\_\+str, }
+\item[{std\+::string}]{opts\+\_\+str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classMongoInterface_a6f5d8758fe477e997df995028afe82a4}{}\label{classMongoInterface_a6f5d8758fe477e997df995028afe82a4}
+
+
+Queries. 
+
+Accept the query and query options in J\+S\+ON format. Return an iterator which can be used to access query results \index{Mongo\+Interface@{Mongo\+Interface}!query@{query}}
+\index{query@{query}!Mongo\+Interface@{Mongo\+Interface}}
+\subsubsection[{\texorpdfstring{query(const char $\ast$query\+\_\+str, const char $\ast$opts\+\_\+str, const char $\ast$collection\+\_\+name)=0}{query(const char *query_str, const char *opts_str, const char *collection_name)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Mongo\+Iterator\+Interface}$\ast$ Mongo\+Interface\+::query (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{query\+\_\+str, }
+\item[{const char $\ast$}]{opts\+\_\+str, }
+\item[{const char $\ast$}]{collection\+\_\+name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classMongoInterface_ab4aa9b1a60d96ffcf787114fc2d436b0}{}\label{classMongoInterface_ab4aa9b1a60d96ffcf787114fc2d436b0}
+
+
+Queries. 
+
+Accept the query and query options in J\+S\+ON format. Return an iterator which can be used to access query results \index{Mongo\+Interface@{Mongo\+Interface}!query@{query}}
+\index{query@{query}!Mongo\+Interface@{Mongo\+Interface}}
+\subsubsection[{\texorpdfstring{query(std\+::string query\+\_\+str, std\+::string opts\+\_\+str, std\+::string collection\+\_\+name)=0}{query(std::string query_str, std::string opts_str, std::string collection_name)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Mongo\+Iterator\+Interface}$\ast$ Mongo\+Interface\+::query (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{query\+\_\+str, }
+\item[{std\+::string}]{opts\+\_\+str, }
+\item[{std\+::string}]{collection\+\_\+name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classMongoInterface_a37fd750f45fc0a9b7360c3ad433c1747}{}\label{classMongoInterface_a37fd750f45fc0a9b7360c3ad433c1747}
+
+
+Queries. 
+
+Accept the query and query options in J\+S\+ON format. Return an iterator which can be used to access query results \index{Mongo\+Interface@{Mongo\+Interface}!query@{query}}
+\index{query@{query}!Mongo\+Interface@{Mongo\+Interface}}
+\subsubsection[{\texorpdfstring{query(const char $\ast$query\+\_\+str)=0}{query(const char *query_str)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Mongo\+Iterator\+Interface}$\ast$ Mongo\+Interface\+::query (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{query\+\_\+str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classMongoInterface_a53f62c62e8a54abcb6ead11e544b51d0}{}\label{classMongoInterface_a53f62c62e8a54abcb6ead11e544b51d0}
+
+
+Queries. 
+
+Accept the query in J\+S\+ON format. Return an iterator which can be used to access query results \index{Mongo\+Interface@{Mongo\+Interface}!query@{query}}
+\index{query@{query}!Mongo\+Interface@{Mongo\+Interface}}
+\subsubsection[{\texorpdfstring{query(std\+::string query\+\_\+str)=0}{query(std::string query_str)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Mongo\+Iterator\+Interface}$\ast$ Mongo\+Interface\+::query (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{query\+\_\+str}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classMongoInterface_afbfd334e99d9c1861ea9c4623b326e48}{}\label{classMongoInterface_afbfd334e99d9c1861ea9c4623b326e48}
+
+
+Queries. 
+
+Accept the query in J\+S\+ON format. Return an iterator which can be used to access query results 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+aossl/mongo/include/mongo\+\_\+interface.\+h\end{DoxyCompactItemize}

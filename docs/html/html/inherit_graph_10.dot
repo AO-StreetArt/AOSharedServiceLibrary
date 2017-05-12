@@ -1,0 +1,17 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="exception",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="HttpRequestException",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structHttpRequestException.html",tooltip="An Implementation of std::exception that denotes an error during an http operation. "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="LoggingException",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structLoggingException.html",tooltip="Mongo Exception, used to store errors passed from Mongo. "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="MongoException",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structMongoException.html",tooltip="Mongo Exception, used to store errors passed from Mongo. "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="RedisConnectionException",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structRedisConnectionException.html",tooltip="An Implementation of std::exception that denotes a connection error within Redis. ..."];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="RedisOperationException",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structRedisOperationException.html",tooltip="An Implementation of std::exception that denotes an error within Redis during a transaction. "];
+}

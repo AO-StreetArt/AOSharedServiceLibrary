@@ -1,0 +1,90 @@
+\hypertarget{classConsulInterface}{}\section{Consul\+Interface Class Reference}
+\label{classConsulInterface}\index{Consul\+Interface@{Consul\+Interface}}
+
+
+The Consul Administrator, who handles distributed configuration \& service discovery.  
+
+
+
+
+{\ttfamily \#include $<$consul\+\_\+interface.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual std\+::string \hyperlink{classConsulInterface_a636b134672f2c150f6b38fc821fb2348}{base64\+\_\+decode} (std\+::string const \&encoded\+\_\+string)=0
+\begin{DoxyCompactList}\small\item\em Convinience Method for base64 decoding. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classConsulInterface_ad1d3a241b2fc31e4b13789a49a0d010a}{register\+\_\+service} (\hyperlink{classServiceInterface}{Service\+Interface} \&s)=0\hypertarget{classConsulInterface_ad1d3a241b2fc31e4b13789a49a0d010a}{}\label{classConsulInterface_ad1d3a241b2fc31e4b13789a49a0d010a}
+
+\begin{DoxyCompactList}\small\item\em Register the Service. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classConsulInterface_ac97f7a426f3de5023edc637ab984b4c4}{deregister\+\_\+service} (\hyperlink{classServiceInterface}{Service\+Interface} \&s)=0\hypertarget{classConsulInterface_ac97f7a426f3de5023edc637ab984b4c4}{}\label{classConsulInterface_ac97f7a426f3de5023edc637ab984b4c4}
+
+\begin{DoxyCompactList}\small\item\em Deregister the Service. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classConsulInterface_a98ce2623db59b3f8804691a4039957a8}{set\+\_\+config\+\_\+value} (std\+::string key, std\+::string val)=0
+\begin{DoxyCompactList}\small\item\em Set a configuration value. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classConsulInterface_a1cc4bdfe75f86f69626e109847aba6af}{get\+\_\+config\+\_\+value} (std\+::string key)=0\hypertarget{classConsulInterface_a1cc4bdfe75f86f69626e109847aba6af}{}\label{classConsulInterface_a1cc4bdfe75f86f69626e109847aba6af}
+
+\begin{DoxyCompactList}\small\item\em Get a configuration value. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classConsulInterface_a3a6e57ac45cf284e92def6136b0e23d9}{del\+\_\+config\+\_\+value} (std\+::string key)=0\hypertarget{classConsulInterface_a3a6e57ac45cf284e92def6136b0e23d9}{}\label{classConsulInterface_a3a6e57ac45cf284e92def6136b0e23d9}
+
+\begin{DoxyCompactList}\small\item\em Delete a configuration value. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classConsulInterface_ad130a602282f9854a2eae856bb60a745}{services} ()=0\hypertarget{classConsulInterface_ad130a602282f9854a2eae856bb60a745}{}\label{classConsulInterface_ad130a602282f9854a2eae856bb60a745}
+
+\begin{DoxyCompactList}\small\item\em Query the local agent for services registered. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classConsulInterface_a6fb0bda867b267614b44328fd044859e}{agent\+\_\+info} ()=0\hypertarget{classConsulInterface_a6fb0bda867b267614b44328fd044859e}{}\label{classConsulInterface_a6fb0bda867b267614b44328fd044859e}
+
+\begin{DoxyCompactList}\small\item\em Query the local agent for it\textquotesingle{}s info. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classConsulInterface_a229eaac89811b9e1f5f3c9ec70ea68aa}{healthy\+\_\+services} ()=0\hypertarget{classConsulInterface_a229eaac89811b9e1f5f3c9ec70ea68aa}{}\label{classConsulInterface_a229eaac89811b9e1f5f3c9ec70ea68aa}
+
+\begin{DoxyCompactList}\small\item\em Query for healthy services only. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classConsulInterface_a16848fcc856afae488c55e4f4febf268}{datacenters} ()=0\hypertarget{classConsulInterface_a16848fcc856afae488c55e4f4febf268}{}\label{classConsulInterface_a16848fcc856afae488c55e4f4febf268}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for datacenters. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classConsulInterface_a0831246af1b80ce5bbe074a47333c615}{nodes\+\_\+dc} (std\+::string data\+\_\+center)=0\hypertarget{classConsulInterface_a0831246af1b80ce5bbe074a47333c615}{}\label{classConsulInterface_a0831246af1b80ce5bbe074a47333c615}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for the nodes in a particular datacenter. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classConsulInterface_ab1c3f2169a8aebdb5a66cfe8211330dc}{services\+\_\+dc} (std\+::string data\+\_\+center)=0\hypertarget{classConsulInterface_ab1c3f2169a8aebdb5a66cfe8211330dc}{}\label{classConsulInterface_ab1c3f2169a8aebdb5a66cfe8211330dc}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for the services in a particular datacenter. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classConsulInterface_a7490a960b2e10855c7d7ff09d87942b8}{nodes\+\_\+service} (std\+::string service)=0\hypertarget{classConsulInterface_a7490a960b2e10855c7d7ff09d87942b8}{}\label{classConsulInterface_a7490a960b2e10855c7d7ff09d87942b8}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for the nodes running a particular service. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classConsulInterface_abbd5b2839d3548d48e93074a53844f40}{services\+\_\+node} (std\+::string node, std\+::string data\+\_\+center)=0\hypertarget{classConsulInterface_abbd5b2839d3548d48e93074a53844f40}{}\label{classConsulInterface_abbd5b2839d3548d48e93074a53844f40}
+
+\begin{DoxyCompactList}\small\item\em Query the catalog for the services provided by a particular node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The Consul Administrator, who handles distributed configuration \& service discovery. 
+
+This relies on the H\+T\+TP Administrator, and takes in a Service object in order to register. It\textquotesingle{}s responses are J\+S\+ON strings that are recieved from Consul. Note that the values returned from the Key-\/\+Value store will be stored in base64 format 
+
+\subsection{Member Function Documentation}
+\index{Consul\+Interface@{Consul\+Interface}!base64\+\_\+decode@{base64\+\_\+decode}}
+\index{base64\+\_\+decode@{base64\+\_\+decode}!Consul\+Interface@{Consul\+Interface}}
+\subsubsection[{\texorpdfstring{base64\+\_\+decode(std\+::string const \&encoded\+\_\+string)=0}{base64_decode(std::string const &encoded_string)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\+::string Consul\+Interface\+::base64\+\_\+decode (
+\begin{DoxyParamCaption}
+\item[{std\+::string const \&}]{encoded\+\_\+string}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classConsulInterface_a636b134672f2c150f6b38fc821fb2348}{}\label{classConsulInterface_a636b134672f2c150f6b38fc821fb2348}
+
+
+Convinience Method for base64 decoding. 
+
+This is needed as all configuration values are returned from Consul in base64, and need to be decoded after the json is parsed. \index{Consul\+Interface@{Consul\+Interface}!set\+\_\+config\+\_\+value@{set\+\_\+config\+\_\+value}}
+\index{set\+\_\+config\+\_\+value@{set\+\_\+config\+\_\+value}!Consul\+Interface@{Consul\+Interface}}
+\subsubsection[{\texorpdfstring{set\+\_\+config\+\_\+value(std\+::string key, std\+::string val)=0}{set_config_value(std::string key, std::string val)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Consul\+Interface\+::set\+\_\+config\+\_\+value (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{key, }
+\item[{std\+::string}]{val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classConsulInterface_a98ce2623db59b3f8804691a4039957a8}{}\label{classConsulInterface_a98ce2623db59b3f8804691a4039957a8}
+
+
+Set a configuration value. 
+
+If the key does not exist, then this will add it. Otherwise, it will update the existing key. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+aossl/consul/include/consul\+\_\+interface.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,54 @@
+\hypertarget{classMongoComponentFactory}{}\section{Mongo\+Component\+Factory Class Reference}
+\label{classMongoComponentFactory}\index{Mongo\+Component\+Factory@{Mongo\+Component\+Factory}}
+
+
+The Mongo Service Component Factory.  
+
+
+
+
+{\ttfamily \#include $<$factory\+\_\+mongo.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classMongoComponentFactory_ad98b89af9397105639e36f985d368f21}{Mongo\+Component\+Factory} ()\hypertarget{classMongoComponentFactory_ad98b89af9397105639e36f985d368f21}{}\label{classMongoComponentFactory_ad98b89af9397105639e36f985d368f21}
+
+\begin{DoxyCompactList}\small\item\em Create a new Service Component Factory. \end{DoxyCompactList}\item 
+\hyperlink{classMongoComponentFactory_a861f52374272dc439fcee8d3de2e09ee}{$\sim$\+Mongo\+Component\+Factory} ()\hypertarget{classMongoComponentFactory_a861f52374272dc439fcee8d3de2e09ee}{}\label{classMongoComponentFactory_a861f52374272dc439fcee8d3de2e09ee}
+
+\begin{DoxyCompactList}\small\item\em Delete a Service Component Factory. \end{DoxyCompactList}\item 
+\hyperlink{classMongoInterface}{Mongo\+Interface} $\ast$ \hyperlink{classMongoComponentFactory_a67388e5603e265ddfe0246d6726baf24}{get\+\_\+mongo\+\_\+interface} (const char $\ast$url, const char $\ast$db, const char $\ast$collection\+\_\+name)\hypertarget{classMongoComponentFactory_a67388e5603e265ddfe0246d6726baf24}{}\label{classMongoComponentFactory_a67388e5603e265ddfe0246d6726baf24}
+
+\begin{DoxyCompactList}\small\item\em Get a Mongo Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classMongoInterface}{Mongo\+Interface} $\ast$ \hyperlink{classMongoComponentFactory_a95778473e6c83acae99e3c27155ab5fd}{get\+\_\+mongo\+\_\+interface} (std\+::string url, std\+::string db, std\+::string collection\+\_\+name)\hypertarget{classMongoComponentFactory_a95778473e6c83acae99e3c27155ab5fd}{}\label{classMongoComponentFactory_a95778473e6c83acae99e3c27155ab5fd}
+
+\begin{DoxyCompactList}\small\item\em Get a Mongo Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classMongoInterface}{Mongo\+Interface} $\ast$ \hyperlink{classMongoComponentFactory_ae76578bb9a27d48d826840dc3be913d4}{get\+\_\+mongo\+\_\+interface} (const char $\ast$url, const char $\ast$db)\hypertarget{classMongoComponentFactory_ae76578bb9a27d48d826840dc3be913d4}{}\label{classMongoComponentFactory_ae76578bb9a27d48d826840dc3be913d4}
+
+\begin{DoxyCompactList}\small\item\em Get a Mongo Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classMongoInterface}{Mongo\+Interface} $\ast$ \hyperlink{classMongoComponentFactory_addd2a8eabc1d264f911027e1bd64aac7}{get\+\_\+mongo\+\_\+interface} (std\+::string url, std\+::string db)\hypertarget{classMongoComponentFactory_addd2a8eabc1d264f911027e1bd64aac7}{}\label{classMongoComponentFactory_addd2a8eabc1d264f911027e1bd64aac7}
+
+\begin{DoxyCompactList}\small\item\em Get a Mongo Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classMongoInterface}{Mongo\+Interface} $\ast$ \hyperlink{classMongoComponentFactory_a5e4c960eda23c22134685640a3ced24c}{get\+\_\+mongo\+\_\+interface} (const char $\ast$url, const char $\ast$db, const char $\ast$collection\+\_\+name, int pool\+\_\+size)\hypertarget{classMongoComponentFactory_a5e4c960eda23c22134685640a3ced24c}{}\label{classMongoComponentFactory_a5e4c960eda23c22134685640a3ced24c}
+
+\begin{DoxyCompactList}\small\item\em Get a Mongo Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classMongoInterface}{Mongo\+Interface} $\ast$ \hyperlink{classMongoComponentFactory_ab2b7e0247e44b133dec4ab391d2b76de}{get\+\_\+mongo\+\_\+interface} (std\+::string url, std\+::string db, std\+::string collection\+\_\+name, int pool\+\_\+size)\hypertarget{classMongoComponentFactory_ab2b7e0247e44b133dec4ab391d2b76de}{}\label{classMongoComponentFactory_ab2b7e0247e44b133dec4ab391d2b76de}
+
+\begin{DoxyCompactList}\small\item\em Get a Mongo Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classMongoInterface}{Mongo\+Interface} $\ast$ \hyperlink{classMongoComponentFactory_a16b0cd08ee59bfb951b89ddd0a47f18e}{get\+\_\+mongo\+\_\+interface} (const char $\ast$url, const char $\ast$db, int pool\+\_\+size)\hypertarget{classMongoComponentFactory_a16b0cd08ee59bfb951b89ddd0a47f18e}{}\label{classMongoComponentFactory_a16b0cd08ee59bfb951b89ddd0a47f18e}
+
+\begin{DoxyCompactList}\small\item\em Get a Mongo Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classMongoInterface}{Mongo\+Interface} $\ast$ \hyperlink{classMongoComponentFactory_a22622652c551250f1dbefd4a713960cf}{get\+\_\+mongo\+\_\+interface} (std\+::string url, std\+::string db, int pool\+\_\+size)\hypertarget{classMongoComponentFactory_a22622652c551250f1dbefd4a713960cf}{}\label{classMongoComponentFactory_a22622652c551250f1dbefd4a713960cf}
+
+\begin{DoxyCompactList}\small\item\em Get a Mongo Interface instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The Mongo Service Component Factory. 
+
+The Service Component Factory tracks the Mongo objects exposed by the framework and passes back instances of interfaces. This allows for the publicly exposed methods to be independent of the implementations. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+aossl/mongo/include/factory\+\_\+mongo.\+h\end{DoxyCompactItemize}
