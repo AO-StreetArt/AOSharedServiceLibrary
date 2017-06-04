@@ -1,0 +1,49 @@
+\hypertarget{classResultsIteratorInterface}{}\section{Results\+Iterator\+Interface Class Reference}
+\label{classResultsIteratorInterface}\index{Results\+Iterator\+Interface@{Results\+Iterator\+Interface}}
+
+
+Results Iterator for viewing query results.  
+
+
+
+
+{\ttfamily \#include $<$neo4j\+\_\+interface.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classResultsIteratorInterface_a4f6574b8a57dbd2ea3c86e66bf260252}{clear} ()=0\hypertarget{classResultsIteratorInterface_a4f6574b8a57dbd2ea3c86e66bf260252}{}\label{classResultsIteratorInterface_a4f6574b8a57dbd2ea3c86e66bf260252}
+
+\begin{DoxyCompactList}\small\item\em Clear the results iterator of all values. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classResultsIteratorInterface_ab00e99e5bd9f186eb9bdcdf30d594b99}{empty} ()=0
+\begin{DoxyCompactList}\small\item\em Is the iterator empty? \end{DoxyCompactList}\item 
+virtual unsigned int \hyperlink{classResultsIteratorInterface_a9a022aba2a3e7771c8d147885ca151dd}{length} ()=0\hypertarget{classResultsIteratorInterface_a9a022aba2a3e7771c8d147885ca151dd}{}\label{classResultsIteratorInterface_a9a022aba2a3e7771c8d147885ca151dd}
+
+\begin{DoxyCompactList}\small\item\em Get the number of results in the query. \end{DoxyCompactList}\item 
+virtual \hyperlink{classResultTreeInterface}{Result\+Tree\+Interface} $\ast$ \hyperlink{classResultsIteratorInterface_a00385bfa8ddabb267cf46006a9a0f6e9}{next} ()=0\hypertarget{classResultsIteratorInterface_a00385bfa8ddabb267cf46006a9a0f6e9}{}\label{classResultsIteratorInterface_a00385bfa8ddabb267cf46006a9a0f6e9}
+
+\begin{DoxyCompactList}\small\item\em Get the next query result. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Results Iterator for viewing query results. 
+
+Accepts a result stream as an input, returns Results Trees for each entry that matches in the query Deletes it when finished 
+
+\subsection{Member Function Documentation}
+\index{Results\+Iterator\+Interface@{Results\+Iterator\+Interface}!empty@{empty}}
+\index{empty@{empty}!Results\+Iterator\+Interface@{Results\+Iterator\+Interface}}
+\subsubsection[{\texorpdfstring{empty()=0}{empty()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Results\+Iterator\+Interface\+::empty (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classResultsIteratorInterface_ab00e99e5bd9f186eb9bdcdf30d594b99}{}\label{classResultsIteratorInterface_ab00e99e5bd9f186eb9bdcdf30d594b99}
+
+
+Is the iterator empty? 
+
+Return true if this iterator contains no results. Return false otherwise. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+aossl/neo4j/include/neo4j\+\_\+interface.\+h\end{DoxyCompactItemize}

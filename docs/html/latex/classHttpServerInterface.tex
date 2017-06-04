@@ -1,0 +1,33 @@
+\hypertarget{classHttpServerInterface}{}\section{Http\+Server\+Interface Class Reference}
+\label{classHttpServerInterface}\index{Http\+Server\+Interface@{Http\+Server\+Interface}}
+
+
+This is a basic H\+T\+TP Server that can be used to build a R\+E\+S\+Tful A\+PI.  
+
+
+
+
+{\ttfamily \#include $<$http\+\_\+server\+\_\+interface.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \hyperlink{classHttpServerInterface_a6aa54efaf6f176d985c7faa57e1aa7fd}{bind\+\_\+callback} (std\+::string uri, Callback\+Interface func)=0\hypertarget{classHttpServerInterface_a6aa54efaf6f176d985c7faa57e1aa7fd}{}\label{classHttpServerInterface_a6aa54efaf6f176d985c7faa57e1aa7fd}
+
+\begin{DoxyCompactList}\small\item\em Bind a callback for a static A\+PI Method. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classHttpServerInterface_a398064a0d7fb0c7e52d94ccfcbb6d89a}{bind\+\_\+default\+\_\+callback} (Callback\+Interface func)=0\hypertarget{classHttpServerInterface_a398064a0d7fb0c7e52d94ccfcbb6d89a}{}\label{classHttpServerInterface_a398064a0d7fb0c7e52d94ccfcbb6d89a}
+
+\begin{DoxyCompactList}\small\item\em Bind a callback for a dynamic A\+PI Method. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classHttpServerInterface_a350f4321505079d9c440ce4a4372044f}{recv} ()=0\hypertarget{classHttpServerInterface_a350f4321505079d9c440ce4a4372044f}{}\label{classHttpServerInterface_a350f4321505079d9c440ce4a4372044f}
+
+\begin{DoxyCompactList}\small\item\em Blocking call for waiting for incoming A\+PI Calls. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This is a basic H\+T\+TP Server that can be used to build a R\+E\+S\+Tful A\+PI. 
+
+The H\+T\+TP Server can bind static A\+PI methods to individual callbacks, and dynamic A\+PI methods can go to a default callback. Used to build R\+E\+S\+Tful A\+PI\textquotesingle{}s 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+aossl/http/server/include/http\+\_\+server\+\_\+interface.\+h\end{DoxyCompactItemize}

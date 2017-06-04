@@ -91,13 +91,17 @@ class MongoResponse: public MongoResponseInterface {
   int type;
   char * cval = NULL;
   std::string val;
+  char err_msg[504];
+  std::string err_string;
 public:
   //Build the mongo response from a C String passed back by libmongo
-  MongoResponse(char * cstring, int resp_type) {cval = cstring;val.assign(cval);type=resp_type;}
+  MongoResponse(char * cstring, int resp_type) {cval = cstring;val.assign(cval);type=resp_type;err_string="";}
   //Free the internal C String on delete
   ~MongoResponse() {if (cval) {if (type==MONGO_RESPONSE_CRT) {delete[] cval;} else {bson_free(cval);}}}
   //Retrieve the stored value for the response
   std::string get_value() {return val;}
+  std::string get_err_msg() {return err_string;}
+  void set_err_msg(char err[]) {strcpy(err,err_msg);err_string.assign(err_msg);}
 };
 
 //! Returned from Queries in order to iterate over results

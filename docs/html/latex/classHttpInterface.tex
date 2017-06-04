@@ -1,0 +1,88 @@
+\hypertarget{classHttpInterface}{}\section{Http\+Interface Class Reference}
+\label{classHttpInterface}\index{Http\+Interface@{Http\+Interface}}
+
+
+The H\+T\+TP Requests Administrators.  
+
+
+
+
+{\ttfamily \#include $<$http\+\_\+interface.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classHttpInterface_a3ac819dcec45535bf3c0fa614c5bdfce}{shutdown} ()=0\hypertarget{classHttpInterface_a3ac819dcec45535bf3c0fa614c5bdfce}{}\label{classHttpInterface_a3ac819dcec45535bf3c0fa614c5bdfce}
+
+\begin{DoxyCompactList}\small\item\em Shutdown the admin. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classHttpInterface_a57d393f0886723f1e1efadd56faa2b80}{put} (std\+::string url, std\+::string data, int timeout)=0
+\begin{DoxyCompactList}\small\item\em Put. \end{DoxyCompactList}\item 
+virtual std\+::string \hyperlink{classHttpInterface_a1304fcad3f7376da136288d280f658d9}{get} (std\+::string url, int timeout)=0
+\begin{DoxyCompactList}\small\item\em Get. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classHttpInterface_a089efdf4a6e47e7a13b028e75991439b}{post} (std\+::string url, std\+::string data, int timeout)=0
+\begin{DoxyCompactList}\small\item\em Post. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{classHttpInterface_acc7539a13d663ba17604acdad6e83bf4}{del} (std\+::string url, int timeout)=0
+\begin{DoxyCompactList}\small\item\em Delete. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The H\+T\+TP Requests Administrators. 
+
+This class is in charge of making H\+T\+TP Requests Support for put, get post, and delete 
+
+\subsection{Member Function Documentation}
+\index{Http\+Interface@{Http\+Interface}!del@{del}}
+\index{del@{del}!Http\+Interface@{Http\+Interface}}
+\subsubsection[{\texorpdfstring{del(std\+::string url, int timeout)=0}{del(std::string url, int timeout)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\+Interface\+::del (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{url, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classHttpInterface_acc7539a13d663ba17604acdad6e83bf4}{}\label{classHttpInterface_acc7539a13d663ba17604acdad6e83bf4}
+
+
+Delete. 
+
+Delete from the given U\+RL with the specified timeout \index{Http\+Interface@{Http\+Interface}!get@{get}}
+\index{get@{get}!Http\+Interface@{Http\+Interface}}
+\subsubsection[{\texorpdfstring{get(std\+::string url, int timeout)=0}{get(std::string url, int timeout)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\+::string Http\+Interface\+::get (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{url, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classHttpInterface_a1304fcad3f7376da136288d280f658d9}{}\label{classHttpInterface_a1304fcad3f7376da136288d280f658d9}
+
+
+Get. 
+
+Get from the given U\+RL with the specified timeout \index{Http\+Interface@{Http\+Interface}!post@{post}}
+\index{post@{post}!Http\+Interface@{Http\+Interface}}
+\subsubsection[{\texorpdfstring{post(std\+::string url, std\+::string data, int timeout)=0}{post(std::string url, std::string data, int timeout)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\+Interface\+::post (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{url, }
+\item[{std\+::string}]{data, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classHttpInterface_a089efdf4a6e47e7a13b028e75991439b}{}\label{classHttpInterface_a089efdf4a6e47e7a13b028e75991439b}
+
+
+Post. 
+
+Post to the given U\+RL the supplied data with the specified timeout \index{Http\+Interface@{Http\+Interface}!put@{put}}
+\index{put@{put}!Http\+Interface@{Http\+Interface}}
+\subsubsection[{\texorpdfstring{put(std\+::string url, std\+::string data, int timeout)=0}{put(std::string url, std::string data, int timeout)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Http\+Interface\+::put (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{url, }
+\item[{std\+::string}]{data, }
+\item[{int}]{timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classHttpInterface_a57d393f0886723f1e1efadd56faa2b80}{}\label{classHttpInterface_a57d393f0886723f1e1efadd56faa2b80}
+
+
+Put. 
+
+Put to the given U\+RL the supplied data with the specified timeout 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+aossl/http/client/include/http\+\_\+interface.\+h\end{DoxyCompactItemize}

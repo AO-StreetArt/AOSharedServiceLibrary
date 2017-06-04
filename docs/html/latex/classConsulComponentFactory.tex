@@ -1,0 +1,45 @@
+\hypertarget{classConsulComponentFactory}{}\section{Consul\+Component\+Factory Class Reference}
+\label{classConsulComponentFactory}\index{Consul\+Component\+Factory@{Consul\+Component\+Factory}}
+
+
+The Consul Service Component Factory.  
+
+
+
+
+{\ttfamily \#include $<$factory\+\_\+consul.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classConsulComponentFactory_aa0e7b5fc608732fb0e32c32031d88ddb}{Consul\+Component\+Factory} ()\hypertarget{classConsulComponentFactory_aa0e7b5fc608732fb0e32c32031d88ddb}{}\label{classConsulComponentFactory_aa0e7b5fc608732fb0e32c32031d88ddb}
+
+\begin{DoxyCompactList}\small\item\em Create a new Service Component Factory. \end{DoxyCompactList}\item 
+\hyperlink{classConsulComponentFactory_a63d094682e1f45cfb39a13c9da3bcf9c}{$\sim$\+Consul\+Component\+Factory} ()\hypertarget{classConsulComponentFactory_a63d094682e1f45cfb39a13c9da3bcf9c}{}\label{classConsulComponentFactory_a63d094682e1f45cfb39a13c9da3bcf9c}
+
+\begin{DoxyCompactList}\small\item\em Delete a Service Component Factory. \end{DoxyCompactList}\item 
+\hyperlink{classConsulInterface}{Consul\+Interface} $\ast$ \hyperlink{classConsulComponentFactory_a4df548f8d48a35b75aa98cf3ff5bafe6}{get\+\_\+consul\+\_\+interface} (std\+::string caddr)\hypertarget{classConsulComponentFactory_a4df548f8d48a35b75aa98cf3ff5bafe6}{}\label{classConsulComponentFactory_a4df548f8d48a35b75aa98cf3ff5bafe6}
+
+\begin{DoxyCompactList}\small\item\em Get a Consul Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classServiceInterface}{Service\+Interface} $\ast$ {\bfseries get\+\_\+service\+\_\+interface} ()\hypertarget{classConsulComponentFactory_a926fac610c9297815e0a064bc47f7c6d}{}\label{classConsulComponentFactory_a926fac610c9297815e0a064bc47f7c6d}
+
+\item 
+\hyperlink{classServiceInterface}{Service\+Interface} $\ast$ \hyperlink{classConsulComponentFactory_afc7fcf16ac25fa995c76a6895468d382}{get\+\_\+service\+\_\+interface} (std\+::string new\+\_\+id, std\+::string new\+\_\+name)\hypertarget{classConsulComponentFactory_afc7fcf16ac25fa995c76a6895468d382}{}\label{classConsulComponentFactory_afc7fcf16ac25fa995c76a6895468d382}
+
+\begin{DoxyCompactList}\small\item\em Get a Service Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classServiceInterface}{Service\+Interface} $\ast$ \hyperlink{classConsulComponentFactory_a2010611751cd0cf748cf66b718f85e85}{get\+\_\+service\+\_\+interface} (std\+::string new\+\_\+id, std\+::string new\+\_\+name, std\+::string new\+\_\+address, std\+::string new\+\_\+port)\hypertarget{classConsulComponentFactory_a2010611751cd0cf748cf66b718f85e85}{}\label{classConsulComponentFactory_a2010611751cd0cf748cf66b718f85e85}
+
+\begin{DoxyCompactList}\small\item\em Get a Service Interface instance. \end{DoxyCompactList}\item 
+\hyperlink{classServiceInterface}{Service\+Interface} $\ast$ \hyperlink{classConsulComponentFactory_a8d96aeb99437d089204283f6e30b5b4a}{get\+\_\+service\+\_\+interface} (std\+::string new\+\_\+id, std\+::string new\+\_\+name, std\+::string new\+\_\+address, std\+::string new\+\_\+port, std\+::vector$<$ std\+::string $>$ new\+\_\+tags)\hypertarget{classConsulComponentFactory_a8d96aeb99437d089204283f6e30b5b4a}{}\label{classConsulComponentFactory_a8d96aeb99437d089204283f6e30b5b4a}
+
+\begin{DoxyCompactList}\small\item\em Get a Service Interface instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The Consul Service Component Factory. 
+
+The Service Component Factory tracks the Consul objects exposed by the framework and passes back instances of interfaces. This allows for the publicly exposed methods to be independent of the implementations. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+aossl/consul/include/factory\+\_\+consul.\+h\end{DoxyCompactItemize}

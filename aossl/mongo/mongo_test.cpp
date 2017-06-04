@@ -31,6 +31,7 @@ int print_iterator(MongoIteratorInterface *iter) {
   int num_iterations = 0;
   MongoResponseInterface *resp = iter->next();
   while (resp) {
+    if ( !(resp->get_err_msg().empty()) ) break;
     num_iterations = num_iterations + 1;
     std::cout << resp->get_value() << std::endl;
     delete resp;

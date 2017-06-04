@@ -1,0 +1,45 @@
+\hypertarget{structHttpRequestException}{}\section{Http\+Request\+Exception Struct Reference}
+\label{structHttpRequestException}\index{Http\+Request\+Exception@{Http\+Request\+Exception}}
+
+
+An Implementation of std\+::exception that denotes an error during an http operation.  
+
+
+
+
+{\ttfamily \#include $<$http\+\_\+interface.\+h$>$}
+
+
+
+Inheritance diagram for Http\+Request\+Exception\+:
+% FIG 0
+
+
+Collaboration diagram for Http\+Request\+Exception\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structHttpRequestException_a8470fe285f8e7f0939b5068546967764}{Http\+Request\+Exception} (std\+::string msg)\hypertarget{structHttpRequestException_a8470fe285f8e7f0939b5068546967764}{}\label{structHttpRequestException_a8470fe285f8e7f0939b5068546967764}
+
+\begin{DoxyCompactList}\small\item\em Create a H\+T\+TP Request Exception, and store the given error message. \end{DoxyCompactList}\item 
+const char $\ast$ \hyperlink{structHttpRequestException_acf07a2f7382157a27c0c5d2cedb2f2e6}{what} () const   throw ()\hypertarget{structHttpRequestException_acf07a2f7382157a27c0c5d2cedb2f2e6}{}\label{structHttpRequestException_acf07a2f7382157a27c0c5d2cedb2f2e6}
+
+\begin{DoxyCompactList}\small\item\em Show the error message in readable format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \hyperlink{structHttpRequestException_a52a64d4648b543b81050bec3fb039e5f}{int\+\_\+msg}\hypertarget{structHttpRequestException_a52a64d4648b543b81050bec3fb039e5f}{}\label{structHttpRequestException_a52a64d4648b543b81050bec3fb039e5f}
+
+\begin{DoxyCompactList}\small\item\em An error message passed on initialization. \end{DoxyCompactList}\item 
+const char $\ast$ {\bfseries int\+\_\+msg\+\_\+cstr}\hypertarget{structHttpRequestException_a6bc7d4b4588457f0ae35c0cdf8059942}{}\label{structHttpRequestException_a6bc7d4b4588457f0ae35c0cdf8059942}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+An Implementation of std\+::exception that denotes an error during an http operation. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+aossl/http/client/include/http\+\_\+interface.\+h\end{DoxyCompactItemize}
