@@ -30,10 +30,13 @@ MongoResponseInterface* MongoIterator::next()
   //Return the next result from the internal cursor
   const bson_t *doc = NULL;
   mongoc_cursor_next (cursor, &doc);
+  bson_error_t error;
 
   //If a document was returned from the cursor, then wrap it in a Mongo response
   if (doc) {
-    return new MongoResponse( bson_as_json (doc, NULL), MONGO_RESPONSE_OTHER );
+    MongoResponse *resp = new MongoResponse( bson_as_json (doc, NULL), MONGO_RESPONSE_OTHER );
+    if (mongoc_cursor_error(cursor, &error)) resp->set_err_msg(error.message);
+    return resp;
   }
   else {
     return NULL;
@@ -280,7 +283,10 @@ MongoIteratorInterface* MongoClient::query(const char * query_str, const char * 
 
     cursor = mongoc_collection_find_with_opts (ms->collection, q, o, NULL);
 
-    MongoIteratorInterface *iter = new MongoIterator (cursor, pool, ms);
+    MongoIteratorInterface *iter = NULL;
+    if (cursor) {
+      iter = new MongoIterator (cursor, pool, ms);
+    }
 
     if (o) {
       bson_destroy (o);

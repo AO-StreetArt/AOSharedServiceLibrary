@@ -55,6 +55,7 @@ public:
   virtual ~MongoResponseInterface() {}
   //! Retrieve the value stored inside the response interface
   virtual std::string get_value() = 0;
+  virtual std::string get_err_msg() = 0;
 };
 
 //! Returned from Queries in order to iterate over results
