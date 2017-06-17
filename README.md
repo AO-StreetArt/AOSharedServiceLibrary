@@ -57,6 +57,6 @@ There are a number of topics which have been identified as areas needing develop
 
 * Sentinel & Cluster support for Redis Drivers
 * Benchmarks for Mongo & Neo4j
-* Expanded ZeroMQ Pub/Sub Architecture automated tests
+* ZeroMQ encryption
 * Library testing with OSX and/or other Linux Distributions not already supported
 * CMake Support
