@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node2" href="$structHttpRequestException.html" title="An Implementation of std::exception that denotes an error during an http operation. " alt="" coords="145,5,299,32"/>
+<area shape="rect" id="node3" href="$structLoggingException.html" title="Mongo Exception, used to store errors passed from Mongo. " alt="" coords="159,56,285,83"/>
+<area shape="rect" id="node4" href="$structMongoException.html" title="Mongo Exception, used to store errors passed from Mongo. " alt="" coords="163,107,281,133"/>
+<area shape="rect" id="node5" href="$structRedisConnectionException.html" title="An Implementation of std::exception that denotes a connection error within Redis. ..." alt="" coords="132,157,312,184"/>
+<area shape="rect" id="node6" href="$structRedisOperationException.html" title="An Implementation of std::exception that denotes an error within Redis during a transaction. " alt="" coords="137,208,307,235"/>
+</map>

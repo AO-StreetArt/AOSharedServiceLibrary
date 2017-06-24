@@ -1,7 +1,0 @@
-digraph "Graphical Class Hierarchy"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node1 [label="ServiceInterface",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classServiceInterface.html",tooltip="A Service class which can be registered with Consul for each instance of a particular service..."];
-}

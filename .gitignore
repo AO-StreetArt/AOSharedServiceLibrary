@@ -11,3 +11,6 @@
 *.a
 examples/hello_world/simple_app
 examples/zmq_shell/app
+docs/_build/
+docs/_static/
+docs/_templates/
