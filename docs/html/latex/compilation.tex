@@ -1,0 +1,83 @@
+\section*{Compiling your Application}
+
+g++ is the recommended compiler for building applications using A\+O\+S\+SL, version 5.\+0 or greater.
+
+\subsection*{Linking}
+
+When linking your to A\+O\+S\+SL, you will also need to link to certain dependencies in many cases. In all cases, you will need to link to aossl directly\+: \begin{DoxyVerb}-laossl
+\end{DoxyVerb}
+
+
+\subsubsection*{H\+T\+TP Administrator}
+
+The H\+T\+TP Admin uses Curl, which can be linked against with\+: \begin{DoxyVerb}-lcurl
+\end{DoxyVerb}
+
+
+\subsubsection*{H\+T\+TP Server}
+
+The H\+T\+TP Server relies on libevent, which can be linked against with\+: \begin{DoxyVerb}-levent
+\end{DoxyVerb}
+
+
+\subsubsection*{Consul Administrator}
+
+The Consul Admin uses the H\+T\+TP Administrator, so you will need to link against curl here as well\+: \begin{DoxyVerb}-lcurl
+\end{DoxyVerb}
+
+
+\subsubsection*{Logging}
+
+For logging, we use the Log4\+Cpp module, which can be linked against with\+: \begin{DoxyVerb}-lpthread -llog4cpp
+\end{DoxyVerb}
+
+
+\subsubsection*{U\+U\+ID Generation}
+
+The U\+U\+ID Generator uses libuuid, which can be linked against with\+: \begin{DoxyVerb}-luuid
+\end{DoxyVerb}
+
+
+\subsubsection*{Z\+MQ}
+
+Zero\+MQ Communications utilize the Z\+MQ library and C++ bindings, which can be linked against with\+: \begin{DoxyVerb}-lzmq
+\end{DoxyVerb}
+
+
+\subsubsection*{Redis}
+
+Redis utilizes the hiredis library, which can be linked against with\+: \begin{DoxyVerb}-lhiredis
+\end{DoxyVerb}
+
+
+If pkg-\/config is set up and libhiredis is installed correctly, we can also use\+: \begin{DoxyVerb}`pkg-config --cflags --libs hiredis`
+\end{DoxyVerb}
+
+
+\subsubsection*{Mongo}
+
+Mongo utilizes both the Mongo C Driver libmongoc as well as libbson for json to bson conversions. \begin{DoxyVerb}-lmongoc-1.0 -lbson-1.0
+\end{DoxyVerb}
+
+
+When you use the default installers (included in the build\+\_\+deps scripts), the files for these libraries won\textquotesingle{}t be on your default include and linker paths. You may need to include the below directives to link against libmongo and libbson. \begin{DoxyVerb}-I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0 -L/usr/local/lib
+\end{DoxyVerb}
+
+
+\subsubsection*{Neo4j}
+
+Neo4j depends on the Neo4j client, which needs to link against several dependencies\+: \begin{DoxyVerb}-lneo4j-client -lssl -lcrypto -lm
+\end{DoxyVerb}
+
+
+\subsection*{Standard}
+
+AO Shared Service Library is coded to the c++11 standard. \begin{DoxyVerb}-std=c++11
+\end{DoxyVerb}
+
+
+\subsection*{Tests}
+
+Please continue on to the \hyperlink{tests}{Tests} section of the documentation to learn about the libraries automated tests.
+
+\hyperlink{index}{Go Home} 

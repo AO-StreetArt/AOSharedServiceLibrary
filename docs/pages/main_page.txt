@@ -1,6 +1,6 @@
 /*!
  *
- * \mainpage AO Shared Service Library
+ * \mainpage AOSSL
  *
  * ![](https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary.svg?branch=master)
  *
@@ -35,4 +35,10 @@
  * - Support for Ubuntu 14.04, Ubuntu 16.04, Debian 7, Debian 8, CentOS 7, RHEL 7
  * - Docker Support
  *
+ * \section docs Documentation
+ * - \ref quickstart "Quickstart"
+ * - \ref use_index "Use"
+ * - \ref compilation "Compilation"
+ * - \ref tests "Library Tests"
+ * - \ref dependencies "Library Dependencies"
  */

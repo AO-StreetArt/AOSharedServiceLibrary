@@ -1,0 +1,38 @@
+\section*{Dependency Resolution}
+
+A\+O\+S\+SL has a number of different dependencies, as it includes a variety of different components. Keep in mind that, if you don\textquotesingle{}t want to build the entire library, you can make each subfolder in the aossl/ directory and install them independently. In this case, you will only need to manually install dependencies for those components you wish to use.
+
+Please remember that a build\+\_\+deps.\+sh script has been provided for Ubuntu/\+Debian/\+Redhat/\+Cent\+OS. If possible, you should try to utilize this script to perform the installation of the dependencies. Please note, however, that these scripts may not be suitable for a production environment. They are provided to help speed up development.
+
+You will need Zero MQ which can be found \href{http://zeromq.org/intro:get-the-software}{\tt here}. Be sure to get the \href{https://github.com/zeromq/cppzmq}{\tt C++ Drivers} in addition to the software.
+
+For logging, we use log4cpp, which can be found \href{http://log4cpp.sourceforge.net/}{\tt here}
+
+You will need libhiredis, which can be found \href{https://github.com/redis/hiredis}{\tt here}
+
+You will need libmongoc and libbson for Mongo connections, follow the instructions \href{http://mongoc.org/libmongoc/1.3.0/installing.html}{\tt here}
+
+You will need libneo4j-\/client, which can be found \href{https://github.com/cleishm/libneo4j-client/}{\tt here}
+
+We rely also on a set of base libraries which are installable via most package managers\+:
+\begin{DoxyItemize}
+\item libuuid
+\item libcurl
+\item libevent
+\end{DoxyItemize}
+
+You will need \href{https://github.com/nickbruun/hayai}{\tt Hayai} to run the benchmarks.
+
+\section*{External Services}
+
+We use several external services which are necessary to use the respective elements of this library. Note that the elements of this library can be used separately, so you are in no way tied to the use of these services as a part of your project. In fact, you are encouraged to develop drivers for alternate technologies and submit a pull request.
+
+
+\begin{DoxyItemize}
+\item \href{http://redis.io/}{\tt Redis} -\/ Key/\+Value Store
+\item \href{https://neo4j.com}{\tt Neo4j} -\/ Graph Based Database
+\item \href{https://www.mongodb.com}{\tt Mongo} -\/ Document Based Database
+\item \href{https://www.consul.io/}{\tt Consul} -\/ Service Discovery, Distributed Configuration, Health Monitoring
+\end{DoxyItemize}
+
+\hyperlink{index}{Go Home} 
