@@ -1,0 +1,38 @@
+/*!
+ *
+ * \mainpage AO Shared Service Library
+ *
+ * ![](https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary.svg?branch=master)
+ *
+ * \section over Overview
+ *
+ * Welcome to the AO Shared Service Library.  This is a framework designed for constructing C++ Microservices.  This means smaller, more focused programs that perform a single function well and rely on inter-process communications to perform complex tasks.
+ *
+ * While designed with a Microservice architecture in mind, AOSSL also seeks to maintain enough flexibility to allow for use with any program architecture and any other libraries.  AOSSL uses a plug-and-play architecture to allow users to pick and choose components they would like to use, and exclude others.  This is meant to reduce time-to-market on C++ Services, and is designed to be easy to use and reliable, while maintaining high performance standards.
+ *
+ * \section features Features
+ *
+ * \subsection core Core Frameworks
+ *
+ * - ZeroMQ Service Framework
+ * - HTTP Service Framework
+ *
+ * \subsection conn Connections
+ *
+ * - Mongo Interface
+ * - Redis Interface
+ * - Consul Interface
+ * - Neo4j Interface
+ *
+ * \subsection tools Basic Tools
+ *
+ * - Asynchronous Logging Module
+ * - Universally Unique ID Generator
+ * - Command Line Argument Parser
+ * - Properties File Parser
+ *
+ * \subsection platform Platform Support
+ * - Support for Ubuntu 14.04, Ubuntu 16.04, Debian 7, Debian 8, CentOS 7, RHEL 7
+ * - Docker Support
+ *
+ */
