@@ -14,3 +14,4 @@ examples/zmq_shell/app
 docs/_build/
 docs/_static/
 docs/_templates/
+docs/html/
