@@ -1,0 +1,54 @@
+/*! \page use_index How to Use the AO Shared Service Library
+ *
+ * ## Service Component Factories
+ *
+ * The Service Component Factories are components which allow us to build instances of the interfaces exposed by the library.
+ *
+ * It's important that we use the factory to get instances of the interfaces as the interfaces guarantee backwards-compatibility.  While particular implementations may change,
+ * the interfaces will remain the same across major versions of the library.  For example:
+ *
+ *     #include "aossl/commandline/include/factory_cli.h"
+ *     #include "aossl/commandline/include/commandline_interface.h"
+ *
+ *     // Set up a Service Component Factory, where we get our application components
+ *     CommandLineInterpreterFactory cli_factory;
+ *
+ * The factory then provides us access to instances of the interfaces exposed by the library.
+ *
+ *     CommandLineInterface *cli = cli_factory.get_command_line_interface( argc, argv );
+ *
+ * Note: Be sure to delete anything you build with the factories!  Due to the nature of C++ and a desire to retain flexibility, AOSSL is implemented such that it hands over responsibility for the memory allocated to the end user whenever a factory call is made.
+ *
+ * ## Choose a Framework
+ *
+ * AOSSL Comes with two message-based frameworks which can be used to construct an API: HTTP and ZeroMQ.
+ *
+ * It is not necessary to use one of the frameworks provided, as the tools included in the library will function with any other framework that is utilized.  Please note that neither the HTTP nor ZeroMQ Server should be called on different threads as they are not thread-safe.  The respective clients, however, are thread-safe.
+ *
+ * - \ref http_server "HTTP Server"
+ * - \ref http_client "HTTP Client"
+ * - \ref zeromq "ZeroMQ Sockets"
+ *
+ * ## Tools
+ *
+ * A Variety of tools are provided by AOSSL, all of which are thread safe.
+ *
+ * ### Connections to Critical External Tools
+ *
+ * - \ref mongo "Mongo Interface"
+ * - \ref redis "Redis Interface"
+ * - \ref neo4j "Neo4j Interface"
+ * - \ref consul "Consul Interface"
+ *
+ * ### Basic Tools
+ *
+ * - \ref logging "Logging"
+ * - \ref uuid "UUID"
+ * - \ref cli "Command Line Argument Parser"
+ * - \ref props "Property File Reader"
+ *
+ * ## Tests
+ * Please continue on to the \ref compilation "Compilation" section of the documentation to learn about building an application with the library.
+ *
+ * \ref index "Go Home"
+ */

@@ -82,7 +82,7 @@ char * Zmqi::crecv() {
   // Close the message object and then re-build, this means that
   // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
   if (!started) {request->rebuild();}
-  if (rcv_cstr) {delete rcv_cstr;rcv_cstr=NULL;}
+  if (rcv_cstr) {delete[] rcv_cstr;rcv_cstr=NULL;}
 
   // Wait for next request from client
   zmqi->recv (request);

@@ -1,7 +1,7 @@
 PROJECT_NAME     = AoSharedServiceLibrary
 OUTPUT_DIRECTORY = docs/html
 WARNINGS         = YES
-INPUT            = aossl/commandline/include aossl/consul/include aossl/http/client/include aossl/http/server/include aossl/logging/include aossl/properties/include aossl/redis/include aossl/uuid/include aossl/zmq/include aossl/neo4j/include aossl/mongo/include
-FILE_PATTERNS    = factory_*.h *_interface.h
+INPUT            = aossl/commandline/include aossl/consul/include aossl/http/client/include aossl/http/server/include aossl/logging/include aossl/properties/include aossl/redis/include aossl/uuid/include aossl/zmq/include aossl/neo4j/include aossl/mongo/include docs/pages/main_page.txt docs/pages/quickstart.txt docs/pages/compilation.txt docs/pages/dependencies.txt docs/pages/tests.txt docs/pages/use.txt docs/pages/drivers/cli.txt docs/pages/drivers/consul.txt docs/pages/drivers/http_client.txt docs/pages/drivers/http_server.txt docs/pages/drivers/logging.txt docs/pages/drivers/mongo.txt docs/pages/drivers/neo4j.txt docs/pages/drivers/props.txt docs/pages/drivers/redis.txt docs/pages/drivers/uuid.txt docs/pages/drivers/zmq.txt
+FILE_PATTERNS    = factory_*.h *_interface.h *.txt
 INCLUDE_PATH     = aossl
 SEARCHENGINE     = NO
