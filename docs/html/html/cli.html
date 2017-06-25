@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>AoSharedServiceLibrary: AOSSL Automated Testing</title>
+<title>AoSharedServiceLibrary: Command Line Interface</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -37,32 +37,28 @@
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">AOSSL Automated Testing </div>  </div>
+<div class="title">Command Line Interface </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1>Tests</h1>
-<p>AOSSL Uses Travis-CI for automated builds and tests, for full history please see the <a href="https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary">Travis CI Homepage</a>.</p>
-<h2>Manually Executing Tests</h2>
-<p>Once we follow the commands in the quickstart for building from source, we have a set of executables that end with "test" which run some basic tests on the libraries to ensure they function correctly. Please note that the Redis, Couchbase, Consul, and Mongo tests will require an active server/agent for the respective service. </p><pre class="fragment">./cli_test name=test
-./consul_test
-./couchbase_test
-./http_test
-./logging_test
-./redis_test
-./uuid_test
-./zmqio_test
-./http_server_test
-./mongo_test
-</pre><p>You can hit the http_server_test with curl from the command line with: <code>curl --request GET '<a href="http://0.0.0.0:12345/'">http://0.0.0.0:12345/'</a></code></p>
-<h2>Manually Executing Benchmarks</h2>
-<p>We will also have a set of benchmark programs which are built on the <a href="https://github.com/nickbruun/hayai">hayai</a> framework. These systematically test each element within the framework to provide realistic benchmarks on any given system. </p><pre class="fragment">./consul_benchmark
-./http_benchmark
-./logging_benchmark
-./redis_benchmark
-./uuid_benchmark
-./zmqio_benchmark
-</pre><h1>Where to Go From Here</h1>
-<p>Please continue on to the <a class="el" href="dependencies.html">Dependencies</a> section of the documentation to see a discussion of the libraries dependencies for building on other operating systems.</p>
+<div class="textblock"><p>The CommandLineInterpreter makes working with input parameters easier. With it, we get access to command line arguments that are entered in the form:</p>
+<p><code>./example name=abc</code></p>
+<h2>Use</h2>
+<p>We start by importing the necessary interfaces and establish the service factory. </p><pre class="fragment">#include "include/commandline/factory_cli.h"
+#include "include/commandline/commandline_interface.h"
+
+int main( int argc, char** argv )
+{
+CommandLineInterpreterFactory cli_factory;
+CommandLineInterface *cli = cli_factory.get_command_line_interface( argc, argv );
+</pre><p>We can utilize get_program_name to return the current program name executing on this instance. </p><pre class="fragment">std::cout &lt;&lt; cli-&gt;get_program_name() &lt;&lt; std::endl;
+</pre><p>We have access to an opt_exist method to determine if an option was entered, and we can use get_opt to pull parameter values. </p><pre class="fragment">if ( cli-&gt;opt_exist("name") ) {
+  std::cout &lt;&lt; cli-&gt;get_opt("name") &lt;&lt; std::endl;
+}
+
+return 0;
+}
+</pre><h2>Multi-Threading</h2>
+<p>The Command Line Interpreter is threadsafe, and it is recommended that you utilize a single interpreter and have each thread access the arguments in it, to ensure that the input parameters are only parsed once.</p>
 <p><a class="el" href="index.html">Go Home</a> </p>
 </div></div><!-- contents -->
 <!-- start footer part -->

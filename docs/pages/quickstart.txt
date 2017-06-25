@@ -1,4 +1,4 @@
-/*! \page quickstart AO Quick Start Guide
+/*! \page quickstart AOSSL Quick Start Guide
  *
  * ## Docker
  *
@@ -20,7 +20,7 @@
  *
  * Then, you can access the container with the following:
  *
- *     sudo docker exec -i -t aossl /bin/bash
+ *     docker exec -i -t aossl /bin/bash
  *
  * ### Docker Images of External Tools
  *

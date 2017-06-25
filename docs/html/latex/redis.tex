@@ -1,0 +1,22 @@
+Redis is a key-\/value store that acts as an application cache
+
+The Redis Admin allows for quick Redis access, and exposes the below methods to do so\+:
+
+
+\begin{DoxyItemize}
+\item std\+::string load ( const char $\ast$ key )
+\item bool save ( const char $\ast$ key, std\+::string msg )
+\item bool exists ( const char $\ast$ key )
+\item bool del ( const char $\ast$ key )
+\item bool expire ( const char $\ast$ key, unsigned int second)
+
+\#include \char`\"{}aossl/redis/factory\+\_\+redis.\+h\char`\"{} \#include \char`\"{}aossl/redis/redis\+\_\+interface.\+h\char`\"{}
+
+\hyperlink{classRedisComponentFactory}{Redis\+Component\+Factory} redis\+\_\+factory; \hyperlink{classRedisInterface}{Redis\+Interface} $\ast$redis = redis\+\_\+factory.\+get\+\_\+redis\+\_\+interface( \char`\"{}127.\+0.\+0.\+1\char`\"{}, 6379 );
+
+//\+Now, we can access our basic Redis Operations bool b\+Ret = redis-\/$>$save(\char`\"{}\+Test\char`\"{}, \char`\"{}123\char`\"{}); bool e\+Ret = redis-\/$>$exists(\char`\"{}\+Test\char`\"{}); std\+::string str\+Value = redis-\/$>$load(\char`\"{}\+Test\char`\"{}); redis-\/$>$del(\char`\"{}\+Test\char`\"{});
+\end{DoxyItemize}
+
+The Redis Administrator suports a number of other operations, all of which are covered in \href{http://redis.io/commands}{\tt Redis\textquotesingle{} documentation}. A full list of supported operations can be found in this libraries A\+PI documentation.
+
+\hyperlink{index}{Go Home} 

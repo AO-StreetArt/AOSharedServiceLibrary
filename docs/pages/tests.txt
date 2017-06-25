@@ -2,7 +2,7 @@
  *
  * # Tests
  *
- * AOSSL Uses Travis-CI for automated builds and tests, for full history please see the [Travis CI Homepage](https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary).  Automated builds are also performed by [Docker Hub](https://hub.docker.com/r/aostreetart/ao-services).  An example Jenkinsfile is provided, but not yet utilized.  Tests and benchmarks can be run manually as well.
+ * AOSSL Uses Travis-CI for automated builds and tests, for full history please see the [Travis CI Homepage](https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary).
  *
  * ## Manually Executing Tests
  *

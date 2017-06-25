@@ -10,35 +10,27 @@
  *
  * While designed with a Microservice architecture in mind, AOSSL also seeks to maintain enough flexibility to allow for use with any program architecture and any other libraries.  AOSSL uses a plug-and-play architecture to allow users to pick and choose components they would like to use, and exclude others.  This is meant to reduce time-to-market on C++ Services, and is designed to be easy to use and reliable, while maintaining high performance standards.
  *
- * \section features Features
+ * \section gettingstarted Getting Started
  *
- * \subsection core Core Frameworks
- *
- * - ZeroMQ Service Framework
- * - HTTP Service Framework
- *
- * \subsection conn Connections
- *
- * - Mongo Interface
- * - Redis Interface
- * - Consul Interface
- * - Neo4j Interface
- *
- * \subsection tools Basic Tools
- *
- * - Asynchronous Logging Module
- * - Universally Unique ID Generator
- * - Command Line Argument Parser
- * - Properties File Parser
- *
- * \subsection platform Platform Support
- * - Support for Ubuntu 14.04, Ubuntu 16.04, Debian 7, Debian 8, CentOS 7, RHEL 7
- * - Docker Support
- *
- * \section docs Documentation
  * - \ref quickstart "Quickstart"
  * - \ref use_index "Use"
  * - \ref compilation "Compilation"
+ *
+ * \section features Components
+ *
+ * - \ref zeromq "ZeroMQ Service Framework"
+ * - \ref http_server "HTTP Service Framework"
+ * - \ref mongo "Mongo Interface"
+ * - \ref redis "Redis Interface"
+ * - \ref consul "Consul Interface"
+ * - \ref neo4j "Neo4j Interface"
+ * - \ref logging "Asynchronous Logging Module"
+ * - \ref uuid "Universally Unique ID Generator"
+ * - \ref cli "Command Line Argument Parser"
+ * - \ref props "Properties File Parser"
+ * - \ref http_client "HTTP Client"
+ *
+ * \section moreinfo More Information
  * - \ref tests "Library Tests"
  * - \ref dependencies "Library Dependencies"
  */
