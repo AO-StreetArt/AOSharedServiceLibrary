@@ -47,8 +47,8 @@ class ConsulAdmin: public ConsulInterface
 {
   HttpInterface *ha = NULL;
   std::string consul_addr;
+  std::string return_string = "";
   int timeout;
-  std::string build_url(std::string request_url_segment);
   std::string query(std::string query_url);
   static bool is_base64(unsigned char c) {
     return (isalnum(c) || (c == '+') || (c == '/'));
