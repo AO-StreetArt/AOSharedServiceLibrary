@@ -38,7 +38,6 @@ std::string ConsulAdmin::base64_decode(std::string const& encoded_string) {
   int j = 0;
   int in_ = 0;
   unsigned char char_array_4[4], char_array_3[3];
-  std::string ret;
 
   while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
     char_array_4[i++] = encoded_string[in_]; in_++;
@@ -51,7 +50,7 @@ std::string ConsulAdmin::base64_decode(std::string const& encoded_string) {
       char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
       for (i = 0; (i < 3); i++)
-        ret += char_array_3[i];
+        return_string += char_array_3[i];
       i = 0;
     }
   }
@@ -67,31 +66,24 @@ std::string ConsulAdmin::base64_decode(std::string const& encoded_string) {
     char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
     char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
-    for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
+    for (j = 0; (j < i - 1); j++) return_string += char_array_3[j];
   }
 
-  return ret;
-}
-
-//Put together a url query segment with the consul address provided at initialization
-std::string ConsulAdmin::build_url(std::string request_url_segment)
-{
-  std::string url = consul_addr;
-  url = url + request_url_segment;
-  return url;
+  return return_string;
 }
 
 //Post a query to consul
 std::string ConsulAdmin::query(std::string query_url)
 {
   //Get the URL
-  std::string url_string = build_url(query_url);
+  std::string url_string = consul_addr;
+  url_string = url_string + query_url;
 
   //Send the HTTP Request
-  std::string get_resp = ha->get(url_string, timeout);
-  if ( !(get_resp.empty()) )
+  return_string = ha->get(url_string, timeout);
+  if ( !(return_string.empty()) )
   {
-    return get_resp;
+    return return_string;
   }
   else
   {
@@ -104,7 +96,8 @@ std::string ConsulAdmin::query(std::string query_url)
 bool ConsulAdmin::register_service(ServiceInterface& s)
 {
   //Get the URL
-  std::string url_string = build_url("/v1/agent/service/register");
+  std::string query_url = "/v1/agent/service/register";
+  std::string url_string = consul_addr + query_url;
 
   //Get the message body
   std::string body_str = s.to_json();
@@ -117,9 +110,9 @@ bool ConsulAdmin::register_service(ServiceInterface& s)
 bool ConsulAdmin::deregister_service(ServiceInterface& s)
 {
   //Get the URL
-  std::string url_string = "/v1/agent/service/deregister/";
-  url_string = url_string.append(s.get_id());
-  url_string = build_url(url_string);
+  std::string query_url = "/v1/agent/service/deregister/";
+  query_url = query_url.append(s.get_id());
+  std::string url_string = consul_addr + query_url;
 
   //Send the HTTP Request
   std::string empty_str = "";
@@ -155,8 +148,9 @@ std::string ConsulAdmin::healthy_services()
 bool ConsulAdmin::set_config_value(std::string key, std::string val)
 {
   //Get the URL
-  std::string url_string = build_url("/v1/kv/");
-  url_string = url_string.append(key);
+  std::string query_url = "/v1/kv/";
+  query_url = query_url.append(key);
+  std::string url_string = consul_addr + query_url;
 
   //Send the HTTP Request
   bool success = ha->put(url_string, val, timeout);
@@ -173,8 +167,9 @@ std::string ConsulAdmin::get_config_value(std::string key)
 bool ConsulAdmin::del_config_value(std::string key)
 {
   //Get the URL
-  std::string url_string = build_url("/v1/kv/");
-  url_string = url_string.append(key);
+  std::string query_url = "/v1/kv/";
+  query_url = query_url.append(key);
+  std::string url_string = consul_addr + query_url;
   //Send the HTTP Request
   bool success = ha->del(url_string, timeout);
   return success;

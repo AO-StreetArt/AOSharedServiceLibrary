@@ -39,6 +39,8 @@ Check out online documentation of the latest version at [ReadTheDocs](http://aos
 
 All contributors are welcome, including (but not limited to) pull requests, issues, documentation, examples, and feature requests.  Please see the Code of Conduct file for an overview on the expectations for all contributors.
 
+We are actively looking for anyone interested in joining the development team.  If you are interested, please send an email to aostreetart9@gmail.com.
+
 There are a number of topics which have been identified as areas needing development, and contributors are encouraged to work on these areas as well.  
 
 * Sentinel & Cluster support for Redis Drivers
