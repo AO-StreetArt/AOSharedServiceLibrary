@@ -30,6 +30,10 @@ OBJS = aossl/commandline/cli.o aossl/logging/logging.o aossl/http/client/http_ad
 #
 default: libaossl.a
 
+# typing 'make docs' will build the html and latex documentation
+docs:
+	cd docs && $(MAKE) html
+
 # typing 'make tests' will build the tests
 tests:
 	cd aossl && $(MAKE) tests
@@ -84,4 +88,3 @@ libaossl.a:  make_subfolders
 
 make_subfolders:
 	cd aossl && $(MAKE)
-	cd docs && $(MAKE)
