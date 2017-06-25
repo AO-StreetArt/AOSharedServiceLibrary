@@ -38,6 +38,7 @@ THE SOFTWARE.
 //! ID's that are required throughout program execution
 class uuidAdmin: public uuidInterface
 {
+UuidContainer cont;
 public:
 	uuidAdmin() {}
 	~uuidAdmin() {}

@@ -215,18 +215,17 @@ int RedisAdmin::return_int_reply(redisReply *reply)
   return reply_code;
 }
 
-std::string RedisAdmin::return_string_reply(redisReply *reply)
+void RedisAdmin::return_string_reply(redisReply *reply)
 {
   if (reply->str) {
-    std::string reply_str (reply->str);
+    reply_str.assign(reply->str);
     freeReplyObject(reply);
     reply = NULL;
-    return reply_str;
   }
   else {
     freeReplyObject(reply);
     reply = NULL;
-    return "";
+    reply_str.assign("");
   }
 }
 
@@ -270,9 +269,9 @@ std::string RedisAdmin::load ( std::string key )
   RedisSession *rs = pool->get_connection();
   std::string key_str = "GET " + key;
   redisReply *reply = (redisReply *) redisCommand(rs->connection, key_str.c_str());
-  std::string resp_string = return_string_reply(reply);
+  return_string_reply(reply);
   pool->release_connection(rs);
-  return resp_string;
+  return reply_str;
 }
 
 //! Save a value to Redis
@@ -421,9 +420,9 @@ std::string RedisAdmin::lpop ( std::string key )
   RedisSession *rs = pool->get_connection();
   std::string key_str = "LPOP " + key;
   redisReply *reply = (redisReply *) redisCommand(rs->connection, key_str.c_str());
-  std::string resp_string = return_string_reply(reply);
+  return_string_reply(reply);
   pool->release_connection(rs);
-  return resp_string;
+  return reply_str;
 }
 
 //! Pop a value from a Redis list on the given key
@@ -432,9 +431,9 @@ std::string RedisAdmin::rpop ( std::string key )
   RedisSession *rs = pool->get_connection();
   std::string key_str = "RPOP " + key;
   redisReply *reply = (redisReply *) redisCommand(rs->connection, key_str.c_str());
-  std::string resp_string = return_string_reply(reply);
+  return_string_reply(reply);
   pool->release_connection(rs);
-  return resp_string;
+  return reply_str;
 }
 
 //! Set the value stored in the list at key and the index at index
@@ -467,9 +466,9 @@ std::string RedisAdmin::lindex ( std::string key, int index)
   RedisSession *rs = pool->get_connection();
   std::string length_key = std::to_string(index);
   redisReply *reply = (redisReply *) redisCommand( rs->connection, "LINDEX %s %s", key.c_str(), length_key.c_str() );
-  std::string resp_string = return_string_reply(reply);
+  return_string_reply(reply);
   pool->release_connection(rs);
-  return resp_string;
+  return reply_str;
 }
 
 //! Get the length of a list stored in Redis

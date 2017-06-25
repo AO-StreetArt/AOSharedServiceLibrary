@@ -31,7 +31,6 @@ THE SOFTWARE.
 //Generate a new UUID
 UuidContainer uuidAdmin::generate()
 {
-	UuidContainer cont;
 	int uuid_gen_result = 0;
 	uuid_t uuid;
 	uuid_gen_result = uuid_generate_time_safe(uuid);

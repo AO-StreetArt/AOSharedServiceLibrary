@@ -75,12 +75,13 @@ public:
 //The Redis Administrator that exposes key methods
 class RedisAdmin : public RedisInterface
 {
+  std::string reply_str;
   RedisConnectionPool *pool = NULL;
   void init(std::string hostname, std::string passwd, int port, int timeout_seconds, int timeout_microseconds, int pool_size);
   bool process_std_string_reply(redisReply *reply);
   bool process_std_int_reply(redisReply *reply);
   int return_int_reply(redisReply *reply);
-  std::string return_string_reply(redisReply *reply);
+  void return_string_reply(redisReply *reply);
 public:
   //TO-DO: Constructor accepting list of connections to Sentinels for HA setups
 
