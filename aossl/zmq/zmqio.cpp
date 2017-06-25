@@ -43,7 +43,7 @@ Zmqi::~Zmqi()
 {
   delete zmqi;
   delete request;
-  if (rcv_cstr) {delete rcv_cstr[];}
+  if (rcv_cstr) {delete[] rcv_cstr;}
 }
 
 //Bind the inbound socket
@@ -197,7 +197,7 @@ char * Zmqo::crecv() {
     request.rebuild();
   }
 
-  if (rcv_cstr) {delete rcv_cstr[];rcv_cstr=NULL;}
+  if (rcv_cstr) {delete[] rcv_cstr;rcv_cstr=NULL;}
 
   // Wait for next request from client
   zmqo->recv (&request);

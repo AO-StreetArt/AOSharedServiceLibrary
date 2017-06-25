@@ -84,3 +84,4 @@ libaossl.a:  make_subfolders
 
 make_subfolders:
 	cd aossl && $(MAKE)
+	cd docs && $(MAKE)
