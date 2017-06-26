@@ -35,7 +35,6 @@ THE SOFTWARE.
 #include <vector>
 #include <exception>
 #include <mutex>
-#include <iostream>
 
 //A struct containing the objects needed to run a query
 struct RedisSession {
