@@ -50,7 +50,7 @@ class RedisConnectionPool {
   int *slots;
   //Internal integers
   int connection_limit = 1;
-  int start_connections = 0;
+  int start_connections = 1;
   int current_connection = -1;
   int current_max_connection = 1;
   int connection_creation_batch = 1;
@@ -58,6 +58,7 @@ class RedisConnectionPool {
   int timeout_microseconds = 0;
   std::string connection_string;
   std::string password;
+  std::string err_msg;
   int port;
   std::mutex get_conn_mutex;
   void init_slots();
