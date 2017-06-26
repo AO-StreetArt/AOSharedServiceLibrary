@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 std::string ConsulAdmin::base64_decode(std::string const& encoded_string) {
 
+  base64_return_string.clear();
+
   static const std::string base64_chars =
                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                "abcdefghijklmnopqrstuvwxyz"
