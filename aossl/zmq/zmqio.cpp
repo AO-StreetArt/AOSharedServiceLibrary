@@ -63,7 +63,7 @@ std::string Zmqi::recv()
   // Rebuild the ZeroMQ Message Object
   // Close the message object and then re-build, this means that
   // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
-  if (!started) {
+  if (started) {
     request->rebuild();
   }
 
@@ -81,7 +81,7 @@ char * Zmqi::crecv() {
   // Rebuild the ZeroMQ Message Object
   // Close the message object and then re-build, this means that
   // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
-  if (!started) {request->rebuild();}
+  if (started) {request->rebuild();}
   if (rcv_cstr) {delete[] rcv_cstr;rcv_cstr=NULL;}
 
   // Wait for next request from client
@@ -139,6 +139,7 @@ Zmqo::Zmqo(zmq::context_t &context, int connection_type)
 Zmqo::~Zmqo()
 {
   delete zmqo;
+  if (rcv_cstr) {delete[] rcv_cstr;}
 }
 
 //Connect to the Socket
