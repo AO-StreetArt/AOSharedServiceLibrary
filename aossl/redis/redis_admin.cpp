@@ -174,11 +174,13 @@ void RedisConnectionPool::release_connection(RedisSession *conn) {
 
 void RedisAdmin::init(std::string hostname, std::string passwd, int port, int timeout_seconds, int timeout_microseconds, int pool_size)
 {
+  int_hostname = hostname;
+  std::cout << "Redis Hostname: " << int_hostname << std::endl;
   if (passwd.empty()) {
-    pool = new RedisConnectionPool (pool_size, hostname.c_str(), NULL, port, timeout_seconds, timeout_microseconds, 1, 1);
+    pool = new RedisConnectionPool (pool_size, int_hostname.c_str(), NULL, port, timeout_seconds, timeout_microseconds, 1, 1);
   }
   else {
-    pool = new RedisConnectionPool (pool_size, hostname.c_str(), passwd.c_str(), port, timeout_seconds, timeout_microseconds, 1, 1);
+    pool = new RedisConnectionPool (pool_size, int_hostname.c_str(), passwd.c_str(), port, timeout_seconds, timeout_microseconds, 1, 1);
   }
 }
 

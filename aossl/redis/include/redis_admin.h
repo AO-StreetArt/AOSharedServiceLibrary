@@ -35,6 +35,7 @@ THE SOFTWARE.
 #include <vector>
 #include <exception>
 #include <mutex>
+#include <iostream>
 
 //A struct containing the objects needed to run a query
 struct RedisSession {
@@ -77,6 +78,7 @@ public:
 class RedisAdmin : public RedisInterface
 {
   std::string reply_str;
+  std::string int_hostname;
   RedisConnectionPool *pool = NULL;
   void init(std::string hostname, std::string passwd, int port, int timeout_seconds, int timeout_microseconds, int pool_size);
   bool process_std_string_reply(redisReply *reply);
