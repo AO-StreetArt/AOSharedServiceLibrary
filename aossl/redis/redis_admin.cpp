@@ -42,8 +42,7 @@ void RedisConnectionPool::init_slots() {
 //Initialize the connections required to start the connection pool
 void RedisConnectionPool::init_connections(const char * conn_str, const char * passwd, int con_port, int timeout_secs, int timeout_microsecs) {
 
-  std::string con_str (conn_str);
-  connection_string=con_str;
+  connection_string.assign(conn_str);
   port=con_port;
   timeout_seconds=timeout_secs;
   timeout_microseconds=timeout_microsecs;
@@ -67,7 +66,7 @@ void RedisConnectionPool::init_connections(const char * conn_str, const char * p
     }
     else if (rs.connection->err)
     {
-      std::string err_msg (rs.connection->errstr);
+      err_msg.assign(rs.connection->errstr);
       err_msg = "Error:" + err_msg;
       throw RedisConnectionException( err_msg );
     }
@@ -80,7 +79,7 @@ void RedisConnectionPool::init_connections(const char * conn_str, const char * p
         key_str = "AUTH " + key_str;
         redisReply *reply = (redisReply *) redisCommand(rs.connection, key_str.c_str());
         if ( !(strcmp(reply->str, "OK") == 0) ) {
-          std::string err_msg = "Error: Authentication Failed";
+          err_msg.assign("Error: Authentication Failed");
           throw RedisConnectionException( err_msg );
         }
         freeReplyObject(reply);
@@ -175,11 +174,12 @@ void RedisConnectionPool::release_connection(RedisSession *conn) {
 
 void RedisAdmin::init(std::string hostname, std::string passwd, int port, int timeout_seconds, int timeout_microseconds, int pool_size)
 {
+  int_hostname = hostname;
   if (passwd.empty()) {
-    pool = new RedisConnectionPool (pool_size, hostname.c_str(), NULL, port, timeout_seconds, timeout_microseconds, 1, 1);
+    pool = new RedisConnectionPool (pool_size, int_hostname.c_str(), NULL, port, timeout_seconds, timeout_microseconds, 1, 1);
   }
   else {
-    pool = new RedisConnectionPool (pool_size, hostname.c_str(), passwd.c_str(), port, timeout_seconds, timeout_microseconds, 1, 1);
+    pool = new RedisConnectionPool (pool_size, int_hostname.c_str(), passwd.c_str(), port, timeout_seconds, timeout_microseconds, 1, 1);
   }
 }
 
