@@ -303,7 +303,9 @@ void LoggingCategory::debug(const char * msg)
   }
   else
   {
-    int_category->debug(name + "::" + msg);
+    if (msg) {
+      int_category->debug(name + "::" + msg);
+    }
   }
 }
 
@@ -315,7 +317,9 @@ void LoggingCategory::error(const char * msg)
   }
   else
   {
-    int_category->error(name + "::" + msg);
+    if (msg) {
+      int_category->error(name + "::" + msg);
+    }
   }
 }
 
@@ -327,7 +331,9 @@ void LoggingCategory::info(const char * msg)
   }
   else
   {
-    int_category->info(name + "::" + msg);
+    if (msg) {
+      int_category->info(name + "::" + msg);
+    }
   }
 }
 
