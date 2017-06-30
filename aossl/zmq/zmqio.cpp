@@ -88,7 +88,7 @@ char * Zmqi::crecv() {
   zmqi->recv (request);
 
   // Take the data out of the message
-  if (request->size() > 0 {
+  if (request->size() > 0) {
     rcv_cstr = new char [request->size()];
     std::memcpy(rcv_cstr, request->data(), request->size());
   }
