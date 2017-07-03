@@ -35,16 +35,18 @@ While designed with a Microservice architecture in mind, AOSSL also seeks to mai
 ## Documentation
 Check out online documentation of the latest version at [ReadTheDocs](http://aosharedservicelibrary.readthedocs.io/en/latest/index.html).
 
+Stuck and need help?  Have general questions about the library?  Reach out to the development team at aossl@emaillist.io
+
 ## Contributing
 
-All contributors are welcome, including (but not limited to) pull requests, issues, documentation, examples, and feature requests.  Please see the Code of Conduct file for an overview on the expectations for all contributors.
+All contributors are welcome, including (but not limited to) pull requests, issues, documentation, examples, and feature requests.  Please see the Code of Conduct and the contributing files for an overview on the expectations for all contributors.
 
-We are actively looking for anyone interested in joining the development team.  If you are interested, please send an email to aostreetart9@gmail.com.
+Contributors should also review the documentation carefully, in particular the [Developer Notes](http://aosharedservicelibrary.readthedocs.io/en/latest/dev_notes.html) section.
 
-There are a number of topics which have been identified as areas needing development, and contributors are encouraged to work on these areas as well.  
+We are actively looking for anyone interested in working on the following areas:
 
-* Sentinel & Cluster support for Redis Drivers
-* Benchmarks for Mongo & Neo4j
-* ZeroMQ encryption
-* Library testing with OSX and/or other Linux Distributions not already supported
-* CMake Support
+* Security
+* Thread-Safety
+* Code Optimization
+
+If you are interested, or are interested in joining the development team in general, please send an email to aossl@emaillist.io

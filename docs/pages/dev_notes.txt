@@ -1,0 +1,8 @@
+/*! \page dev_notes Developer Notes
+ *
+ * # Developer Notes
+ *
+ * This page contains a series of notes intended to be beneficial for any contributors to AOSSL.
+ *
+ * \ref index "Go Home"
+ */
