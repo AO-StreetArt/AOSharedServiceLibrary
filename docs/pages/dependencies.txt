@@ -10,16 +10,16 @@
  *
  * For logging, we use log4cpp, which can be found [here](http://log4cpp.sourceforge.net/)
  *
- * You will need libhiredis, which can be found [here](https://github.com/redis/hiredis)
+ * You will need libhiredis, which can be found [here](https://github.com/redis/hiredis) in order to use the Redis driver
  *
  * You will need libmongoc and libbson for Mongo connections, follow the instructions [here](http://mongoc.org/libmongoc/1.3.0/installing.html)
  *
- * You will need libneo4j-client, which can be found [here](https://github.com/cleishm/libneo4j-client/)
+ * You will need libneo4j-client, which can be found [here](https://github.com/cleishm/libneo4j-client/), in order to use the Neo4j driver
  *
  * We rely also on a set of base libraries which are installable via most package managers:
- * - libuuid
- * - libcurl
- * - libevent
+ * - libuuid (UUID Generator)
+ * - libcurl (HTTP Interface & Consul Interface)
+ * - libevent (HTTP Server)
  *
  * You will need [Hayai](https://github.com/nickbruun/hayai) to run the benchmarks.
  *

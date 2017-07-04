@@ -4,5 +4,25 @@
  *
  * This page contains a series of notes intended to be beneficial for any contributors to AOSSL.
  *
+ * ## Long Term Vision
+ *
+ * AOSSL was begun out of a need for blazing-fast, secure, and robust core services
+ * within a larger architecture.  It looks to provide a developer kit which will decrease
+ * overall time-to-market for these services, while allowing for maximum flexibility.
+ *
+ * The long-term vision of AOSSL is to ensure that this architecture is robust, secure,
+ * and modular, and to continue to add functionality and drivers for major use-cases.
+ * In addition, in future versions, AOSSL will look to become a full fledged framework,
+ * rather than simply a collection of drivers.
+ *
+ * ## Generating Releases
+ *
+ * The release_gen.sh script is utilized to generate releases for various systems.
+ * It accepts three command line arguments:
+ * - the name of the release: aossl-*os_name*-*os_version*
+ * - the version of the release: we follow [semantic versioning](http://semver.org/)
+ * - the location of the dependency script: current valid paths are linux/deb (uses apt-get) and linux/rhel (uses yum)
+ *
+ *
  * \ref index "Go Home"
  */
