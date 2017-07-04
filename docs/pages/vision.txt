@@ -1,0 +1,15 @@
+/*! \page vision Vision
+ *
+ * # Long Term Vision
+ *
+ * AOSSL was begun out of a need for blazing-fast, secure, and robust core services
+ * within a larger architecture.  It looks to provide a developer kit which will decrease
+ * overall time-to-market for these services, while allowing for maximum flexibility.
+ *
+ * The long-term vision of AOSSL is to ensure that this architecture is robust, secure,
+ * and modular, and to continue to add functionality and drivers for major use-cases.
+ * In addition, in future versions, AOSSL will look to become a full fledged framework,
+ * rather than simply a collection of drivers.
+ *
+ * \ref index "Go Home"
+ */

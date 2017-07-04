@@ -4,17 +4,6 @@
  *
  * This page contains a series of notes intended to be beneficial for any contributors to AOSSL.
  *
- * ## Long Term Vision
- *
- * AOSSL was begun out of a need for blazing-fast, secure, and robust core services
- * within a larger architecture.  It looks to provide a developer kit which will decrease
- * overall time-to-market for these services, while allowing for maximum flexibility.
- *
- * The long-term vision of AOSSL is to ensure that this architecture is robust, secure,
- * and modular, and to continue to add functionality and drivers for major use-cases.
- * In addition, in future versions, AOSSL will look to become a full fledged framework,
- * rather than simply a collection of drivers.
- *
  * ## Generating Releases
  *
  * The release_gen.sh script is utilized to generate releases for various systems.
@@ -23,6 +12,11 @@
  * - the version of the release: we follow [semantic versioning](http://semver.org/)
  * - the location of the dependency script: current valid paths are linux/deb (uses apt-get) and linux/rhel (uses yum)
  *
+ * ## Security Notes
+ * Currently AOSSL components are unsecured.  Three critical security needs have been identified:
+ * - Consul 'Secret Store' using Hashicorp Vault as a backend.  Allow for secure storage of private config values.
+ * - ZMQ LibCurve encryption, using built-in security mechanisms of 0MQ to encrypt messages sent and decrypt messages recieved.
+ * - HTTPS Support, for securing HTTP Communications.  Further encryptions via HTTP would need to be handled by end user.
  *
  * \ref index "Go Home"
  */
