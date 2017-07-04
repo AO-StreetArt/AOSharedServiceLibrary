@@ -35,6 +35,6 @@
  *
  * \section contributing Contributing
  * - \ref tests "Library Tests"
- * - \ref devnotes "Developer Notes"
+ * - \ref dev_notes "Developer Notes"
  * - \ref vision "Vision"
  */
