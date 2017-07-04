@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_FACTORY_COMMANDLINE
-#define AOSSL_FACTORY_COMMANDLINE
+#ifndef AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_
+#define AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_
 
 #include "commandline_interface.h"
 #include "cli.h"
@@ -34,10 +34,8 @@ THE SOFTWARE.
 //! objects exposed by the framework and passes back
 //! instances of interfaces.  This allows for the publicly exposed methods
 //! to be independent of the implementations.
-class CommandLineInterpreterFactory
-{
-public:
-
+class CommandLineInterpreterFactory {
+ public:
   //! Create a new Service Component Factory
   CommandLineInterpreterFactory() {}
 
@@ -45,7 +43,9 @@ public:
   ~CommandLineInterpreterFactory() {}
 
   //! Get the Command Line Interface instance
-  CommandLineInterface* get_command_line_interface( int argc, char* argv[] ) {return new CommandLineInterpreter( argc, argv );}
+  CommandLineInterface* get_command_line_interface(int argc, char* argv[]) {
+    return new CommandLineInterpreter( argc, argv );
+  }
 };
 
-#endif
+#endif  // AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_

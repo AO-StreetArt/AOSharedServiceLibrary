@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef COMMAND_LINE
-#define COMMAND_LINE
+#ifndef AOSSL_COMMANDLINE_INCLUDE_CLI_H_
+#define AOSSL_COMMANDLINE_INCLUDE_CLI_H_
 
 #include <unordered_map>
 #include <string>
@@ -31,27 +31,27 @@ THE SOFTWARE.
 
 #include "commandline_interface.h"
 
-class CommandLineInterpreter: public CommandLineInterface
-{
-  //An unordered map of options from the command line
+class CommandLineInterpreter: public CommandLineInterface {
+  // An unordered map of options from the command line
   std::unordered_map<std::string, std::string> opts;
   std::string name;
-public:
 
+ public:
   //! Create a new Command Line Interpreter
 
-  //! Here we create a new interpreter by passing in the two arguments from the main method,
-  //! int argc & char* argv[].  This parses arguments passed in the form:
-  //! -arg_key=arg_val
+  //! Here we create a new interpreter by passing in the two
+  //! arguments from the main method, int argc & char* argv[].
+  //! This parses arguments passed in the form:
+  //! arg_key=arg_val
   CommandLineInterpreter(int argc, char* argv[]);
 
   ~CommandLineInterpreter() {}
 
   //! Does a key exist?
-  bool opt_exist( std::string key );
+  bool opt_exist(std::string key);
 
   //! Get an option by key
-  std::string get_opt( std::string key ) {return opts[key];}
+  std::string get_opt(std::string key) {return opts[key];}
 
   //! Get the program name
 
@@ -60,4 +60,4 @@ public:
   std::string get_program_name() {return name;}
 };
 
-#endif
+#endif  // AOSSL_COMMANDLINE_INCLUDE_CLI_H_

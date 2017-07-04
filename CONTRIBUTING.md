@@ -22,3 +22,4 @@ Some things that will increase the chance that your pull request is accepted:
 * Comment your code
 * Write a good commit message
 * If you have many different commits, use rebase to consolidate down to a single commit
+* Use [CppLint](https://github.com/google/styleguide/tree/gh-pages/cpplint) and follow the [Google C++ Style Guide](https://github.com/google/styleguide) wherever possible
