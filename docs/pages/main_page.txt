@@ -30,7 +30,11 @@
  * - \ref props "Properties File Parser"
  * - \ref http_client "HTTP Client"
  *
- * \section moreinfo More Information
- * - \ref tests "Library Tests"
+ * \section moreinfo Dependency Information
  * - \ref dependencies "Library Dependencies"
+ *
+ * \section contributing Contributing
+ * - \ref tests "Library Tests"
+ * - \ref dev_notes "Developer Notes"
+ * - \ref vision "Vision"
  */

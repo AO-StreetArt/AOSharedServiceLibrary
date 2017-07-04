@@ -4,6 +4,10 @@
  *
  * AOSSL Uses Travis-CI for automated builds and tests, for full history please see the [Travis CI Homepage](https://travis-ci.org/AO-StreetArt/AOSharedServiceLibrary).
  *
+ * The current Travis configuration builds the central library, tests, and benchmarks.
+ *
+ * Then, Travis runs the below specified tests.  If you are adding tests to the library, they will need to be added to the .travis.yml file in order to be run automatically.  It does not automatically run the benchmarks.
+ *
  * ## Manually Executing Tests
  *
  * Once we follow the commands in the quickstart for building from source, we have a set of executables that end with "test" which run some basic tests on the libraries to ensure they function correctly.  Please note that the Redis, Couchbase, Consul, and Mongo tests will require an active server/agent for the respective service.
