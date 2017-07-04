@@ -2,6 +2,8 @@ We love pull requests from everyone.  By participating in this project, you agre
 
 Start by forking and cloning the repository, then following the instructions to [build from source](http://aosharedservicelibrary.readthedocs.io/en/latest/quickstart.html).
 
+Note that you may, at your leisure, build and test your changes within the [AOSSL Docker Image](http://aosharedservicelibrary.readthedocs.io/en/latest/quickstart.html).  Simply run the image, clone your fork inside of it, and issue the below instructions from within the container.  This has the added benefit of coming with all of the dependencies pre-installed.
+
 Ensure that the tests pass:
 
 `make && make test`
