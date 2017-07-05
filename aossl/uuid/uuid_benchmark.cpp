@@ -35,41 +35,31 @@ THE SOFTWARE.
 
 uuidInterface *uuid;
 
-//----------------------------------------------------------------------------//
-//------------------------------Benchmarks------------------------------------//
-//----------------------------------------------------------------------------//
+// Benchmarks
 
-BENCHMARK(UUID, Generate, 10, 100)
-{
+BENCHMARK(UUID, Generate, 10, 100) {
 
   UuidContainer uuid_str = uuid->generate();
 
 }
 
-//----------------------------------------------------------------------------//
-//------------------------------Main Method-----------------------------------//
-//----------------------------------------------------------------------------//
-
-int main()
-{
+int main() {
 
   uuidComponentFactory uuid_factory;
 
-  //Set up UUID Generator
+  // Set up UUID Generator
   uuid = uuid_factory.get_uuid_interface();
-  //uuid = new uuidAdmin;
+  // uuid = new uuidAdmin;
   std::cout << "UUID Generator Created" << std::endl;
 
-  //------------------------------Run Tests-------------------------------------//
-  //----------------------------------------------------------------------------//
+  // Run Tests
 
   hayai::ConsoleOutputter consoleOutputter;
 
   hayai::Benchmarker::AddOutputter(consoleOutputter);
   hayai::Benchmarker::RunAllTests();
 
-  //-------------------------Post-Test Teardown---------------------------------//
-  //----------------------------------------------------------------------------//
+  // Cleanup
 
   delete uuid;
 

@@ -38,86 +38,71 @@ THE SOFTWARE.
 
 HttpServerInterface *http;
 
-//Shutdown the application
-void shutdown()
-{
-	delete http;
+// Shutdown the application
+void shutdown() {
+  delete http;
 }
 
-std::string process_request(struct Request *req)
-{
-	std::string resp = "";
-	if (req->req_err->err_code == NOERROR)
-	{
-		if (req->req_type == HTTP_GET)
-		{
-			resp = "Get Request";
-			std::cout << resp << std::endl;
-		}
-		else if (req->req_type == HTTP_PUT)
-		{
-			resp = "Put Request";
-			std::cout << resp << std::endl;
-		}
-		else if (req->req_type == HTTP_POST)
-		{
-			resp = "Post Request";
-			std::cout << resp << std::endl;
-			std::cout << req->req_data << std::endl;
-			if (req->req_data == "shutdown") {
-				shutdown();
-				exit(1);
-			}
-		}
-		else if (req->req_type == HTTP_DELETE)
-		{
-			resp = "Delete Request";
-			std::cout << resp << std::endl;
-		}
-		else
-		{
-			resp = "Unknown Request Type";
-			std::cout << resp << req->req_type << std::endl;
-		}
-	}
-	return resp;
+std::string process_request(struct Request *req) {
+  std::string resp = "";
+  if (req->req_err->err_code == NOERROR) {
+    if (req->req_type == HTTP_GET) {
+      resp = "Get Request";
+      std::cout << resp << std::endl;
+    } else if (req->req_type == HTTP_PUT) {
+      resp = "Put Request";
+      std::cout << resp << std::endl;
+    } else if (req->req_type == HTTP_POST) {
+      resp = "Post Request";
+      std::cout << resp << std::endl;
+      std::cout << req->req_data << std::endl;
+      if (req->req_data == "shutdown") {
+        shutdown();
+        exit(1);
+      }
+    } else if (req->req_type == HTTP_DELETE) {
+      resp = "Delete Request";
+      std::cout << resp << std::endl;
+    } else {
+      resp = "Unknown Request Type";
+      std::cout << resp << req->req_type << std::endl;
+    }
+  }
+  return resp;
 }
 
-std::string process_test_request(struct Request *req)
-{
-	std::cout << "Test Request" << std::endl;
-	std::cout << req->req_addr << std::endl;
-	return process_request(req);
+std::string process_test_request(struct Request *req) {
+  std::cout << "Test Request" << std::endl;
+  std::cout << req->req_addr << std::endl;
+  return process_request(req);
 }
 
-//Catch a Signal (for example, keyboard interrupt)
-void my_signal_handler(int s){
-	std::cout << ("Caught signal") << std::endl;
-	std::string signal_type = std::to_string(s);
-	std::cout << (signal_type) << std::endl;
-	shutdown();
-	exit(1);
+// Catch a Signal (for example, keyboard interrupt)
+void my_signal_handler(int s) {
+  std::cout << ("Caught signal") << std::endl;
+  std::string signal_type = std::to_string(s);
+  std::cout << (signal_type) << std::endl;
+  shutdown();
+  exit(1);
 }
 
-int main()
-{
+int main() {
+  // Set up a handler for any signals so that we always shutdown gracefully
+  struct sigaction sigIntHandler;
+  sigIntHandler.sa_handler = my_signal_handler;
+  sigemptyset(&sigIntHandler.sa_mask);
+  sigIntHandler.sa_flags = 0;
+  sigaction(SIGINT, &sigIntHandler, NULL);
 
-	//Set up a handler for any signal events so that we always shutdown gracefully
-	struct sigaction sigIntHandler;
-	sigIntHandler.sa_handler = my_signal_handler;
-	sigemptyset(&sigIntHandler.sa_mask);
-	sigIntHandler.sa_flags = 0;
-	sigaction(SIGINT, &sigIntHandler, NULL);
+  HttpServerFactory server_factory;
 
-	HttpServerFactory server_factory;
+  // Set up the HTTP Server
+  http = server_factory.get_http_server_interface("127.0.0.1", 12345);
+  http->bind_callback("/", process_request);
+  http->bind_callback("/test", process_test_request);
 
-	//Set up the HTTP Server
-	http = server_factory.get_http_server_interface("127.0.0.1", 12345);
-	http->bind_callback("/", process_request);
-	http->bind_callback("/test", process_test_request);
+  // Listen for Requests
+  http->recv();
 
-	//Listen for Requests
-	http->recv();
-
-	return 0;
+  return 0;
 }

@@ -22,15 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//Tests for the Zmqio Module
+// Tests for the Zmqio Module
 
 #include "include/factory_zmq.h"
 #include "include/zmq_interface.h"
 
 #include <iostream>
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 
   if (argc < 4) {return -1;}
 
@@ -39,18 +38,18 @@ int main(int argc, char* argv[])
   std::string msg (argv[3]);
   std::string con_str = "tcp://" + con_host + ":" + con_port;
 
-  //Set up the underlying variables
+  // Set up the underlying variables
   Zmqio *zmqo;
   ZmqComponentFactory zmq_factory;
 
-  //Set up the ZMQ Clients
+  // Set up the ZMQ Clients
   zmqo = zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555", REQ_RESP);
 
-  //Send a Message
+  // Send a Message
   zmqo->send(msg);
   std::cout << "Message Sent: " << msg << std::endl;
 
-  //Cleanup
+  // Cleanup
   delete zmqo;
 
   return 0;

@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//An admin using the xRedis C++ Drivers for Redis
-
 #ifndef REDIS_INTERFACE
 #define REDIS_INTERFACE
 
@@ -31,13 +29,8 @@ THE SOFTWARE.
 #include <string>
 #include <vector>
 
-//----------------------------------------------------------------------------//
-//----------------------------------Errors------------------------------------//
-//----------------------------------------------------------------------------//
-
 //! An Implementation of std::exception that denotes a connection error within Redis
-struct RedisConnectionException: public std::exception
-{
+struct RedisConnectionException: public std::exception {
   //! An error message passed on initialization
   std::string int_msg;
   const char * what_str;
@@ -52,16 +45,14 @@ struct RedisConnectionException: public std::exception
   ~RedisConnectionException() throw () {}
 
   //! Show the error message in readable format
-  const char * what() const throw ()
-  {
+  const char * what() const throw () {
     std::string what_str = "Error Connecting to Redis: " + int_msg;
     return what_str.c_str();
   }
 };
 
 //! An Implementation of std::exception that denotes an error within Redis during a transaction
-struct RedisOperationException: public std::exception
-{
+struct RedisOperationException: public std::exception {
   //! An error message passed on initialization
   std::string int_msg;
 
@@ -75,20 +66,14 @@ struct RedisOperationException: public std::exception
   ~RedisOperationException() throw () {}
 
   //! Show the error message in readable format
-  const char * what() const throw ()
-  {
+  const char * what() const throw () {
     std::string what_str = "Error Performing Redis Operation: " + int_msg;
     return what_str.c_str();
   }
 };
 
-//----------------------------------------------------------------------------//
-//------------------------------Core Elements---------------------------------//
-//----------------------------------------------------------------------------//
-
 //! A Structure for storing Redis Connection Information
-struct RedisConnChain
-{
+struct RedisConnChain {
   //! The IP of the Redis Node
   std::string ip;
 
@@ -109,8 +94,7 @@ struct RedisConnChain
 };
 
 //! A Structure for storing a Key-Value pair, used with batch operations
-struct RedisKvPair
-{
+struct RedisKvPair {
   //! Key of the pair
   std::string key;
 
@@ -122,15 +106,10 @@ struct RedisKvPair
 
 //! The Redis Admin is responsible for all interactions with the Redis Key-Value
 //! Store
-class RedisInterface
-{
-public:
+class RedisInterface {
+ public:
 
   virtual ~RedisInterface() {}
-
-  //----------------------------------------------------------------------------//
-  //---------------------------Standard Operations------------------------------//
-  //----------------------------------------------------------------------------//
 
   //! Load a value from Redis
   virtual std::string load ( std::string key ) = 0;
@@ -162,10 +141,6 @@ public:
   //! Return the length of the string value stored at key
   virtual int len ( std::string key ) = 0;
 
-  //----------------------------------------------------------------------------//
-  //----------------------------Counter Operations------------------------------//
-  //----------------------------------------------------------------------------//
-
   //! Increment a Counter value in Redis
   virtual int incr ( std::string key ) = 0;
 
@@ -177,10 +152,6 @@ public:
 
   //! Decriment a Counter value in Redis
   virtual int decr ( std::string key, int decr_amt ) = 0;
-
-  //----------------------------------------------------------------------------//
-  //-----------------------------List Operations--------------------------------//
-  //----------------------------------------------------------------------------//
 
   //! Push a value to a Redis list on the given key
   virtual int lpush ( std::string key, std::string val ) = 0;
@@ -208,10 +179,6 @@ public:
 
   //! Trim a list to the specified start and end index
   virtual bool ltrim ( std::string key, int start_index, int end_index) = 0;
-
-  //----------------------------------------------------------------------------//
-  //-----------------------------Bulk Operations--------------------------------//
-  //----------------------------------------------------------------------------//
 
   //! Get a set of string replies
   virtual std::vector<std::string> mget ( std::vector<std::string> keys ) = 0;

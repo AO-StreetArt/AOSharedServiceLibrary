@@ -36,9 +36,8 @@ THE SOFTWARE.
 //! This also accepts lists in the form
 //! -list_name-list_value
 //! -list_name-list_value2
-class PropertiesReaderInterface
-{
-public:
+class PropertiesReaderInterface {
+ public:
 
   virtual ~PropertiesReaderInterface() {}
 

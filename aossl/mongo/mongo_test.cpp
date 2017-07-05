@@ -42,8 +42,7 @@ int print_iterator(MongoIteratorInterface *iter) {
 
 int
 main (int   argc,
-  char *argv[])
-  {
+  char *argv[]) {
     const char *json = "{\"name\": {\"first\":\"Grace\", \"last\":\"Hopper\"}}";
     const char *json2 = "{\"name\": {\"first\":\"Alex\", \"last\":\"Barry\"}}";
 
@@ -75,7 +74,7 @@ main (int   argc,
     MongoIteratorInterface *iter1 = NULL;
     MongoIteratorInterface *iter2 = NULL;
 
-    //Creation Test
+    // Creation Test
     std::cout << "Writing Document to Mongo DB" << std::endl;
 
     try {
@@ -92,7 +91,7 @@ main (int   argc,
       delete resp1;
     }
 
-    //Load Test
+    // Load Test
     try {
       resp2 = mongo->load_document(key1);
       json_doc = resp2->get_value();
@@ -108,7 +107,7 @@ main (int   argc,
       delete resp2;
     }
 
-    //Update Test
+    // Update Test
     try {
        mongo->save_document(json2, key1);
     }
@@ -135,7 +134,7 @@ main (int   argc,
       delete resp3;
     }
 
-    //Delete Test
+    // Delete Test
     try {
       mongo->delete_document(key1);
     }
@@ -150,7 +149,7 @@ main (int   argc,
     try {
       resp4 = mongo->load_document(key1);
       assert( !resp4 );
-      //json_doc = resp4->get_value();
+      // json_doc = resp4->get_value();
     }
     catch (std::exception& e) {
       std::cout << e.what() << std::endl;
@@ -164,7 +163,7 @@ main (int   argc,
       delete resp4;
     }
 
-    //Secondary Collection tests
+    // Secondary Collection tests
     try {
       resp5 = mongo->create_document(json3, "newcoll");
       key2 = resp5->get_value();
@@ -224,7 +223,7 @@ main (int   argc,
       delete resp9;
     }
 
-    //Query Tests
+    // Query Tests
     std::string query_string1 = "{\"number\": 1}";
     std::string query_string2 = "{\"name\": {\"first\":\"Keasha\", \"last\":\"Norton\"}}";
 
@@ -278,7 +277,7 @@ main (int   argc,
       assert( false );
     }
 
-    //Failure Tests
+    // Failure Tests
     MongoInterface *bad_mongo = mongo_factory.get_mongo_interface("mongodb://localhost:27018/", "mydb", "mycoll");
 
     key1 = "";

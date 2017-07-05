@@ -34,9 +34,8 @@ THE SOFTWARE.
 //! objects exposed by the framework and passes back
 //! instances of interfaces.  This allows for the publicly exposed methods
 //! to be independent of the implementations.
-class Neo4jComponentFactory
-{
-public:
+class Neo4jComponentFactory {
+ public:
 
   //! Create a new Service Component Factory
   Neo4jComponentFactory() {}

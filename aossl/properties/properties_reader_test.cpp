@@ -28,25 +28,20 @@ THE SOFTWARE.
 #include <assert.h>
 #include <vector>
 
-int main( int argc, char** argv )
-{
+int main( int argc, char** argv ) {
 
   PropertyReaderFactory prop_factory;
   PropertiesReaderInterface *reader = prop_factory.get_properties_reader_interface( "test.properties" );
   if ( reader->opt_exist("DB_Password") ) {
     assert(reader->get_opt("DB_Password") == "default");
-  }
-  else
-  {
+  } else {
     assert(false);
   }
 
   if ( reader->list_exist("RedisConnectionString") ) {
     std::vector<std::string> list = reader->get_list("RedisConnectionString");
     assert(list.size() == 2);
-  }
-  else
-  {
+  } else {
     assert(false);
   }
 

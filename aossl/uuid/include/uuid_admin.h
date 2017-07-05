@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//An admin for generating UUID's
-
 #ifndef UUID_ADMIN
 #define UUID_ADMIN
 
@@ -32,23 +30,22 @@ THE SOFTWARE.
 #include <uuid/uuid.h>
 #include "uuid_interface.h"
 
-//! UUID Admin
+// UUID Admin
 
-//! The UUID Admin is in charge of generating any Universally Unique
-//! ID's that are required throughout program execution
-class uuidAdmin: public uuidInterface
-{
+// The UUID Admin is in charge of generating any Universally Unique
+// ID's that are required throughout program execution
+class uuidAdmin: public uuidInterface {
 UuidContainer cont;
-public:
+ public:
 	uuidAdmin() {}
 	~uuidAdmin() {}
-	//! Generate a new UUID
+	// Generate a new UUID
 
-	//! The method will generate on the means of generation present on your system
-	//! In some cases, this may result in UUID's being generated that pose a security
-	//! risk.  In this case, that fact will be clearly called out in the logs, and
-	//! it is recommended that production systems are tested to ensure that UUID's are
-	//! generated in a safe manner
+	// The method will generate on the means of generation present on your system
+	// In some cases, this may result in UUID's being generated that pose a security
+	// risk.  In this case, that fact will be clearly called out in the logs, and
+	// it is recommended that production systems are tested to ensure that UUID's are
+	// generated in a safe manner
 	UuidContainer generate();
 };
 

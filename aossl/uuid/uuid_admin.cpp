@@ -24,13 +24,8 @@ THE SOFTWARE.
 
 #include "include/uuid_admin.h"
 
-//Constructor & Destructor
-//uuidAdmin::uuidAdmin() {}
-//uuidAdmin::~uuidAdmin() {}
-
-//Generate a new UUID
-UuidContainer uuidAdmin::generate()
-{
+// Generate a new UUID
+UuidContainer uuidAdmin::generate() {
 	int uuid_gen_result = 0;
 	uuid_t uuid;
 	uuid_gen_result = uuid_generate_time_safe(uuid);

@@ -29,16 +29,14 @@ THE SOFTWARE.
 #include <unordered_map>
 #include <exception>
 
-//-------------------------------------------------------------------
-////---------------------Query Results-------------------------------
-////-----------------------------------------------------------------
+// Query Results
 
 //! A Neo4j List
 
 //! This is returned for list elements
 //! in a map as well as node labels
 class DbListInterface {
-public:
+ public:
 
   virtual ~DbListInterface() {}
 
@@ -69,7 +67,7 @@ public:
 //! This is returned for map elements
 //! in a map as well as node/edge properties
 class DbMapInterface {
-public:
+ public:
 
   virtual ~DbMapInterface() {}
 
@@ -106,7 +104,7 @@ public:
 //! This is returned from a result tree and
 //! represents either a node, an edge, or a path
 class DbObjectInterface {
-public:
+ public:
 
   virtual ~DbObjectInterface() {}
 
@@ -173,7 +171,7 @@ public:
 // Represents a single query Result, returned by the iterator
 // Consists of a set of nodes and edges
 class ResultTreeInterface {
-public:
+ public:
 
   virtual ~ResultTreeInterface() {}
 
@@ -189,7 +187,7 @@ public:
 //! Trees for each entry that matches in the query
 //! Deletes it when finished
 class ResultsIteratorInterface {
-public:
+ public:
 
   virtual ~ResultsIteratorInterface() {}
 
@@ -209,9 +207,7 @@ public:
   virtual ResultTreeInterface* next() = 0;
 };
 
-//-------------------------------------------------------------------
-////----------------------Neo4j Admin--------------------------------
-////-----------------------------------------------------------------
+// Neo4j Admin
 
 //! Neo4j Query Parameter Interface
 
@@ -219,7 +215,7 @@ public:
 //! Query prior to execution.  This could be
 //! Either a single value or a list
 class Neo4jQueryParameterInterface {
-public:
+ public:
 
   virtual ~Neo4jQueryParameterInterface() {};
 
@@ -248,7 +244,7 @@ public:
 //! Returns complex data structures for viewing
 //! Query results, which start with the ResultsIteratorInterface
 class Neo4jInterface {
-public:
+ public:
 
   virtual ~Neo4jInterface() {};
 

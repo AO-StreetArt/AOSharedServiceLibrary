@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//Tests for Redis Admin
+// Tests for Redis Admin
 
 #include <string>
 #include <iostream>
@@ -38,20 +38,19 @@ THE SOFTWARE.
 
 #include <assert.h>
 
-//Main Method
+// Main Method
 
 std::vector<RedisConnChain> RedisConnectionList;
 
 RedisInterface *xRedis;
 
-int main()
-{
+int main() {
 
-  //Set up Redis Connection
+  // Set up Redis Connection
   RedisComponentFactory redis_factory;
   xRedis = redis_factory.get_redis_interface("127.0.0.1", 6379);
 
-  //Clear out the Keys from the last test
+  // Clear out the Keys from the last test
   xRedis->del("Test");
   xRedis->del("1");
   xRedis->del("2");
@@ -65,24 +64,24 @@ int main()
   xRedis->del("test12");
   xRedis->del("test13");
 
-  //---------------------------Core Components----------------------------------//
+  // Core Components
 
-  //save
+  // save
   assert( xRedis->save("Test", "123") );
 
-  //exists
+  // exists
   assert( xRedis->exists("Test") );
 
-  //load
+  // load
   std::string strValue = xRedis->load("Test");
   assert(strValue == "123");
   std::cout << strValue << std::endl;
 
-  //Delete
+  // Delete
   assert( xRedis->del("Test") );
   assert( !(xRedis->exists("Test")) );
 
-  //Expire & Persist
+  // Expire & Persist
   assert( xRedis->save("1", "123") );
   assert( xRedis->save("2", "456") );
   assert( xRedis->save("3", "789") );
@@ -105,7 +104,7 @@ int main()
   assert( !(xRedis->exists("2")) );
   assert( xRedis->exists("3") );
 
-  //Setex
+  // Setex
   assert( xRedis->setex("1", "123", 1) );
   assert( xRedis->setex("2", "456", 10) );
   assert( xRedis->exists("1") );
@@ -119,59 +118,59 @@ int main()
   assert( !(xRedis->exists("1")) );
   assert( !(xRedis->exists("2")) );
 
-  //Length
+  // Length
   assert( xRedis->len("3") == 3 );
 
-  //append
+  // append
   assert( xRedis->append("3", "1011") );
   assert( xRedis->len("3") == 7 );
 
-  //---------------------------Counter Methods----------------------------------//
+  // Counter Methods
 
-  //Increase
+  // Increase
   assert( xRedis->incr("counter") == 1);
   assert( xRedis->incr("counter") == 2);
 
-  //Decrease
+  // Decrease
   assert( xRedis->decr("counter") == 1);
   assert( xRedis->decr("counter") == 0);
 
-  //----------------------------List Methods------------------------------------//
+  // List Methods
 
-  //Push
+  // Push
   assert( xRedis->lpush("list1", "1") == 1);
   assert( xRedis->lpush("list1", "2") == 2);
   assert( xRedis->lpush("list1", "3") == 3);
   assert( xRedis->rpush("list1", "0") == 4);
 
-  //Pop
+  // Pop
   assert( xRedis->lpop("list1") == "3" );
   assert( xRedis->rpop("list1") == "0" );
 
-  //Set
+  // Set
   assert ( xRedis->lset("list1", "9", 1) );
 
-  //Index
+  // Index
   assert ( xRedis->lindex("list1", 1) == "9" );
   assert ( xRedis->lindex("list1", 0) == "2" );
 
-  //Length
+  // Length
   assert ( xRedis->llen("list1") == 2 );
 
-  //Insert
+  // Insert
   assert ( xRedis->lpush("list1", "0") == 3);
   assert ( xRedis->linsert("list1", "4", "2", true) == 4 );
   assert ( xRedis->lindex("list1", 1) == "4" );
   assert ( xRedis->linsert("list1", "6", "2", false) == 5 );
   assert ( xRedis->lindex("list1", 3) == "6" );
 
-  //Trim
+  // Trim
   assert ( xRedis->ltrim("list1", 0, 1) );
   assert ( xRedis->llen("list1") == 2 );
 
-  //----------------------------Batch Methods-----------------------------------//
+  // Batch Methods
 
-  //Multi-Save
+  // Multi-Save
   RedisKvPair kv1;
   RedisKvPair kv2;
   RedisKvPair kv3;
@@ -194,7 +193,7 @@ int main()
   assert( xRedis->exists("test2") );
   assert( xRedis->exists("test3") );
 
-  //Multi-Get
+  // Multi-Get
   std::vector<std::string> ret_keys;
   ret_keys.push_back("test1");
   ret_keys.push_back("test2");
@@ -209,7 +208,7 @@ int main()
   assert ( vals[2] == "third" );
   assert ( vals[3] == "" );
 
-  //Multi-Set NX
+  // Multi-Set NX
   RedisKvPair kv11;
   RedisKvPair kv12;
   RedisKvPair kv13;

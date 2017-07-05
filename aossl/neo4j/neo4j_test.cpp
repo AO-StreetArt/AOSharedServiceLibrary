@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 Neo4jInterface *neo = NULL;
 
-//Print the element results from the tree
+// Print the element results from the tree
 void print_results(ResultTreeInterface* result, int index) {
   DbObjectInterface* obj = result->get(index);
   std::string result_string = obj->to_string();
@@ -37,19 +37,17 @@ void print_results(ResultTreeInterface* result, int index) {
   delete obj;
 }
 
-//Check the types of the element in the tree
+// Check the types of the element in the tree
 int check_types(ResultTreeInterface* result, int index) {
   DbObjectInterface* obj = result->get(index);
   int ret_val = -1;
   if ( obj->is_edge() ) {
     std::cout << "Element " << index << " found to be an edge." << std::endl;
     ret_val = 0;
-  }
-  else if ( obj->is_node() ) {
+  } else if ( obj->is_node() ) {
     std::cout << "Element " << index << " found to be a node." << std::endl;
     ret_val = 1;
-  }
-  else {
+  } else {
     std::cout << "Element " << index << " type not found." << std::endl;
   }
   delete obj;
@@ -59,24 +57,24 @@ int check_types(ResultTreeInterface* result, int index) {
 void run_on_results(ResultsIteratorInterface *results) {
   int i = 0;
   if (results) {
-    //Access the results
+    // Access the results
     ResultTreeInterface* result = results->next();
 
     if (result->exists()) {
 
-      //Convert the results to strings
+      // Convert the results to strings
       print_results(result, 0);
       print_results(result, 1);
       print_results(result, 2);
 
-      //Check the types of the elements in the result tree
+      // Check the types of the elements in the result tree
       check_types(result, 0);
       check_types(result, 1);
       check_types(result, 2);
 
-      //List & Map Tests
+      // List & Map Tests
 
-      //Properties
+      // Properties
       std::cout << "Printing Property Maps" << std::endl;
       for (i = 0; i < 3; i++) {
         DbObjectInterface* obj = result->get(i);
@@ -130,7 +128,7 @@ void run_on_results(ResultsIteratorInterface *results) {
         }
       }
 
-      //Labels
+      // Labels
       std::cout << "Printing Label Lists" << std::endl;
       for (int i = 0; i < 3; i++) {
         DbObjectInterface* obj = result->get(i);
@@ -171,9 +169,9 @@ void run_on_results(ResultsIteratorInterface *results) {
         }
       }
 
-      //Path Tests
+      // Path Tests
 
-      //Get the path
+      // Get the path
       DbObjectInterface* path = result->get(0);
       int path_size = -1;
       DbObjectInterface* path_obj = NULL;
@@ -184,7 +182,7 @@ void run_on_results(ResultsIteratorInterface *results) {
           path_obj = path->get_path_element(i);
           std::cout << path_obj->to_string() << std::endl;
 
-          //Run Properties test
+          // Run Properties test
 
           std::cout << "Printing Name Property" << std::endl;
           DbMapInterface* map = path_obj->properties();
@@ -192,13 +190,13 @@ void run_on_results(ResultsIteratorInterface *results) {
             std::cout << map->get_string_element("name") << std::endl;
           }
 
-          //Run Node/Edge specific tests
+          // Run Node/Edge specific tests
 
-          //We have a node
+          // We have a node
           if (path_obj->is_node()) {
             std::cout << "Node Detected" << std::endl;
 
-            //Print the label list
+            // Print the label list
             DbListInterface* list = path_obj->labels();
             int label_list_size = list->size();
             std::cout << "Label list: " << std::endl;
@@ -207,15 +205,13 @@ void run_on_results(ResultsIteratorInterface *results) {
             }
             delete list;
             list = NULL;
-          }
-          //We have an edge
-          else {
+          } else {
+            // We have an edge
             std::cout << "Edge Detected, type: " << path_obj->type() << std::endl;
             std::cout << "Forward: ";
             if ( path_obj->forward() ) {
               std::cout << "true";
-            }
-            else {
+            } else {
               std::cout << "false";
             }
             std::cout << std::endl;
@@ -230,24 +226,23 @@ void run_on_results(ResultsIteratorInterface *results) {
             map = NULL;
           }
         }
-      }
-      else {
+      } else {
         std::cout << "Skipping path tests as the result object is not a path" << std::endl;
       }
       delete path;
 
-      //Cleanup
+      // Cleanup
       delete result;
     }
   }
 }
 
-//Run a single test
+// Run a single test
 void run_test(std::string query, std::string test_name) {
 
   std::cout << "Running Test: " << test_name << std::endl;
 
-  //Execute a query
+  // Execute a query
   ResultsIteratorInterface *results = NULL;
   try {
     results = neo->execute(query);
@@ -260,11 +255,11 @@ void run_test(std::string query, std::string test_name) {
   if (results) {delete results;}
 }
 
-//Run a single test
+// Run a single test
 void run_test(std::string query, std::string test_name, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) {
 
   std::cout << "Running Test: " << test_name << std::endl;
-  //Execute a query
+  // Execute a query
   ResultsIteratorInterface *results = NULL;
 
   try {
@@ -278,38 +273,37 @@ void run_test(std::string query, std::string test_name, std::unordered_map<std::
   if (results) {delete results;}
 }
 
-//Main Method
+// Main Method
 int main(int argc, char** argv) {
 
-  //Get the component factory
+  // Get the component factory
   Neo4jComponentFactory neo4j_factory;
 
-  //Start the Neo4j Administrator
+  // Start the Neo4j Administrator
   if (argc > 1) {
     std::string conn_str (argv[1]);
     std::cout << conn_str << std::endl;
     neo = neo4j_factory.get_neo4j_interface(conn_str);
-  }
-  else {
+  } else {
     neo = neo4j_factory.get_neo4j_interface("neo4j://localhost:7687");
   }
 
-  //Hello World
+  // Hello World
   run_test("RETURN 'hello world'", "Hello World");
 
-  //Creation with Return
+  // Creation with Return
   run_test("CREATE (you:Person {name:'E', list: [1, 2, 3]}) RETURN you", "Creation with return");
 
-  //Match
+  // Match
   run_test("MATCH (you:Person) WHERE you.name = 'E' RETURN you", "Match");
 
-  //Match & Create
+  // Match & Create
   run_test("MATCH (you:Person {name:'E'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j', list: [4, 5, 6]}) RETURN you, like, neo", "Match & Create");
 
-  //Query Failure
+  // Query Failure
   run_test("MATCH (you:Person {name:'E'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j', list: [1, 2, 3]) RETURN you, like, neo", "Bad Query");
 
-  //Query Parameters
+  // Query Parameters
   run_test("CREATE (you:Gelatin {name:1, list: [1, 2, 3]}) RETURN you", "Query Parameters - Additional Data Addition");
   std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params1;
   Neo4jQueryParameterInterface* name_param = neo4j_factory.get_neo4j_query_parameter(1);
@@ -321,7 +315,7 @@ int main(int argc, char** argv) {
   query_params2.emplace("inp_name", name_param2);
   run_test("MATCH (you:Person) WHERE you.name = {inp_name} RETURN you", "String Query Parameters", query_params2);
 
-  //Path Test
+  // Path Test
   run_test("CREATE (base:CoordinateSystem {name: '1', list: [7, 8, 9]}) RETURN base", "Path Test - Create Base");
   run_test("MATCH (base:CoordinateSystem {name: '1'}) CREATE (base)-[transform:Transform {matrix: [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}]->(next:CoordinateSystem {name: '2', list: [10, 11, 12]}) RETURN base, transform, next", "Path Test - Create First Connection");
   run_test("MATCH (base:CoordinateSystem {name: '1'})-[transform:Transform]->(next:CoordinateSystem {name: '2'}) CREATE (next)-[nexttransform:Transform {matrix: [1,1,0,1,0,1,0,1,1,0,1,1,0,0,0,1]}]->(final:CoordinateSystem {name: '3', list: [1, 2, 3]}) RETURN base, transform, next, nexttransform, final", "Path Test - Create Second Connection");

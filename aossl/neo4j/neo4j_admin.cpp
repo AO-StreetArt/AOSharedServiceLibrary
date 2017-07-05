@@ -24,15 +24,12 @@ THE SOFTWARE.
 
 #include "include/neo4j_admin.h"
 
-//-----------------------------------------------------------------
-//--------------------Results Iterator-----------------------------
-//-----------------------------------------------------------------
+// Results Iterator
 
-//Get the next result from the iterator
+// Get the next result from the iterator
 ResultTreeInterface* ResultsIterator::next() {
   neo4j_result_t *res = neo4j_fetch_next(results);
-  if (!res) {return NULL;}
-  else {return new ResultTree (res);}
+  if (!res) {return NULL;} else {return new ResultTree (res);}
 }
 
 void ResultsIterator::clear_results() {
@@ -44,20 +41,16 @@ void ResultsIterator::clear_results() {
   }
 }
 
-//-----------------------------------------------------------------
-//----------------------Result Tree--------------------------------
-//-----------------------------------------------------------------
+// Result Tree
 
-//Get a DB Object
+// Get a DB Object
 DbObjectInterface* ResultTree::get(int index) {
   return new DbObject (result, index);
 }
 
-//-----------------------------------------------------------------
-//------------------------DB Map-----------------------------------
-//-----------------------------------------------------------------
+// DB Map
 
-//Constructor
+// Constructor
 DbMap::DbMap(neo4j_result_t *r, int ind, std::vector<std::string> key_list, ValueGenerationFunction mf, std::vector<KeyGenerationFunction> mfs) {
   result=r;
   index=ind;
@@ -83,38 +76,35 @@ DbMap::DbMap(neo4j_result_t *r, int ind, std::vector<std::string> key_list, Valu
   path_index = pindex;
 }
 
-//Get the value for this node/edge
+// Get the value for this node/edge
 void DbMap::get_map() {
   db_obj = neo4j_null;
   map = neo4j_null;
   if (result) {
-    //Get the query result field
+    // Get the query result field
     db_obj = neo4j_result_field(result, index);
     if ( neo4j_instanceof(db_obj, NEO4J_PATH) ) {
-      //If the DB Value is a path, then we need to update it to the
-      //respective element based on the path index
+      // If the DB Value is a path, then we need to update it to the
+      // respective element based on the path index
       if (path_index != -1) {
-        //Check if we have a node or relationship
+        // Check if we have a node or relationship
         if (path_index == 0) {
-          //We have a node
+          // We have a node
           db_obj = neo4j_path_get_node(db_obj, path_index);
-        }
-        else if (path_index == 1) {
-          //We have a relationship
+        } else if (path_index == 1) {
+          // We have a relationship
           db_obj = neo4j_path_get_relationship(db_obj, 0, NULL);
-        }
-        else if (path_index % 2 == 0) {
-          //We have a node
+        } else if (path_index % 2 == 0) {
+          // We have a node
           db_obj = neo4j_path_get_node(db_obj, path_index/2);
-        }
-        else {
-          //We have a relationship
+        } else {
+          // We have a relationship
           db_obj = neo4j_path_get_relationship(db_obj, (path_index-1)/2, NULL);
         }
       }
     }
     if ( neo4j_instanceof(db_obj, NEO4J_NODE) || neo4j_instanceof(db_obj, NEO4J_RELATIONSHIP) ) {
-      //Get to the Neo4j Map via the map functions
+      // Get to the Neo4j Map via the map functions
       map = (*(map_function))(db_obj);
       for (std::size_t i = 0; i < map_functions.size(); i++) {
         neo4j_value_t key_str = neo4j_string(keys[i].c_str());
@@ -126,7 +116,7 @@ void DbMap::get_map() {
 
 bool DbMap::element_exists(std::string key) {
   std::lock_guard<std::mutex> lock(data_mutex);
-  //Get the value from the map
+  // Get the value from the map
   get_map_value(key);
   if (neo4j_eq(neo4j_null, map_elt)) {
     return false;
@@ -134,34 +124,34 @@ bool DbMap::element_exists(std::string key) {
   return true;
 }
 
-//Get a value out of the map
+// Get a value out of the map
 void DbMap::get_map_value(std::string key) {
   get_map();
   map_elt = neo4j_map_get(map, key.c_str());
 }
 
-//Get the number of elements in the map
+// Get the number of elements in the map
 unsigned int DbMap::size() {
 
   std::lock_guard<std::mutex> lock(data_mutex);
 
-  //Retrieve the map
+  // Retrieve the map
   get_map();
 
-  //Return the map size
+  // Return the map size
   return neo4j_map_size(map);
 }
 
-//Get an element out of the map
+// Get an element out of the map
 
 bool DbMap::get_bool_element(std::string key) {
 
   std::lock_guard<std::mutex> lock(data_mutex);
 
-  //Get the value from the map
+  // Get the value from the map
   get_map_value(key);
 
-  //Convert the value to a boolean
+  // Convert the value to a boolean
   return neo4j_bool_value(map_elt);
 
 }
@@ -170,10 +160,10 @@ int DbMap::get_int_element(std::string key) {
 
   std::lock_guard<std::mutex> lock(data_mutex);
 
-  //Get the value from the map
+  // Get the value from the map
   get_map_value(key);
 
-  //Convert the value to an int
+  // Convert the value to an int
   return neo4j_int_value(map_elt);
 
 }
@@ -182,10 +172,10 @@ double DbMap::get_float_element(std::string key) {
 
   std::lock_guard<std::mutex> lock(data_mutex);
 
-  //Get the value from the map
+  // Get the value from the map
   get_map_value(key);
 
-  //Convert the value to a float
+  // Convert the value to a float
   return neo4j_float_value(map_elt);
 
 }
@@ -194,15 +184,14 @@ std::string DbMap::get_string_element(std::string key, int char_buffer_size) {
 
   std::lock_guard<std::mutex> lock(data_mutex);
 
-  //Get the value from the map
+  // Get the value from the map
   get_map_value(key);
 
-  //Convert the value to a string
+  // Convert the value to a string
   neo4j_string_value(map_elt, db_cstr, char_buffer_size);
   if (db_cstr && db_cstr[0] != '\0') {
     elt.assign(db_cstr);
-  }
-  else {elt = "";}
+  } else {elt = "";}
   return elt;
 }
 
@@ -221,36 +210,30 @@ std::string DbMap::to_string() {
   return str_val;
 }
 
-//-----------------------------------------------------------------
-//------------------------DB List----------------------------------
-//-----------------------------------------------------------------
+// DB List
 
-//Get the value for this node/edge
+// Get the value for this node/edge
 neo4j_value_t DbList::get_list() {
   if (!result) {
     return neo4j_null;
-  }
-  else {
-    //Get the DB Value
+  } else {
+    // Get the DB Value
     neo4j_value_t db_obj = neo4j_result_field(result, index);
-    //If the DB Value is a path, then we need to update it to the
-    //respective element based on the path index
+    // If the DB Value is a path, then we need to update it to the
+    // respective element based on the path index
     if (path_index != -1) {
-      //Check if we have a node or relationship
+      // Check if we have a node or relationship
       if (path_index == 0) {
-        //We have a node
+        // We have a node
         db_obj = neo4j_path_get_node(db_obj, path_index);
-      }
-      else if (path_index == 1) {
-        //We have a relationship
+      } else if (path_index == 1) {
+        // We have a relationship
         db_obj = neo4j_path_get_relationship(db_obj, 0, NULL);
-      }
-      else if (path_index % 2 == 0) {
-        //We have a node
+      } else if (path_index % 2 == 0) {
+        // We have a node
         db_obj = neo4j_path_get_node(db_obj, path_index/2);
-      }
-      else {
-        //We have a relationship
+      } else {
+        // We have a relationship
         db_obj = neo4j_path_get_relationship(db_obj, (path_index-1)/2, NULL);
       }
     }
@@ -262,53 +245,53 @@ neo4j_value_t DbList::get_list() {
   }
 }
 
-//Get a value from this list
+// Get a value from this list
 neo4j_value_t DbList::get_list_value(unsigned int ind) {
   neo4j_value_t list = get_list();
   return neo4j_list_get(list, ind);
 }
 
-//Get the number of elements in the list
+// Get the number of elements in the list
 unsigned int DbList::size() {
 
-  //Retrieve the DB Object
+  // Retrieve the DB Object
   neo4j_value_t db_obj = get_list();
 
-  //Return the map size
+  // Return the map size
   return neo4j_list_length(db_obj);
 }
 
-//Get an element out of the list
+// Get an element out of the list
 
 bool DbList::get_bool_element(unsigned int ind) {
-  //Get the value from the map
+  // Get the value from the map
   neo4j_value_t element = get_list_value(ind);
 
-  //Convert the value to a float
+  // Convert the value to a float
   return neo4j_bool_value(element);
 }
 
 int DbList::get_int_element(unsigned int ind) {
-  //Get the value from the map
+  // Get the value from the map
   neo4j_value_t element = get_list_value(ind);
 
-  //Convert the value to a float
+  // Convert the value to a float
   return neo4j_int_value(element);
 }
 
 double DbList::get_float_element(unsigned int ind) {
-  //Get the value from the map
+  // Get the value from the map
   neo4j_value_t element = get_list_value(ind);
 
-  //Convert the value to a float
+  // Convert the value to a float
   return neo4j_float_value(element);
 }
 
 std::string DbList::get_string_element(unsigned int ind, int char_buffer_size) {
-  //Get the value from the list
+  // Get the value from the list
   neo4j_value_t element = get_list_value(ind);
 
-  //Convert the value to a string
+  // Convert the value to a string
   neo4j_string_value(element, db_cstr, char_buffer_size);
   elt.assign(db_cstr);
   return elt;
@@ -324,36 +307,30 @@ std::string DbList::to_string() {
   return str_val;
 }
 
-//-----------------------------------------------------------------
-//-----------------------DB Object---------------------------------
-//-----------------------------------------------------------------
+// DB Object
 
-//-----------------------Internal----------------------------------
+// Internal
 
-//Get a Value from a Result
+// Get a Value from a Result
 neo4j_value_t DbObject::get_value() {
   if (!result) {
     return neo4j_null;
-  }
-  else {
+  } else {
     val = neo4j_result_field(result, index);
-    //Check if this is the result of getting a value from a path
+    // Check if this is the result of getting a value from a path
     if (path_index != -1) {
-      //Check if we have a node or relationship
+      // Check if we have a node or relationship
       if (path_index == 0) {
-        //We have a node
+        // We have a node
         return neo4j_path_get_node(val, path_index);
-      }
-      else if (path_index == 1) {
-        //We have a relationship
+      } else if (path_index == 1) {
+        // We have a relationship
         return neo4j_path_get_relationship(val, 0, NULL);
-      }
-      else if (path_index % 2 == 0) {
-        //We have a node
+      } else if (path_index % 2 == 0) {
+        // We have a node
         return neo4j_path_get_node(val, path_index / 2);
-      }
-      else {
-        //We have a relationship
+      } else {
+        // We have a relationship
         return neo4j_path_get_relationship(val, (path_index-1)/2, NULL);
       }
     }
@@ -361,7 +338,7 @@ neo4j_value_t DbObject::get_value() {
   }
 }
 
-//Determine if a Value is of the specified type
+// Determine if a Value is of the specified type
 bool DbObject::is_instance_of(neo4j_type_t type) {
   neo4j_value_t value = get_value();
   if (neo4j_eq(neo4j_null, value)) {
@@ -373,9 +350,9 @@ bool DbObject::is_instance_of(neo4j_type_t type) {
   return false;
 }
 
-//------------------------General----------------------------------
+// General
 
-//Convert a Value to a string representation
+// Convert a Value to a string representation
 std::string DbObject::to_string() {
   neo4j_value_t value = get_value();
   if (neo4j_eq(neo4j_null, value)) {
@@ -386,32 +363,29 @@ std::string DbObject::to_string() {
   return str_val;
 }
 
-//Get a map of the properties
+// Get a map of the properties
 DbMapInterface* DbObject::properties() {
   if ( is_node() ) {
     return new DbMap (result, index, neo4j_node_properties, path_index);
-  }
-  else if ( is_edge() ){
+  } else if ( is_edge() ){
     return new DbMap (result, index, neo4j_relationship_properties, path_index);
-  }
-  else {
+  } else {
     std::string err_msg = "Tried to retrieve properties for object that is neither a node or an edge";
     throw Neo4jException(err_msg);
   }
 }
 
-//Get a list of node labels
+// Get a list of node labels
 DbListInterface* DbObject::labels() {
   if ( is_node() ) {
     return new DbList (result, index, neo4j_node_labels, path_index);
-  }
-  else {
+  } else {
     std::string err_msg = "Tried to retrieve labels for object that is not a node";
     throw Neo4jException(err_msg);
   }
 }
 
-//Get the relationship property
+// Get the relationship property
 std::string DbObject::type() {
   neo4j_value_t val = get_value();
   if ( is_edge() ){
@@ -420,8 +394,7 @@ std::string DbObject::type() {
     neo4j_string_value(rel_type, buf, 256);
     std::string ret_val (buf);
     return ret_val;
-  }
-  else {
+  } else {
     std::string err_msg = "Tried to retrieve type for object that is not an edge";
     throw Neo4jException(err_msg);
   }
@@ -432,8 +405,7 @@ bool DbObject::forward() {
   if ( is_edge() && path_index != -1 ){
     neo4j_path_get_relationship(val, path_index, &is_forward);
     return is_forward;
-  }
-  else {
+  } else {
     std::string err_msg = "Tried to retrieve relationship direction for object that is not an edge taken from a path";
     throw Neo4jException(err_msg);
   }
@@ -443,11 +415,9 @@ neo4j_value_t DbObject::get_identity() {
   neo4j_value_t val = get_value();
   if ( is_node() ) {
     return neo4j_node_identity(val);
-  }
-  else if ( is_edge() ){
+  } else if ( is_edge() ){
     return neo4j_relationship_identity(val);
-  }
-  else {
+  } else {
     std::string err_msg = "Tried to retrieve properties for object that is neither a node or an edge";
     throw Neo4jException(err_msg);
   }
@@ -457,29 +427,24 @@ unsigned int DbObject::size() {
   neo4j_value_t val = get_value();
   if ( is_path() ) {
     return (neo4j_path_length(val) * 2) + 1;
-  }
-  else {
+  } else {
     std::string err_msg = "Tried to retrieve path length for object that is not a path";
     throw Neo4jException(err_msg);
   }
 }
 
-//-----------------------------------------------------------------
-//----------------Neo4j Query Parameters---------------------------
-//-----------------------------------------------------------------
+// Neo4j Query Parameters
 
 void Neo4jQueryParameter::add_value(bool new_val) {
   std::string err_msg;
   if (!is_list) {
     err_msg = "Trying to add value to non-arry parameter";
     throw Neo4jException(err_msg);
-  }
-  else {
+  } else {
     if (type==-1 || type==_BOOL_TYPE) {
       bool_values.push_back(new_val);
       type=_BOOL_TYPE;
-    }
-    else {
+    } else {
       err_msg = "Only single-type arrays are supported";
       throw Neo4jException(err_msg);
     }
@@ -491,13 +456,11 @@ void Neo4jQueryParameter::add_value(std::string new_val) {
   if (!is_list) {
     err_msg = "Trying to add value to non-arry parameter";
     throw Neo4jException(err_msg);
-  }
-  else {
+  } else {
     if (type==-1 || type==_STR_TYPE) {
       str_values.push_back(new_val);
       type=_STR_TYPE;
-    }
-    else {
+    } else {
       err_msg = "Only single-type arrays are supported";
       throw Neo4jException(err_msg);
     }
@@ -514,13 +477,11 @@ void Neo4jQueryParameter::add_value(int new_val) {
   if (!is_list) {
     err_msg = "Trying to add value to non-arry parameter";
     throw Neo4jException(err_msg);
-  }
-  else {
+  } else {
     if (type==-1 || type==_INT_TYPE) {
       int_values.push_back(new_val);
       type=_INT_TYPE;
-    }
-    else {
+    } else {
       err_msg = "Only single-type arrays are supported";
       throw Neo4jException(err_msg);
     }
@@ -531,13 +492,11 @@ void Neo4jQueryParameter::add_value(float new_val) {
   if (!is_list) {
     std::string err_msg = "Trying to add value to non-arry parameter";
     throw Neo4jException(err_msg);
-  }
-  else {
+  } else {
     if (type==-1 || type==_FLT_TYPE) {
       double_values.push_back(new_val);
       type=_FLT_TYPE;
-    }
-    else {
+    } else {
       std::string err_msg = "Only single-type arrays are supported";
       throw Neo4jException(err_msg);
     }
@@ -548,46 +507,39 @@ unsigned int Neo4jQueryParameter::size() {
   if (!is_list) {
     std::string err_msg = "Trying to take the size of a non-arry parameter";
     throw Neo4jException(err_msg);
-  }
-  else {
+  } else {
     if (type==_FLT_TYPE) {
       return double_values.size();
-    }
-    else if (type==_INT_TYPE) {
+    } else if (type==_INT_TYPE) {
       return int_values.size();
-    }
-    else if (type==_STR_TYPE) {
+    } else if (type==_STR_TYPE) {
       return str_values.size();
-    }
-    else if (type==_BOOL_TYPE) {
+    } else if (type==_BOOL_TYPE) {
       return bool_values.size();
-    }
-    else {
+    } else {
       return 0;
     }
   }
 }
 
-//-----------------------------------------------------------------
-//----------------------Neo4j Admin--------------------------------
-//-----------------------------------------------------------------
+// Neo4j Admin
 
-//Start the admin
+// Start the admin
 void Neo4jAdmin::initialize(const char * conn_str, bool secure, int pool_size) {
 
   // Initialize the Neo4j Database pool
   pool = new Neo4jConnectionPool(pool_size, conn_str, secure, 1, 1);
 }
 
-//Execute a query and return the results in an iterator
+// Execute a query and return the results in an iterator
 ResultsIterator* Neo4jAdmin::execute(const char * query) {
 
   Neo4jQuerySession *qs = pool->get_connection();
 
-  //Execute the query
+  // Execute the query
   neo4j_result_stream_t *res = neo4j_run(qs->session, query, neo4j_null);
 
-  //Check for a failure
+  // Check for a failure
   int failure_check = neo4j_check_failure(res);
   if (failure_check != 0) {
     const struct neo4j_failure_details *fd;
@@ -596,15 +548,15 @@ ResultsIterator* Neo4jAdmin::execute(const char * query) {
     throw Neo4jException(fd->description, res);
   }
 
-  //Return a results iterator for results access
+  // Return a results iterator for results access
   return new ResultsIterator (res, qs, pool);
 }
 
-//Insert a map of parameters into a query,
-//Execute the query and return the results in an iterator
+// Insert a map of parameters into a query,
+// Execute the query and return the results in an iterator
 ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) {
 
-  //Get lists of keys and values for query parameters
+  // Get lists of keys and values for query parameters
   std::vector<std::string> keys;
   keys.reserve(query_params.size());
 
@@ -617,61 +569,57 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered
     vals.push_back(kv.second);
   }
 
-  //Create an array of neo4j map entries
+  // Create an array of neo4j map entries
   neo4j_map_entry_t map_entries[keys.size()];
   neo4j_value_t map_values[vals.size()];
 
   for (unsigned int i = 0; i < keys.size(); i++) {
     Neo4jQueryParameterInterface* val = vals[i];
     int val_type = val->get_type();
-    //We have single value parameter, and just need to determine the type
+    // We have single value parameter, and just need to determine the type
     if (val_type == _BOOL_TYPE) {
       map_values[i] = neo4j_bool(val->get_boolean_value());
       map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
-    }
-    else if (val_type == _STR_TYPE) {
+    } else if (val_type == _STR_TYPE) {
       const char * val_str = val->get_cstring_value();
       if (!val_str) {
         throw Neo4jException("Attempted to enter a blank string as a query parameter.  String query parameters must have length 1 or greater.");
-      }
-      else {
+      } else {
         if (keys[i].empty()) {
           throw Neo4jException("Attempted to enter a blank string as a query parameter key.  query parameter keys must have length 1 or greater.");
         }
         map_values[i] = neo4j_string(val->get_cstring_value());
         map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
       }
-    }
-    else if (val_type == _INT_TYPE) {
+    } else if (val_type == _INT_TYPE) {
       map_values[i] = neo4j_int(val->get_integer_value());
       map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
-    }
-    else if (val_type == _FLT_TYPE) {
+    } else if (val_type == _FLT_TYPE) {
       map_values[i] = neo4j_float(val->get_double_value());
       map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
     }
   }
 
-  //Create a neo4j value of the map
+  // Create a neo4j value of the map
   neo4j_value_t param_map = neo4j_map (map_entries, keys.size());
 
-  //Retrieve a database connection from the pool
+  // Retrieve a database connection from the pool
   Neo4jQuerySession *qs = pool->get_connection();
 
-  //Execute the query
+  // Execute the query
   neo4j_result_stream_t *res = neo4j_run(qs->session, query, param_map);
 
-  //Check for a failure
+  // Check for a failure
   int failure_check = neo4j_check_failure(res);
 
-  //If a failure is found
+  // If a failure is found
   if (failure_check != 0) {
 
-    //Release the connection from the pool
+    // Release the connection from the pool
     pool->release_connection(qs);
 
-    //If our failure was related to the statement, then throw
-    //a related exception
+    // If our failure was related to the statement, then throw
+    // a related exception
     if (failure_check == NEO4J_STATEMENT_EVALUATION_FAILED) {
       const struct neo4j_failure_details *fd;
       fd = neo4j_failure_details(res);
@@ -680,16 +628,16 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, std::unordered
       }
     }
 
-    //If we weren't able to retrieve failure details, throw a general exception
+    // If we weren't able to retrieve failure details, throw a general exception
     throw Neo4jException("Unknown error encountered running query", res);
   }
 
-  //Return a results iterator for results access
+  // Return a results iterator for results access
   return new ResultsIterator (res, qs, pool);
 
 }
 
-//-----------------------Connection Pool--------------------------------------//
+// Connection Pool
 
 void Neo4jConnectionPool::init_slots() {
   slots = new int[connection_limit];
@@ -698,21 +646,20 @@ void Neo4jConnectionPool::init_slots() {
   }
 }
 
-//Initialize the connections required to start the connection pool
+// Initialize the connections required to start the connection pool
 void Neo4jConnectionPool::init_connections(const char * conn_str, bool secure) {
 
   for (int i = 0;i<start_connections;i++) {
     Neo4jQuerySession qs;
 
-    //Create the connection
+    // Create the connection
     if (!secure) {
       qs.connection = neo4j_connect(conn_str, NULL, NEO4J_INSECURE);
-    }
-    else {
+    } else {
       qs.connection = neo4j_connect(conn_str, NULL, NEO4J_CONNECT_DEFAULT);
     }
 
-    //Check if the connection was successful
+    // Check if the connection was successful
     if (!(qs.connection)) {
       const char * err_string = strerror(errno);
       std::string err_msg (err_string);
@@ -720,10 +667,10 @@ void Neo4jConnectionPool::init_connections(const char * conn_str, bool secure) {
       throw Neo4jException(err_msg);
     }
 
-    //Establish a new session with the current connection
+    // Establish a new session with the current connection
     qs.session = neo4j_new_session(qs.connection);
 
-    //Check if session creation was successful
+    // Check if session creation was successful
     if (!(qs.session)) {
       const char * err_string = strerror(errno);
       std::string err_msg (err_string);
@@ -738,9 +685,9 @@ void Neo4jConnectionPool::init_connections(const char * conn_str, bool secure) {
 
 Neo4jConnectionPool::~Neo4jConnectionPool() {
   for (int i = 0;i<current_max_connection;i++) {
-    //Release the session
+    // Release the session
     neo4j_end_session(connections[i].session);
-    //Release the connection
+    // Release the connection
     neo4j_close(connections[i].connection);
   }
   neo4j_client_cleanup();
@@ -748,17 +695,17 @@ Neo4jConnectionPool::~Neo4jConnectionPool() {
 }
 
 Neo4jQuerySession* Neo4jConnectionPool::get_connection() {
-  //Get the mutex to ensure we get a unique connection
+  // Get the mutex to ensure we get a unique connection
   std::lock_guard<std::mutex> lock(get_conn_mutex);
   bool current_connection_existed = true;
 
-  //Find the next available connection slot
-  //If none are available, wait until one is freed
+  // Find the next available connection slot
+  // If none are available, wait until one is freed
   bool connection_found = false;
   while (!connection_found) {
     for (int j=0;j<connection_limit;j++) {
       if (slots[j] == 0) {
-        //slot is available
+        // slot is available
         current_connection=j;
         connection_found=true;
         break;
@@ -766,19 +713,18 @@ Neo4jQuerySession* Neo4jConnectionPool::get_connection() {
     }
   }
 
-  //Create new connections if necessary
+  // Create new connections if necessary
   if (current_connection>current_max_connection) {
     current_connection_existed = false;
     for (int i = current_max_connection;i<current_max_connection+connection_creation_batch;i++) {
       Neo4jQuerySession qs;
       if (!secure) {
         qs.connection = neo4j_connect(connection_string.c_str(), NULL, NEO4J_INSECURE);
-      }
-      else {
+      } else {
         qs.connection = neo4j_connect(connection_string.c_str(), NULL, NEO4J_CONNECT_DEFAULT);
       }
 
-      //Check if the connection was successful
+      // Check if the connection was successful
       if (!(qs.connection)) {
         const char * err_string = strerror(errno);
         std::string err_msg (err_string);
@@ -786,10 +732,10 @@ Neo4jQuerySession* Neo4jConnectionPool::get_connection() {
         throw Neo4jException(err_msg);
       }
 
-      //Establish a new session with the current connection
+      // Establish a new session with the current connection
       qs.session = neo4j_new_session(qs.connection);
 
-      //Check if session creation was successful
+      // Check if session creation was successful
       if (!(qs.session)) {
         const char * err_string = strerror(errno);
         std::string err_msg (err_string);
@@ -802,13 +748,13 @@ Neo4jQuerySession* Neo4jConnectionPool::get_connection() {
     current_max_connection=current_max_connection+connection_creation_batch;
   }
 
-  //Pack the connection & session into the return object
+  // Pack the connection & session into the return object
   Neo4jQuerySession *s = new Neo4jQuerySession;
   s->connection = connections[current_connection].connection;
   s->session = connections[current_connection].session;
   s->index = current_connection;
 
-  //Reset the Neo4j Session if it previously existed
+  // Reset the Neo4j Session if it previously existed
   if (current_connection_existed) {
     if (neo4j_reset_session(s->session) != 0) {
       const char * err_string = strerror(errno);
@@ -818,19 +764,19 @@ Neo4jQuerySession* Neo4jConnectionPool::get_connection() {
     }
   }
 
-  //Reserve the slot
+  // Reserve the slot
   slots[current_connection] = 1;
 
-  //Return the latest connection information
-  //When we leave the method, the mutex lock is released automatically
+  // Return the latest connection information
+  // When we leave the method, the mutex lock is released automatically
   return s;
 }
 
-//Release a connection for re-use
+// Release a connection for re-use
 void Neo4jConnectionPool::release_connection(Neo4jQuerySession *conn) {
-  //Release the slot
+  // Release the slot
   slots[conn->index] = 0;
-  //Delete the query session pointer, but not it's contents
+  // Delete the query session pointer, but not it's contents
   delete conn;
 }
 

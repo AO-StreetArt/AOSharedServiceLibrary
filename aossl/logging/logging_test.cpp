@@ -27,20 +27,20 @@ THE SOFTWARE.
 #include <string>
 #include <string.h>
 
-void test_func(std::string msg)
-{
+void test_func(std::string msg) {
   logging->error(msg);
 }
 
-int main()
-{
+int main() {
   LoggingComponentFactory log_factory;
   std::string initFileName = "logging_test.properties";
   logging = log_factory.get_logging_interface(initFileName);
 
   LoggingCategoryInterface *sub_category = logging->get_category("tertiary");
-  LoggingCategoryInterface *third_category = logging->get_category("secondary.sub1");
-  LoggingCategoryInterface *bad_category = logging->get_category("incorrect_name");
+  LoggingCategoryInterface *third_category = \
+    logging->get_category("secondary.sub1");
+  LoggingCategoryInterface *bad_category = \
+    logging->get_category("incorrect_name");
 
   logging->debug("Testing");
   logging->error("Testing");
@@ -55,5 +55,4 @@ int main()
   delete third_category;
   delete bad_category;
   delete logging;
-
 }

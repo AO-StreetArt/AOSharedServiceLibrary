@@ -34,9 +34,8 @@ THE SOFTWARE.
 //! objects exposed by the framework and passes back
 //! instances of interfaces.  This allows for the publicly exposed methods
 //! to be independent of the implementations.
-class uuidComponentFactory
-{
-public:
+class uuidComponentFactory {
+ public:
 
   //! Create a new Service Component Factory
   uuidComponentFactory() {}

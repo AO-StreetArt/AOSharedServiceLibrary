@@ -37,26 +37,26 @@ class CommandLineInterpreter: public CommandLineInterface {
   std::string name;
 
  public:
-  //! Create a new Command Line Interpreter
+  // Create a new Command Line Interpreter
 
-  //! Here we create a new interpreter by passing in the two
-  //! arguments from the main method, int argc & char* argv[].
-  //! This parses arguments passed in the form:
-  //! arg_key=arg_val
+  // Here we create a new interpreter by passing in the two
+  // arguments from the main method, int argc & char* argv[].
+  // This parses arguments passed in the form:
+  // arg_key=arg_val
   CommandLineInterpreter(int argc, char* argv[]);
 
   ~CommandLineInterpreter() {}
 
-  //! Does a key exist?
+  // Does a key exist?
   bool opt_exist(std::string key);
 
-  //! Get an option by key
+  // Get an option by key
   std::string get_opt(std::string key) {return opts[key];}
 
-  //! Get the program name
+  // Get the program name
 
-  //! Get the name of the executable currently being
-  //! run.
+  // Get the name of the executable currently being
+  // run.
   std::string get_program_name() {return name;}
 };
 

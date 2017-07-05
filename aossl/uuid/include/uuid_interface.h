@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//An admin for generating UUID's
-
 #ifndef UUID_INTERFACE
 #define UUID_INTERFACE
 
@@ -45,9 +43,8 @@ struct UuidContainer {
 
 //! The UUID Admin is in charge of generating any Universally Unique
 //! ID's that are required throughout program execution
-class uuidInterface
-{
-public:
+class uuidInterface {
+ public:
 
 	virtual ~uuidInterface() {}
 	//! Generate a new UUID

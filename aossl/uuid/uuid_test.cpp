@@ -29,13 +29,12 @@ THE SOFTWARE.
 #include <string>
 #include <string.h>
 
-int main()
-{
+int main() {
   uuidComponentFactory id_factory;
-  //Initialize the UUID Admin
+  // Initialize the UUID Admin
   uuidInterface *uuid = id_factory.get_uuid_interface();
 
-  //Generate a UUID
+  // Generate a UUID
   UuidContainer id_container = uuid->generate();
   std::string id_str = id_container.id;
   assert ( !(id_str.empty()) );
