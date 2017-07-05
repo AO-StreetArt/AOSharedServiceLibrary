@@ -26,17 +26,13 @@ THE SOFTWARE.
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <iostream>
 #include <fstream>
 #include <cstdlib>
 
 #include "include/http_interface.h"
 #include "include/factory_http_client.h"
 
-//----------------------------------------------------------------------------//
-//--------------------------------Globals-------------------------------------//
-//----------------------------------------------------------------------------//
-
+// Globals (Strings used in all benchmarks)
 std::string post = "http://httpbin.org/post";
 std::string put = "http://httpbin.org/put";
 std::string get = "http://httpbin.org/get";
@@ -44,92 +40,64 @@ std::string del = "http://httpbin.org/delete";
 
 HttpInterface *http;
 
-//----------------------------------------------------------------------------//
-//------------------------------Benchmarks------------------------------------//
-//----------------------------------------------------------------------------//
+// Benchmarks
 
-BENCHMARK(HTTP, Get, 10, 100)
-{
-
-
-  //Send the request
+BENCHMARK(HTTP, Get, 10, 100) {
+  // Send the request
   std::string ret_val = http->get(get, 5);
-  if (ret_val.empty())
-  {
+  if (ret_val.empty()) {
     std::cout <<"Get Request Failed" << std::endl;
   }
-
 }
 
-BENCHMARK(HTTP, Put, 10, 100)
-{
-
-
-  //Send the request
+BENCHMARK(HTTP, Put, 10, 100) {
+  // Send the request
   bool success = http->put(put, "123", 5);
-  if (!success)
-  {
-    //We now have the full response
+  if (!success) {
+    // We now have the full response
     std::cout <<"Put Request Failed" << std::endl;
   }
-
 }
 
-BENCHMARK(HTTP, Post, 10, 100)
-{
-
-  //Send the request
+BENCHMARK(HTTP, Post, 10, 100) {
+  // Send the request
   bool success = http->post(post, "CLYMAN", 5);
-  if (!success)
-  {
-    //We now have the full response
+  if (!success) {
+    // We now have the full response
     std::cout <<"Post Request Failed" << std::endl;
   }
-
 }
 
-BENCHMARK(HTTP, Delete, 10, 100)
-{
-
-  //Send the request
+BENCHMARK(HTTP, Delete, 10, 100) {
+  // Send the request
   bool success = http->del(del, 5);
-  if (!success)
-  {
-    //We now have the full response
+  if (!success) {
+    // We now have the full response
     std::cout <<"Delete Request Failed" << std::endl;
   }
-
 }
 
-//----------------------------------------------------------------------------//
-//------------------------------Main Method-----------------------------------//
-//----------------------------------------------------------------------------//
+// Main Method
 
-int main()
-{
-
+int main() {
   HttpClientFactory http_client_factory;
 
-  //Set up internal variables
+  // Set up internal variables
   std::cout << "Internal Logging Intialized" <<std::endl;
 
-  //Set up HTTP Client
+  // Set up HTTP Client
   http = http_client_factory.get_http_interface();
   std::cout << "HTTP Outbound Interface Created" << std::endl;
 
-  //------------------------------Run Tests-------------------------------------//
-  //----------------------------------------------------------------------------//
+  // Run Tests
 
   hayai::ConsoleOutputter consoleOutputter;
 
   hayai::Benchmarker::AddOutputter(consoleOutputter);
   hayai::Benchmarker::RunAllTests();
 
-  //-------------------------Post-Test Teardown---------------------------------//
-  //----------------------------------------------------------------------------//
+  // Post-Test Teardown
 
   delete http;
-
   return 0;
-
 }
