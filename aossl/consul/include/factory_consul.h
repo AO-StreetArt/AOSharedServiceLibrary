@@ -22,10 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_FACTORY_CONSUL
-#define AOSSL_FACTORY_CONSUL
+#ifndef AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_
+#define AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_
 
 #include <string.h>
+#include <string>
+#include <vector>
 #include "consul_interface.h"
 #include "service.h"
 #include "consul_admin.h"
@@ -36,10 +38,8 @@ THE SOFTWARE.
 //! objects exposed by the framework and passes back
 //! instances of interfaces.  This allows for the publicly exposed methods
 //! to be independent of the implementations.
-class ConsulComponentFactory
-{
-public:
-
+class ConsulComponentFactory {
+ public:
   //! Create a new Service Component Factory
   ConsulComponentFactory() {}
 
@@ -47,19 +47,30 @@ public:
   ~ConsulComponentFactory() {}
 
   //! Get a Consul Interface instance
-  ConsulInterface* get_consul_interface( std::string caddr ) {return new ConsulAdmin( caddr );}
+  inline ConsulInterface* get_consul_interface(std::string caddr) {
+    return new ConsulAdmin(caddr);
+  }
 
   ServiceInterface* get_service_interface() {return new Service;}
 
   //! Get a Service Interface instance
-  ServiceInterface* get_service_interface(std::string new_id, std::string new_name) {return new Service( new_id, new_name );}
+  inline ServiceInterface* get_service_interface(std::string new_id, \
+    std::string new_name) {
+      return new Service( new_id, new_name );
+    }
 
   //! Get a Service Interface instance
-  ServiceInterface* get_service_interface(std::string new_id, std::string new_name, std::string new_address, std::string new_port) {return new Service( new_id, new_name, new_address, new_port );}
+  inline ServiceInterface* get_service_interface(std::string new_id, \
+    std::string new_name, std::string new_address, std::string new_port) {
+      return new Service( new_id, new_name, new_address, new_port );
+    }
 
   //! Get a Service Interface instance
-  ServiceInterface* get_service_interface(std::string new_id, std::string new_name, std::string new_address, std::string new_port, std::vector<std::string> new_tags) {return new Service( new_id, new_name, new_address, new_port, new_tags );}
-
+  inline ServiceInterface* get_service_interface(std::string new_id, \
+    std::string new_name, std::string new_address, std::string new_port, \
+    std::vector<std::string> new_tags) {
+      return new Service( new_id, new_name, new_address, new_port, new_tags );
+    }
 };
 
-#endif
+#endif  // AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_

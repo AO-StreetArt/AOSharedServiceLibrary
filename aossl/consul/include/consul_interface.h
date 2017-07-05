@@ -56,19 +56,19 @@ public:
 
   //! Method that allows the service to be transformed into a json message
   //! that can be sent via HTTP to a Consul instance
-  virtual std::string to_json() = 0;
+  virtual std::string to_json() const = 0;
 
   //! Get the Service ID
-  virtual std::string get_id() = 0;
+  virtual std::string get_id() const = 0;
 
   //! Get the Service Name
-  virtual std::string get_name() = 0;
+  virtual std::string get_name() const = 0;
 
   //! Get the Service Address
-  virtual std::string get_address() = 0;
+  virtual std::string get_address() const = 0;
 
   //! Get the Service Port
-  virtual std::string get_port() = 0;
+  virtual std::string get_port() const = 0;
 
   //! Set the Service ID
   virtual void set_id(std::string new_id) = 0;
@@ -120,10 +120,10 @@ public:
   //------------------Service Registry Functions------------------------------//
 
   //! Register the Service
-  virtual bool register_service(ServiceInterface& s) = 0;
+  virtual bool register_service(const ServiceInterface& s) = 0;
 
   //! Deregister the Service
-  virtual bool deregister_service(ServiceInterface& s) = 0;
+  virtual bool deregister_service(const ServiceInterface& s) = 0;
 
   //-------------Configuration Key-Value Storage Functions--------------------//
 
