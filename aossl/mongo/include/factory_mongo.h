@@ -25,9 +25,9 @@ THE SOFTWARE.
 #ifndef AOSSL_MONGO_INCLUDE_FACTORY_MONGO_H_
 #define AOSSL_MONGO_INCLUDE_FACTORY_MONGO_H_
 
+#include <string>
 #include "mongo_interface.h"
 #include "mongo_admin.h"
-#include <string>
 
 //! The Mongo Service Component Factory
 
@@ -36,7 +36,6 @@ THE SOFTWARE.
 //! instances of interfaces.  This allows for the publicly exposed methods
 //! to be independent of the implementations.
 class MongoComponentFactory {
-
  public:
   //! Create a new Service Component Factory
   MongoComponentFactory() {}

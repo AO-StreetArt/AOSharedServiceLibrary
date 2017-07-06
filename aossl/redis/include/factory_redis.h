@@ -22,10 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_FACTORY_REDIS
-#define AOSSL_FACTORY_REDIS
+#ifndef AOSSL_REDIS_INCLUDE_FACTORY_REDIS_H_
+#define AOSSL_REDIS_INCLUDE_FACTORY_REDIS_H_
 
-#include <string.h>
+#include <string>
 #include "redis_interface.h"
 #include "redis_admin.h"
 
@@ -36,9 +36,7 @@ THE SOFTWARE.
 //! instances of interfaces.  This allows for the publicly exposed methods
 //! to be independent of the implementations.
 class RedisComponentFactory {
-
  public:
-
   //! Create a new Service Component Factory
   RedisComponentFactory() {}
 
@@ -46,35 +44,40 @@ class RedisComponentFactory {
   ~RedisComponentFactory() {}
 
   //! Get a Redis Interface Instance
-  inline RedisInterface* get_redis_interface(std::string hostname, int port, int timeout_seconds, int timeout_microseconds) {
-    return new RedisAdmin( hostname, port, timeout_seconds, timeout_microseconds);
+  inline RedisInterface* get_redis_interface(std::string hostname, int port, \
+    int timeout_seconds, int timeout_microseconds) {
+    return new RedisAdmin(hostname, port, \
+      timeout_seconds, timeout_microseconds);
   }
 
   //! Get a Redis Interface Instance
   inline RedisInterface* get_redis_interface(std::string hostname, int port) {
-    return new RedisAdmin( hostname, port);
+    return new RedisAdmin(hostname, port);
   }
 
   //! Get a Redis Interface Instance
-  inline RedisInterface* get_redis_interface(std::string hostname, int port, int pool_size) {
-    return new RedisAdmin( hostname, port, pool_size);
+  inline RedisInterface* get_redis_interface(std::string hostname, \
+    int port, int pool_size) {
+    return new RedisAdmin(hostname, port, pool_size);
   }
 
   //! Get a Redis Interface Instance
-  inline RedisInterface* get_redis_interface(std::string hostname, int port, int timeout_seconds, int timeout_microseconds, int pool_size) {
-    return new RedisAdmin( hostname, port, timeout_seconds, timeout_microseconds, pool_size);
+  inline RedisInterface* get_redis_interface(std::string hostname, int port, \
+    int timeout_seconds, int timeout_microseconds, int pool_size) {
+    return new RedisAdmin(hostname, port, \
+      timeout_seconds, timeout_microseconds, pool_size);
   }
 
   //! Get a Redis Interface Instance
   inline RedisInterface* get_redis_interface(RedisConnChain connection_list) {
-    return new RedisAdmin( connection_list );
+    return new RedisAdmin(connection_list);
   }
 
   //! Get a Redis Interface Instance
-  inline RedisInterface* get_redis_interface(RedisConnChain connection_list, int pool_size) {
-    return new RedisAdmin( connection_list, pool_size );
+  inline RedisInterface* get_redis_interface(RedisConnChain connection_list, \
+    int pool_size) {
+    return new RedisAdmin(connection_list, pool_size);
   }
-
 };
 
-#endif
+#endif  // AOSSL_REDIS_INCLUDE_FACTORY_REDIS_H_

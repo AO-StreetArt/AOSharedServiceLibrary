@@ -24,16 +24,16 @@ THE SOFTWARE.
 
 // Tests for the Zmqio Module
 
+#include <iostream>
+#include <string>
+
 #include "include/factory_zmq.h"
 #include "include/zmq_interface.h"
 
-#include <iostream>
-
 int main(int argc, char* argv[]) {
-
   if (argc < 2) {return -1;}
 
-  std::string con_port (argv[1]);
+  std::string con_port(argv[1]);
   std::string con_str = "tcp://*:" + con_port;
 
   // Set up the ZMQ Connection
@@ -45,19 +45,16 @@ int main(int argc, char* argv[]) {
 
 
   while (true) {
-
     // Convert the OMQ message into a string to be passed on the event
     char * req_cstr = zmqi->crecv();
     std::cout << req_cstr << std::endl;
     std::string resp = "success";
     //   Send reply back to client
     zmqi->send(resp);
-
   }
 
   // Cleanup
   delete zmqi;
 
   return 0;
-
 }

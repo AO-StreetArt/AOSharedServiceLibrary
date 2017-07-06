@@ -31,12 +31,11 @@ PropertiesReader::PropertiesReader(std::string file_path) {
 
   // Check if the file exists
   struct stat buffer;
-  if (stat (file_path.c_str(), &buffer) == 0) {
-
-    std::ifstream file (file_path);
+  if (stat(file_path.c_str(), &buffer) == 0) {
+    std::ifstream file(file_path);
 
     if (file.is_open()) {
-      while (getline (file, line) ) {
+      while (getline(file, line)) {
         // Read a line from the property file
 
         // Figure out if we have a blank or comment line
@@ -45,15 +44,18 @@ PropertiesReader::PropertiesReader(std::string file_path) {
             std::size_t eq_pos = line.find("=", 0);
             if (eq_pos != std::string::npos) {
               std::string var_name = line.substr(0, eq_pos);
-              std::string var_value = line.substr(eq_pos+1, line.length() - eq_pos);
+              std::string var_value = \
+                line.substr(eq_pos+1, line.length() - eq_pos);
               opts.emplace(std::make_pair(var_name, var_value));
             } else {
-              // We have a line that's non-blank and not a comment, as well as not a key-value pair
-              // In this case, we assume that we have a list, which uses the syntax -list_name-list_value
+              // We have a line that's non-blank and not a comment, as well
+              // as not a key-value pair.  In this case, we assume that we
+              // have a list, which uses the syntax -list_name-list_value
               std::size_t eq_pos = line.find("-", 1);
               if (eq_pos != std::string::npos) {
                 std::string list_name = line.substr(1, eq_pos - 1);
-                std::string list_value = line.substr(eq_pos+1, line.length() - eq_pos);
+                std::string list_value = \
+                  line.substr(eq_pos+1, line.length() - eq_pos);
                 if (!list_exist(list_name)) {
                   // Create a new list and add it to the map
                   std::vector<std::string> val_list;
@@ -74,19 +76,15 @@ PropertiesReader::PropertiesReader(std::string file_path) {
 }
 
 // Does a key exist?
-bool PropertiesReader::opt_exist( std::string key ) {
+bool PropertiesReader::opt_exist(std::string key) {
   auto search = opts.find(key);
-  if (search != opts.end()) {
-    return true;
-  }
+  if (search != opts.end()) return true;
   return false;
 }
 
 // Does a key exist?
-bool PropertiesReader::list_exist( std::string key ) {
+bool PropertiesReader::list_exist(std::string key) {
   auto search = opt_lists.find(key);
-  if (search != opt_lists.end()) {
-    return true;
-  }
+  if (search != opt_lists.end()) return true;
   return false;
 }

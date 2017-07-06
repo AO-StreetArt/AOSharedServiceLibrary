@@ -26,7 +26,6 @@ THE SOFTWARE.
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <iostream>
 #include <fstream>
 #include <cstdlib>
 
@@ -36,15 +35,11 @@ THE SOFTWARE.
 uuidInterface *uuid;
 
 // Benchmarks
-
 BENCHMARK(UUID, Generate, 10, 100) {
-
   UuidContainer uuid_str = uuid->generate();
-
 }
 
 int main() {
-
   uuidComponentFactory uuid_factory;
 
   // Set up UUID Generator
@@ -53,16 +48,13 @@ int main() {
   std::cout << "UUID Generator Created" << std::endl;
 
   // Run Tests
-
   hayai::ConsoleOutputter consoleOutputter;
 
   hayai::Benchmarker::AddOutputter(consoleOutputter);
   hayai::Benchmarker::RunAllTests();
 
   // Cleanup
-
   delete uuid;
 
   return 0;
-
 }

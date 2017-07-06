@@ -67,7 +67,7 @@ class MongoConnectionPool {
   void init_slots();
   void init_connections(std::string conn_str, std::string db, std::string coll);
 
-public:
+ public:
   // Constructors
   inline MongoConnectionPool(int size, std::string conn_str, std::string db, \
     std::string coll) {
@@ -96,8 +96,8 @@ public:
   ~MongoConnectionPool();
   MongoSession* get_connection();
   void release_connection(MongoSession *conn);
-  inline void switch_collection(std::string new_col) {db_coll_string=new_col;}
-  inline void switch_database(std::string new_db) {db_name_string=new_db;}
+  inline void switch_collection(std::string new_col) {db_coll_string = new_col;}
+  inline void switch_database(std::string new_db) {db_name_string = new_db;}
   inline std::string get_conn_str() {return connection_string;}
   inline std::string get_db_name() {return db_name_string;}
   inline std::string get_db_coll() {return db_coll_string;}
@@ -112,13 +112,14 @@ class MongoResponse: public MongoResponseInterface {
   std::string val;
   char err_msg[504];
   std::string err_string;
-public:
+
+ public:
   // Build the mongo response from a C String passed back by libmongo
   inline MongoResponse(char * cstring, int resp_type) {
     cval = cstring;
     val.assign(cval);
     type = resp_type;
-    err_string="";
+    err_string = "";
   }
 
   // Free the internal C String on delete
@@ -140,7 +141,7 @@ public:
 
   // Set the error string
   inline void set_err_msg(char err[]) {
-    strcpy(err,err_msg);
+    strcpy(err, err_msg);
     err_string.assign(err_msg);
   }
 };
@@ -151,7 +152,7 @@ class MongoIterator: public MongoIteratorInterface {
   MongoConnectionPool *pool = NULL;
   MongoSession *session = NULL;
 
-public:
+ public:
   inline MongoIterator(mongoc_cursor_t *c, MongoConnectionPool *p, \
     MongoSession *s) {
     cursor = c;
@@ -160,7 +161,7 @@ public:
   }
 
   inline ~MongoIterator() {
-    mongoc_cursor_destroy (cursor);
+    mongoc_cursor_destroy(cursor);
     pool->release_connection(session);
   }
   // Get the next value from the iterator.
@@ -173,7 +174,6 @@ public:
 // Mongo Client
 
 class MongoClient: public MongoInterface {
-
   // The internal mongoc client
   MongoConnectionPool *pool = NULL;
 
@@ -181,7 +181,7 @@ class MongoClient: public MongoInterface {
   void initialize(const char * url, const char * db, \
     const char * collection_name, int size);
 
-public:
+ public:
   // Switch the current collection
   void switch_collection(const char * collection_name);
 
@@ -293,7 +293,8 @@ public:
   }
 
   // Save Document
-  // If the document has an '_id' field it will be updated.  Otherwise it will be inserted
+  // If the document has an '_id' field it will be updated.
+  // Otherwise it will be inserted
   void save_document(const char * doc, const char * key);
 
   inline void save_document(std::string doc, std::string key) {

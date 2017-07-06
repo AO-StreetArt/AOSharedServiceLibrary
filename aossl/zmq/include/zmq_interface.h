@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef ZMQ_INTERFACE
-#define ZMQ_INTERFACE
+#ifndef AOSSL_ZMQ_INCLUDE_ZMQ_INTERFACE_H_
+#define AOSSL_ZMQ_INCLUDE_ZMQ_INTERFACE_H_
 
 #include <string>
 
@@ -59,7 +59,6 @@ class Zmqio {
 //! Send, then Recieve
 class ZmqOut: public Zmqio {
  public:
-
   virtual ~ZmqOut() {}
 
   //! Connect to the given conn_str
@@ -87,7 +86,6 @@ class ZmqOut: public Zmqio {
 //! Recieve, then Send
 class ZmqIn: public Zmqio {
  public:
-
   virtual ~ZmqIn() {}
 
   //! Bind on the given conn_str
@@ -108,4 +106,4 @@ class ZmqIn: public Zmqio {
   //! Subscribe on a particular filter (only effective for Pub/Sub)
   virtual void subscribe(std::string filter) = 0;
 };
-#endif
+#endif  // AOSSL_ZMQ_INCLUDE_ZMQ_INTERFACE_H_

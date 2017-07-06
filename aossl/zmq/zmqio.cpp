@@ -29,9 +29,9 @@ THE SOFTWARE.
 // Constructor & Destructor
 Zmqi::Zmqi(zmq::context_t &context, int connection_type) {
   if (connection_type == REQ_RESP) {
-    zmqi = new zmq::socket_t (context, ZMQ_REP);
+    zmqi = new zmq::socket_t(context, ZMQ_REP);
   } else if (connection_type == PUB_SUB) {
-    zmqi = new zmq::socket_t (context, ZMQ_SUB);
+    zmqi = new zmq::socket_t(context, ZMQ_SUB);
   }
   conn_type = connection_type;
   request = new zmq::message_t;
@@ -56,13 +56,14 @@ void Zmqi::bind(std::string conn_str) {
 std::string Zmqi::recv() {
   // Rebuild the ZeroMQ Message Object
   // Close the message object and then re-build, this means that
-  // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
+  // any resources from the message MAY NOT BE PRESENT after
+  // the next message has been recieved
   if (started) {
     request->rebuild();
   }
 
   // Wait for next request from client
-  zmqi->recv (request);
+  zmqi->recv(request);
 
   // Convert the OMQ message into a string to be passed
   req_string.assign(static_cast<char*>(request->data()), request->size());
@@ -74,16 +75,17 @@ std::string Zmqi::recv() {
 char * Zmqi::crecv() {
   // Rebuild the ZeroMQ Message Object
   // Close the message object and then re-build, this means that
-  // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
+  // any resources from the message MAY NOT BE PRESENT after the
+  // next message has been recieved
   if (started) {request->rebuild();}
-  if (rcv_cstr) {delete[] rcv_cstr;rcv_cstr=NULL;}
+  if (rcv_cstr) {delete[] rcv_cstr; rcv_cstr=NULL;}
 
   // Wait for next request from client
-  zmqi->recv (request);
+  zmqi->recv(request);
 
   // Take the data out of the message
   if (request->size() > 0) {
-    rcv_cstr = new char [request->size()];
+    rcv_cstr = new char[request->size()];
     std::memcpy(rcv_cstr, request->data(), request->size());
   }
 
@@ -97,12 +99,12 @@ char * Zmqi::crecv() {
 // Send a response
 void Zmqi::send(const char * msg, int msg_size) {
   // Send reply back to client
-  zmq::message_t reply (msg_size);
+  zmq::message_t reply(msg_size);
 
   // Prepare return data
-  memcpy (reply.data (), msg, msg_size);
+  memcpy(reply.data(), msg, msg_size);
   // Send the response
-  zmqi->send (reply);
+  zmqi->send(reply);
 }
 
 // Send a string response
@@ -120,9 +122,9 @@ void Zmqi::subscribe(std::string filter) {
 // Constructor & Destructor
 Zmqo::Zmqo(zmq::context_t &context, int connection_type) {
   if (connection_type == REQ_RESP) {
-    zmqo = new zmq::socket_t (context, ZMQ_REQ);
+    zmqo = new zmq::socket_t(context, ZMQ_REQ);
   } else if (connection_type == PUB_SUB) {
-    zmqo = new zmq::socket_t (context, ZMQ_PUB);
+    zmqo = new zmq::socket_t(context, ZMQ_PUB);
   }
   conn_type = connection_type;
 }
@@ -145,11 +147,11 @@ void Zmqo::connect(std::string conn_str) {
 void Zmqo::send(const char * msg, int msg_size) {
   std::lock_guard<std::mutex> lock(send_mutex);
   // Set up the message to go out on 0MQ
-  zmq::message_t req (msg_size);
-  memcpy (req.data (), msg, msg_size);
+  zmq::message_t req(msg_size);
+  memcpy(req.data(), msg, msg_size);
 
   // Send the message
-  zmqo->send (req);
+  zmqo->send(req);
 }
 
 // Send a string message
@@ -162,12 +164,13 @@ void Zmqo::send(std::string msg) {
 std::string Zmqo::recv() {
   // Rebuild the ZeroMQ Message Object
   // Close the message object and then re-build, this means that
-  // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
+  // any resources from the message MAY NOT BE PRESENT
+  // after the next message has been recieved
   if (!started) {
     request.rebuild();
   }
   // Get the reply.
-  zmqo->recv (&request);
+  zmqo->recv(&request);
 
   // Process the reply
   r_str.assign(static_cast<char*>(request.data()), request.size());
@@ -179,18 +182,19 @@ std::string Zmqo::recv() {
 char * Zmqo::crecv() {
   // Rebuild the ZeroMQ Message Object
   // Close the message object and then re-build, this means that
-  // any resources from the message MAY NOT BE PRESENT after the next message has been recieved
+  // any resources from the message MAY NOT BE PRESENT
+  // after the next message has been recieved
   if (!started) {
     request.rebuild();
   }
 
-  if (rcv_cstr) {delete[] rcv_cstr;rcv_cstr=NULL;}
+  if (rcv_cstr) {delete[] rcv_cstr; rcv_cstr=NULL;}
 
   // Wait for next request from client
-  zmqo->recv (&request);
+  zmqo->recv(&request);
 
   // Take the data out of the message
-  rcv_cstr = new char [request.size()];
+  rcv_cstr = new char[request.size()];
   std::memcpy(rcv_cstr, request.data(), request.size());
 
   started = true;

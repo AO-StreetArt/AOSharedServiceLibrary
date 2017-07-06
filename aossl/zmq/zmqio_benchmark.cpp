@@ -26,7 +26,6 @@ THE SOFTWARE.
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <iostream>
 #include <fstream>
 #include <cstdlib>
 
@@ -39,14 +38,12 @@ Zmqio *zmqi;
 // Benchmarks
 
 BENCHMARK(ZMQ, SendRecieve, 10, 100) {
-
   // Send a Message
   std::string msg = "Test";
   zmqo->send(msg);
   bool keep_going = true;
 
   while (keep_going) {
-
     // Convert the OMQ message into a string to be passed on the event
     std::string req_string = zmqi->recv();
 
@@ -58,21 +55,19 @@ BENCHMARK(ZMQ, SendRecieve, 10, 100) {
     std::cout << "Response Sent" << std::endl;
 
     keep_going = false;
-
   }
 
   std::string response = zmqo->recv();
   std::cout << "Response Recieved" << response << std::endl;
-
 }
 
 int main() {
-
   ZmqComponentFactory zmq_factory;
 
   // Set up UUID Generator
-  zmqo = zmq_factory.get_zmq_outbound_interface( "tcp://localhost:5555", REQ_RESP );
-  zmqi = zmq_factory.get_zmq_inbound_interface( "tcp://*:5555", REQ_RESP );
+  zmqo = \
+    zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555", REQ_RESP);
+  zmqi = zmq_factory.get_zmq_inbound_interface("tcp://*:5555", REQ_RESP);
 
   // Run Tests
 
@@ -87,5 +82,4 @@ int main() {
   delete zmqi;
 
   return 0;
-
 }

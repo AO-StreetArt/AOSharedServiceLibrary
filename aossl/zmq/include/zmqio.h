@@ -22,13 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef ZMQIO
-#define ZMQIO
+#ifndef AOSSL_ZMQ_INCLUDE_ZMQIO_H_
+#define AOSSL_ZMQ_INCLUDE_ZMQIO_H_
 
-#include <string>
-#include <stdlib.h>
-#include <mutex>
 #include <zmq.hpp>
+#include <stdlib.h>
+#include <string>
+#include <mutex>
 #include "zmq_interface.h"
 
 // An Outbound ZMQ Manager
@@ -44,6 +44,7 @@ class Zmqo: public ZmqOut {
   const char * msg_cstr;
   char * rcv_cstr = NULL;
   bool started = false;
+
  public:
   // Build a new Outbound ZMQ Manager
   Zmqo(zmq::context_t &context, int connection_type);
@@ -76,12 +77,13 @@ class Zmqo: public ZmqOut {
 class Zmqi: public ZmqIn {
   int conn_type;
   zmq::socket_t *zmqi;
-  //Perhaps we need to store this as a pointer?
+  // Perhaps we need to store this as a pointer?
   zmq::message_t *request = NULL;
   std::string req_string;
   const char * msg_cstr;
   char * rcv_cstr = NULL;
   bool started = false;
+
  public:
   // Build a new Inbound ZMQ Manager
   Zmqi(zmq::context_t &context, int connection_type);
@@ -107,4 +109,4 @@ class Zmqi: public ZmqIn {
   // Subscribe on a filter
   void subscribe(std::string filter);
 };
-#endif
+#endif  // AOSSL_ZMQ_INCLUDE_ZMQIO_H_

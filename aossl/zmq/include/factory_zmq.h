@@ -22,10 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_FACTORY_ZMQ
-#define AOSSL_FACTORY_ZMQ
+#ifndef AOSSL_ZMQ_INCLUDE_FACTORY_ZMQ_H_
+#define AOSSL_ZMQ_INCLUDE_FACTORY_ZMQ_H_
 
 #include <zmq.hpp>
+#include <string>
 #include "zmqio.h"
 #include "zmq_interface.h"
 
@@ -37,29 +38,32 @@ THE SOFTWARE.
 //! to be independent of the implementations.
 class ZmqComponentFactory {
   zmq::context_t *context;
- public:
 
+ public:
   //! Create a new Service Component Factory
   ZmqComponentFactory() {context = new zmq::context_t(1, 2);}
-  ZmqComponentFactory(int num_sockets) {context = new zmq::context_t(1, num_sockets);}
+  inline ZmqComponentFactory(int num_sockets) {
+    context = new zmq::context_t(1, num_sockets);
+  }
 
   //! Delete a Service Component Factory
   ~ZmqComponentFactory() {delete context;}
 
   //! Get a ZMQ Outbound Interface instance
-  inline Zmqio* get_zmq_outbound_interface( std::string conn_str, int connection_type ) {
-    ZmqOut *zmqo =  new Zmqo( *context, connection_type );
-    zmqo->connect( conn_str );
+  inline Zmqio* get_zmq_outbound_interface(std::string conn_str, \
+    int connection_type) {
+    ZmqOut *zmqo =  new Zmqo(*context, connection_type);
+    zmqo->connect(conn_str);
     return zmqo;
   }
 
   //! Get a ZMQ Inbound Interface instance
-  inline Zmqio* get_zmq_inbound_interface( std::string conn_str, int connection_type ) {
-    ZmqIn *zmqi = new Zmqi( *context, connection_type );
-    zmqi->bind( conn_str );
+  inline Zmqio* get_zmq_inbound_interface(std::string conn_str, \
+    int connection_type) {
+    ZmqIn *zmqi = new Zmqi(*context, connection_type);
+    zmqi->bind(conn_str);
     return zmqi;
   }
-
 };
 
-#endif
+#endif  // AOSSL_ZMQ_INCLUDE_FACTORY_ZMQ_H_

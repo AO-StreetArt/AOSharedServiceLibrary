@@ -22,16 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <assert.h>
+#include <iostream>
+#include <vector>
+#include <string>
 #include "include/factory_props.h"
 #include "include/properties_reader_interface.h"
-#include <iostream>
-#include <assert.h>
-#include <vector>
 
-int main( int argc, char** argv ) {
-
+int main(int argc, char** argv) {
   PropertyReaderFactory prop_factory;
-  PropertiesReaderInterface *reader = prop_factory.get_properties_reader_interface( "test.properties" );
+  PropertiesReaderInterface *reader = \
+    prop_factory.get_properties_reader_interface("test.properties");
   if ( reader->opt_exist("DB_Password") ) {
     assert(reader->get_opt("DB_Password") == "default");
   } else {
@@ -46,6 +47,5 @@ int main( int argc, char** argv ) {
   }
 
   delete reader;
-
   return 0;
 }

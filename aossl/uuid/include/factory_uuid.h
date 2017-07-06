@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_FACTORY_UUID
-#define AOSSL_FACTORY_UUID
+#ifndef AOSSL_UUID_INCLUDE_FACTORY_UUID_H_
+#define AOSSL_UUID_INCLUDE_FACTORY_UUID_H_
 
 #include "uuid_interface.h"
 #include "uuid_admin.h"
@@ -36,7 +36,6 @@ THE SOFTWARE.
 //! to be independent of the implementations.
 class uuidComponentFactory {
  public:
-
   //! Create a new Service Component Factory
   uuidComponentFactory() {}
 
@@ -45,7 +44,6 @@ class uuidComponentFactory {
 
   //! Get the UUID Interface instance
   uuidInterface* get_uuid_interface() {return new uuidAdmin;}
-
 };
 
-#endif
+#endif  // AOSSL_UUID_INCLUDE_FACTORY_UUID_H_

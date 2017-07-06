@@ -36,7 +36,7 @@ struct MongoException: public std::exception {
   const char * what_str;
 
   //! Create a Mongo Exception, and store the given error message
-  inline MongoException (std::string msg) {
+  inline MongoException(std::string msg) {
     int_msg = "Error in Mongo Request: " + msg;
     what_str = int_msg.c_str();
   }
@@ -52,8 +52,7 @@ struct MongoException: public std::exception {
 
 //! Interface used to store Mongo Responses
 class MongoResponseInterface {
-
-public:
+ public:
   virtual ~MongoResponseInterface() {}
   //! Retrieve the value stored inside the response interface
   virtual std::string get_value() = 0;
@@ -62,8 +61,7 @@ public:
 
 //! Returned from Queries in order to iterate over results
 class MongoIteratorInterface {
-
-public:
+ public:
   virtual ~MongoIteratorInterface() {}
   //! Get the next value from the iterator.
 
@@ -73,8 +71,7 @@ public:
 };
 
 class MongoInterface {
-
-public:
+ public:
   //! Destructor
   virtual ~MongoInterface() {}
 
@@ -162,4 +159,4 @@ public:
   virtual MongoIteratorInterface* query(std::string query_str) = 0;
 };
 
-#endif // AOSSL_MONGO_INCLUDE_MONGO_INTERFACE_H_
+#endif  // AOSSL_MONGO_INCLUDE_MONGO_INTERFACE_H_

@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_NEO4J_INTERFACE
-#define AOSSL_NEO4J_INTERFACE
+#ifndef AOSSL_NEO4J_INCLUDE_NEO4J_INTERFACE_H_
+#define AOSSL_NEO4J_INCLUDE_NEO4J_INTERFACE_H_
 
 #include <string>
 #include <unordered_map>
@@ -37,7 +37,6 @@ THE SOFTWARE.
 //! in a map as well as node labels
 class DbListInterface {
  public:
-
   virtual ~DbListInterface() {}
 
   //! Get a bool element out of a list
@@ -50,7 +49,8 @@ class DbListInterface {
   virtual double get_float_element(unsigned int ind) = 0;
 
   //! Get a list string out of a list
-  virtual std::string get_string_element(unsigned int ind, int char_buffer_size) = 0;
+  virtual std::string get_string_element(unsigned int ind, \
+    int char_buffer_size) = 0;
 
   //! Get a string element out of a list
   virtual std::string get_string_element(unsigned int ind) = 0;
@@ -68,7 +68,6 @@ class DbListInterface {
 //! in a map as well as node/edge properties
 class DbMapInterface {
  public:
-
   virtual ~DbMapInterface() {}
 
   //! Get the size of the map
@@ -78,7 +77,8 @@ class DbMapInterface {
   virtual bool element_exists(std::string key) = 0;
 
   //! Get a string element out of a map
-  virtual std::string get_string_element(std::string key, int char_buffer_size) = 0;
+  virtual std::string get_string_element(std::string key, \
+    int char_buffer_size) = 0;
 
   //! Get a string element out of a map
   virtual std::string get_string_element(std::string key) = 0;
@@ -105,7 +105,6 @@ class DbMapInterface {
 //! represents either a node, an edge, or a path
 class DbObjectInterface {
  public:
-
   virtual ~DbObjectInterface() {}
 
   //! Is this a node?
@@ -172,7 +171,6 @@ class DbObjectInterface {
 // Consists of a set of nodes and edges
 class ResultTreeInterface {
  public:
-
   virtual ~ResultTreeInterface() {}
 
   //! Get the node/edge at the specified index
@@ -188,7 +186,6 @@ class ResultTreeInterface {
 //! Deletes it when finished
 class ResultsIteratorInterface {
  public:
-
   virtual ~ResultsIteratorInterface() {}
 
   //! Clear the results iterator of all values
@@ -216,8 +213,7 @@ class ResultsIteratorInterface {
 //! Either a single value or a list
 class Neo4jQueryParameterInterface {
  public:
-
-  virtual ~Neo4jQueryParameterInterface() {};
+  virtual ~Neo4jQueryParameterInterface() {}
 
   //! Get the type of the query parameter
   virtual int get_type() = 0;
@@ -245,8 +241,7 @@ class Neo4jQueryParameterInterface {
 //! Query results, which start with the ResultsIteratorInterface
 class Neo4jInterface {
  public:
-
-  virtual ~Neo4jInterface() {};
+  virtual ~Neo4jInterface() {}
 
   //! Execute the given Cypher Query
   virtual ResultsIteratorInterface* execute(const char * query) = 0;
@@ -255,10 +250,14 @@ class Neo4jInterface {
   virtual ResultsIteratorInterface* execute(std::string query) = 0;
 
   //! Execute a given Cypher Query with an input map of parameters
-  virtual ResultsIteratorInterface* execute(const char * query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) = 0;
+  virtual ResultsIteratorInterface* execute(const char * query, \
+    std::unordered_map<std::string, Neo4jQueryParameterInterface*>\
+    query_params) = 0;
 
   //! Execute a given Cypher Query with an input map of parameters
-  virtual ResultsIteratorInterface* execute(std::string query, std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) = 0;
+  virtual ResultsIteratorInterface* execute(std::string query, \
+    std::unordered_map<std::string, Neo4jQueryParameterInterface*> \
+    query_params) = 0;
 };
 
-#endif
+#endif  // AOSSL_NEO4J_INCLUDE_NEO4J_INTERFACE_H_

@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef UUID_ADMIN
-#define UUID_ADMIN
+#ifndef AOSSL_UUID_INCLUDE_UUID_ADMIN_H_
+#define AOSSL_UUID_INCLUDE_UUID_ADMIN_H_
 
-#include <string>
 #include <string.h>
 #include <uuid/uuid.h>
+#include <string>
 #include "uuid_interface.h"
 
 // UUID Admin
@@ -36,17 +36,18 @@ THE SOFTWARE.
 // ID's that are required throughout program execution
 class uuidAdmin: public uuidInterface {
 UuidContainer cont;
- public:
-	uuidAdmin() {}
-	~uuidAdmin() {}
-	// Generate a new UUID
 
-	// The method will generate on the means of generation present on your system
-	// In some cases, this may result in UUID's being generated that pose a security
-	// risk.  In this case, that fact will be clearly called out in the logs, and
-	// it is recommended that production systems are tested to ensure that UUID's are
-	// generated in a safe manner
-	UuidContainer generate();
+ public:
+  uuidAdmin() {}
+  ~uuidAdmin() {}
+  // Generate a new UUID
+
+  // The method will generate on the means of generation present on your system
+  // In some cases, this may result in UUID's being generated that pose a
+  // security risk.  In this case, that fact will be clearly called out in the
+  // logs, and it is recommended that production systems are tested to ensure
+  // that UUID's are generated in a safe manner
+  UuidContainer generate();
 };
 
-#endif
+#endif  // AOSSL_UUID_INCLUDE_UUID_ADMIN_H_

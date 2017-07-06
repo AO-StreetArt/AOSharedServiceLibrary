@@ -24,18 +24,18 @@ THE SOFTWARE.
 
 // Tests for the Zmqio Module
 
+#include <string>
+#include <iostream>
+
 #include "include/factory_zmq.h"
 #include "include/zmq_interface.h"
 
-#include <iostream>
-
 int main(int argc, char* argv[]) {
-
   if (argc < 4) {return -1;}
 
-  std::string con_host (argv[1]);
-  std::string con_port (argv[2]);
-  std::string msg (argv[3]);
+  std::string con_host(argv[1]);
+  std::string con_port(argv[2]);
+  std::string msg(argv[3]);
   std::string con_str = "tcp://" + con_host + ":" + con_port;
 
   // Set up the underlying variables
@@ -43,7 +43,8 @@ int main(int argc, char* argv[]) {
   ZmqComponentFactory zmq_factory;
 
   // Set up the ZMQ Clients
-  zmqo = zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555", REQ_RESP);
+  zmqo = \
+    zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555", REQ_RESP);
 
   // Send a Message
   zmqo->send(msg);
@@ -53,5 +54,4 @@ int main(int argc, char* argv[]) {
   delete zmqo;
 
   return 0;
-
 }
