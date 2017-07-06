@@ -22,40 +22,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef LOGGING_INTERFACE
-#define LOGGING_INTERFACE
+#ifndef AOSSL_LOGGING_INCLUDE_LOGGING_INTERFACE_H_
+#define AOSSL_LOGGING_INCLUDE_LOGGING_INTERFACE_H_
 
 #include <log4cpp/Category.hh>
 #include <string>
 #include <exception>
 
 //! Mongo Exception, used to store errors passed from Mongo
-struct LoggingException: public std::exception
-{
+struct LoggingException: public std::exception {
   //! An error message passed on initialization
   std::string int_msg;
   const char * what_str;
 
   //! Create a Mongo Exception, and store the given error message
-  LoggingException (std::string msg) {int_msg = "Error in Logging Driver: " + msg;what_str = int_msg.c_str();}
+  inline LoggingException(std::string msg) {
+    int_msg = "Error in Logging Driver: " + msg;
+    what_str = int_msg.c_str();
+  }
 
-  LoggingException () {}
-  ~LoggingException() throw () {}
+  LoggingException() {}
+  ~LoggingException() throw() {}
 
   //! Show the error message in readable format
-  const char * what() const throw ()
-  {
+  const char * what() const throw() {
     return what_str;
   }
 };
 
 //! A Logging Category instantiated on a standard logging instance
-class LoggingCategoryInterface
-{
-public:
+class LoggingCategoryInterface {
+ public:
   virtual ~LoggingCategoryInterface() {}
 
-  //Exposures that log to the sepcified category
+  // Exposures that log to the sepcified category
 
   //! Log at a debug level to the root category
   virtual void debug(std::string msg) = 0;
@@ -104,13 +104,11 @@ public:
 };
 
 //! An overall logging interface, which can generate logging categories
-class LoggingInterface
-{
-public:
-
+class LoggingInterface {
+ public:
   virtual ~LoggingInterface() {}
 
-  //Exposures that log to the root category
+  // Exposures that log to the root category
 
   //! Log at a debug level to the root category
   virtual void debug(std::string msg) = 0;
@@ -161,7 +159,8 @@ public:
   virtual LoggingCategoryInterface* get_category(std::string name) = 0;
 };
 
-//! The global logging pointer that is instantiated and deleted at startup/shutdown, respectively
+//! The global logging pointer that is instantiated and deleted at
+//! startup/shutdown, respectively
 extern LoggingInterface *logging;
 
-#endif
+#endif  // AOSSL_LOGGING_INCLUDE_LOGGING_INTERFACE_H_

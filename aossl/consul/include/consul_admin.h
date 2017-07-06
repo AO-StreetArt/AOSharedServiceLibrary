@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef CONSUL_ADMIN
-#define CONSUL_ADMIN
+#ifndef AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_
+#define AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_
 
 #include "aossl/http/client/include/http_admin.h"
 #include "aossl/http/client/include/http_interface.h"
@@ -36,87 +36,88 @@ THE SOFTWARE.
 #include <string.h>
 #include <vector>
 
-//------------------------------Consul Admin-----------------------------------//
+// Consul Admin
 
-//! The Consul Administrator, who handles distributed configuration & service discovery
+// The Consul Administrator, which handles distributed configuration
+// & service discovery
 
-//! This relies on the HTTP Administrator, and takes in a Service object in order to
-//! register.  It's responses are JSON strings that are recieved from Consul.
-//! Note that the values returned from the Key-Value store will be stored in base64 format
-class ConsulAdmin: public ConsulInterface
-{
+// This relies on the HTTP Administrator, and takes in a Service object in
+// order to register.  It's responses are JSON strings that are recieved
+// from Consul.  Note that the values returned from the Key-Value store
+// will be stored in base64 format
+class ConsulAdmin: public ConsulInterface {
   HttpInterface *ha = NULL;
   std::string consul_addr;
   std::string base64_return_string = "";
   std::string return_string = "";
+  std::string query_return_string = "";
   int timeout;
   std::string query(std::string query_url);
-  static bool is_base64(unsigned char c) {
+  inline static bool is_base64(unsigned char c) {
     return (isalnum(c) || (c == '+') || (c == '/'));
   }
-public:
+ public:
 
   std::string base64_decode(std::string const& encoded_string);
 
-  //! Construct a consul admin, passing in the connection string
-  ConsulAdmin(std::string caddr) {HttpClientFactory http_factory; ha = http_factory.get_http_interface(); consul_addr = caddr;timeout=5;}
+  // Construct a consul admin, passing in the connection string
+  ConsulAdmin(std::string caddr);
 
-  //! Delete a consul admin
+  // Delete a consul admin
   ~ConsulAdmin() {delete ha;}
 
-  //------------------Service Registry Functions------------------------------//
+  // Service Registry Functions
 
-  //! Register the Service
-  bool register_service(ServiceInterface& s);
+  // Register the Service
+  bool register_service(const ServiceInterface& s);
 
-  //! Deregister the Service
-  bool deregister_service(ServiceInterface& s);
+  // Deregister the Service
+  bool deregister_service(const ServiceInterface& s);
 
-  //-------------Configuration Key-Value Storage Functions--------------------//
+  // Configuration Key-Value Storage Functions
 
-  //! Set a configuration value.
+  // Set a configuration value.
 
-  //! If the key does not exist, then this will add it.
-  //! Otherwise, it will update the existing key.
+  // If the key does not exist, then this will add it.
+  // Otherwise, it will update the existing key.
   bool set_config_value(std::string key, std::string val);
 
-  //! Get a configuration value
+  // Get a configuration value
   std::string get_config_value(std::string key);
 
-  //! Delete a configuration value
+  // Delete a configuration value
   bool del_config_value(std::string key);
 
-  //Basic Queries
-  //All Return a JSON string
+  // Basic Queries
+  // All Return a JSON string
 
-  //Local Agent Queries
+  // Local Agent Queries
 
-  //! Query the local agent for services registered
+  // Query the local agent for services registered
   std::string services();
 
-  //! Query the local agent for it's info
+  // Query the local agent for it's info
   std::string agent_info();
 
-  //! Query for healthy services only
+  // Query for healthy services only
   std::string healthy_services();
 
-  //Catalog Queries
+  // Catalog Queries
 
-  //! Query the catalog for datacenters
+  // Query the catalog for datacenters
   std::string datacenters();
 
-  //! Query the catalog for the nodes in a particular datacenter
+  // Query the catalog for the nodes in a particular datacenter
   std::string nodes_dc(std::string data_center);
 
-  //! Query the catalog for the services in a particular datacenter
+  // Query the catalog for the services in a particular datacenter
   std::string services_dc(std::string data_center);
 
-  //! Query the catalog for the nodes running a particular service
+  // Query the catalog for the nodes running a particular service
   std::string nodes_service(std::string service);
 
-  //! Query the catalog for the services provided by a particular node
+  // Query the catalog for the services provided by a particular node
   std::string services_node(std::string node, std::string data_center);
-
 };
 
-#endif
+#endif  // AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_

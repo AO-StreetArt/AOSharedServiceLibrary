@@ -22,59 +22,56 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//Tests for the Zmqio Module
+// Tests for the Zmqio Module
+
+#include <iostream>
+#include <string>
 
 #include "include/factory_zmq.h"
 #include "include/zmq_interface.h"
 
-#include <iostream>
-
-int main()
-{
-
-  //Set up the underlying variables
+int main() {
+  // Set up the underlying variables
   Zmqio *zmqo;
   Zmqio *zmqi;
   ZmqComponentFactory zmq_factory;
 
-  //Set up the ZMQ Clients
-  zmqo = zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555", REQ_RESP);
+  // Set up the ZMQ Clients
+  zmqo = \
+    zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555", REQ_RESP);
   zmqi = zmq_factory.get_zmq_inbound_interface("tcp://*:5555", REQ_RESP);
 
-  //Send a Message
+  // Send a Message
   std::string msg = "Test";
   zmqo->send(msg);
   bool keep_going = true;
 
   while (keep_going) {
-
-    //Convert the OMQ message into a string to be passed on the event
+    // Convert the OMQ message into a string to be passed on the event
     std::string req_string = zmqi->recv();
     std::cout << req_string << std::endl;
-    assert ( req_string == "Test" );
+    assert(req_string == "Test");
     std::string resp = "success";
-    //  Send reply back to client
+    // Send reply back to client
     zmqi->send(resp);
 
     keep_going = false;
-
   }
 
   std::string response = zmqo->recv();
   std::cout << response << std::endl;
-  assert ( response == "success" );
+  assert(response == "success");
 
-  //Send a Message
+  // Send a Message
   std::string cmsg = "This is a test message.  Woohoo!";
   zmqo->send(cmsg);
 
   char * req_cstr = zmqi->crecv();
   std::cout << req_cstr << std::endl;
 
-  //Cleanup
+  // Cleanup
   delete zmqi;
   delete zmqo;
 
   return 0;
-
 }

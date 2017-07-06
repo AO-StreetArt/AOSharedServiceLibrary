@@ -22,36 +22,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_MONGO_INTERFACE
-#define AOSSL_MONGO_INTERFACE
+#ifndef AOSSL_MONGO_INCLUDE_MONGO_INTERFACE_H_
+#define AOSSL_MONGO_INCLUDE_MONGO_INTERFACE_H_
 
 #include <string>
 #include <exception>
 #include <vector>
 
 //! Mongo Exception, used to store errors passed from Mongo
-struct MongoException: public std::exception
-{
+struct MongoException: public std::exception {
   //! An error message passed on initialization
   std::string int_msg;
   const char * what_str;
 
   //! Create a Mongo Exception, and store the given error message
-  MongoException (std::string msg) {int_msg = "Error in Mongo Request: " + msg;what_str = int_msg.c_str();}
+  inline MongoException(std::string msg) {
+    int_msg = "Error in Mongo Request: " + msg;
+    what_str = int_msg.c_str();
+  }
 
-  MongoException () {}
-  ~MongoException() throw () {}
+  MongoException() {}
+  ~MongoException() throw() {}
 
   //! Show the error message in readable format
-  const char * what() const throw ()
-  {
+  const char * what() const throw() {
     return what_str;
   }
 };
 
 //! Interface used to store Mongo Responses
 class MongoResponseInterface {
-public:
+ public:
   virtual ~MongoResponseInterface() {}
   //! Retrieve the value stored inside the response interface
   virtual std::string get_value() = 0;
@@ -60,7 +61,7 @@ public:
 
 //! Returned from Queries in order to iterate over results
 class MongoIteratorInterface {
-public:
+ public:
   virtual ~MongoIteratorInterface() {}
   //! Get the next value from the iterator.
 
@@ -70,71 +71,82 @@ public:
 };
 
 class MongoInterface {
-public:
-
-  //Destructor
+ public:
+  //! Destructor
   virtual ~MongoInterface() {}
 
-  //CRUD Operations
+  // CRUD Operations
 
   //! Create JSON Document, returns the document key
-  virtual MongoResponseInterface* create_document(const char * doc, const char * collection_name) = 0;
+  virtual MongoResponseInterface* create_document(const char * doc, \
+    const char * collection_name) = 0;
   //! Create JSON Document, returns the document key
   virtual MongoResponseInterface* create_document(const char * doc) = 0;
   //! Create JSON Document, returns the document key
   virtual MongoResponseInterface* create_document(std::string doc) = 0;
   //! Create JSON Document, returns the document key
-  virtual MongoResponseInterface* create_document(std::string doc, std::string collection_name) = 0;
+  virtual MongoResponseInterface* create_document(std::string doc, \
+    std::string collection_name) = 0;
 
   //! Delete a JSON Document, returns true if successful
   virtual void delete_document(const char * key) = 0;
   //! Delete a JSON Document, returns true if successful
   virtual void delete_document(std::string key) = 0;
   //! Delete a JSON Document, returns true if successful
-  virtual void delete_document(const char * key, const char * collection_name) = 0;
+  virtual void delete_document(const char * key, \
+    const char * collection_name) = 0;
   //! Delete a JSON Document, returns true if successful
-  virtual void delete_document(std::string key, std::string collection_name) = 0;
+  virtual void delete_document(std::string key, \
+    std::string collection_name) = 0;
 
   //! Retrieve a JSON Document and return it in a std::string
   virtual MongoResponseInterface* load_document(const char * key) = 0;
   //! Retrieve a JSON Document and return it in a std::string
   virtual MongoResponseInterface* load_document(std::string key) = 0;
   //! Retrieve a JSON Document and return it in a std::string
-  virtual MongoResponseInterface* load_document(const char * key, const char * collection_name) = 0;
+  virtual MongoResponseInterface* load_document(const char * key, \
+    const char * collection_name) = 0;
   //! Retrieve a JSON Document and return it in a std::string
-  virtual MongoResponseInterface* load_document(std::string key, std::string collection_name) = 0;
+  virtual MongoResponseInterface* load_document(std::string key, \
+    std::string collection_name) = 0;
 
   //! Update an existing document, returns true if successful
   virtual void save_document(const char * doc, const char * key) = 0;
   //! Update an existing document, returns true if successful
   virtual void save_document(std::string doc, std::string key) = 0;
   //! Update an existing document, returns true if successful
-  virtual void save_document(const char * doc, const char * key, const char * collection_name) = 0;
+  virtual void save_document(const char * doc, const char * key, \
+    const char * collection_name) = 0;
   //! Update an existing document, returns true if successful
-  virtual void save_document(std::string doc, std::string key, std::string collection_name) = 0;
+  virtual void save_document(std::string doc, std::string key, \
+    std::string collection_name) = 0;
 
-  //Advanced Operations
+  // Advanced Operations
 
   //! Queries
 
   //! Accept the query and query options in JSON format.
   //! Return an iterator which can be used to access query results
-  virtual MongoIteratorInterface* query(const char * query_str, const char * opts_str) = 0;
+  virtual MongoIteratorInterface* query(const char * query_str, \
+    const char * opts_str) = 0;
   //! Queries
 
   //! Accept the query and query options in JSON format.
   //! Return an iterator which can be used to access query results
-  virtual MongoIteratorInterface* query(std::string query_str, std::string opts_str) = 0;
+  virtual MongoIteratorInterface* query(std::string query_str, \
+    std::string opts_str) = 0;
   //! Queries
 
   //! Accept the query and query options in JSON format.
   //! Return an iterator which can be used to access query results
-  virtual MongoIteratorInterface* query(const char * query_str, const char * opts_str, const char * collection_name) = 0;
+  virtual MongoIteratorInterface* query(const char * query_str, \
+    const char * opts_str, const char * collection_name) = 0;
   //! Queries
 
   //! Accept the query and query options in JSON format.
   //! Return an iterator which can be used to access query results
-  virtual MongoIteratorInterface* query(std::string query_str, std::string opts_str, std::string collection_name) = 0;
+  virtual MongoIteratorInterface* query(std::string query_str, \
+    std::string opts_str, std::string collection_name) = 0;
   //! Queries
 
   //! Accept the query in JSON format.
@@ -145,7 +157,6 @@ public:
   //! Accept the query in JSON format.
   //! Return an iterator which can be used to access query results
   virtual MongoIteratorInterface* query(std::string query_str) = 0;
-
 };
 
-#endif
+#endif  // AOSSL_MONGO_INCLUDE_MONGO_INTERFACE_H_

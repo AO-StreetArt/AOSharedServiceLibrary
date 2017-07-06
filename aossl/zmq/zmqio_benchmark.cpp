@@ -26,7 +26,6 @@ THE SOFTWARE.
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <iostream>
 #include <fstream>
 #include <cstdlib>
 
@@ -36,66 +35,51 @@ THE SOFTWARE.
 Zmqio *zmqo;
 Zmqio *zmqi;
 
-//----------------------------------------------------------------------------//
-//------------------------------Benchmarks------------------------------------//
-//----------------------------------------------------------------------------//
+// Benchmarks
 
-BENCHMARK(ZMQ, SendRecieve, 10, 100)
-{
-
-  //Send a Message
+BENCHMARK(ZMQ, SendRecieve, 10, 100) {
+  // Send a Message
   std::string msg = "Test";
   zmqo->send(msg);
   bool keep_going = true;
 
   while (keep_going) {
-
-    //Convert the OMQ message into a string to be passed on the event
+    // Convert the OMQ message into a string to be passed on the event
     std::string req_string = zmqi->recv();
 
     std::string resp = "success";
     std::cout << "Object Update Event Emitted, response:" << resp << std::endl;
 
-    //  Send reply back to client
+    // Send reply back to client
     zmqi->send(resp);
     std::cout << "Response Sent" << std::endl;
 
     keep_going = false;
-
   }
 
   std::string response = zmqo->recv();
   std::cout << "Response Recieved" << response << std::endl;
-
 }
 
-//----------------------------------------------------------------------------//
-//------------------------------Main Method-----------------------------------//
-//----------------------------------------------------------------------------//
-
-int main()
-{
-
+int main() {
   ZmqComponentFactory zmq_factory;
 
-  //Set up UUID Generator
-  zmqo = zmq_factory.get_zmq_outbound_interface( "tcp://localhost:5555", REQ_RESP );
-  zmqi = zmq_factory.get_zmq_inbound_interface( "tcp://*:5555", REQ_RESP );
+  // Set up UUID Generator
+  zmqo = \
+    zmq_factory.get_zmq_outbound_interface("tcp://localhost:5555", REQ_RESP);
+  zmqi = zmq_factory.get_zmq_inbound_interface("tcp://*:5555", REQ_RESP);
 
-  //------------------------------Run Tests-------------------------------------//
-  //----------------------------------------------------------------------------//
+  // Run Tests
 
   hayai::ConsoleOutputter consoleOutputter;
 
   hayai::Benchmarker::AddOutputter(consoleOutputter);
   hayai::Benchmarker::RunAllTests();
 
-  //-------------------------Post-Test Teardown---------------------------------//
-  //----------------------------------------------------------------------------//
+  // Cleanup
 
   delete zmqo;
   delete zmqi;
 
   return 0;
-
 }

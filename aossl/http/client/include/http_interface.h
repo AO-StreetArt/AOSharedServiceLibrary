@@ -22,30 +22,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//The HTTP Administrator
-//Responsible for placing HTTP Requests using curl
-
 #include <string>
 
-#ifndef HTTP_INTERFACE
-#define HTTP_INTERFACE
+#ifndef AOSSL_HTTP_CLIENT_INCLUDE_HTTP_INTERFACE_H_
+#define AOSSL_HTTP_CLIENT_INCLUDE_HTTP_INTERFACE_H_
 
-//! An Implementation of std::exception that denotes an error during an http operation
-struct HttpRequestException: public std::exception
-{
+//! An Implementation of std::exception that
+//! denotes an error during an http operation
+struct HttpRequestException: public std::exception {
   //! An error message passed on initialization
   std::string int_msg;
   const char * int_msg_cstr;
 
   //! Create a HTTP Request Exception, and store the given error message
-  HttpRequestException (std::string msg) {int_msg = "Error Sending HTTP Request: " + msg;int_msg_cstr=int_msg.c_str();}
+  inline HttpRequestException(std::string msg) {
+    int_msg = "Error Sending HTTP Request: " + msg;
+    int_msg_cstr = int_msg.c_str();
+  }
 
-  HttpRequestException () {}
-  ~HttpRequestException() throw () {}
+  HttpRequestException() {}
+  ~HttpRequestException() throw() {}
 
   //! Show the error message in readable format
-  const char * what() const throw ()
-  {
+  const char * what() const throw() {
     return int_msg_cstr;
   }
 };
@@ -56,16 +55,14 @@ typedef size_t (*WriteCallback)(char *, size_t, size_t, void*);
 
 //! This class is in charge of making HTTP Requests
 //! Support for put, get post, and delete
-class HttpInterface
-{
-public:
-
+class HttpInterface {
+ public:
   //! Shutdown the admin
   virtual void shutdown() = 0;
 
   virtual ~HttpInterface() {}
 
-  //HTTP Methods
+  // HTTP Methods
 
   //! Put
 
@@ -92,4 +89,4 @@ public:
   virtual bool del(std::string url, int timeout) = 0;
 };
 
-#endif
+#endif  // AOSSL_HTTP_CLIENT_INCLUDE_HTTP_INTERFACE_H_

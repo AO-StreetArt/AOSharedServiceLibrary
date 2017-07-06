@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_FACTORY_LOGGING
-#define AOSSL_FACTORY_LOGGING
+#ifndef AOSSL_LOGGING_INCLUDE_FACTORY_LOGGING_H_
+#define AOSSL_LOGGING_INCLUDE_FACTORY_LOGGING_H_
 
 #include <string.h>
 #include "logging_interface.h"
@@ -35,10 +35,8 @@ THE SOFTWARE.
 //! objects exposed by the framework and passes back
 //! instances of interfaces.  This allows for the publicly exposed methods
 //! to be independent of the implementations.
-class LoggingComponentFactory
-{
-public:
-
+class LoggingComponentFactory {
+ public:
   //! Create a new Service Component Factory
   LoggingComponentFactory() {}
 
@@ -46,8 +44,9 @@ public:
   ~LoggingComponentFactory() {}
 
   //! Get a Logging Interface instance
-  LoggingInterface* get_logging_interface( std::string initFileName ) {return new Logger( initFileName );}
-
+  inline LoggingInterface* get_logging_interface( std::string initFileName ) {
+    return new Logger( initFileName );
+  }
 };
 
-#endif
+#endif  // AOSSL_LOGGING_INCLUDE_FACTORY_LOGGING_H_

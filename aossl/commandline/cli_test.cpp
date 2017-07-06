@@ -27,17 +27,20 @@ THE SOFTWARE.
 #include <iostream>
 #include <assert.h>
 
-int main( int argc, char** argv )
-{
+int main(int argc, char** argv) {
 
+  // Build a command line interpreter
   CommandLineInterpreterFactory cli_factory;
-  CommandLineInterface *cli = cli_factory.get_command_line_interface( argc, argv );
+  CommandLineInterface *cli = \
+    cli_factory.get_command_line_interface(argc, argv);
+
+  // Test the command line interpreter
   std::cout << cli->get_program_name() << std::endl;
-  assert ( cli->get_program_name() == "./cli_test" );
-  assert ( cli->opt_exist("name") );
-  if ( cli->opt_exist("name") ) {
+  assert(cli->get_program_name() == "./cli_test");
+  assert(cli->opt_exist("name"));
+  if (cli->opt_exist("name")) {
     std::cout << cli->get_opt("name") << std::endl;
-    assert ( cli->get_opt("name") == "test" );
+    assert(cli->get_opt("name") == "test");
   }
 
   delete cli;

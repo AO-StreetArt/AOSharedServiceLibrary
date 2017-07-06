@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef ZMQ_INTERFACE
-#define ZMQ_INTERFACE
+#ifndef AOSSL_ZMQ_INCLUDE_ZMQ_INTERFACE_H_
+#define AOSSL_ZMQ_INCLUDE_ZMQ_INTERFACE_H_
 
 #include <string>
 
@@ -34,9 +34,8 @@ const int PUB_SUB = 1;
 
 //! Defines the methods that the ZMQ Managers must implement
 //! send & recv, as well as subscribe
-class Zmqio
-{
-public:
+class Zmqio {
+ public:
   virtual ~Zmqio() {}
   //! Recieve a message on the port
   virtual std::string recv() = 0;
@@ -58,10 +57,8 @@ public:
 
 //! Acts as the Requestor (Client) in the ZMQ Sockets
 //! Send, then Recieve
-class ZmqOut: public Zmqio
-{
-public:
-
+class ZmqOut: public Zmqio {
+ public:
   virtual ~ZmqOut() {}
 
   //! Connect to the given conn_str
@@ -87,10 +84,8 @@ public:
 
 //! Acts as the Responder (Server) in the ZMQ Sockets
 //! Recieve, then Send
-class ZmqIn: public Zmqio
-{
-public:
-
+class ZmqIn: public Zmqio {
+ public:
   virtual ~ZmqIn() {}
 
   //! Bind on the given conn_str
@@ -111,4 +106,4 @@ public:
   //! Subscribe on a particular filter (only effective for Pub/Sub)
   virtual void subscribe(std::string filter) = 0;
 };
-#endif
+#endif  // AOSSL_ZMQ_INCLUDE_ZMQ_INTERFACE_H_

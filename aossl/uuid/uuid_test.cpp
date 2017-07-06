@@ -22,23 +22,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <assert.h>
+#include <string.h>
+#include <iostream>
+#include <string>
 #include "include/uuid_interface.h"
 #include "include/factory_uuid.h"
-#include <iostream>
-#include <assert.h>
-#include <string>
-#include <string.h>
 
-int main()
-{
+int main() {
   uuidComponentFactory id_factory;
-  //Initialize the UUID Admin
+  // Initialize the UUID Admin
   uuidInterface *uuid = id_factory.get_uuid_interface();
 
-  //Generate a UUID
+  // Generate a UUID
   UuidContainer id_container = uuid->generate();
   std::string id_str = id_container.id;
-  assert ( !(id_str.empty()) );
+  assert(!(id_str.empty()));
   std::cout << id_str << std::endl;
   std::cout << id_container.err << std::endl;
 

@@ -22,11 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_FACTORY_PROPFILE
-#define AOSSL_FACTORY_PROPFILE
+#ifndef AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_
+#define AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_
 
 #include <string>
-
 #include "properties_reader_interface.h"
 #include "properties_reader.h"
 
@@ -36,10 +35,8 @@ THE SOFTWARE.
 //! objects exposed by the framework and passes back
 //! instances of interfaces.  This allows for the publicly exposed methods
 //! to be independent of the implementations.
-class PropertyReaderFactory
-{
-public:
-
+class PropertyReaderFactory {
+ public:
   //! Create a new Service Component Factory
   PropertyReaderFactory() {}
 
@@ -47,7 +44,10 @@ public:
   ~PropertyReaderFactory() {}
 
   //! Get a Properties File Interface Instance
-  PropertiesReaderInterface* get_properties_reader_interface(std::string filename) {return new PropertiesReader(filename);}
+  inline PropertiesReaderInterface* \
+    get_properties_reader_interface(std::string filename) {
+    return new PropertiesReader(filename);
+  }
 };
 
-#endif
+#endif  // AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_

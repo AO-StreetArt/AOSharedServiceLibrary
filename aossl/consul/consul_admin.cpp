@@ -24,10 +24,16 @@ THE SOFTWARE.
 
 #include "include/consul_admin.h"
 
-//------------------------Consul Administrator--------------------------------//
+// Consul Administrator
+
+ConsulAdmin::ConsulAdmin(std::string caddr) {
+  HttpClientFactory http_factory;
+  ha = http_factory.get_http_interface();
+  consul_addr = caddr;
+  timeout = 5;
+}
 
 std::string ConsulAdmin::base64_decode(std::string const& encoded_string) {
-
   base64_return_string.clear();
 
   static const std::string base64_chars =
@@ -41,7 +47,7 @@ std::string ConsulAdmin::base64_decode(std::string const& encoded_string) {
   int in_ = 0;
   unsigned char char_array_4[4], char_array_3[3];
 
-  while (in_len-- && ( encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
+  while (in_len-- && (encoded_string[in_] != '=') && is_base64(encoded_string[in_])) {
     char_array_4[i++] = encoded_string[in_]; in_++;
     if (i ==4) {
       for (i = 0; i <4; i++)
@@ -74,149 +80,130 @@ std::string ConsulAdmin::base64_decode(std::string const& encoded_string) {
   return base64_return_string;
 }
 
-//Post a query to consul
-std::string ConsulAdmin::query(std::string query_url)
-{
-  //Get the URL
+// Post a query to consul
+std::string ConsulAdmin::query(std::string query_url) {
+  // Get the URL
   std::string url_string = consul_addr;
   url_string = url_string + query_url;
 
-  //Send the HTTP Request
+  // Send the HTTP Request
   return_string = ha->get(url_string, timeout);
-  if ( !(return_string.empty()) )
-  {
+  if ( !(return_string.empty()) ) {
     return return_string;
-  }
-  else
-  {
+  } else {
     return "";
   }
 }
 
-//-------------------Service Registry Functions-------------------------------//
+// Service Registry Functions
 
-bool ConsulAdmin::register_service(ServiceInterface& s)
-{
-  //Get the URL
+bool ConsulAdmin::register_service(const ServiceInterface& s) {
+  // Get the URL
   std::string query_url = "/v1/agent/service/register";
   std::string url_string = consul_addr + query_url;
 
-  //Get the message body
+  // Get the message body
   std::string body_str = s.to_json();
 
-  //Send the HTTP Request
+  // Send the HTTP Request
   bool success = ha->put(url_string, body_str, timeout);
   return success;
 }
 
-bool ConsulAdmin::deregister_service(ServiceInterface& s)
-{
-  //Get the URL
+bool ConsulAdmin::deregister_service(const ServiceInterface& s) {
+  // Get the URL
   std::string query_url = "/v1/agent/service/deregister/";
   query_url = query_url.append(s.get_id());
   std::string url_string = consul_addr + query_url;
 
-  //Send the HTTP Request
+  // Send the HTTP Request
   std::string empty_str = "";
   bool success = ha->put(url_string, empty_str, timeout);
   return success;
 }
 
-//----------------------------Basic Queries-----------------------------------//
+// Basic Queries
 
-std::string ConsulAdmin::services()
-{
+std::string ConsulAdmin::services() {
   std::string url = "/v1/agent/services";
-  std::string result = query(url);
-  return result;
+  query_return_string = query(url);
+  return query_return_string;
 }
 
-std::string ConsulAdmin::agent_info()
-{
+std::string ConsulAdmin::agent_info() {
   std::string url = "/v1/agent/self";
-  std::string result = query(url);
-  return result;
+  query_return_string = query(url);
+  return query_return_string;
 }
 
-std::string ConsulAdmin::healthy_services()
-{
+std::string ConsulAdmin::healthy_services() {
   std::string url = "v1/health/service/web?passing";
-  std::string result = query(url);
-  return result;
+  query_return_string = query(url);
+  return query_return_string;
 }
 
-//--------------Configuration Key-Value Storage Functions---------------------//
+// Configuration Key-Value Storage Functions
 
-bool ConsulAdmin::set_config_value(std::string key, std::string val)
-{
-  //Get the URL
+bool ConsulAdmin::set_config_value(std::string key, std::string val) {
+  // Get the URL
   std::string query_url = "/v1/kv/";
   query_url = query_url.append(key);
   std::string url_string = consul_addr + query_url;
 
-  //Send the HTTP Request
+  // Send the HTTP Request
   bool success = ha->put(url_string, val, timeout);
   return success;
 }
 
-std::string ConsulAdmin::get_config_value(std::string key)
-{
+std::string ConsulAdmin::get_config_value(std::string key) {
   std::string url = "/v1/kv/";
   url = url.append(key);
   return query(url);
 }
 
-bool ConsulAdmin::del_config_value(std::string key)
-{
-  //Get the URL
+bool ConsulAdmin::del_config_value(std::string key) {
+  // Get the URL
   std::string query_url = "/v1/kv/";
   query_url = query_url.append(key);
   std::string url_string = consul_addr + query_url;
-  //Send the HTTP Request
+  // Send the HTTP Request
   bool success = ha->del(url_string, timeout);
   return success;
 }
 
-std::string ConsulAdmin::datacenters()
-{
+std::string ConsulAdmin::datacenters() {
   return query("/v1/catalog/datacenters");
 }
 
-std::string ConsulAdmin::nodes_dc(std::string data_center)
-{
+std::string ConsulAdmin::nodes_dc(std::string data_center) {
   std::string url = "/v1/catalog/nodes";
-  if (!data_center.empty())
-  {
+  if (!data_center.empty()) {
     url = url.append("?dc=");
     url = url.append(data_center);
   }
   return query(url);
 }
 
-std::string ConsulAdmin::services_dc(std::string data_center)
-{
+std::string ConsulAdmin::services_dc(std::string data_center) {
   std::string url = "/v1/catalog/services";
-  if (!data_center.empty())
-  {
+  if (!data_center.empty()) {
     url = url.append("?dc=");
     url = url.append(data_center);
   }
   return query(url);
 }
 
-std::string ConsulAdmin::nodes_service(std::string service)
-{
+std::string ConsulAdmin::nodes_service(std::string service) {
   std::string url = "/v1/catalog/service/";
   url = url.append(service);
   return query(url);
 }
 
-std::string ConsulAdmin::services_node(std::string node, std::string data_center)
-{
+std::string ConsulAdmin::services_node(std::string node, \
+  std::string data_center) {
   std::string url = "/v1/catalog/node/";
   url = url.append(node);
-  if (!data_center.empty())
-  {
+  if (!data_center.empty()) {
     url = url.append("?dc=");
     url = url.append(data_center);
   }

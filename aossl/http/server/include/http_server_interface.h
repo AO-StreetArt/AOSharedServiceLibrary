@@ -22,24 +22,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//Interface for HTTP Server Objects
+// Interface for HTTP Server Objects
 
 #include <evhttp.h>
 #include <string>
 #include "callbacks.h"
 
-#ifndef HTTP_SERVER_INTERFACE
-#define HTTP_SERVER_INTERFACE
+#ifndef AOSSL_HTTP_SERVER_INCLUDE_HTTP_SERVER_INTERFACE_H_
+#define AOSSL_HTTP_SERVER_INCLUDE_HTTP_SERVER_INTERFACE_H_
 
 //! This is a basic HTTP Server that can be used to build a RESTful API.
 
 //! The HTTP Server can bind static API methods to individual callbacks,
 //! and dynamic API methods can go to a default callback.  Used to build
 //! RESTful API's
-class HttpServerInterface
-{
-public:
-
+class HttpServerInterface {
+ public:
   //! Bind a callback for a static API Method
   virtual bool bind_callback(std::string uri, CallbackInterface func) = 0;
 
@@ -52,4 +50,4 @@ public:
   virtual ~HttpServerInterface() {}
 };
 
-#endif
+#endif  // AOSSL_HTTP_SERVER_INCLUDE_HTTP_SERVER_INTERFACE_H_

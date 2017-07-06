@@ -30,8 +30,8 @@ THE SOFTWARE.
 #include <iostream>
 #include <unordered_map>
 
-#ifndef AOSSL_HTTP_SERVER
-#define AOSSL_HTTP_SERVER
+#ifndef AOSSL_HTTP_SERVER_INCLUDE_HTTP_SERVER_H_
+#define AOSSL_HTTP_SERVER_INCLUDE_HTTP_SERVER_H_
 
 extern std::unordered_map<std::string, CallbackInterface> callback_map;
 
@@ -39,12 +39,11 @@ typedef void (*HttpCallback)(struct evhttp_request*, void*);
 
 void process_request(struct evhttp_request *req, void *arg);
 
-class HttpServer: public HttpServerInterface
-{
+class HttpServer: public HttpServerInterface {
   struct event_base *base;
   std::string internal_url;
   int internal_port;
-public:
+ public:
   HttpServer(std::string base_addr, int base_port);
   ~HttpServer();
   bool bind_callback(std::string uri, CallbackInterface func);
@@ -52,4 +51,4 @@ public:
   void recv();
 };
 
-#endif
+#endif  // AOSSL_HTTP_SERVER_INCLUDE_HTTP_SERVER_H_

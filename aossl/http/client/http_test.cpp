@@ -31,78 +31,65 @@ THE SOFTWARE.
 #include <fstream>
 #include <assert.h>
 
-//-----------------------------MAIN METHOD------------------------------------//
+int main() {
+  // Setup
 
-int main()
-{
-  //----------------------------TEST SETUP----------------------------------//
-
-  //Variables to store URL's
+  // Variables to store URL's
   std::string post = "http://httpbin.org/post";
   std::string put = "http://httpbin.org/put";
   std::string get = "http://httpbin.org/get";
   std::string del = "http://httpbin.org/delete";
 
-  //----------------------------MAIN TEST-----------------------------------//
+  // Central Test
 
   HttpClientFactory http_factory;
   HttpInterface *ha = http_factory.get_http_interface();
 
-  //-------------------------------GET--------------------------------------//
+  // Get
 
-  //Send the request
+  // Send the request
   std::string ret_val = ha->get(get, 5);
-  if ( ret_val.empty() )
-  {
-    //We now have the full response
+  if ( ret_val.empty() ) {
+    // We now have the full response
     assert(false);
-  }
-  else
-  {
+  } else {
     std::cout << "Retrieved:" << std::endl;
     std::cout << ret_val << std::endl;
   }
 
   std::string ret_val2 = ha->get(get, 5);
-  if ( ret_val2.empty() )
-  {
-    //We now have the full response
+  if ( ret_val2.empty() ) {
+    // We now have the full response
     assert(false);
-  }
-  else
-  {
+  } else {
     std::cout << "Retrieved:" << std::endl;
     std::cout << ret_val2 << std::endl;
   }
 
-  //-------------------------------PUT--------------------------------------//
+  // Put
 
   bool success = ha->put(put, "123", 5);
-  if (!success)
-  {
-    //We now have the full response
+  if (!success) {
+    // We now have the full response
     assert(false);
   }
 
-  //-------------------------------POST-------------------------------------//
+  // Post
 
   success = ha->post(post, "CLYMAN", 5);
-  if (!success)
-  {
-    //We now have the full response
+  if (!success) {
+    // We now have the full response
     assert(false);
   }
 
-  //------------------------------DELETE------------------------------------//
+  // Delete
 
   success = ha->del(del, 5);
-  if (!success)
-  {
-    //We now have the full response
+  if (!success) {
+    // We now have the full response
     assert(false);
   }
 
   delete ha;
-
   return 0;
 }
