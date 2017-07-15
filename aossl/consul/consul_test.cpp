@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 #include "include/factory_consul.h"
 #include "include/consul_interface.h"
+#include "aossl/core/include/buffers.h"
 #include <string>
 #include <string.h>
 #include <assert.h>
@@ -83,6 +84,32 @@ int main() {
   // the "Value" element is stored in base64 encoding
   // assert(test_val == "123");
 
+  // Threadsafe tests
+  AOSSL::StringBuffer *buf1 = ca->datacenters_safe();
+  AOSSL::StringBuffer *buf2 = ca->nodes_dc_safe(empty);
+  AOSSL::StringBuffer *buf3 = ca->nodes_service_safe(clyman);
+  AOSSL::StringBuffer *buf4 = ca->services_node_safe(empty, empty);
+  AOSSL::StringBuffer *buf5 = ca->get_config_value_safe("Test");
+
+  std::cout << buf1->val << std::endl;
+  std::cout << buf2->val << std::endl;
+  std::cout << buf3->val << std::endl;
+  std::cout << buf4->val << std::endl;
+  std::cout << buf5->val << std::endl;
+
+  assert(buf1->success);
+  assert(buf2->success);
+  assert(buf3->success);
+  assert(buf4->success);
+  assert(buf5->success);
+
+  delete buf1;
+  delete buf2;
+  delete buf3;
+  delete buf4;
+  delete buf5;
+
+  // Cleanup tests
   success = ca->del_config_value("Test");
   assert(success);
 

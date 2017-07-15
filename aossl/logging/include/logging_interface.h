@@ -29,13 +29,17 @@ THE SOFTWARE.
 #include <string>
 #include <exception>
 
-//! Mongo Exception, used to store errors passed from Mongo
+const int AOSSL_LOG_DEBUG = 0;
+const int AOSSL_LOG_INFO = 1;
+const int AOSSL_LOG_ERROR = 2;
+
+//! Logging Exception, used to store errors passed from the Logger
 struct LoggingException: public std::exception {
   //! An error message passed on initialization
   std::string int_msg;
   const char * what_str;
 
-  //! Create a Mongo Exception, and store the given error message
+  //! Create a Logging Exception, and store the given error message
   inline LoggingException(std::string msg) {
     int_msg = "Error in Logging Driver: " + msg;
     what_str = int_msg.c_str();
@@ -58,48 +62,90 @@ class LoggingCategoryInterface {
   // Exposures that log to the sepcified category
 
   //! Log at a debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(std::string msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(std::string msg) = 0;
 
   //! Log at an info level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void info(std::string msg) = 0;
 
   //! Log at an debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(const char * msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(const char * msg) = 0;
 
   //! Log at an info level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void info(const char * msg) = 0;
 
   //! Log at an debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(int msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(int msg) = 0;
 
   //! Log at an info level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void info(int msg) = 0;
 
   //! Log at an debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(float msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(float msg) = 0;
 
   //! Log at an info level to the root category
   virtual void info(float msg) = 0;
 
   //! Log at an debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(double msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(double msg) = 0;
 
   //! Log at an info level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void info(double msg) = 0;
 };
 
@@ -111,51 +157,101 @@ class LoggingInterface {
   // Exposures that log to the root category
 
   //! Log at a debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(std::string msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(std::string msg) = 0;
 
   //! Log at an info level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void info(std::string msg) = 0;
 
   //! Log at an debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(const char * msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(const char * msg) = 0;
 
   //! Log at an info level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void info(const char * msg) = 0;
 
   //! Log at an debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(int msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(int msg) = 0;
 
   //! Log at an info level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void info(int msg) = 0;
 
   //! Log at an debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(float msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(float msg) = 0;
 
   //! Log at an info level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void info(float msg) = 0;
 
   //! Log at an debug level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void debug(double msg) = 0;
 
   //! Log at an error level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void error(double msg) = 0;
 
   //! Log at an info level to the root category
+  /*!
+    \param msg The message to print to the log appenders
+  */
   virtual void info(double msg) = 0;
 
-  //! Pull down different categories by name
+  //! Pull down different categories by name.  If we were configured from a
+  //! Properties file, then we should pull the category names from there.
+  //! Otherwise, this method will create a new category with the given name
+  /*!
+    \param name The name of the logging category
+  */
   virtual LoggingCategoryInterface* get_category(std::string name) = 0;
 };
 
