@@ -30,15 +30,12 @@ const char * NULL_PASSWORD = "";
 // Connection Pool
 
 void RedisConnectionPool::init_slots() {
-  slots = new int[connection_limit];
-  for (int i = 0; i < connection_limit; i++) {
-    slots[i] = 0;
-  }
+  slot_pool = new AOSSL::SlotPool(connection_limit);
 }
 
 // Initialize the connections required to start the connection pool
 void RedisConnectionPool::init_connections(const char * conn_str, \
-  const char * passwd, int con_port, int timeout_secs, int timeout_microsecs) { 
+  const char * passwd, int con_port, int timeout_secs, int timeout_microsecs) {
   connection_string.assign(conn_str);
   port = con_port;
   timeout_seconds = timeout_secs;
@@ -94,63 +91,50 @@ RedisConnectionPool::~RedisConnectionPool() {
       redisFree(connections[i].connection);
     }
   }
-  delete[] slots;
+  delete slot_pool;
 }
 
 // Retrieve a connection
 RedisSession* RedisConnectionPool::get_connection() {
-  // Get the mutex to ensure we get a unique connection
-  std::lock_guard<std::mutex> lock(get_conn_mutex);
-
   // Find the next available connection slot
   // If none are available, wait until one is freed
-  bool connection_found = false;
-  while (!connection_found) {
-    for (int j = 0; j < connection_limit; j++) {
-      if (slots[j] == 0) {
-        // slot is available
-        current_connection = j;
-        connection_found = true;
-        break;
-      }
-    }
-  }
+  int current_connection = slot_pool->find_next_slot();
 
   // Create new connections if necessary
   if (current_connection > current_max_connection) {
-    const char * con_cstr = connection_string.c_str();
-    for (
-      int i = current_max_connection;
-      i < current_max_connection + connection_creation_batch;
-      i++
-    ) {
-      RedisSession rs;
+    std::lock_guard<std::mutex> lock(create_conn_mutex);
+    if (current_connection > current_max_connection) {
+      const char * con_cstr = connection_string.c_str();
+      for (
+        int i = current_max_connection;
+        i < current_max_connection + connection_creation_batch;
+        i++
+      ) {
+        RedisSession rs;
 
-      struct timeval timeout = {timeout_seconds, timeout_microseconds};
-      rs.connection = redisConnectWithTimeout(con_cstr, port, timeout);
+        struct timeval timeout = {timeout_seconds, timeout_microseconds};
+        rs.connection = redisConnectWithTimeout(con_cstr, port, timeout);
 
-      if (rs.connection == NULL || rs.connection->err) {
-        if (rs.connection == NULL) {
-          throw RedisConnectionException("Error: Cannot Create Redis Instance");
-        } else if (rs.connection->err) {
-          std::string err_msg(rs.connection->errstr);
-          err_msg = "Error:" + err_msg;
-          throw RedisConnectionException(err_msg);
+        if (rs.connection == NULL || rs.connection->err) {
+          if (rs.connection == NULL) {
+            throw RedisConnectionException("Error: Cannot Create Redis Instance");
+          } else if (rs.connection->err) {
+            std::string err_msg(rs.connection->errstr);
+            err_msg = "Error:" + err_msg;
+            throw RedisConnectionException(err_msg);
+          }
         }
-      }
 
-      connections.push_back(rs);
+        connections.push_back(rs);
+      }
+      current_max_connection = current_max_connection+connection_creation_batch;
     }
-    current_max_connection = current_max_connection+connection_creation_batch;
   }
 
   // Pack the connection & session into the return object
   RedisSession *s = new RedisSession;
   s->connection = connections[current_connection].connection;
   s->index = current_connection;
-
-  // Reserve the slot
-  slots[current_connection] = 1;
 
   // Return the latest connection information
   // When we leave the method, the mutex lock is released automatically
@@ -160,7 +144,7 @@ RedisSession* RedisConnectionPool::get_connection() {
 // Release a connection for re-use
 void RedisConnectionPool::release_connection(RedisSession *conn) {
   // Release the slot
-  slots[conn->index] = 0;
+  slot_pool->release_slot(conn->index);
   // Delete the query session pointer, but not it's contents
   delete conn;
 }
@@ -220,6 +204,28 @@ void RedisAdmin::return_string_reply(redisReply *reply) {
   }
 }
 
+AOSSL::StringBuffer* RedisAdmin::return_stringbuf_reply(redisReply *reply) {
+  std::string reply_string;
+  AOSSL::StringBuffer *buf = new AOSSL::StringBuffer;
+  if (reply->str) {
+    reply_string.assign(reply->str);
+    freeReplyObject(reply);
+    reply = NULL;
+    buf->success = true;
+    std::string empty = "";
+    buf->err_msg = empty;
+  } else {
+    freeReplyObject(reply);
+    reply = NULL;
+    reply_string.assign("");
+    buf->success = false;
+    std::string error_string = "No reply found";
+    buf->err_msg = error_string;
+  }
+  buf->val = reply_string;
+  return buf;
+}
+
 RedisAdmin::RedisAdmin(std::string hostname, int port) {
   init(hostname, "", port, 5, 0, 5);
 }
@@ -259,6 +265,17 @@ std::string RedisAdmin::load(std::string key) {
   return_string_reply(reply);
   pool->release_connection(rs);
   return reply_str;
+}
+
+// Load a value from Redis
+AOSSL::StringBuffer* RedisAdmin::load_safe(std::string key) {
+  RedisSession *rs = pool->get_connection();
+  std::string key_str = "GET " + key;
+  redisReply *reply = \
+    (redisReply *) redisCommand(rs->connection, key_str.c_str());
+  AOSSL::StringBuffer *buf = return_stringbuf_reply(reply);
+  pool->release_connection(rs);
+  return buf;
 }
 
 // Save a value to Redis
@@ -413,6 +430,17 @@ std::string RedisAdmin::lpop(std::string key) {
 }
 
 // Pop a value from a Redis list on the given key
+AOSSL::StringBuffer* RedisAdmin::lpop_safe(std::string key) {
+  RedisSession *rs = pool->get_connection();
+  std::string key_str = "LPOP " + key;
+  redisReply *reply = \
+    (redisReply *) redisCommand(rs->connection, key_str.c_str());
+  AOSSL::StringBuffer *buf = return_stringbuf_reply(reply);
+  pool->release_connection(rs);
+  return buf;
+}
+
+// Pop a value from a Redis list on the given key
 std::string RedisAdmin::rpop(std::string key) {
   RedisSession *rs = pool->get_connection();
   std::string key_str = "RPOP " + key;
@@ -421,6 +449,17 @@ std::string RedisAdmin::rpop(std::string key) {
   return_string_reply(reply);
   pool->release_connection(rs);
   return reply_str;
+}
+
+// Pop a value from a Redis list on the given key
+AOSSL::StringBuffer* RedisAdmin::rpop_safe(std::string key) {
+  RedisSession *rs = pool->get_connection();
+  std::string key_str = "RPOP " + key;
+  redisReply *reply = \
+    (redisReply *) redisCommand(rs->connection, key_str.c_str());
+  AOSSL::StringBuffer *buf = return_stringbuf_reply(reply);
+  pool->release_connection(rs);
+  return buf;
 }
 
 // Set the value stored in the list at key and the index at index
@@ -457,6 +496,17 @@ std::string RedisAdmin::lindex(std::string key, int index) {
   return_string_reply(reply);
   pool->release_connection(rs);
   return reply_str;
+}
+
+// Get the value stored in the list at key and the index at index
+AOSSL::StringBuffer* RedisAdmin::lindex_safe(std::string key, int index) {
+  RedisSession *rs = pool->get_connection();
+  std::string length_key = std::to_string(index);
+  redisReply *reply = (redisReply *) redisCommand(rs->connection, \
+    "LINDEX %s %s", key.c_str(), length_key.c_str());
+  AOSSL::StringBuffer *buf = return_stringbuf_reply(reply);
+  pool->release_connection(rs);
+  return buf;
 }
 
 // Get the length of a list stored in Redis

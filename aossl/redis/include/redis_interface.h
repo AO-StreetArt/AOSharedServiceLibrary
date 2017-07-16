@@ -29,6 +29,9 @@ THE SOFTWARE.
 #include <string>
 #include <vector>
 
+#include "aossl/core/include/buffers.h"
+#include "aossl/core/include/slot_pool.h"
+
 //! An Implementation of std::exception that denotes a connection error in Redis
 struct RedisConnectionException: public std::exception {
   //! An error message passed on initialization
@@ -104,13 +107,7 @@ struct RedisConnChain {
 };
 
 //! A Structure for storing a Key-Value pair, used with batch operations
-struct RedisKvPair {
-  //! Key of the pair
-  std::string key;
-
-  //! Value stored in the pair
-  std::string val;
-};
+typedef AOSSL::KvBuffer RedisKvPair;
 
 //! The Redis Admin
 
@@ -122,6 +119,9 @@ class RedisInterface {
 
   //! Load a value from Redis
   virtual std::string load(std::string key) = 0;
+
+  //! Load a value from Redis
+  virtual AOSSL::StringBuffer* load_safe(std::string key) = 0;
 
   //! Save a value to Redis
   virtual bool save(std::string key, std::string msg) = 0;
@@ -172,7 +172,13 @@ class RedisInterface {
   virtual std::string lpop(std::string key) = 0;
 
   //! Pop a value from a Redis list on the given key
+  virtual AOSSL::StringBuffer* lpop_safe(std::string key) = 0;
+
+  //! Pop a value from a Redis list on the given key
   virtual std::string rpop(std::string key) = 0;
+
+  //! Pop a value from a Redis list on the given key
+  virtual AOSSL::StringBuffer* rpop_safe(std::string key) = 0;
 
   //! Set the value stored in the list at key and the index at index
   virtual bool lset(std::string key, std::string val, int index) = 0;
@@ -183,6 +189,9 @@ class RedisInterface {
 
   //! Get the value stored in the list at key and the index at index
   virtual std::string lindex(std::string key, int index) = 0;
+
+  //! Get the value stored in the list at key and the index at index
+  virtual AOSSL::StringBuffer* lindex_safe(std::string key, int index) = 0;
 
   //! Get the length of a list stored in Redis
   virtual int llen(std::string key) = 0;
