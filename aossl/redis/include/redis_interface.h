@@ -118,6 +118,8 @@ class RedisInterface {
   virtual ~RedisInterface() {}
 
   //! Load a value from Redis
+
+  //! \deprecated To be removed in v2.0
   virtual std::string load(std::string key) = 0;
 
   //! Load a value from Redis
@@ -169,12 +171,16 @@ class RedisInterface {
   virtual int rpush(std::string key, std::string val) = 0;
 
   //! Pop a value from a Redis list on the given key
+
+  //! \deprecated To be removed in v2.0
   virtual std::string lpop(std::string key) = 0;
 
   //! Pop a value from a Redis list on the given key
   virtual AOSSL::StringBuffer* lpop_safe(std::string key) = 0;
 
   //! Pop a value from a Redis list on the given key
+
+  //! \deprecated To be removed in v2.0
   virtual std::string rpop(std::string key) = 0;
 
   //! Pop a value from a Redis list on the given key
@@ -188,6 +194,8 @@ class RedisInterface {
     bool before_pivot) = 0;
 
   //! Get the value stored in the list at key and the index at index
+
+  //! \deprecated To be removed in v2.0
   virtual std::string lindex(std::string key, int index) = 0;
 
   //! Get the value stored in the list at key and the index at index
