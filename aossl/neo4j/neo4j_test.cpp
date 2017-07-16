@@ -61,7 +61,7 @@ void run_on_results(ResultsIteratorInterface *results) {
     // Access the results
     ResultTreeInterface* result = results->next();
 
-    if (result->exists()) {
+    if (result) {
       // Convert the results to strings
       print_results(result, 0);
       print_results(result, 1);
@@ -296,18 +296,18 @@ int main(int argc, char** argv) {
   run_test("RETURN 'hello world'", "Hello World");
 
   // Creation with Return
-  run_test("CREATE (you:Person {name:'E', list: [1, 2, 3]}) RETURN you", \
+  run_test("CREATE (you:Person {name:'EA', list: [1, 2, 3]}) RETURN you", \
     "Creation with return");
 
   // Match
-  run_test("MATCH (you:Person) WHERE you.name = 'E' RETURN you", "Match");
+  run_test("MATCH (you:Person) WHERE you.name = 'EA' RETURN you", "Match");
 
   // Match & Create
-  run_test("MATCH (you:Person {name:'E'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j', list: [4, 5, 6]}) RETURN you, like, neo", \
+  run_test("MATCH (you:Person {name:'EA'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j', list: [4, 5, 6]}) RETURN you, like, neo", \
     "Match & Create");
 
   // Query Failure
-  run_test("MATCH (you:Person {name:'E'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j', list: [1, 2, 3]) RETURN you, like, neo", \
+  run_test("MATCH (you:Person {name:'EA'}) CREATE (you)-[like:LIKE]->(neo:Database {name:'Neo4j', list: [1, 2, 3]) RETURN you, like, neo", \
     "Bad Query");
 
   // Query Parameters
@@ -322,7 +322,7 @@ int main(int argc, char** argv) {
 
   std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params2;
   Neo4jQueryParameterInterface* name_param2 = \
-    neo4j_factory.get_neo4j_query_parameter("E");
+    neo4j_factory.get_neo4j_query_parameter("EA");
   query_params2.emplace("inp_name", name_param2);
   run_test("MATCH (you:Person) WHERE you.name = {inp_name} RETURN you", \
     "String Query Parameters", query_params2);

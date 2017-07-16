@@ -290,10 +290,7 @@ MongoIteratorInterface* MongoClient::query(const char * query_str, \
 // Connection Pool
 
 void MongoConnectionPool::init_slots() {
-  slots = new int[connection_limit];
-  for (int i=0; i < connection_limit; i++) {
-    slots[i] = 0;
-  }
+  slot_pool = new AOSSL::SlotPool(connection_limit);
 }
 
 // Initialize the connections required to start the connection pool
@@ -323,42 +320,35 @@ MongoConnectionPool::~MongoConnectionPool() {
     mongoc_client_destroy(connections[i].connection);
   }
   mongoc_cleanup();
-  delete[] slots;
+  delete slot_pool;
 }
 
 MongoSession* MongoConnectionPool::get_connection() {
-  // Get the mutex to ensure we get a unique connection
-  std::lock_guard<std::mutex> lock(get_conn_mutex);
-
   // Find the next available connection slot
   // If none are available, wait until one is freed
-  bool connection_found = false;
-  while (!connection_found) {
-    for (int j = 0; j < connection_limit; j++) {
-      if (slots[j] == 0) {
-        // slot is available
-        current_connection = j;
-        connection_found = true;
-        break;
-      }
-    }
-  }
+  int current_connection = slot_pool->find_next_slot();
 
   // Create new connections if necessary
   if (current_connection > current_max_connection) {
-    const char * conn_cstr = connection_string.c_str();
-    for (
-      int i = current_max_connection;
-      i < current_max_connection + connection_creation_batch;
-      i++
-    ) {
-      MongoSession ms;
+    // Get the mutex to ensure we create unique connections
+    std::lock_guard<std::mutex> lock(create_conn_mutex);
+    // Double check that no other threads have created new connections since we
+    // tried to establish the lock on the mutex
+    if (current_connection > current_max_connection) {
+      const char * conn_cstr = connection_string.c_str();
+      for (
+        int i = current_max_connection;
+        i < current_max_connection + connection_creation_batch;
+        i++
+      ) {
+        MongoSession ms;
 
-      // Create the connection
-      ms.connection = mongoc_client_new(conn_cstr);
-      connections.push_back(ms);
+        // Create the connection
+        ms.connection = mongoc_client_new(conn_cstr);
+        connections.push_back(ms);
+      }
+      current_max_connection = current_max_connection + connection_creation_batch;
     }
-    current_max_connection = current_max_connection + connection_creation_batch;
   }
 
   // Pack the connection & collection into the return object
@@ -369,9 +359,6 @@ MongoSession* MongoConnectionPool::get_connection() {
     db_coll_string.c_str());
   s->index = current_connection;
 
-  // Reserve the slot
-  slots[current_connection] = 1;
-
   // Return the latest connection information
   // When we leave the method, the mutex lock is released automatically
   return s;
@@ -380,7 +367,7 @@ MongoSession* MongoConnectionPool::get_connection() {
 // Release a connection for re-use
 void MongoConnectionPool::release_connection(MongoSession *conn) {
   // Release the slot
-  slots[conn->index] = 0;
+  slot_pool->release_slot(conn->index);
   // Release the collection
   mongoc_collection_destroy(conn->collection);
   // Delete the query session pointer, but not it's contents

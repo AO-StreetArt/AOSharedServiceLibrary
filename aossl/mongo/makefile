@@ -5,7 +5,7 @@ STD = -std=c++11
 INCL = $(INSTALL_DIR)/mongo/include/factory_mongo.h	$(INSTALL_DIR)/mongo/include/mongo_admin.h $(INSTALL_DIR)/mongo/include/mongo_interface.h
 INCL_DIR = $(INSTALL_DIR)/mongo
 LIBS = -lmongoc-1.0 -lbson-1.0
-INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0
+INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0 -I$(CURDIR)/../../
 LINK_DIRS = -L/usr/local/lib
 RM = rm -f
 

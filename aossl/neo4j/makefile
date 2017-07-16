@@ -2,6 +2,7 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
+INCL_DIRS = -I$(CURDIR)/../../
 INCL = $(INSTALL_DIR)/neo4j/include/factory_neo4j.h	$(INSTALL_DIR)/neo4j/include/neo4j_admin.h $(INSTALL_DIR)/neo4j/include/neo4j_interface.h
 INCL_DIR = $(INSTALL_DIR)/neo4j
 LIBS = -lneo4j-client -lssl -lcrypto -lm
@@ -20,7 +21,7 @@ clean:
 # Makefile Instructions
 # Create the object file neo4j_admin.o
 neo4j_admin.o:  neo4j_admin.cpp include/neo4j_admin.h include/neo4j_interface.h
-	$(CC) $(CFLAGS) -o $@ -c neo4j_admin.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c neo4j_admin.cpp $(STD) $(INCL_DIRS)
 
 # Install
 $(INSTALL_DIR)/neo4j:
@@ -39,8 +40,8 @@ $(INSTALL_DIR)/neo4j/include/neo4j_interface.h: include/neo4j_interface.h
 # Test
 # Create the executable file zmqio_test
 neo4j_test: neo4j_admin.o neo4j_test.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_DIRS)
 
 # Create the object file zmqio_test.o
 neo4j_test.o: neo4j_test.cpp
-	$(CC) $(CFLAGS) -o $@ -c neo4j_test.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c neo4j_test.cpp $(STD) $(INCL_DIRS)

@@ -29,6 +29,8 @@ THE SOFTWARE.
 #include <unordered_map>
 #include <exception>
 
+#include "aossl/core/include/slot_pool.h"
+
 // Query Results
 
 //! A Neo4j List
