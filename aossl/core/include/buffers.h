@@ -25,6 +25,8 @@ THE SOFTWARE.
 #ifndef AOSSL_CORE_BUFFERS_H_
 #define AOSSL_CORE_BUFFERS_H_
 
+#include <string>
+
 namespace AOSSL {
 
 //! A Structure for holding a single value

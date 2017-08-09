@@ -28,6 +28,7 @@ THE SOFTWARE.
 #include <string.h>
 #include <string>
 #include <vector>
+#include <exception>
 
 #include "aossl/core/include/buffers.h"
 #include "aossl/core/include/slot_pool.h"
