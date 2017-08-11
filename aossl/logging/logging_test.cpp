@@ -31,7 +31,24 @@ void test_func(std::string msg) {
   logging->error(msg);
 }
 
-int main() {
+void test_common_logging() {
+  LoggingComponentFactory log_factory;
+  std::string log_file_name = "testing.log";
+  logging = log_factory.get_logging_interface(log_file_name, AOSSL_LOG_ERROR);
+
+  LoggingCategoryInterface *sub_category = logging->get_category("example");
+
+  logging->debug("Testing");
+  logging->error("Testing");
+  std::string test = "123";
+  test_func(test);
+  sub_category->error("Testing");
+
+  delete sub_category;
+  delete logging;
+}
+
+void test_file_logging() {
   LoggingComponentFactory log_factory;
   std::string initFileName = "logging_test.properties";
   logging = log_factory.get_logging_interface(initFileName);
@@ -55,4 +72,9 @@ int main() {
   delete third_category;
   delete bad_category;
   delete logging;
+}
+
+int main() {
+  test_common_logging();
+  test_file_logging();
 }

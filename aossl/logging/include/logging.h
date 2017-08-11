@@ -27,6 +27,9 @@ THE SOFTWARE.
 
 #include <log4cpp/Category.hh>
 #include <log4cpp/PropertyConfigurator.hh>
+#include <log4cpp/OstreamAppender.hh>
+#include <log4cpp/BasicLayout.hh>
+#include <log4cpp/FileAppender.hh>
 #include <string>
 #include <stdlib.h>
 #include <unordered_map>
@@ -42,9 +45,13 @@ class LoggingCategory: public LoggingCategoryInterface {
 
  public:
   // Build a new Logger from the given configuration file
-  inline LoggingCategory(std::string iname) {
-    name = iname;
-    int_category = log4cpp::Category::exists(name);
+  inline LoggingCategory(std::string iname, bool started_from_file) {
+    if (started_from_file) {
+      int_category = log4cpp::Category::exists(iname);
+    } else {
+      log4cpp::Category& sub1 = log4cpp::Category::getInstance(iname);
+      int_category = &sub1;
+    }
   }
 
   // Delete the Logger
@@ -102,10 +109,12 @@ class Logger: public LoggingInterface {
   log4cpp::Category *root_log;
   void start_log_from_file(std::string initFileName);
   void end_log();
+  bool started_from_file = false;
 
  public:
   // Build a new Logger from the given configuration file
   Logger(std::string initFileName);
+  Logger(std::string logFile, int logLevel);
 
   // Delete the Logger
   ~Logger();

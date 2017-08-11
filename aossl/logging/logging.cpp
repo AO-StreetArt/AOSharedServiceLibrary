@@ -29,6 +29,7 @@ void Logger::start_log_from_file(std::string initFileName) {
   // Read the properties file
   try {
     log4cpp::PropertyConfigurator::configure(initFileName);
+    started_from_file = true;
   }
   catch ( log4cpp::ConfigureFailure &e ) {
     std::string err_msg = "[log4cpp::ConfigureFailure] caught while reading" +\
@@ -38,7 +39,6 @@ void Logger::start_log_from_file(std::string initFileName) {
 
   // Expose the logging handles
   log4cpp::Category& root = log4cpp::Category::getRoot();
-
   root_log = &root;
 }
 
@@ -54,6 +54,37 @@ void Logger::end_log() {
 // Constructor from a file
 Logger::Logger(std::string initFileName) {
   start_log_from_file(initFileName);
+}
+
+// Basic Constructor
+// Create the needed categories and setup default levels
+Logger::Logger(std::string logFile, int logLevel) {
+  // Set up the appender for writing to stdout
+  log4cpp::Appender *appender1 = new log4cpp::OstreamAppender("console", &std::cout);
+  appender1->setLayout(new log4cpp::BasicLayout());
+
+  // Set up the file appender
+  log4cpp::Appender *appender2 = new log4cpp::FileAppender("default", logFile.c_str());
+  appender2->setLayout(new log4cpp::BasicLayout());
+
+  // Set up the root logging category
+  log4cpp::Category& root = log4cpp::Category::getRoot();
+
+  // Set the logging level
+  if (logLevel == AOSSL_LOG_INFO) {
+    root.setPriority(log4cpp::Priority::INFO);
+  } else if (logLevel == AOSSL_LOG_ERROR) {
+    root.setPriority(log4cpp::Priority::ERROR);
+  } else {
+    root.setPriority(log4cpp::Priority::DEBUG);
+  }
+
+  // Add the appenders to the category
+  root.addAppender(appender1);
+  root.addAppender(appender2);
+
+  // Expose the logging handle
+  root_log = &root;
 }
 
 // Destructor
@@ -184,7 +215,7 @@ void Logger::info(double msg) {
 
 // Pull down different categories by name
 LoggingCategoryInterface* Logger::get_category(std::string name) {
-  return new LoggingCategory(name);
+  return new LoggingCategory(name, started_from_file);
 }
 
 // Logging Category Methods

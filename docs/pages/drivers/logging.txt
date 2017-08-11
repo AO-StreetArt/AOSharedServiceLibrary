@@ -39,5 +39,13 @@
  *
  * RollingFileAppender is also supported, which will roll the log file over beyond a certain size.  Syslog appenders are also supported, as long as the process has permission to write to the syslog.
  *
+ * Alternatively, we can use a simple, default configuration that requires no config file:
+ *
+ *     std::string logFileName = "test.log";
+ *     logging = logging_factory.get_logging_interface(logFileName, AOSSL_LOG_DEBUG);
+ *     sub_category = logging->get_category("main");
+ *     logging->debug("My message");
+ *     sub_category->error("Bad things happened!")
+ *
  * \ref index "Go Home"
  */

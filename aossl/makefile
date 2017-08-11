@@ -13,6 +13,7 @@ make_subfolders:
 	cd zmq && $(MAKE)
 
 install:
+	cd core && $(MAKE) install
 	cd http && $(MAKE) install
 	cd consul && $(MAKE) install
 	cd commandline && $(MAKE) install
@@ -31,6 +32,7 @@ rhel-test: base_test
 	cd redis && $(MAKE) rhel-test
 
 base_test:
+	cd core && $(MAKE) tests
 	cd http && $(MAKE) tests
 	cd commandline && $(MAKE) tests
 	cd properties && $(MAKE) tests
@@ -56,6 +58,7 @@ base_benchmarks:
 	cd zmq && $(MAKE) benchmark
 
 clean:
+	cd core && $(MAKE) clean
 	cd http && $(MAKE) clean
 	cd consul && $(MAKE) clean
 	cd commandline && $(MAKE) clean

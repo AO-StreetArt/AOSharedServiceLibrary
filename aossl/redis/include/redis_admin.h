@@ -43,8 +43,8 @@ struct RedisSession {
 class RedisConnectionPool {
   // A pool of neo4j connections
   std::vector<RedisSession> connections;
-  // Array of ints (0/1) which determine which connections are open vs closed
-  int *slots;
+  // Slot pool to manage the internal slots
+  AOSSL::SlotPool *slot_pool = NULL;
   // Internal integers
   int connection_limit = 1;
   int start_connections = 1;
@@ -57,7 +57,7 @@ class RedisConnectionPool {
   std::string password;
   std::string err_msg;
   int port;
-  std::mutex get_conn_mutex;
+  std::mutex create_conn_mutex;
   void init_slots();
   void init_connections(const char * conn_str, const char * passwd, \
     int con_port, int timeout_secs, int timeout_microsecs);
@@ -117,6 +117,7 @@ class RedisAdmin : public RedisInterface {
   bool process_std_int_reply(redisReply *reply);
   int return_int_reply(redisReply *reply);
   void return_string_reply(redisReply *reply);
+  AOSSL::StringBuffer* return_stringbuf_reply(redisReply *reply);
 
  public:
   // Constructors for single Redis Connections
@@ -138,6 +139,9 @@ class RedisAdmin : public RedisInterface {
 
   // Load a value from Redis
   std::string load(std::string key);
+
+  // Load a value from Redis
+  AOSSL::StringBuffer* load_safe(std::string key);
 
   // Save a value to Redis
   bool save(std::string key, std::string msg);
@@ -171,7 +175,13 @@ class RedisAdmin : public RedisInterface {
   std::string lpop(std::string key);
 
   // Pop a value from a Redis list on the given key
+  AOSSL::StringBuffer* lpop_safe(std::string key);
+
+  // Pop a value from a Redis list on the given key
   std::string rpop(std::string key);
+
+  // Pop a value from a Redis list on the given key
+  AOSSL::StringBuffer* rpop_safe(std::string key);
 
   // Set the value stored in the list at key and the index at index
   bool lset(std::string key, std::string val, int index);
@@ -182,6 +192,9 @@ class RedisAdmin : public RedisInterface {
 
   // Get the value stored in the list at key and the index at index
   std::string lindex(std::string key, int index);
+
+  // Get the value stored in the list at key and the index at index
+  AOSSL::StringBuffer* lindex_safe(std::string key, int index);
 
   // Get the length of a list stored in Redis
   int llen(std::string key);

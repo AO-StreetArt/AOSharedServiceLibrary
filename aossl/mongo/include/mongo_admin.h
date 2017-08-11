@@ -36,6 +36,8 @@ THE SOFTWARE.
 
 #include "mongo_interface.h"
 
+#include "aossl/core/include/slot_pool.h"
+
 const int MONGO_RESPONSE_CRT = 0;
 const int MONGO_RESPONSE_OTHER = 1;
 
@@ -50,20 +52,19 @@ struct MongoSession {
 
 // A Connection pool to ensure thread safety
 class MongoConnectionPool {
-  // A pool of neo4j connections
+  // A pool of mongo connections
   std::vector<MongoSession> connections;
-  // Array of ints (0/1) which determine which connections are open vs closed
-  int *slots;
+  // Slot pool to manage the internal slots
+  AOSSL::SlotPool *slot_pool = NULL;
   // Internal integers
   int connection_limit = 1;
   int start_connections = 1;
-  int current_connection = -1;
   int current_max_connection = 1;
   int connection_creation_batch = 1;
   std::string connection_string;
   std::string db_name_string;
   std::string db_coll_string;
-  std::mutex get_conn_mutex;
+  std::mutex create_conn_mutex;
   void init_slots();
   void init_connections(std::string conn_str, std::string db, std::string coll);
 

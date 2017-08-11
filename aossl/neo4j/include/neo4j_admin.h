@@ -36,6 +36,8 @@ THE SOFTWARE.
 #include <mutex>
 #include "neo4j_interface.h"
 
+#include "aossl/core/include/slot_pool.h"
+
 // Neo4j Exception
 
 // A child class of std::exception
@@ -79,8 +81,8 @@ struct Neo4jQuerySession {
 class Neo4jConnectionPool {
   // A pool of neo4j connections
   std::vector<Neo4jQuerySession> connections;
-  // Array of ints (0/1) which determine which connections are open vs closed
-  int *slots;
+  // Slot pool to manage the internal slots
+  AOSSL::SlotPool *slot_pool = NULL;
   // Internal integers
   int connection_limit = 1;
   int start_connections = 1;
@@ -89,7 +91,7 @@ class Neo4jConnectionPool {
   int connection_creation_batch = 1;
   bool secure = false;
   std::string connection_string;
-  std::mutex get_conn_mutex;
+  std::mutex create_conn_mutex;
   void init_slots();
   void init_connections(const char * conn_str, bool secure);
 

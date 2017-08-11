@@ -44,8 +44,20 @@ class LoggingComponentFactory {
   ~LoggingComponentFactory() {}
 
   //! Get a Logging Interface instance
-  inline LoggingInterface* get_logging_interface( std::string initFileName ) {
+  /*!
+    \param initFileName The file name of the log4cpp configuration file to read
+  */
+  inline LoggingInterface* get_logging_interface(std::string initFileName) {
     return new Logger( initFileName );
+  }
+
+  //! Get a Logging Interface instance
+  /*!
+    \param logFile The file to write logs to
+    \param logLevel The level at which to write logs (options are AOSSL_LOG_INFO, AOSSL_LOG_ERROR, AOSSL_LOG_DEBUG)
+  */
+  inline LoggingInterface* get_logging_interface(std::string logFile, int logLevel) {
+    return new Logger( logFile, logLevel );
   }
 };
 
