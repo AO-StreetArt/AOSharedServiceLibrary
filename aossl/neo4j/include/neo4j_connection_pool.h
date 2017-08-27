@@ -11,7 +11,6 @@
 // A struct containing the objects needed to run a query
 struct Neo4jQuerySession {
   neo4j_connection_t *connection = NULL;
-  neo4j_session_t *session = NULL;
   int index = -1;
 };
 
@@ -54,17 +53,6 @@ class Neo4jConnectionPool {
         throw Neo4jException(err_msg);
       }
 
-      // Establish a new session with the current connection
-      qs.session = neo4j_new_session(qs.connection);
-
-      // Check if session creation was successful
-      if (!(qs.session)) {
-        const char * err_string = strerror(errno);
-        std::string err_msg(err_string);
-        err_msg = "Error starting session: " + err_msg;
-        throw Neo4jException(err_msg);
-      }
-
       connections.push_back(qs);
     }
     current_max_connection = start_connections;
@@ -99,8 +87,6 @@ class Neo4jConnectionPool {
   // Destructor
   inline ~Neo4jConnectionPool() {
     for (int i = 0; i < current_max_connection; i++) {
-      // Release the session
-      neo4j_end_session(connections[i].session);
       // Release the connection
       neo4j_close(connections[i].connection);
     }
@@ -110,7 +96,6 @@ class Neo4jConnectionPool {
 
   // Get a connection to use
   inline Neo4jQuerySession* get_connection() {
-    bool current_connection_existed = true;
 
     // Find the next available connection slot
     // If none are available, wait until one is freed
@@ -122,7 +107,6 @@ class Neo4jConnectionPool {
       std::lock_guard<std::mutex> lock(create_conn_mutex);
       // Double check and see if any other threads built connections since we asked for the mutex
       if (current_connection > current_max_connection) {
-        current_connection_existed = false;
         for (
           int i = current_max_connection;
           i < current_max_connection + connection_creation_batch;
@@ -145,17 +129,6 @@ class Neo4jConnectionPool {
             throw Neo4jException(err_msg);
           }
 
-          // Establish a new session with the current connection
-          qs.session = neo4j_new_session(qs.connection);
-
-          // Check if session creation was successful
-          if (!(qs.session)) {
-            const char * err_string = strerror(errno);
-            std::string err_msg(err_string);
-            err_msg = "Error starting session: " + err_msg;
-            throw Neo4jException(err_msg);
-          }
-
           connections.push_back(qs);
         }
         current_max_connection = current_max_connection+connection_creation_batch;
@@ -165,18 +138,7 @@ class Neo4jConnectionPool {
     // Pack the connection & session into the return object
     Neo4jQuerySession *s = new Neo4jQuerySession;
     s->connection = connections[current_connection].connection;
-    s->session = connections[current_connection].session;
     s->index = current_connection;
-
-    // Reset the Neo4j Session if it previously existed
-    if (current_connection_existed) {
-      if (neo4j_reset_session(s->session) != 0) {
-        const char * err_string = strerror(errno);
-        std::string err_msg(err_string);
-        err_msg = "Error resetting session: " + err_msg;
-        throw Neo4jException(err_msg);
-      }
-    }
 
     // Return the latest connection information
     // When we leave the method, the mutex lock is released automatically

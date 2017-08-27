@@ -34,7 +34,7 @@ void Neo4jAdmin::initialize(const char * conn_str, bool secure, int pool_size) {
 ResultsIterator* Neo4jAdmin::execute(const char * query) {
   Neo4jQuerySession *qs = pool->get_connection();
   // Execute the query
-  neo4j_result_stream_t *res = neo4j_run(qs->session, query, neo4j_null);
+  neo4j_result_stream_t *res = neo4j_run(qs->connection, query, neo4j_null);
 
   // Check for a failure
   int failure_check = neo4j_check_failure(res);
@@ -107,7 +107,7 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, \
   Neo4jQuerySession *qs = pool->get_connection();
 
   // Execute the query
-  neo4j_result_stream_t *res = neo4j_run(qs->session, query, param_map);
+  neo4j_result_stream_t *res = neo4j_run(qs->connection, query, param_map);
 
   // Check for a failure
   int failure_check = neo4j_check_failure(res);
