@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <assert.h>
 #include <string>
 #include <unordered_map>
 #include <iostream>
@@ -29,6 +30,74 @@ THE SOFTWARE.
 #include "include/factory_neo4j.h"
 
 Neo4jInterface *neo = NULL;
+
+int hello_world_test() {
+  std::cout << "Running Hello World Test" << std::endl;
+  // Execute a query
+  ResultsIteratorInterface *results = NULL;
+  std::string query = "RETURN 'hello world'";
+  results = neo->execute(query);
+  if (!results) return -1;
+
+  // Access the results
+  ResultTreeInterface* result = results->next();
+  if (!result) return -1;
+  DbObjectInterface* obj = result->get(0);
+  std::string result_string = obj->to_string();
+  std::cout << result_string << std::endl;
+  assert(result_string == "hello world");
+
+  delete obj;
+  delete result;
+  delete results;
+  return 0;
+}
+
+int creation_test() {
+  std::cout << "Running Object Creation Test" << std::endl;
+  // Execute the query
+  std::string query = \
+    "CREATE (you:Person {name:'EA', list: [1, 2, 3]}) RETURN you";
+  ResultsIteratorInterface *results = NULL;
+  results = neo->execute(query);
+  if (!results) return -1;
+
+  // Access the results
+  ResultTreeInterface* result = results->next();
+  if (!result) return -1;
+  DbObjectInterface* obj = result->get(0);
+  std::string result_string = obj->to_string();
+  std::cout << result_string << std::endl;
+
+  assert(obj->is_node());
+
+  DbMapInterface* map = obj->properties();
+  std::cout << map->to_string() << std::endl;
+
+  assert(map->element_exists("name"));
+  assert(map->get_string_element("name") == "EA");
+  assert(map->element_exists("list"));
+
+  DbListInterface *list_prop = map->get_list_element("list");
+  assert(list_prop->size() == 3);
+  assert(list_prop->get_int_element(0) == 1);
+  assert(list_prop->get_int_element(1) == 2);
+  assert(list_prop->get_int_element(2) == 3);
+
+  delete list_prop;
+  delete map;
+  delete obj;
+  delete result;
+  delete results;
+  return 0;
+}
+
+int run_tests() {
+  if (hello_world_test() != 0) return -1;
+  if (creation_test() != 0) return -1;
+  return 0;
+}
+
 
 // Print the element results from the tree
 void print_results(ResultTreeInterface* result, int index) {
@@ -291,6 +360,8 @@ int main(int argc, char** argv) {
   } else {
     neo = neo4j_factory.get_neo4j_interface("neo4j://localhost:7687");
   }
+
+  return run_tests();
 
   // Hello World
   run_test("RETURN 'hello world'", "Hello World");
