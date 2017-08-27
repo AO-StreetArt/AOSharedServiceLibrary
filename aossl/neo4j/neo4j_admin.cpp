@@ -72,29 +72,32 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, \
 
   for (unsigned int i = 0; i < keys.size(); i++) {
     Neo4jQueryParameterInterface* val = vals[i];
-    int val_type = val->get_type();
-    // We have single value parameter, and just need to determine the type
-    if (val_type == _BOOL_TYPE) {
-      map_values[i] = neo4j_bool(val->get_boolean_value());
-      map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
-    } else if (val_type == _STR_TYPE) {
-      const char * val_str = val->get_cstring_value();
-      if (!val_str) {
-        throw Neo4jException("query parameters must have length > 1.");
-      } else {
-        if (keys[i].empty()) {
-          throw Neo4jException("query parameter keys must have length > 1.");
-        }
-        map_values[i] = neo4j_string(val->get_cstring_value());
-        map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
-      }
-    } else if (val_type == _INT_TYPE) {
-      map_values[i] = neo4j_int(val->get_integer_value());
-      map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
-    } else if (val_type == _FLT_TYPE) {
-      map_values[i] = neo4j_float(val->get_double_value());
-      map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
+    if (keys[i].empty()) {
+      throw Neo4jException("query parameter keys must have length > 1.");
     }
+    int val_type = val->get_type();
+    if (val->is_array()) {
+      // We have an array parameter
+      // Insert the element into the map entry
+      map_values[i] = neo4j_list(val->get_neo4j_list(), val->size());
+    } else {
+      // We have single value parameter, and just need to determine the type
+      if (val_type == _BOOL_TYPE) {
+        map_values[i] = neo4j_bool(val->get_boolean_value());
+      } else if (val_type == _STR_TYPE) {
+        const char * val_str = val->get_cstring_value();
+        if (!val_str) {
+          throw Neo4jException("query parameters must have length > 1.");
+        } else {
+          map_values[i] = neo4j_string(val->get_cstring_value());
+        }
+      } else if (val_type == _INT_TYPE) {
+        map_values[i] = neo4j_int(val->get_integer_value());
+      } else if (val_type == _FLT_TYPE) {
+        map_values[i] = neo4j_float(val->get_double_value());
+      }
+    }
+    map_entries[i] = neo4j_map_entry(keys[i].c_str(), map_values[i]);
   }
 
   // Create a neo4j value of the map
