@@ -45,7 +45,7 @@ int hello_world_test() {
   DbObjectInterface* obj = result->get(0);
   std::string result_string = obj->to_string();
   std::cout << result_string << std::endl;
-  assert(result_string == "hello world");
+  assert(result_string == "\"hello world\"");
 
   delete obj;
   delete result;
