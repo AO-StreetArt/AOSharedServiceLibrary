@@ -14,7 +14,7 @@ printf "Calling apt-get update"
 sudo add-apt-repository ppa:dns/gnu -y
 
 #Add libneo4j repository
-sudo add-apt-repository ppa:cleishm/neo4j
+sudo add-apt-repository ppa:cleishm/neo4j -y
 
 #Update the Ubuntu Server
 sudo apt-get -y -q update
