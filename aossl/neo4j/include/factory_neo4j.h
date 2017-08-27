@@ -28,6 +28,7 @@ THE SOFTWARE.
 #include <string>
 #include "neo4j_interface.h"
 #include "neo4j_admin.h"
+#include "neo4j_query_parameter.h"
 
 //! The Neo4j Service Component Factory
 
