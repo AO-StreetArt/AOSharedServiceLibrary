@@ -311,11 +311,13 @@ int string_query_parameter_test() {
     "MATCH (you:Person) WHERE you.name = {inp_name} RETURN you";
 
   // Run the query
+  std::cout << "Query Execution" << std::endl;
   ResultsIteratorInterface *results = NULL;
   results = neo->execute(query, query_params2);
   if (!results) return -1;
 
   // Access the results
+  std::cout << "Accessing Results" << std::endl;
   ResultTreeInterface* result = results->next();
   if (!result) return -1;
   DbObjectInterface* obj = result->get(0);
@@ -353,6 +355,8 @@ int string_query_parameter_test() {
 }
 
 int path_test() {
+  std::cout << "Path Test" << std::endl;
+  std::cout << "Data Setup" << std::endl;
   // Setup data for the path test
   std::string setup_query1 = \
     "CREATE (base:CoordinateSystem {name: '1', list: [7, 8, 9]}) RETURN base";
@@ -380,12 +384,14 @@ int path_test() {
   results = NULL;
 
   // Actual Path Tests
+  std::cout << "Query Execution" << std::endl;
   std::string query = \
     "MATCH (base:CoordinateSystem {name:'1'}), (next:CoordinateSystem {name:'3'}), p = shortestPath((base)-[r*]-(next)) RETURN p";
   results = neo->execute(query);
   if (!results) return -1;
 
   // Access the results
+  std::cout << "Access Results" << std::endl;
   ResultTreeInterface* result = results->next();
 
   // Get the path
