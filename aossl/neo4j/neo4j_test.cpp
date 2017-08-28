@@ -173,7 +173,6 @@ int match_create_test() {
 
   assert(edge->is_edge());
   assert(edge->type() == "LIKE");
-  assert(edge->forward() == true);
 
   // Labels
   DbListInterface* label_list = obj->labels();
