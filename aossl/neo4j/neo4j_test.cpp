@@ -261,7 +261,7 @@ int int_query_parameter_test() {
   // Run the query
   std::cout << "Query Execution" << std::endl;
   ResultsIteratorInterface *results2 = NULL;
-  results2 = neo->execute(param_query. query_params1);
+  results2 = neo->execute(param_query, query_params1);
   if (!results2) return -1;
 
   // Access the results
