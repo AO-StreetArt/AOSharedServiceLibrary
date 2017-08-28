@@ -267,8 +267,9 @@ int int_query_parameter_test() {
   // Access the results
   std::cout << "Accessing Results" << std::endl;
   ResultTreeInterface* result = results2->next();
-  if (!result) return -1;
+  if (!result) assert(false);
   DbObjectInterface* obj = result->get(0);
+  if (!obj) assert(false);
   std::string result_string = obj->to_string();
   std::cout << result_string << std::endl;
 
