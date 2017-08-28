@@ -249,6 +249,7 @@ int int_query_parameter_test() {
   if (!results) return -1;
 
   // Set up the query parameter and query
+  std::cout << "Query Setup" << std::endl;
   std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params1;
   Neo4jQueryParameterInterface* name_param = \
     neo4j_factory->get_neo4j_query_parameter(1);
@@ -257,13 +258,14 @@ int int_query_parameter_test() {
     "MATCH (you:Gelatin) WHERE you.name = {inp_name} RETURN you";
 
   // Run the query
-  delete results;
-  results = NULL;
-  results = neo->execute(param_query);
-  if (!results) return -1;
+  std::cout << "Query Execution" << std::endl;
+  ResultsIteratorInterface *results2 = NULL;
+  results2 = neo->execute(param_query);
+  if (!results2) return -1;
 
   // Access the results
-  ResultTreeInterface* result = results->next();
+  std::cout << "Accessing Results" << std::endl;
+  ResultTreeInterface* result = results2->next();
   if (!result) return -1;
   DbObjectInterface* obj = result->get(0);
   std::string result_string = obj->to_string();
@@ -295,6 +297,7 @@ int int_query_parameter_test() {
   delete obj;
   delete result;
   delete results;
+  delete results2;
   return 0;
 }
 
