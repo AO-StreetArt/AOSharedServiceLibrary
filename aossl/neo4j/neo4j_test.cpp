@@ -394,9 +394,9 @@ int path_test() {
   // Access the results
   std::cout << "Access Results" << std::endl;
   ResultTreeInterface* result = results->next();
-
-  // Get the path
+  if (!result) assert(false);
   DbObjectInterface* path = result->get(0);
+  std::cout << "Object Retrieved" << std::endl;
   assert(path->is_path());
   assert(path->size() == 5);
   for (int i = 0; i < 5; i++) {
@@ -404,11 +404,13 @@ int path_test() {
     std::cout << path_obj->to_string() << std::endl;
     // Generic Tests
     if (i % 2 == 0) {
+      std::cout << "Testing Node " << i << std::endl;
       assert(path_obj->is_node());
       DbListInterface* label_list = path_obj->labels();
       assert(label_list->get_string_element(0) == "CoordinateSystem");
       delete label_list;
     } else {
+      std::cout << "Testing Edge " << i << std::endl;
       assert(path_obj->is_edge());
       assert(path_obj->type() == "Transform");
       assert(path_obj->forward());
