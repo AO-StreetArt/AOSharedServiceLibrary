@@ -373,14 +373,26 @@ int path_test() {
   ResultsIteratorInterface *results = NULL;
   results = neo->execute(setup_query1);
   if (!results) return -1;
+  ResultTreeInterface* setup_result1 = results->next();
+  if (!setup_result1) assert(false);
+  delete setup_result1;
+  setup_result1 = NULL;
   delete results;
   results = NULL;
   results = neo->execute(setup_query2);
   if (!results) return -1;
+  ResultTreeInterface* setup_result2 = results->next();
+  if (!setup_result2) assert(false);
+  delete setup_result2;
+  setup_result2 = NULL;
   delete results;
   results = NULL;
   results = neo->execute(setup_query2);
   if (!results) return -1;
+  ResultTreeInterface* setup_result3 = results->next();
+  if (!setup_result3) assert(false);
+  delete setup_result3;
+  setup_result3 = NULL;
   delete results;
   results = NULL;
 
