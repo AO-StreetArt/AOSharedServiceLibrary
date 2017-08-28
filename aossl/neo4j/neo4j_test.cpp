@@ -195,7 +195,7 @@ int match_create_test() {
   assert(list_prop->get_int_element(2) == 3);
 
   // Test the properties coming back off the Database object
-  DbMapInterface* map2 = obj->properties();
+  DbMapInterface* map2 = db_obj->properties();
   std::cout << map2->to_string() << std::endl;
 
   assert(map2->element_exists("name"));
@@ -214,6 +214,7 @@ int match_create_test() {
   delete map;
   delete label_list;
   delete obj;
+  delete db_obj;
   delete result;
   delete results;
   return 0;
