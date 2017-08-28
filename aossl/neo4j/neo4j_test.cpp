@@ -247,6 +247,7 @@ int int_query_parameter_test() {
   ResultsIteratorInterface *results = NULL;
   results = neo->execute(setup_query);
   if (!results) return -1;
+  delete results;
 
   // Set up the query parameter and query
   std::cout << "Query Setup" << std::endl;
@@ -296,7 +297,6 @@ int int_query_parameter_test() {
   delete label_list;
   delete obj;
   delete result;
-  delete results;
   delete results2;
   return 0;
 }
