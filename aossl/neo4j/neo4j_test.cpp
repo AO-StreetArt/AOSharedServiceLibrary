@@ -479,6 +479,60 @@ int int_list_parameter_test() {
   return 0;
 }
 
+int string_list_parameter_test() {
+  std::cout << "Running String List Parameter Test" << std::endl;
+  // Setup the query
+  std::string query = \
+    "CREATE (you:Person {name:'JellyBean', list: {list_vals}}) RETURN you";
+  std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params;
+  Neo4jQueryParameterInterface* list_vals_parameter = \
+    neo4j_factory->get_neo4j_query_parameter();
+  list_vals_parameter->add_value("1");
+  list_vals_parameter->add_value("2");
+  list_vals_parameter->add_value("3");
+  query_params.emplace("list_vals", list_vals_parameter);
+
+  // Execute the query
+  ResultsIteratorInterface *results = NULL;
+  results = neo->execute(query, query_params);
+  if (!results) return -1;
+
+  // Access the results
+  ResultTreeInterface* result = results->next();
+  if (!result) return -1;
+  DbObjectInterface* obj = result->get(0);
+  std::string result_string = obj->to_string();
+  std::cout << result_string << std::endl;
+
+  assert(obj->is_node());
+
+  // Labels
+  DbListInterface* label_list = obj->labels();
+  assert(label_list->get_string_element(0) == "Person");
+
+  // Properties
+  DbMapInterface* map = obj->properties();
+  std::cout << map->to_string() << std::endl;
+
+  assert(map->element_exists("name"));
+  assert(map->get_string_element("name") == "JellyBean");
+  assert(map->element_exists("list"));
+
+  DbListInterface *list_prop = map->get_list_element("list");
+  assert(list_prop->size() == 3);
+  assert(list_prop->get_string_element(0) == "1");
+  assert(list_prop->get_string_element(1) == "2");
+  assert(list_prop->get_string_element(2) == "3");
+
+  delete list_prop;
+  delete map;
+  delete label_list;
+  delete obj;
+  delete result;
+  delete results;
+  return 0;
+}
+
 int run_tests() {
   if (hello_world_test() != 0) return -1;
   if (creation_test() != 0) return -1;
@@ -488,6 +542,8 @@ int run_tests() {
   if (int_query_parameter_test() != 0) return -1;
   if (string_query_parameter_test() != 0) return -1;
   if (path_test() != 0) return -1;
+  if (int_list_parameter_test() != 0) return -1;
+  if (string_list_parameter_test() != 0) return -1;
   return 0;
 }
 
