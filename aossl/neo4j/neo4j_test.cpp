@@ -511,9 +511,12 @@ int string_list_parameter_test() {
   std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params;
   Neo4jQueryParameterInterface* list_vals_parameter = \
     neo4j_factory->get_neo4j_query_parameter();
-  list_vals_parameter->add_value("1");
-  list_vals_parameter->add_value("2");
-  list_vals_parameter->add_value("3");
+  std::string param_val1 = "ABCD";
+  std::string param_val2 = "GHIJKL";
+  std::string param_val3 = "MNOPQRST";
+  list_vals_parameter->add_value(param_val1);
+  list_vals_parameter->add_value(param_val2);
+  list_vals_parameter->add_value(param_val3);
   query_params.emplace("list_vals", list_vals_parameter);
 
   // Execute the query
@@ -544,9 +547,9 @@ int string_list_parameter_test() {
 
   DbListInterface *list_prop = map->get_list_element("list");
   assert(list_prop->size() == 3);
-  assert(list_prop->get_string_element(0) == "1");
-  assert(list_prop->get_string_element(1) == "2");
-  assert(list_prop->get_string_element(2) == "3");
+  assert(list_prop->get_string_element(0) == "ABCD");
+  assert(list_prop->get_string_element(1) == "GHIJKL");
+  assert(list_prop->get_string_element(2) == "MNOPQRST");
 
   delete list_prop;
   delete map;

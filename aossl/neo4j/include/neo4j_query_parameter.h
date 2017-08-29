@@ -25,8 +25,10 @@ THE SOFTWARE.
 #ifndef AOSSL_NEO4J_INCLUDE_NEO4J_QUERY_PARAMETER_H_
 #define AOSSL_NEO4J_INCLUDE_NEO4J_QUERY_PARAMETER_H_
 
+#include <cstdlib>
 #include <stdio.h>
 #include <errno.h>
+#include <cstring>
 #include <neo4j-client.h>
 #include <string>
 #include <exception>
@@ -51,10 +53,12 @@ class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
   bool is_list;
   std::vector<bool> bool_values;
   std::vector<std::string> str_values;
+  std::vector<const char*> cstr_values;
   std::vector<int> int_values;
   std::vector<double> double_values;
+  neo4j_value_t list_val;
   // Internal Variable for storing an array of pointers to neo4j_values
-  neo4j_value_t *list_values = NULL;
+  neo4j_value_t list_values[30];
   // Input True if we are performing a list operation
   // False if not
   // Throw an exception if we are performing an invalid operation
@@ -111,7 +115,9 @@ class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
     str_values.clear();
     int_values.clear();
     double_values.clear();
-    if (list_values) delete[] list_values;
+    for (int i = 0; i < cstr_values.size(); i++) {
+      delete[] cstr_values[i];
+    }
   }
 
   // What type of query parameter is this?
@@ -150,6 +156,12 @@ class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
     list_check(false);
     type_check(_STR_TYPE);
     return cstr_value;
+  }
+
+  inline const char * get_cstring_value(int index) {
+    list_check(false);
+    type_check(_STR_TYPE);
+    return cstr_values[index];
   }
 
   // Retrieve an integer value from a single parameter
@@ -237,28 +249,37 @@ class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
     type = _FLT_TYPE;
   }
 
-  inline neo4j_value_t* get_neo4j_list() {
+  inline neo4j_value_t get_neo4j_list() {
     int val_type = get_type();
-    // Build an array of neo4j values to hold the list elements
-    if (!list_values) {
-      list_values = new neo4j_value_t[size()];
-      // Iterate over the values in the list parameter, filling up our array
-      for (unsigned int j = 0; j < size(); j++) {
-        if (val_type == _BOOL_TYPE) {
-          list_values[j] = neo4j_bool(get_boolean_value(j));
-        } else if (val_type == _STR_TYPE) {
-          if (get_string_value(j).empty()) {
-            throw Neo4jException("query parameters must have length > 1.");
-          }
-          list_values[j] = neo4j_string(get_string_value(j).c_str());
-        } else if (val_type == _INT_TYPE) {
-          list_values[j] = neo4j_int(get_integer_value(j));
-        } else if (val_type == _FLT_TYPE) {
-          list_values[j] = neo4j_float(get_double_value(j));
-        }
+    // If we have a string type parameter, copy the values over to the C String
+    // Vector prior to starting
+    if (val_type == _STR_TYPE) {
+      cstr_values.reserve(size());
+      for (int i = 0; i < size(); i++) {
+        int cstr_size = get_string_value(i).size();
+        char * cstr_val = new char[cstr_size];
+        std::strcpy(cstr_val, get_string_value(i).c_str());
+        cstr_values.push_back(cstr_val);
       }
     }
-    return list_values;
+    // Build an array of neo4j values to hold the list elements
+    // Iterate over the values in the list parameter, filling up our array
+    for (unsigned int j = 0; j < size(); j++) {
+      if (val_type == _BOOL_TYPE) {
+        list_values[j] = neo4j_bool(get_boolean_value(j));
+      } else if (val_type == _STR_TYPE) {
+        if (get_string_value(j).empty()) {
+          throw Neo4jException("query parameters must have length > 1.");
+        }
+        list_values[j] = neo4j_string(cstr_values[j]);
+      } else if (val_type == _INT_TYPE) {
+        list_values[j] = neo4j_int(get_integer_value(j));
+      } else if (val_type == _FLT_TYPE) {
+        list_values[j] = neo4j_float(get_double_value(j));
+      }
+    }
+    list_val = neo4j_list(list_values, size());
+    return list_val;
   }
 };
 

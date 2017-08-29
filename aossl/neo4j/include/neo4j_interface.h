@@ -300,7 +300,7 @@ class Neo4jQueryParameterInterface {
   virtual void add_value(const char * new_val) = 0;
 
   // Internal Use only - Used by Neo4j Admin when executing query.
-  virtual neo4j_value_t* get_neo4j_list() = 0;
+  virtual neo4j_value_t get_neo4j_list() = 0;
 };
 
 //! Neo4j Query Interface
