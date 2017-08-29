@@ -213,7 +213,9 @@ int match_create_test() {
   delete list_prop;
   delete map;
   delete label_list;
+  delete label_list2;
   delete obj;
+  delete edge;
   delete db_obj;
   delete result;
   delete results;
@@ -299,6 +301,7 @@ int int_query_parameter_test() {
   delete obj;
   delete result;
   delete results2;
+  delete name_param;
   return 0;
 }
 
@@ -500,6 +503,7 @@ int int_list_parameter_test() {
   delete obj;
   delete result;
   delete results;
+  delete list_vals_parameter;
   return 0;
 }
 
@@ -557,6 +561,7 @@ int string_list_parameter_test() {
   delete obj;
   delete result;
   delete results;
+  delete list_vals_parameter;
   return 0;
 }
 

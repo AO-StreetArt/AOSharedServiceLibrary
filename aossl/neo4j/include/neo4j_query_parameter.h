@@ -257,7 +257,7 @@ class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
       cstr_values.reserve(size());
       for (int i = 0; i < size(); i++) {
         int cstr_size = get_string_value(i).size();
-        char * cstr_val = new char[cstr_size];
+        char * cstr_val = new char[cstr_size+1];
         std::strcpy(cstr_val, get_string_value(i).c_str());
         cstr_values.push_back(cstr_val);
       }
