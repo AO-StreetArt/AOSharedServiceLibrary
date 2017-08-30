@@ -28,8 +28,39 @@ THE SOFTWARE.
 #include <string>
 #include <unordered_map>
 #include <exception>
+#include <neo4j-client.h>
 
 #include "aossl/core/include/slot_pool.h"
+
+// Neo4j Exception
+
+// A child class of std::exception
+// which holds error information
+struct Neo4jException: public std::exception {
+  // An error message passed on initialization
+  std::string int_msg;
+  const char * int_msg_cstr;
+  neo4j_result_stream_t *results = NULL;
+
+  // Create a Neo4j Exception, and store the given error message
+  inline Neo4jException(std::string msg) {
+    int_msg = "Error in Neo4j Request: " + msg;
+    int_msg_cstr = int_msg.c_str();
+  }
+
+  inline Neo4jException(std::string msg, neo4j_result_stream_t *r) {
+    int_msg = "Error in Neo4j Request: " + msg;
+    int_msg_cstr = int_msg.c_str();
+    results = r;
+  }
+
+  Neo4jException() {}
+  ~Neo4jException() throw() {if (results) {neo4j_close_results(results);}}
+  // Show the error message in readable format
+  const char * what() const throw() {
+    return int_msg_cstr;
+  }
+};
 
 // Query Results
 
@@ -223,8 +254,14 @@ class Neo4jQueryParameterInterface {
   //! Get the boolean value, if any
   virtual bool get_boolean_value() = 0;
 
-  //! Get the string value , if any
+  //! Get the boolean value at the specified index, if any
+  virtual bool get_boolean_value(int index) = 0;
+
+  //! Get the string value, if any
   virtual std::string get_string_value() = 0;
+
+  //! Get the string value at the specified index, if any
+  virtual std::string get_string_value(int index) = 0;
 
   //! Get the string value as a c string
   virtual const char * get_cstring_value() = 0;
@@ -232,8 +269,38 @@ class Neo4jQueryParameterInterface {
   //! Get the integer value, if any
   virtual int get_integer_value() = 0;
 
+  //! Get the integer value at the specified index, if any
+  virtual int get_integer_value(int index) = 0;
+
   //! Get the double value, if any
   virtual double get_double_value() = 0;
+
+  //! Get the double value at the specified index, if any
+  virtual double get_double_value(int index) = 0;
+
+  //! If the parameter is an array, return true
+  virtual bool is_array() = 0;
+
+  //! If the parameter is an array, return the size
+  virtual unsigned int size() = 0;
+
+  //! Add a float value to the array parameter
+  virtual void add_value(float new_val) = 0;
+
+  //! Add an integer value to the array parameter
+  virtual void add_value(int new_val) = 0;
+
+  //! Add a boolean value to the array parameter
+  virtual void add_value(bool new_val) = 0;
+
+  //! Add a string value to the array parameter
+  virtual void add_value(std::string new_val) = 0;
+
+  //! Add a string value to the array parameter
+  virtual void add_value(const char * new_val) = 0;
+
+  // Internal Use only - Used by Neo4j Admin when executing query.
+  virtual neo4j_value_t get_neo4j_list() = 0;
 };
 
 //! Neo4j Query Interface

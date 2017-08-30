@@ -13,6 +13,9 @@ printf "Calling apt-get update"
 #Fix for Travis CI Builds which don't have latest version installed
 sudo add-apt-repository ppa:dns/gnu -y
 
+#Add libneo4j repository
+sudo add-apt-repository ppa:cleishm/neo4j -y
+
 #Update the Ubuntu Server
 sudo apt-get -y -q update
 
@@ -23,18 +26,7 @@ printf "Addressing pre-build requirements"
 sudo apt-get install --only-upgrade autoconf
 
 #Ensure that specific build requirements are satisfied
-sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev libssl-dev autoconf cmake make git wget
-
-
-#Determine if we need the neo4j-client library
-printf "Building libneo4j"
-
-mkdir $PRE/neo
-wget https://github.com/cleishm/libneo4j-client/releases/download/v1.2.1/libneo4j-client-1.2.1.tar.gz -P ./$PRE
-
-tar -zxvf ./$PRE/libneo4j-client-1.2.1.tar.gz -C $PRE/neo
-cd $PRE/neo/libneo4j-client-1.2.1 && sudo ./configure --disable-tools && sudo make clean check && sudo make install
-cd ../../
+sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev libssl-dev autoconf cmake make git wget neo4j-client libneo4j-client-dev
 
 printf "Building Mongo C Driver"
 wget https://github.com/mongodb/mongo-c-driver/releases/download/1.6.0/mongo-c-driver-1.6.0.tar.gz
