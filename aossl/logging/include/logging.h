@@ -25,13 +25,13 @@ THE SOFTWARE.
 #ifndef AOSSL_LOGGING_INCLUDE_LOGGING_H_
 #define AOSSL_LOGGING_INCLUDE_LOGGING_H_
 
+#include <stdlib.h>
 #include <log4cpp/Category.hh>
 #include <log4cpp/PropertyConfigurator.hh>
 #include <log4cpp/OstreamAppender.hh>
 #include <log4cpp/BasicLayout.hh>
 #include <log4cpp/FileAppender.hh>
 #include <string>
-#include <stdlib.h>
 #include <unordered_map>
 #include <vector>
 

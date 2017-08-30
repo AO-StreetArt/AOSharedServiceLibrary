@@ -26,15 +26,14 @@ THE SOFTWARE.
 // set of integers.  This is an internal component for any resource pool, such
 // as a connection pool.
 
-#ifndef AOSSL_CORE_SLOT_POOL_H_
-#define AOSSL_CORE_SLOT_POOL_H_
+#ifndef AOSSL_CORE_INCLUDE_SLOT_POOL_H_
+#define AOSSL_CORE_INCLUDE_SLOT_POOL_H_
 
 #include <mutex>
 
 namespace AOSSL {
 
 class SlotPool {
-
   // Internal integers
   int connection_limit = 1;
 
@@ -44,7 +43,7 @@ class SlotPool {
   // Array of ints (0/1) which determine which connections are open vs closed
   int *slots;
 
-public:
+ public:
   // Create a new Resource pool with the given limit
   inline SlotPool(int conn_limit) {
     connection_limit = conn_limit;
@@ -85,5 +84,5 @@ public:
   }
 };
 
-}
-#endif  // AOSSL_CORE_SLOT_POOL_H_
+}  // namespace AOSSL
+#endif  // AOSSL_CORE_INCLUDE_SLOT_POOL_H_

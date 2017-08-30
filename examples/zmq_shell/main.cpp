@@ -1,17 +1,42 @@
-//This sets up all of the components necessary for the service and runs the main
-//loop for the application.
+/*
+MIT License Block
 
-#include <sstream>
-#include <string>
-#include <string.h>
-#include <cstring>
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
+Copyright (c) 2016 Alex Barry
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+// This sets up all of the components necessary for the service and runs the
+// main loop for the application.
+
+#include <signal.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include <cstring>
+#include <cstdlib>
+#include <sstream>
+#include <string>
+#include <iostream>
+#include <fstream>
 #include <exception>
-#include <signal.h>
+#include <vector>
 
 #include "src/include/app_log.h"
 #include "src/include/app_utils.h"
@@ -38,23 +63,21 @@
 #include "aossl/zmq/include/zmq_interface.h"
 #include "aossl/zmq/include/factory_zmq.h"
 
-//Catch a Signal (for example, keyboard interrupt)
-void my_signal_handler(int s){
-   main_logging->error("Caught signal");
-   std::string signal_type = std::to_string(s);
-   main_logging->error(signal_type);
-   shutdown();
-   exit(1);
+// Catch a Signal (for example, keyboard interrupt)
+void my_signal_handler(int s) {
+  main_logging->error("Caught signal");
+  std::string signal_type = std::to_string(s);
+  main_logging->error(signal_type);
+  shutdown();
+  exit(1);
 }
 
-    //-----------------------
-    //------Main Method------
-    //-----------------------
+    // -----------------------
+    // ------Main Method------
+    // -----------------------
 
-    int main( int argc, char** argv )
-    {
-
-      //Set up a handler for any signal events so that we always shutdown gracefully
+    int main(int argc, char** argv) {
+      // Set up a handler for any signal events so that we shutdown gracefully
       struct sigaction sigIntHandler;
       sigIntHandler.sa_handler = my_signal_handler;
       sigemptyset(&sigIntHandler.sa_mask);
@@ -69,33 +92,30 @@ void my_signal_handler(int s){
       logging_factory = new LoggingComponentFactory;
       mongo_factory = new MongoComponentFactory;
 
-      //Set up our command line interpreter
-      cli = cli_factory->get_command_line_interface( argc, argv );
+      // Set up our command line interpreter
+      cli = cli_factory->get_command_line_interface(argc, argv);
 
-      //Set up logging
-	    std::string initFileName;
+      // Set up logging
+      std::string initFileName;
 
-      //See if we have a command line setting for the log file
+      // See if we have a command line setting for the log file
       const char * env_logging_file = std::getenv("CRAZYIVAN_LOGGING_CONF");
-      if ( env_logging_file ) {
-        std::string tempFileName (env_logging_file);
+      if (env_logging_file) {
+        std::string tempFileName(env_logging_file);
         initFileName = tempFileName;
-      }
-      else if ( cli->opt_exist("-log-conf") ) {
+      } else if (cli->opt_exist("-log-conf")) {
         initFileName = cli->get_opt("-log-conf");
-      }
-      else
-      {
+      } else {
         initFileName = "log4cpp.properties";
       }
 
-      //This reads the logging configuration file
+      // This reads the logging configuration file
       logging = logging_factory->get_logging_interface(initFileName);
 
-      //Set up the logging submodules for each category
+      // Set up the logging submodules for each category
       start_logging_submodules();
 
-      //Set up the UUID Generator
+      // Set up the UUID Generator
       uid = uuid_factory->get_uuid_interface();
 
       std::string service_instance_id = "Ivan-";
@@ -108,17 +128,17 @@ void my_signal_handler(int s){
         service_instance_id = service_instance_id + sid_container.id;
       }
       catch (std::exception& e) {
-        main_logging->error("Exception encountered during Service Instance ID Generation");
+        main_logging->error("Exception during Service Instance ID Generation");
         shutdown();
         exit(1);
       }
 
-      //Set up our configuration manager with the CLI
+      // Set up our configuration manager with the CLI
       config = new ConfigurationManager(cli, service_instance_id);
 
-      //The configuration manager will  look at any command line arguments,
-      //configuration files, and Consul connections to try and determine the correct
-      //configuration for the service
+      // The configuration manager will  look at any command line arguments,
+      // configuration files, and Consul connections to try and determine
+      // the correct configuration for the service
 
       bool config_success = false;
       try {
@@ -129,86 +149,84 @@ void my_signal_handler(int s){
         shutdown();
         exit(1);
       }
-      if (!config_success)
-      {
+      if (!config_success) {
         main_logging->error("Configuration Failed, defaults kept");
       }
 
-      //Set up our Redis Connection List, which is passed to the Redis Admin to connect
-      std::vector<RedisConnChain> RedisConnectionList = config->get_redisconnlist();
-      //Set up Redis Connection
+      // Set up our Redis Connection List, which is passed to the Admin
+      std::vector<RedisConnChain> RedisConnectionList = \
+        config->get_redisconnlist();
+      // Set up Redis Connection
       if (RedisConnectionList.size() > 0) {
         try {
-          //Currently only support for single Redis instance
-          red = redis_factory->get_redis_interface(RedisConnectionList[0].ip, RedisConnectionList[0].port);
+          // Currently only support for single Redis instance
+          red = redis_factory->get_redis_interface(RedisConnectionList[0].ip, \
+            RedisConnectionList[0].port);
         }
         catch (std::exception& e) {
-          main_logging->error("Exception encountered during Redis Initialization");
+          main_logging->error("Exception during Redis Initialization");
           main_logging->error(e.what());
           shutdown();
           exit(1);
         }
         main_logging->info("Connected to Redis");
-      }
-      else {
+      } else {
         main_logging->error("No Redis Connections found in configuration");
       }
 
-      //Set up the Mongo Connection
+      // Set up the Mongo Connection
       std::string DBConnStr = config->get_mongoconnstr();
       std::string DBName = config->get_dbname();
       std::string DBHeaderCollection = config->get_dbheadercollection();
-      if ( !(DBConnStr.empty() || DBName.empty() || DBHeaderCollection.empty()) ) {
+      if (!(DBConnStr.empty() || DBName.empty() || \
+        DBHeaderCollection.empty())) {
         try {
-          mongo = mongo_factory->get_mongo_interface( DBConnStr, DBName, DBHeaderCollection );
+          mongo = mongo_factory->get_mongo_interface(DBConnStr, \
+            DBName, DBHeaderCollection);
           main_logging->debug("Connected to Mongo");
         }
         catch (std::exception& e) {
-          main_logging->error("Exception encountered during Mongo Initialization");
+          main_logging->error("Exception during Mongo Initialization");
           main_logging->error(e.what());
           shutdown();
           exit(1);
         }
-      }
-      else {
-        main_logging->error("Insufficient Mongo Connection Information Supplied");
+      } else {
+        main_logging->error("Insufficient Mongo Information Supplied");
         shutdown();
         exit(1);
       }
 
-      //Connect to the inbound ZMQ Admin
+      // Connect to the inbound ZMQ Admin
       std::string ib_zmq_connstr = config->get_ibconnstr();
-      if ( !(ib_zmq_connstr.empty()) ) {
+      if (!(ib_zmq_connstr.empty())) {
         zmqi = zmq_factory->get_zmq_inbound_interface(ib_zmq_connstr, REQ_RESP);
         main_logging->info("ZMQ Socket Open, opening request loop");
-      }
-      else {
+      } else {
         main_logging->error("No IB ZMQ Connection String Supplied");
         shutdown();
         exit(1);
       }
 
-      //Main Request Loop
+      // Main Request Loop
 
       while (true) {
-
         std::string resp_str = "";
         rapidjson::Document d;
 
-        //Convert the OMQ message into a string to be passed on the event
+        // Convert the OMQ message into a string to be passed on the event
         char * req_ptr = zmqi->crecv();
         main_logging->debug("Conversion to C String performed with result: ");
         main_logging->debug(req_ptr);
 
-        //Trim the string recieved
-        std::string recvd_msg (req_ptr);
+        // Trim the string recieved
+        std::string recvd_msg(req_ptr);
         std::string clean_string = trim(recvd_msg);
 
         main_logging->debug("Input String Cleaned");
         main_logging->debug(clean_string);
 
         if (config->get_formattype() == JSON_FORMAT) {
-
           clean_string = recvd_msg.substr(0, recvd_msg.find_last_of("}")+1);
 
           try {
@@ -218,55 +236,52 @@ void my_signal_handler(int s){
               main_logging->error(GetParseError_En(d.GetParseError()));
             }
           }
-          //Catch a possible error and write to logs
+          // Catch a possible error and write to logs
           catch (std::exception& e) {
-            main_logging->error("Exception occurred while parsing inbound document:");
+            main_logging->error("Exception while parsing inbound document:");
             main_logging->error(e.what());
           }
-
         }
 
-          //Determine the Transaction ID
+          // Determine the Transaction ID
           UuidContainer id_container;
           id_container.id = "";
-          if ( config->get_transactionidsactive() ) {
-            //Get an existing transaction ID, currently empty as we don't assume format
+          if (config->get_transactionidsactive()) {
+            // Get an existing transaction ID, currently empty as we
+            // don't assume format
             std::string existing_trans_id = "";
-            //If no transaction ID is sent in, generate a new one
-            if ( existing_trans_id.empty() ) {
+            // If no transaction ID is sent in, generate a new one
+            if (existing_trans_id.empty()) {
               try {
                 id_container = uid->generate();
                 if (!id_container.err.empty()) {
                   main_logging->error(id_container.err);
                 }
-                main_logging->debug("Generated Transaction ID: " + id_container.id);
-
+                main_logging->debug("Transaction ID: " + id_container.id);
               }
               catch (std::exception& e) {
-                main_logging->error("Exception encountered during UUID Generation");
+                main_logging->error("Exception during UUID Generation");
                 shutdown();
                 exit(1);
               }
-            }
-            //Otherwise, use the existing transaction ID
-            else {
+            } else {
+              // Otherwise, use the existing transaction ID
               id_container.id = existing_trans_id;
             }
           }
           main_logging->debug("Transaction ID: ");
           main_logging->debug(id_container.id);
 
-          //Core application logic
+          // Core application logic
 
-          //Here we have the logic to build a response.
-          //For the purposes of this shell, we will simply assign
-          //the transaction ID to the response and send it back
+          // Here we have the logic to build a response.
+          // For the purposes of this shell, we will simply assign
+          // the transaction ID to the response and send it back
           std::string application_response = id_container.id;
 
           main_logging->info("Sending Response");
-          main_logging->info( application_response );
-          zmqi->send( application_response );
-
+          main_logging->info(application_response);
+          zmqi->send(application_response);
       }
       return 0;
     }

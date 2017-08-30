@@ -26,6 +26,7 @@ THE SOFTWARE.
 #define AOSSL_LOGGING_INCLUDE_FACTORY_LOGGING_H_
 
 #include <string.h>
+#include <string>
 #include "logging_interface.h"
 #include "logging.h"
 
@@ -54,9 +55,11 @@ class LoggingComponentFactory {
   //! Get a Logging Interface instance
   /*!
     \param logFile The file to write logs to
-    \param logLevel The level at which to write logs (options are AOSSL_LOG_INFO, AOSSL_LOG_ERROR, AOSSL_LOG_DEBUG)
+    \param logLevel The level at which to write logs
+      (options are AOSSL_LOG_INFO, AOSSL_LOG_ERROR, AOSSL_LOG_DEBUG)
   */
-  inline LoggingInterface* get_logging_interface(std::string logFile, int logLevel) {
+  inline LoggingInterface* get_logging_interface(std::string logFile, \
+    int logLevel) {
     return new Logger( logFile, logLevel );
   }
 };

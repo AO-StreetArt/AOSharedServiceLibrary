@@ -1,8 +1,33 @@
+/*
+MIT License Block
+
+Copyright (c) 2016 Alex Barry
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
 // Connection Pooling
 
+#include <neo4j-client.h>
 #include <mutex>
 #include <string>
-#include <neo4j-client.h>
+#include <vector>
 #include "aossl/core/include/slot_pool.h"
 
 #ifndef AOSSL_NEO4J_INCLUDE_NEO4J_CONNECTION_POOL_H_
@@ -96,16 +121,17 @@ class Neo4jConnectionPool {
 
   // Get a connection to use
   inline Neo4jQuerySession* get_connection() {
-
     // Find the next available connection slot
     // If none are available, wait until one is freed
     int current_connection = slot_pool->find_next_slot();
 
     // Create new connections if necessary
     if (current_connection > current_max_connection) {
-      // Get the creation mutex to ensure that only 1 thread creates new connections
+      // Get the creation mutex to ensure that
+      // only 1 thread creates new connections
       std::lock_guard<std::mutex> lock(create_conn_mutex);
-      // Double check and see if any other threads built connections since we asked for the mutex
+      // Double check and see if any other threads
+      // built connections since we asked for the mutex
       if (current_connection > current_max_connection) {
         for (
           int i = current_max_connection;
@@ -131,7 +157,8 @@ class Neo4jConnectionPool {
 
           connections.push_back(qs);
         }
-        current_max_connection = current_max_connection+connection_creation_batch;
+        current_max_connection = current_max_connection + \
+          connection_creation_batch;
       }
     }
 

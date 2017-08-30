@@ -25,6 +25,10 @@ THE SOFTWARE.
 #ifndef AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_
 #define AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_
 
+#include <string.h>
+#include <string>
+#include <vector>
+
 #include "aossl/http/client/include/http_admin.h"
 #include "aossl/http/client/include/http_interface.h"
 #include "aossl/http/client/include/factory_http_client.h"
@@ -32,10 +36,6 @@ THE SOFTWARE.
 
 #include "consul_interface.h"
 #include "service.h"
-
-#include <string>
-#include <string.h>
-#include <vector>
 
 // Consul Admin
 
@@ -58,8 +58,8 @@ class ConsulAdmin: public ConsulInterface {
   inline static bool is_base64(unsigned char c) {
     return (isalnum(c) || (c == '+') || (c == '/'));
   }
- public:
 
+ public:
   std::string base64_decode(std::string const& encoded_string);
   AOSSL::StringBuffer* base64_decode_safe(std::string const& encoded_string);
 
@@ -129,7 +129,8 @@ class ConsulAdmin: public ConsulInterface {
 
   // Query the catalog for the services provided by a particular node
   std::string services_node(std::string node, std::string data_center);
-  AOSSL::StringBuffer* services_node_safe(std::string node, std::string data_center);
+  AOSSL::StringBuffer* \
+    services_node_safe(std::string node, std::string data_center);
 };
 
 #endif  // AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_

@@ -60,11 +60,13 @@ Logger::Logger(std::string initFileName) {
 // Create the needed categories and setup default levels
 Logger::Logger(std::string logFile, int logLevel) {
   // Set up the appender for writing to stdout
-  log4cpp::Appender *appender1 = new log4cpp::OstreamAppender("console", &std::cout);
+  log4cpp::Appender *appender1 = \
+    new log4cpp::OstreamAppender("console", &std::cout);
   appender1->setLayout(new log4cpp::BasicLayout());
 
   // Set up the file appender
-  log4cpp::Appender *appender2 = new log4cpp::FileAppender("default", logFile.c_str());
+  log4cpp::Appender *appender2 = \
+    new log4cpp::FileAppender("default", logFile.c_str());
   appender2->setLayout(new log4cpp::BasicLayout());
 
   // Set up the root logging category

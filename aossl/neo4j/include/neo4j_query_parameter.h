@@ -25,11 +25,11 @@ THE SOFTWARE.
 #ifndef AOSSL_NEO4J_INCLUDE_NEO4J_QUERY_PARAMETER_H_
 #define AOSSL_NEO4J_INCLUDE_NEO4J_QUERY_PARAMETER_H_
 
-#include <cstdlib>
 #include <stdio.h>
 #include <errno.h>
-#include <cstring>
 #include <neo4j-client.h>
+#include <cstring>
+#include <cstdlib>
 #include <string>
 #include <exception>
 #include <vector>

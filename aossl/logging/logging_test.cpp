@@ -22,10 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <string.h>
+#include <string>
+
 #include "include/factory_logging.h"
 #include "include/logging_interface.h"
-#include <string>
-#include <string.h>
 
 void test_func(std::string msg) {
   logging->error(msg);
