@@ -67,6 +67,21 @@
  *
  * We can then access the results as above through the iterator.
  *
+ * We can also supply a list of query parameters of the same type.
+ *
+ *     std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params;
+ *     Neo4jQueryParameterInterface* list_param = neo4j_factory.get_neo4j_query_parameter();
+ *     name_param->add_value(1);
+ *     name_param->add_value(2);
+ *     query_params.emplace("inp_list", list_param);
+ *
+ * We run the query in the same way as above, but the parameter will be inserted wrapped in '[]'.  For example, this:
+ *
+ *     std::string query = "MATCH (you:Person) WHERE you.list = {inp_list} RETURN you"
+ *     ResultsIteratorInterface *results = neo->execute(query, query_params);
+ *
+ * Will execute the query: 'MATCH (you:Person) WHERE you.list = [1,2] RETURN you'.
+ *
  * ## Paths
  *
  * Certain queries return path objects instead of nodes and edges:
