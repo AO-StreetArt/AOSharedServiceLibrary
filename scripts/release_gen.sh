@@ -50,7 +50,7 @@ cp LICENSE.txt ../$RELEASE_NAME
 cp CODE_OF_CONDUCT.md ../$RELEASE_NAME
 
 #Library files
-cp -r aossl/ ../$RELEASE_NAME/aossl
+cp -r aossl/ ../$RELEASE_NAME/
 
 #Examples
 cp examples/hello_world/* ../$RELEASE_NAME/examples/hello_world

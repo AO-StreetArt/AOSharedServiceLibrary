@@ -18,7 +18,7 @@ if [ "$#" -ne 1 ]; then
     printf "Attempting to install core library"
 
     # Install the library
-    cd ../ && sudo make -f make_install_release
+    cd ../ && sudo make -f install
 
     printf "Finished installing AOSSL"
   fi
