@@ -368,44 +368,51 @@ int path_test() {
   std::string setup_query2 = \
     "MATCH (base:CoordinateSystem {name: '1'}) "
     "CREATE (base)-[transform:Transform {matrix: [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}]->(next:CoordinateSystem {name: '2', list: [10, 11, 12]}) "
-    "RETURN base, transform, next";
+    "RETURN next";
   std::string setup_query3 = \
     "MATCH (base:CoordinateSystem {name: '1'})-[transform:Transform]->(next:CoordinateSystem {name: '2'}) "
     "CREATE (next)-[nexttransform:Transform {matrix: [1,1,0,1,0,1,0,1,1,0,1,1,0,0,0,1]}]->(final:CoordinateSystem {name: '3', list: [1, 2, 3]}) "
-    "RETURN base, transform, next, nexttransform, final";
+    "RETURN final";
 
-  ResultsIteratorInterface *results = NULL;
-  results = neo->execute(setup_query1);
-  if (!results) return -1;
-  ResultTreeInterface* setup_result1 = results->next();
+  ResultsIteratorInterface *setup_results1 = NULL;
+  ResultsIteratorInterface *setup_results2 = NULL;
+  ResultsIteratorInterface *setup_results3 = NULL;
+
+  setup_results1 = neo->execute(setup_query1);
+  if (!setup_results1) return -1;
+  ResultTreeInterface* setup_result1 = setup_results1->next();
   if (!setup_result1) assert(false);
+  DbObjectInterface* first_obj = setup_result1->get(0);
+  assert(first_obj->is_node());
+  delete first_obj;
   delete setup_result1;
-  setup_result1 = NULL;
-  delete results;
-  results = NULL;
-  results = neo->execute(setup_query2);
-  if (!results) return -1;
-  ResultTreeInterface* setup_result2 = results->next();
+  delete setup_results1;
+
+  setup_results2 = neo->execute(setup_query2);
+  if (!setup_results2) return -1;
+  ResultTreeInterface* setup_result2 = setup_results2->next();
   if (!setup_result2) assert(false);
+  DbObjectInterface* second_obj = setup_result2->get(0);
+  assert(second_obj->is_node());
+  delete second_obj;
   delete setup_result2;
-  setup_result2 = NULL;
-  delete results;
-  results = NULL;
-  results = neo->execute(setup_query2);
-  if (!results) return -1;
-  ResultTreeInterface* setup_result3 = results->next();
+  delete setup_results2;
+
+  setup_results3 = neo->execute(setup_query2);
+  if (!setup_results3) return -1;
+  ResultTreeInterface* setup_result3 = setup_results3->next();
   if (!setup_result3) assert(false);
+  DbObjectInterface* third_obj = setup_result3->get(0);
+  assert(third_obj->is_node());
+  delete third_obj;
   delete setup_result3;
-  setup_result3 = NULL;
-  delete results;
-  results = NULL;
-  sleep(2);
+  delete setup_results3;
 
   // Actual Path Tests
   std::cout << "Query Execution" << std::endl;
   std::string query = \
     "MATCH (base:CoordinateSystem {name:'1'}), (next:CoordinateSystem {name:'3'}), p = shortestPath((base)-[r*]-(next)) RETURN p";
-  results = neo->execute(query);
+  ResultsIteratorInterface *results = neo->execute(query);
   if (!results) return -1;
 
   // Access the results

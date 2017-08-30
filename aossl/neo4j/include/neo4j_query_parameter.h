@@ -115,7 +115,7 @@ class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
     str_values.clear();
     int_values.clear();
     double_values.clear();
-    for (int i = 0; i < cstr_values.size(); i++) {
+    for (unsigned int i = 0; i < cstr_values.size(); i++) {
       delete[] cstr_values[i];
     }
   }
@@ -255,7 +255,7 @@ class Neo4jQueryParameter: public Neo4jQueryParameterInterface {
     // Vector prior to starting
     if (val_type == _STR_TYPE) {
       cstr_values.reserve(size());
-      for (int i = 0; i < size(); i++) {
+      for (unsigned int i = 0; i < size(); i++) {
         int cstr_size = get_string_value(i).size();
         char * cstr_val = new char[cstr_size+1];
         std::strcpy(cstr_val, get_string_value(i).c_str());

@@ -79,9 +79,6 @@ ResultsIteratorInterface* Neo4jAdmin::execute(const char * query, \
       // We have an array parameter
       // Insert the element into the map entry
       map_values[i] = val->get_neo4j_list();
-      char buf[128] = "";
-      neo4j_tostring(map_values[i], buf, 128);
-      std::cout << buf << std::endl;
     } else {
       // We have single value parameter, and just need to determine the type
       if (val_type == _BOOL_TYPE) {
