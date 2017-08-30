@@ -367,11 +367,16 @@ int path_test() {
     "CREATE (base:CoordinateSystem {name: '1', list: [7, 8, 9]}) RETURN base";
   std::string setup_query2 = \
     "MATCH (base:CoordinateSystem {name: '1'}) "
-    "CREATE (base)-[transform:Transform {matrix: [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}]->(next:CoordinateSystem {name: '2', list: [10, 11, 12]}) "
+    "CREATE (base)-[transform:Transform {matrix: "
+    "[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]}]->(next:CoordinateSystem "
+    "{name: '2', list: [10, 11, 12]}) "
     "RETURN next";
   std::string setup_query3 = \
-    "MATCH (base:CoordinateSystem {name: '1'})-[transform:Transform]->(next:CoordinateSystem {name: '2'}) "
-    "CREATE (next)-[nexttransform:Transform {matrix: [1,1,0,1,0,1,0,1,1,0,1,1,0,0,0,1]}]->(final:CoordinateSystem {name: '3', list: [1, 2, 3]}) "
+    "MATCH (base:CoordinateSystem {name: "
+    "'1'})-[transform:Transform]->(next:CoordinateSystem {name: '2'}) "
+    "CREATE (next)-[nexttransform:Transform {matrix: "
+    "[1,1,0,1,0,1,0,1,1,0,1,1,0,0,0,1]}]->(final:CoordinateSystem "
+    "{name: '3', list: [1, 2, 3]}) "
     "RETURN final";
 
   ResultsIteratorInterface *setup_results1 = NULL;
@@ -411,7 +416,8 @@ int path_test() {
   // Actual Path Tests
   std::cout << "Query Execution" << std::endl;
   std::string query = \
-    "MATCH (base:CoordinateSystem {name:'1'}), (next:CoordinateSystem {name:'3'}), p = shortestPath((base)-[r*]-(next)) RETURN p";
+    "MATCH (base:CoordinateSystem {name:'1'}), (next:CoordinateSystem "
+    "{name:'3'}), p = shortestPath((base)-[r*]-(next)) RETURN p";
   ResultsIteratorInterface *results = neo->execute(query);
   if (!results) return -1;
 

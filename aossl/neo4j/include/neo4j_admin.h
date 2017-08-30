@@ -63,9 +63,11 @@ class Neo4jAdmin: public Neo4jInterface {
   ResultsIterator* execute(const char * query);
   ResultsIterator* execute(std::string query) {return execute(query.c_str());}
   ResultsIteratorInterface* execute(const char * query, \
-    std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params);
+    std::unordered_map<std::string, \
+    Neo4jQueryParameterInterface*> query_params);
   ResultsIteratorInterface* execute(std::string query, \
-    std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params) {
+    std::unordered_map<std::string, \
+    Neo4jQueryParameterInterface*> query_params) {
     return execute(query.c_str(), query_params);
   }
 };

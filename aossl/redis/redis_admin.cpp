@@ -117,7 +117,7 @@ RedisSession* RedisConnectionPool::get_connection() {
 
         if (rs.connection == NULL || rs.connection->err) {
           if (rs.connection == NULL) {
-            throw RedisConnectionException("Error: Cannot Create Redis Instance");
+            throw RedisConnectionException("Error: Cannot Start Redis");
           } else if (rs.connection->err) {
             std::string err_msg(rs.connection->errstr);
             err_msg = "Error:" + err_msg;

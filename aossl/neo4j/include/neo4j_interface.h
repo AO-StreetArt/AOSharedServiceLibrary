@@ -25,10 +25,10 @@ THE SOFTWARE.
 #ifndef AOSSL_NEO4J_INCLUDE_NEO4J_INTERFACE_H_
 #define AOSSL_NEO4J_INCLUDE_NEO4J_INTERFACE_H_
 
+#include <neo4j-client.h>
 #include <string>
 #include <unordered_map>
 #include <exception>
-#include <neo4j-client.h>
 
 #include "aossl/core/include/slot_pool.h"
 

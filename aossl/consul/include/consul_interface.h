@@ -22,20 +22,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef CONSUL_INTERFACE
-#define CONSUL_INTERFACE
+#ifndef AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_
+#define AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_
 
-#include <string>
 #include <string.h>
+#include <string>
 #include <vector>
 
 #include "aossl/core/include/buffers.h"
 
-//-----------------------------Health Checks----------------------------------//
+// ----------------------------Health Checks----------------------------------//
 
 //! A struct to hold health check information which can be added to a service
-struct HealthCheck
-{
+struct HealthCheck {
   //! The script to run for the health check
   std::string script;
 
@@ -43,16 +42,14 @@ struct HealthCheck
   std::string interval;
 };
 
-//--------------------------------Service-------------------------------------//
+// -------------------------------Service-------------------------------------//
 
-//! A Service class which can be registered with Consul for each instance of a particular service
+//! A Service class which can be registered with Consul for each app instance
 
 //! An instance of this class can be instantiated by a service and is
 //! passed to the consul admin to register and de-register
-class ServiceInterface
-{
-public:
-
+class ServiceInterface {
+ public:
   virtual ~ServiceInterface() {}
   //! Convert the Service into a JSON Message
 
@@ -99,17 +96,16 @@ public:
   virtual void set_check(std::string scr, int interval_seconds) = 0;
 };
 
-//------------------------------Consul Admin-----------------------------------//
+// ----------------------------Consul Admin-----------------------------------//
 
-//! The Consul Administrator, who handles distributed configuration & service discovery
+//! The Consul Administrator, who handles configuration & service discovery
 
-//! This relies on the HTTP Administrator, and takes in a Service object in order to
-//! register.  It's responses are JSON strings that are recieved from Consul.
-//! Note that the values returned from the Key-Value store will be stored in base64 format
-class ConsulInterface
-{
-public:
-
+//! This relies on the HTTP Administrator, and takes in a Service object
+//! in order to register.  It's responses are JSON strings that are recieved
+//! from Consul.  Note that the values returned from the Key-Value store
+//! will be stored in base64 format
+class ConsulInterface {
+ public:
   //! Convinience Method for base64 decoding
 
   //! \deprecated Will be removed in v2.0.
@@ -129,11 +125,12 @@ public:
   /*!
     \param encoded_string The string to decode
   */
-  virtual AOSSL::StringBuffer* base64_decode_safe(std::string const& encoded_string) = 0;
+  virtual AOSSL::StringBuffer* \
+    base64_decode_safe(std::string const& encoded_string) = 0;
 
   virtual ~ConsulInterface() {}
 
-  //------------------Service Registry Functions------------------------------//
+  // -----------------Service Registry Functions------------------------------//
 
   //! Register the Service
   /*!
@@ -147,7 +144,7 @@ public:
   */
   virtual bool deregister_service(const ServiceInterface& s) = 0;
 
-  //-------------Configuration Key-Value Storage Functions--------------------//
+  // ------------Configuration Key-Value Storage Functions--------------------//
 
   //! Set a configuration value.
 
@@ -177,10 +174,10 @@ public:
   //! Delete a configuration value
   virtual bool del_config_value(std::string key) = 0;
 
-  //Basic Queries
-  //All Return a JSON string
+  // Basic Queries
+  // All Return a JSON string
 
-  //Local Agent Queries
+  // Local Agent Queries
 
   //! Query the local agent for services registered
 
@@ -209,7 +206,7 @@ public:
   //! Query for healthy services only
   virtual AOSSL::StringBuffer* healthy_services_safe() = 0;
 
-  //Catalog Queries
+  // Catalog Queries
 
   //! Query the catalog for datacenters
 
@@ -269,15 +266,16 @@ public:
 
   //! \deprecated Will be removed in
   //! v2.0
-  virtual std::string services_node(std::string node, std::string data_center) = 0;
+  virtual std::string \
+    services_node(std::string node, std::string data_center) = 0;
 
   //! Query the catalog for the services provided by a particular node
   /*!
     \param node The string identifier for the node to query
-    \param data_center The string identifier for the data center which holds the desired node
+    \param data_center The string id for the data center which holds the node
   */
-  virtual AOSSL::StringBuffer* services_node_safe(std::string node, std::string data_center) = 0;
-
+  virtual AOSSL::StringBuffer* \
+    services_node_safe(std::string node, std::string data_center) = 0;
 };
 
-#endif
+#endif  // AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_

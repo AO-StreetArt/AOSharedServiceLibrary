@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_CORE_BUFFERS_H_
-#define AOSSL_CORE_BUFFERS_H_
+#ifndef AOSSL_CORE_INCLUDE_BUFFERS_H_
+#define AOSSL_CORE_INCLUDE_BUFFERS_H_
 
 #include <string>
 
@@ -47,5 +47,5 @@ struct KvBuffer: public StringBuffer {
   std::string key;
 };
 
-}
-#endif  // AOSSL_CORE_BUFFERS_H_
+}  // namespace AOSSL
+#endif  // AOSSL_CORE_INCLUDE_BUFFERS_H_

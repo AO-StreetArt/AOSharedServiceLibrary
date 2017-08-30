@@ -347,7 +347,8 @@ MongoSession* MongoConnectionPool::get_connection() {
         ms.connection = mongoc_client_new(conn_cstr);
         connections.push_back(ms);
       }
-      current_max_connection = current_max_connection + connection_creation_batch;
+      current_max_connection = \
+        current_max_connection + connection_creation_batch;
     }
   }
 

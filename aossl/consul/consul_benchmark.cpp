@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <assert.h>
 #include <hayai/hayai.hpp>
 #include <string>
 #include <vector>
@@ -29,7 +30,6 @@ THE SOFTWARE.
 #include <sstream>
 #include <fstream>
 #include <cstdlib>
-#include <assert.h>
 
 #include "include/consul_interface.h"
 #include "include/factory_consul.h"

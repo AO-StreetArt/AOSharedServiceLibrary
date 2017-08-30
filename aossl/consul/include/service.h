@@ -25,12 +25,12 @@ THE SOFTWARE.
 #ifndef AOSSL_CONSUL_INCLUDE_SERVICE_H_
 #define AOSSL_CONSUL_INCLUDE_SERVICE_H_
 
-#include "consul_interface.h"
-#include <string>
 #include <string.h>
+#include <string>
 #include <vector>
+#include "consul_interface.h"
 
-//! A Service class which can be registered with Consul for each instance of a particular service
+//! A Service class which can be registered with Consul for each app instance
 
 //! An instance of this class can be instantiated by a service and is
 //! passed to the consul admin to register and de-register

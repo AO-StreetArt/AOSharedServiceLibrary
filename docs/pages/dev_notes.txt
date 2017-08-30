@@ -6,7 +6,7 @@
  *
  * ## Generating Releases
  *
- * The release_gen.sh script is utilized to generate releases for various systems.
+ * The release_gen.sh script is utilized to generate releases for various systems.  It is run from within the scripts folder.
  * It accepts three command line arguments:
  * - the name of the release: aossl-*os_name*-*os_version*
  * - the version of the release: we follow [semantic versioning](http://semver.org/)

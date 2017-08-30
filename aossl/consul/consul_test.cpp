@@ -24,13 +24,13 @@ THE SOFTWARE.
 
 // Consul Admin Tests
 
+#include <string.h>
+#include <assert.h>
+#include <string>
+#include <iostream>
 #include "include/factory_consul.h"
 #include "include/consul_interface.h"
 #include "aossl/core/include/buffers.h"
-#include <string>
-#include <string.h>
-#include <assert.h>
-#include <iostream>
 
 int main() {
   ConsulComponentFactory consul_factory;

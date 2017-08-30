@@ -28,6 +28,7 @@ THE SOFTWARE.
 #include <sstream>
 #include <fstream>
 #include <cstdlib>
+#include <string>
 
 #include "include/zmq_interface.h"
 #include "include/factory_zmq.h"
