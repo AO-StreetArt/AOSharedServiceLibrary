@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 
 #include <assert.h>
+#include <unistd.h>
 #include <string>
 #include <unordered_map>
 #include <iostream>
@@ -398,6 +399,7 @@ int path_test() {
   setup_result3 = NULL;
   delete results;
   results = NULL;
+  sleep(2);
 
   // Actual Path Tests
   std::cout << "Query Execution" << std::endl;
