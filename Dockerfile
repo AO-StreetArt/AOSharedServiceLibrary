@@ -28,7 +28,7 @@ RUN apt-get install -y build-essential libtool pkg-config autoconf automake cmak
 RUN git clone https://github.com/nickbruun/hayai.git
 RUN cd hayai && cmake . && make && make install
 
-#Run ldconfig to ensure that ZMQ is on the linker path
+#Run ldconfig to ensure that Hayai is on the linker path
 RUN ldconfig
 
 #Get the ZMQ C++ Bindings
