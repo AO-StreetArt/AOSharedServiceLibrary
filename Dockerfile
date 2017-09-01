@@ -5,8 +5,8 @@
 
 ################################################################
 
-#Based on Ubuntu 14.04
-FROM ubuntu:14.04
+#Based on Ubuntu 16.04
+FROM ubuntu:16.04
 
 #Set the Maintainer
 MAINTAINER Alex Barry
@@ -14,26 +14,16 @@ MAINTAINER Alex Barry
 #Set up front end
 ENV DEBIAN_FRONTEND noninteractive
 
-#Ensure that base level build requirements are satisfied
+#Setup basic environment tools
 RUN apt-get update
 RUN	apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ssh
 RUN	apt-get clean
 
-#Build the dependencies and place them in the correct places
-RUN apt-get update
-
-#Ensure that specific build requirements are satisfied
-RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git software-properties-common
-
-#Get the Neo4j dependencies
-
+#Setup necessary components for building the library
+RUN apt-add-repository -y ppa:bruun/hayai
 RUN add-apt-repository -y ppa:cleishm/neo4j
 RUN apt-get update
-RUN apt-get install -y neo4j-client
-
-#Get the Redis Dependencies
-RUN git clone https://github.com/redis/hiredis.git ./hiredis
-RUN cd ./hiredis && make && make install
+RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git software-properties-common libsnappy-dev liblog4cpp5-dev libhayai-dev neo4j-client
 
 #Get the Mongo Dependencies
 RUN git clone https://github.com/mongodb/mongo-c-driver.git
@@ -59,15 +49,6 @@ RUN git clone https://github.com/zeromq/cppzmq.git
 #Get ZMQ C++ Header files into include path
 RUN cp cppzmq/zmq.hpp /usr/local/include
 RUN cp cppzmq/zmq_addon.hpp /usr/local/include
-
-#hayai, for compiling benchmarks
-RUN apt-add-repository -y ppa:bruun/hayai
-
-#Update the apt-get cache
-RUN apt-get update
-
-#Install the dependencies
-RUN apt-get install -y build-essential liblog4cpp5-dev libhayai-dev
 
 #Expose some of the default ports
 EXPOSE 22
