@@ -30,6 +30,7 @@ RUN tar xzf mongo-c-driver-1.6.3.tar.gz
 RUN cd mongo-c-driver-1.6.3 && ./configure --disable-automatic-init-and-cleanup --with-libbson=bundled && make && make install
 
 #Build & Install ZMQ
+RUN wget https://github.com/zeromq/zeromq4-1/releases/download/v4.1.4/zeromq-4.1.4.tar.gz
 RUN tar -xvzf zeromq-4.1.4.tar.gz
 RUN cd ./zeromq-4.1.4 && ./configure --without-libsodium && make && make install
 
