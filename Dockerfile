@@ -22,12 +22,16 @@ RUN	apt-get clean
 #Setup necessary components for building the library
 RUN add-apt-repository -y ppa:cleishm/neo4j
 RUN apt-get update
-RUN apt-get install -y build-essential libtool pkg-config autoconf automake cmake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libsnappy-dev liblog4cpp5-dev neo4j-client libneo4j-client-dev libzmq-dev
+RUN apt-get install -y build-essential libtool pkg-config autoconf automake cmake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libsnappy-dev liblog4cpp5-dev neo4j-client libneo4j-client-dev
 
 #Get the Mongo Dependencies, we build from source as the version provided by apt-get uses deprecated functions
 RUN wget https://github.com/mongodb/mongo-c-driver/releases/download/1.6.3/mongo-c-driver-1.6.3.tar.gz
 RUN tar xzf mongo-c-driver-1.6.3.tar.gz
 RUN cd mongo-c-driver-1.6.3 && ./configure --disable-automatic-init-and-cleanup --with-libbson=bundled && make && make install
+
+#Build & Install ZMQ
+RUN tar -xvzf zeromq-4.1.4.tar.gz
+RUN cd ./zeromq-4.1.4 && ./configure --without-libsodium && make && make install
 
 #Get Hayai, for benchmarks
 RUN git clone https://github.com/nickbruun/hayai.git
