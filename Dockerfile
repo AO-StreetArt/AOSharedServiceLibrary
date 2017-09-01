@@ -22,7 +22,7 @@ RUN	apt-get clean
 #Setup necessary components for building the library
 RUN add-apt-repository -y ppa:cleishm/neo4j
 RUN apt-get update
-RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libsnappy-dev liblog4cpp5-dev neo4j-client libmongoc-dev libbson-dev libzmq-dev
+RUN apt-get install -y build-essential libtool pkg-config autoconf automake cmake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libsnappy-dev liblog4cpp5-dev neo4j-client libmongoc-dev libbson-dev libzmq-dev
 
 #Get Hayai, for benchmarks
 RUN git clone https://github.com/nickbruun/hayai.git
