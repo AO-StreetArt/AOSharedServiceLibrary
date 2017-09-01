@@ -16,14 +16,14 @@ ENV DEBIAN_FRONTEND noninteractive
 
 #Setup basic environment tools
 RUN apt-get update
-RUN	apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ssh
+RUN	apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ssh software-properties-common
 RUN	apt-get clean
 
 #Setup necessary components for building the library
 RUN apt-add-repository -y ppa:bruun/hayai
 RUN add-apt-repository -y ppa:cleishm/neo4j
 RUN apt-get update
-RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git software-properties-common libsnappy-dev liblog4cpp5-dev libhayai-dev neo4j-client
+RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libsnappy-dev liblog4cpp5-dev libhayai-dev neo4j-client
 
 #Get the Mongo Dependencies
 RUN git clone https://github.com/mongodb/mongo-c-driver.git
