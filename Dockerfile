@@ -20,10 +20,9 @@ RUN	apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ss
 RUN	apt-get clean
 
 #Setup necessary components for building the library
-RUN apt-add-repository -y ppa:bruun/hayai
 RUN add-apt-repository -y ppa:cleishm/neo4j
 RUN apt-get update
-RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libsnappy-dev liblog4cpp5-dev libhayai-dev neo4j-client
+RUN apt-get install -y build-essential libtool pkg-config autoconf automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libsnappy-dev liblog4cpp5-dev neo4j-client
 
 #Get the Mongo Dependencies
 RUN git clone https://github.com/mongodb/mongo-c-driver.git
@@ -39,6 +38,10 @@ RUN tar -xvzf zeromq-4.1.4.tar.gz
 
 #Configure, make, & install
 RUN cd ./zeromq-4.1.4 && ./configure --without-libsodium && make && make install
+
+#Get Hayai, for benchmarks
+RUN git clone https://github.com/nickbruun/hayai.git
+RUN cd hayai && cmake . && make && make install
 
 #Run ldconfig to ensure that ZMQ is on the linker path
 RUN ldconfig
