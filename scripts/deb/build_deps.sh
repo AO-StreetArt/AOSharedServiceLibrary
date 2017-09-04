@@ -7,44 +7,28 @@ printf "Creating Dependency Folder"
 PRE=./downloads
 mkdir $PRE
 
-printf "Calling apt-get update"
+printf "apt-get setup"
 
-#Add a repository for the lastest version of autoconf
+#Install latest version of autoconf
 #Fix for Travis CI Builds which don't have latest version installed
 sudo add-apt-repository ppa:dns/gnu -y
+sudo apt-get -y -q update
+sudo apt-get install -y --only-upgrade autoconf
+
+#Install the basic tools we need
+sudo apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ssh software-properties-common
 
 #Add libneo4j repository
 sudo add-apt-repository ppa:cleishm/neo4j -y
-
-#Update the Ubuntu Server
 sudo apt-get -y -q update
 
-#Build the dependencies and place them in the correct places
-
-printf "Addressing pre-build requirements"
-
-sudo apt-get install --only-upgrade autoconf
-
-#Ensure that specific build requirements are satisfied
-sudo apt-get -y -q install build-essential libtool pkg-config automake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev libssl-dev autoconf cmake make git wget neo4j-client libneo4j-client-dev
+printf "Starting with apt-get dependencies"
+sudo apt-get -y -q install build-essential libtool pkg-config automake cmake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libsnappy-dev liblog4cpp5-dev libssl-dev openssl neo4j-client libneo4j-client-dev
 
 printf "Building Mongo C Driver"
-wget https://github.com/mongodb/mongo-c-driver/releases/download/1.6.0/mongo-c-driver-1.6.0.tar.gz
-tar xzf mongo-c-driver-1.6.0.tar.gz
-cd mongo-c-driver-1.6.0 && ./configure --disable-automatic-init-and-cleanup && make && sudo make install
-
-#Determine if we Need XRedis
-if [ ! -d /usr/local/include/hiredis ]; then
-
-  printf "Building HiRedis"
-
-  mkdir $PRE/hiredis
-  git clone https://github.com/redis/hiredis.git $PRE/hiredis
-
-  cd $PRE/hiredis && make && sudo make install
-  cd ../../
-
-fi
+wget https://github.com/mongodb/mongo-c-driver/releases/download/1.6.3/mongo-c-driver-1.6.3.tar.gz
+tar xzf mongo-c-driver-1.6.3.tar.gz
+cd mongo-c-driver-1.6.3 && ./configure --disable-automatic-init-and-cleanup --with-libbson=bundled && make && sudo make install
 
 if [ ! -f /usr/local/include/zmq.h ]; then
 
@@ -66,9 +50,6 @@ if [ ! -f /usr/local/include/zmq.h ]; then
 
 fi
 
-#Run ldconfig to ensure that all built libraries are on the linker path
-sudo ldconfig
-
 if [ ! -f /usr/local/include/zmq.hpp ]; then
 
   printf "Cloning ZMQ C++ Bindings"
@@ -83,19 +64,10 @@ if [ ! -f /usr/local/include/zmq.hpp ]; then
 fi
 
 printf "Building Hayai, optional, for benchmarks"
+git clone https://github.com/nickbruun/hayai.git
+cd hayai && cmake . && make && sudo make install
 
-#Install hayai, for compiling benchmarks
-mkdir $PRE/hayai
-git clone https://github.com/nickbruun/hayai.git ./$PRE/hayai
-cd ./$PRE/hayai && cmake . && make && sudo make install
-cd ../../
-
-printf "Update cache and install final dependencies through apt-get"
-
-#Update the apt-get cache
-sudo apt-get -y update
-
-#Install the dependencies
-sudo apt-get -y install liblog4cpp5-dev
+#Run ldconfig to ensure that all built libraries are on the linker path
+sudo ldconfig
 
 printf "Finished installing dependencies"
