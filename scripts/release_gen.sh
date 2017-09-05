@@ -30,8 +30,6 @@ mkdir ../$RELEASE_NAME/deps
 mkdir ../$RELEASE_NAME/examples
 mkdir ../$RELEASE_NAME/examples/hello_world
 mkdir ../$RELEASE_NAME/aossl
-mkdir ../$RELEASE_NAME/aossl/include
-mkdir ../$RELEASE_NAME/aossl/include/factory
 mkdir ../$RELEASE_NAME/licenses
 
 #Copy the dependency licenses into the licenses folder
@@ -52,7 +50,7 @@ cp LICENSE.txt ../$RELEASE_NAME
 cp CODE_OF_CONDUCT.md ../$RELEASE_NAME
 
 #Library files
-cp -r aossl/ ../$RELEASE_NAME/aossl
+cp -r aossl/ ../$RELEASE_NAME/
 
 #Examples
 cp examples/hello_world/* ../$RELEASE_NAME/examples/hello_world

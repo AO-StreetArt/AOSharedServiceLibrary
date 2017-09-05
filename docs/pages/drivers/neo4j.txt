@@ -71,8 +71,8 @@
  *
  *     std::unordered_map<std::string, Neo4jQueryParameterInterface*> query_params;
  *     Neo4jQueryParameterInterface* list_param = neo4j_factory.get_neo4j_query_parameter();
- *     name_param->add_value(1);
- *     name_param->add_value(2);
+ *     list_param->add_value(1);
+ *     list_param->add_value(2);
  *     query_params.emplace("inp_list", list_param);
  *
  * We run the query in the same way as above, but the parameter will be inserted wrapped in '[]'.  For example, this:
