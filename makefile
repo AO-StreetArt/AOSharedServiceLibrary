@@ -28,7 +28,8 @@ OBJS = aossl/commandline/cli.o aossl/logging/logging.o aossl/http/client/http_ad
 # you can name this target entry anything, but "default" or "all"
 # are the most commonly used names by convention
 #
-default: libaossl.a
+default: make_subfolders
+	$(SLC) libaossl.a $(OBJS)
 
 # typing 'make docs' will build the html and latex documentation
 docs:
@@ -83,7 +84,7 @@ uninstall:
 # To create the static library we need the object files
 # Using $@ gives us the current target
 #
-libaossl.a:  make_subfolders
+libaossl.a:
 	$(SLC) $@ $(OBJS)
 
 make_subfolders:
