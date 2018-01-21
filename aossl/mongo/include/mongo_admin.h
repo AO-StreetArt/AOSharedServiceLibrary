@@ -58,7 +58,7 @@ class MongoConnectionPool {
   AOSSL::SlotPool *slot_pool = NULL;
   // Internal integers
   int connection_limit = 1;
-  int start_connections = 1;
+  int start_connections = 0;
   int current_max_connection = 1;
   int connection_creation_batch = 1;
   std::string connection_string;
