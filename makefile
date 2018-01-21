@@ -81,11 +81,5 @@ uninstall:
 	$(RM) -r $(INSTALL_DIR)
 	$(RM) $(INSTALL_LIB_DIR)/libaossl.a
 
-# To create the static library we need the object files
-# Using $@ gives us the current target
-#
-libaossl.a:
-	$(SLC) $@ $(OBJS)
-
 make_subfolders:
 	cd aossl && $(MAKE)
