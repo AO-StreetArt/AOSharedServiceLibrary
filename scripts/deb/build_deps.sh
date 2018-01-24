@@ -4,20 +4,21 @@ set -e
 
 #Based on Ubuntu 14.04 LTS
 
-printf "Creating Dependency Folder"
+printf "Creating Dependency Folder\n"
 PRE=./downloads
 mkdir $PRE
 
-printf "apt-get setup"
-
-#Install latest version of autoconf
-#Fix for Travis CI Builds which don't have latest version installed
-add-apt-repository ppa:dns/gnu -y
-apt-get -y -q update
-apt-get install -y --only-upgrade autoconf
+printf "apt-get setup\n"
+apt-get -y update
 
 #Install the basic tools we need
 apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ssh software-properties-common
+
+#Install latest version of autoconf
+#Fix for Travis CI Builds which don't have latest version installed
+# add-apt-repository ppa:dns/gnu -y
+# apt-get -y -q update
+# apt-get install -y --only-upgrade autoconf
 
 #Add libneo4j repository
 add-apt-repository ppa:cleishm/neo4j -y
