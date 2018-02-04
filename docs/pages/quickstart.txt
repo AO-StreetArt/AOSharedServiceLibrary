@@ -107,7 +107,21 @@
  *     sudo ./build_deps.sh
  *
  * ##### CentOS 7/Redhat Enterprise Linux 7
- * The build_deps.sh script should allow for automatic resolution of dependencies.  Run the following commands from within the main folder
+ * The build_deps.sh script should allow for automatic resolution of dependencies.
+ *
+ * Before using the script, you will need to ensure that you have gcc version 5 or greater installed (By default, CentOS comes with gcc 4.8):
+ *
+ *     gcc --version
+ *
+ * If you do not see version 5 or above, you can likely use the devtoolset to get the latest one:
+ *
+ *     sudo yum install centos-release-scl
+ *     sudo yum install devtoolset-7-gcc*
+ *     scl enable devtoolset-7 bash
+ *     which gcc
+ *     gcc --version
+ *
+ * Then, run the following commands from within the main folder to resolve the other dependencies
  *
  *     mkdir ../aossl_deps
  *
