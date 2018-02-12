@@ -25,9 +25,11 @@ THE SOFTWARE.
 #include "include/neo4j_admin.h"
 
   // Start the admin
-void Neo4jAdmin::initialize(const char * conn_str, bool secure, int pool_size) {
+void Neo4jAdmin::initialize(const char * conn_str, bool secure, int pool_size, \
+  int pool_start_size, int pool_batch_size) {
   // Initialize the Neo4j Database pool
-  pool = new Neo4jConnectionPool(pool_size, conn_str, secure, 1, 1);
+  pool = new Neo4jConnectionPool(pool_size, conn_str, secure, \
+    pool_start_size, pool_batch_size);
 }
 
 // Execute a query and return the results in an iterator

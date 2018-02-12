@@ -42,24 +42,35 @@ THE SOFTWARE.
 // Neo4j Admin
 class Neo4jAdmin: public Neo4jInterface {
   Neo4jConnectionPool *pool = NULL;
-  void initialize(const char * conn_str, bool secure, int conn_pool_size);
+  void initialize(const char * conn_str, bool secure, int conn_pool_size, int pool_start_size, int pool_batch_size);
 
  public:
+   // Initializers
+   inline Neo4jAdmin(const char * conn_str, bool secure, int pool_size, \
+     int pstart_size, int pbatch_size) {
+     initialize(conn_str, secure, pool_size, pstart_size, pbatch_size);
+   }
+   inline Neo4jAdmin(std::string conn_str, bool secure, int pool_size, \
+     int pstart_size, int pbatch_size) {
+     initialize(conn_str.c_str(), secure, pool_size, pstart_size, pbatch_size);
+   }
   inline Neo4jAdmin(const char * conn_str, bool secure, int pool_size) {
-    initialize(conn_str, secure, pool_size);
+    initialize(conn_str, secure, pool_size, 0, 1);
   }
   inline Neo4jAdmin(std::string conn_str, bool secure, int pool_size) {
-    initialize(conn_str.c_str(), secure, pool_size);
+    initialize(conn_str.c_str(), secure, pool_size, 0, 1);
   }
   inline Neo4jAdmin(const char * conn_str, bool secure) {
-    initialize(conn_str, secure, 5);
+    initialize(conn_str, secure, 5, 0, 1);
   }
   inline Neo4jAdmin(std::string conn_str, bool secure) {
-    initialize(conn_str.c_str(), secure, 5);
+    initialize(conn_str.c_str(), secure, 5, 0, 1);
   }
-  Neo4jAdmin(const char * conn_str) {initialize(conn_str, false, 5);}
-  Neo4jAdmin(std::string conn_str) {initialize(conn_str.c_str(), false, 5);}
+  Neo4jAdmin(const char * conn_str) {initialize(conn_str, false, 5, 0, 1);}
+  Neo4jAdmin(std::string conn_str) {initialize(conn_str.c_str(), false, 5, 0, 1);}
+  // Destructors
   ~Neo4jAdmin() {if (pool) {delete pool;}}
+  // Query methods
   ResultsIterator* execute(const char * query);
   ResultsIterator* execute(std::string query) {return execute(query.c_str());}
   ResultsIteratorInterface* execute(const char * query, \

@@ -80,7 +80,7 @@ void RedisConnectionPool::init_connections(const char * conn_str, \
 
     connections.push_back(rs);
   }
-  current_max_connection = start_connections;
+  current_max_connection = start_connections - 1;
 }
 
 // Clean up the connection pool
@@ -152,14 +152,16 @@ void RedisConnectionPool::release_connection(RedisSession *conn) {
 // Redis Admin
 
 void RedisAdmin::init(std::string hostname, std::string passwd, int port, \
-  int timeout_seconds, int timeout_microseconds, int pool_size) {
+  int timeout_seconds, int timeout_microseconds, int pool_size, \
+  int pstart_size, int pbatch) {
   int_hostname = hostname;
   if (passwd.empty()) {
     pool = new RedisConnectionPool(pool_size, int_hostname.c_str(), NULL, \
-      port, timeout_seconds, timeout_microseconds, 1, 1);
+      port, timeout_seconds, timeout_microseconds, pstart_size, pbatch);
   } else {
     pool = new RedisConnectionPool(pool_size, int_hostname.c_str(), \
-      passwd.c_str(), port, timeout_seconds, timeout_microseconds, 1, 1);
+      passwd.c_str(), port, timeout_seconds, timeout_microseconds, \
+      pstart_size, pbatch);
   }
 }
 
@@ -227,33 +229,47 @@ AOSSL::StringBuffer* RedisAdmin::return_stringbuf_reply(redisReply *reply) {
 }
 
 RedisAdmin::RedisAdmin(std::string hostname, int port) {
-  init(hostname, "", port, 5, 0, 5);
+  init(hostname, "", port, 5, 0, 5, 0, 1);
 }
 
 RedisAdmin::RedisAdmin(std::string hostname, int port, int pool_size) {
-  init(hostname, "", port, 5, 0, pool_size);
+  init(hostname, "", port, 5, 0, pool_size, 0, 1);
 }
 
 RedisAdmin::RedisAdmin(std::string hostname, int port, int timeout_seconds, \
   int timeout_microseconds) {
-  init(hostname, "", port, timeout_seconds, timeout_microseconds, 5);
+  init(hostname, "", port, timeout_seconds, timeout_microseconds, 5, 0, 1);
 }
 
 RedisAdmin::RedisAdmin(std::string hostname, int port, int timeout_seconds, \
   int timeout_microseconds, int pool_size) {
-  init(hostname, "", port, timeout_seconds, timeout_microseconds, pool_size);
+  init(hostname, "", port, timeout_seconds, timeout_microseconds, pool_size, 0, 1);
+}
+
+RedisAdmin::RedisAdmin(std::string hostname, int port, int timeout_seconds, \
+  int timeout_microseconds, int pool_size, int pstart_size, int pbatch) {
+  init(hostname, "", port, timeout_seconds, timeout_microseconds, pool_size, \
+    pstart_size, pbatch);
 }
 
 RedisAdmin::RedisAdmin(RedisConnChain current_connection) {
   // Connect
   init(current_connection.ip, current_connection.password, \
-    current_connection.port, current_connection.timeout, 0, 5);
+    current_connection.port, current_connection.timeout, 0, 5, 0, 1);
 }
 
 RedisAdmin::RedisAdmin(RedisConnChain current_connection, int pool_size) {
   // Connect
   init(current_connection.ip, current_connection.password, \
-    current_connection.port, current_connection.timeout, 0, pool_size);
+    current_connection.port, current_connection.timeout, 0, pool_size, 0, 1);
+}
+
+RedisAdmin::RedisAdmin(RedisConnChain current_connection, int pool_size, \
+  int pstart_size, int pbatch) {
+  // Connect
+  init(current_connection.ip, current_connection.password, \
+    current_connection.port, current_connection.timeout, 0, pool_size, \
+    pstart_size, pbatch);
 }
 
 // Load a value from Redis

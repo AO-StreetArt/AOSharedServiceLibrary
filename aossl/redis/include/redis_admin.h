@@ -111,8 +111,8 @@ class RedisAdmin : public RedisInterface {
   std::string reply_str;
   std::string int_hostname;
   RedisConnectionPool *pool = NULL;
-  void init(std::string hostname, std::string passwd, int port, \
-    int timeout_seconds, int timeout_microseconds, int pool_size);
+  void init(std::string hostname, std::string passwd, int port, int timeout_seconds, \
+    int timeout_microseconds, int pool_size, int pstart_size, int pbatch);
   bool process_std_string_reply(redisReply *reply);
   bool process_std_int_reply(redisReply *reply);
   int return_int_reply(redisReply *reply);
@@ -127,12 +127,18 @@ class RedisAdmin : public RedisInterface {
     int timeout_microseconds);
   RedisAdmin(std::string hostname, int port, int timeout_seconds, \
     int timeout_microseconds, int pool_size);
+  RedisAdmin(std::string hostname, int port, int timeout_seconds, \
+    int timeout_microseconds, int pool_size, int pstart_size, int pbatch);
 
   // Constructors for lists of Redis Connections
   RedisAdmin(RedisConnChain connection_list);
 
   // Constructors for lists of Redis Connections
   RedisAdmin(RedisConnChain connection_list, int pool_size);
+
+  // Constructors for lists of Redis Connections
+  RedisAdmin(RedisConnChain connection_list, int pool_size, int pstart_size, \
+    int pbatch);
 
   // Destructor
   ~RedisAdmin() {if (pool) {delete pool;}}

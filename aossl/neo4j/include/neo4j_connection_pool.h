@@ -80,7 +80,7 @@ class Neo4jConnectionPool {
 
       connections.push_back(qs);
     }
-    current_max_connection = start_connections;
+    current_max_connection = start_connections - 1;
   }
 
   // Base Startup Routine
