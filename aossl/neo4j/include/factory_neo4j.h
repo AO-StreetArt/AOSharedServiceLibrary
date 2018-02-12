@@ -78,6 +78,18 @@ class Neo4jComponentFactory {
     return new Neo4jAdmin(conn_str, secure, pool_size);
   }
 
+  //! Get a Neo4j Interface instance
+  inline Neo4jInterface* get_neo4j_interface(const char * conn_str, \
+    bool secure, int pool_size, int pstart_size, int pbatch) {
+    return new Neo4jAdmin(conn_str, secure, pool_size, pstart_size, pbatch);
+  }
+
+  //! Get a Neo4j Interface instance
+  inline Neo4jInterface* get_neo4j_interface(std::string conn_str, \
+    bool secure, int pool_size, int pstart_size, int pbatch) {
+    return new Neo4jAdmin(conn_str, secure, pool_size, pstart_size, pbatch);
+  }
+
   //! Get a Neo4j Array Query Parameter
   inline Neo4jQueryParameterInterface* get_neo4j_query_parameter() {
     return new Neo4jQueryParameter();
