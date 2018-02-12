@@ -180,7 +180,7 @@ class MongoClient: public MongoInterface {
 
   // Initialize the client
   void initialize(const char * url, const char * db, \
-    const char * collection_name, int size);
+    const char * collection_name, int size, int pstart_size, int pbatch);
 
  public:
   // Switch the current collection
@@ -200,38 +200,49 @@ class MongoClient: public MongoInterface {
   // Constructor
   inline MongoClient(const char * url, const char * db, \
     const char * collection_name) {
-    initialize(url, db, collection_name, 5);
+    initialize(url, db, collection_name, 5, 0, 1);
   }
 
   inline MongoClient(std::string url, std::string db, \
     std::string collection_name) {
-    initialize(url.c_str(), db.c_str(), collection_name.c_str(), 5);
+    initialize(url.c_str(), db.c_str(), collection_name.c_str(), 5, 0, 1);
   }
 
   inline MongoClient(const char * url, const char * db) {
-    initialize(url, db, "default", 5);
+    initialize(url, db, "default", 5, 0, 1);
   }
 
   inline MongoClient(std::string url, std::string db) {
-    initialize(url.c_str(), db.c_str(), "default", 5);
+    initialize(url.c_str(), db.c_str(), "default", 5, 0, 1);
   }
 
   inline MongoClient(const char * url, const char * db, \
     const char * collection_name, int pool_size) {
-    initialize(url, db, collection_name, pool_size);
+    initialize(url, db, collection_name, pool_size, 0, 1);
   }
 
   inline MongoClient(std::string url, std::string db, \
     std::string collection_name, int pool_size) {
-    initialize(url.c_str(), db.c_str(), collection_name.c_str(), pool_size);
+    initialize(url.c_str(), db.c_str(), collection_name.c_str(), pool_size, 0, 1);
+  }
+
+  inline MongoClient(const char * url, const char * db, \
+    const char * collection_name, int pool_size, int pstart_size, int pbatch) {
+    initialize(url, db, collection_name, pool_size, pstart_size, pbatch);
+  }
+
+  inline MongoClient(std::string url, std::string db, \
+    std::string collection_name, int pool_size, int pstart_size, int pbatch) {
+    initialize(url.c_str(), db.c_str(), collection_name.c_str(), \
+      pool_size, pstart_size, pbatch);
   }
 
   inline MongoClient(const char * url, const char * db, int pool_size) {
-    initialize(url, db, "default", pool_size);
+    initialize(url, db, "default", pool_size, 0, 1);
   }
 
   inline MongoClient(std::string url, std::string db, int pool_size) {
-    initialize(url.c_str(), db.c_str(), "default", pool_size);
+    initialize(url.c_str(), db.c_str(), "default", pool_size, 0, 1);
   }
 
   // Destructor

@@ -42,11 +42,12 @@ MongoResponseInterface* MongoIterator::next() {
 }
 
 void MongoClient::initialize(const char * url, const char * db, \
-  const char * collection_name, int size) {
+  const char * collection_name, int size, int pstart_size, int pbatch) {
   std::string url_str(url);
   std::string db_str(db);
   std::string col_str(collection_name);
-  pool = new MongoConnectionPool(size, url_str, db_str, col_str, 1, 1);
+  pool = new MongoConnectionPool(size, url_str, db_str, col_str, \
+    pstart_size, pbatch);
 }
 
 MongoClient::~MongoClient() {
@@ -311,7 +312,7 @@ void MongoConnectionPool::init_connections(std::string conn_str, \
     ms.connection = mongoc_client_new(conn_cstr);
     connections.push_back(ms);
   }
-  current_max_connection = start_connections;
+  current_max_connection = start_connections - 1;
 }
 
 MongoConnectionPool::~MongoConnectionPool() {

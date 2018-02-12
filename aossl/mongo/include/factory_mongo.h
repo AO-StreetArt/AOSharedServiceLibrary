@@ -79,6 +79,18 @@ class MongoComponentFactory {
   }
 
   //! Get a Mongo Interface instance
+  inline MongoInterface* get_mongo_interface(const char * url, const char * db,\
+    const char * collection_name, int pool_size, int pstart_size, int pbatch) {
+    return new MongoClient(url, db, collection_name, pool_size, pstart_size, pbatch);
+  }
+
+  //! Get a Mongo Interface instance
+  inline MongoInterface* get_mongo_interface(std::string url, std::string db, \
+    std::string collection_name, int pool_size, int pstart_size, int pbatch) {
+    return new MongoClient(url, db, collection_name, pool_size, pstart_size, pbatch);
+  }
+
+  //! Get a Mongo Interface instance
   inline MongoInterface* get_mongo_interface(const char * url, \
     const char * db, int pool_size) {
     return new MongoClient(url, db, pool_size);
