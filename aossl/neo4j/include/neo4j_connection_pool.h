@@ -29,18 +29,19 @@ THE SOFTWARE.
 #include <string>
 #include <vector>
 #include "aossl/core/include/slot_pool.h"
+#include "aossl/core/include/connection.h"
+#include "aossl/core/include/connection_pool_interface.h"
 
 #ifndef AOSSL_NEO4J_INCLUDE_NEO4J_CONNECTION_POOL_H_
 #define AOSSL_NEO4J_INCLUDE_NEO4J_CONNECTION_POOL_H_
 
 // A struct containing the objects needed to run a query
-struct Neo4jQuerySession {
+struct Neo4jQuerySession : public AOSSL::Connection {
   neo4j_connection_t *connection = NULL;
-  int index = -1;
 };
 
 // A Connection pool to ensure thread safety
-class Neo4jConnectionPool {
+class Neo4jConnectionPool : public AOSSL::ConnectionPoolInterface {
   // A pool of neo4j connections
   std::vector<Neo4jQuerySession> connections;
   // Slot pool to manage the internal slots

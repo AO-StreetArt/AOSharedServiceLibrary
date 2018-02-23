@@ -37,6 +37,8 @@ THE SOFTWARE.
 #include "mongo_interface.h"
 
 #include "aossl/core/include/slot_pool.h"
+#include "aossl/core/include/connection.h"
+#include "aossl/core/include/connection_pool_interface.h"
 
 const int MONGO_RESPONSE_CRT = 0;
 const int MONGO_RESPONSE_OTHER = 1;
@@ -44,14 +46,13 @@ const int MONGO_RESPONSE_OTHER = 1;
 // Connection Pooling
 
 // A struct containing the objects needed to run a query
-struct MongoSession {
+struct MongoSession : public AOSSL::Connection {
   mongoc_client_t *connection = NULL;
   mongoc_collection_t *collection = NULL;
-  int index = -1;
 };
 
 // A Connection pool to ensure thread safety
-class MongoConnectionPool {
+class MongoConnectionPool : public AOSSL::ConnectionPoolInterface {
   // A pool of mongo connections
   std::vector<MongoSession> connections;
   // Slot pool to manage the internal slots
