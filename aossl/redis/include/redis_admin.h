@@ -32,15 +32,16 @@ THE SOFTWARE.
 #include <mutex>
 #include "hiredis/hiredis.h"
 #include "redis_interface.h"
+#include "aossl/core/include/connection.h"
+#include "aossl/core/include/connection_pool_interface.h"
 
 // A struct containing the objects needed to run a query
-struct RedisSession {
+struct RedisSession : public AOSSL::Connection {
   redisContext *connection = NULL;
-  int index = -1;
 };
 
 // A Connection pool to ensure thread safety
-class RedisConnectionPool {
+class RedisConnectionPool : public AOSSL::ConnectionPoolInterface {
   // A pool of neo4j connections
   std::vector<RedisSession> connections;
   // Slot pool to manage the internal slots
