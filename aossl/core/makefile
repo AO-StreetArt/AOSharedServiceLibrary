@@ -3,7 +3,7 @@ CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
 RM = rm -f
-INCL = $(INSTALL_DIR)/core/include/buffers.h	$(INSTALL_DIR)/core/include/slot_pool.h
+INCL = $(INSTALL_DIR)/core/include/buffers.h	$(INSTALL_DIR)/core/include/slot_pool.h $(INSTALL_DIR)/core/include/connection.h $(INSTALL_DIR)/core/include/connection_pool_interface.h
 INCL_DIR = $(INSTALL_DIR)/core
 
 # Central Targets
@@ -36,4 +36,10 @@ $(INSTALL_DIR)/core/include/buffers.h: include/buffers.h
 	cp $< $@
 
 $(INSTALL_DIR)/core/include/slot_pool.h: include/slot_pool.h
+	cp $< $@
+
+$(INSTALL_DIR)/core/include/connection.h : include/connection.h
+	cp $< $@
+
+$(INSTALL_DIR)/core/include/connection_pool_interface.h: include/connection_pool_interface.h
 	cp $< $@
