@@ -2,7 +2,7 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-INCL = $(INSTALL_DIR)/mongo/include/factory_mongo.h	$(INSTALL_DIR)/mongo/include/mongo_admin.h $(INSTALL_DIR)/mongo/include/mongo_interface.h
+INCL = $(INSTALL_DIR)/mongo/include/factory_mongo.h	$(INSTALL_DIR)/mongo/include/mongo_admin.h $(INSTALL_DIR)/mongo/include/mongo_interface.h $(INSTALL_DIR)/mongo/include/mongo_buffer.h $(INSTALL_DIR)/mongo/include/mongo_buffer_interface.h
 INCL_DIR = $(INSTALL_DIR)/mongo
 LIBS = -lmongoc-1.0 -lbson-1.0
 INCL_DIRS = -I/usr/include/libbson-1.0 -I/usr/include/libmongoc-1.0 -I/usr/local/include/libmongoc-1.0 -I/usr/local/include/libbson-1.0 -I$(CURDIR)/../../
@@ -36,6 +36,12 @@ $(INSTALL_DIR)/mongo/include/mongo_admin.h: include/mongo_admin.h
 	cp $< $@
 
 $(INSTALL_DIR)/mongo/include/mongo_interface.h: include/mongo_interface.h
+	cp $< $@
+
+$(INSTALL_DIR)/mongo/include/mongo_buffer.h: include/mongo_buffer.h
+	cp $< $@
+
+$(INSTALL_DIR)/mongo/include/mongo_buffer_interface.h: include/mongo_buffer_interface.h
 	cp $< $@
 
 # Test targets
