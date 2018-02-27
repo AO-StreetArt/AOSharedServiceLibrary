@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include <string>
 #include "include/mongo_interface.h"
 #include "include/factory_mongo.h"
+#include "include/mongo_buffer.h"
 
 int print_iterator(MongoIteratorInterface *iter) {
   int num_iterations = 0;
@@ -41,7 +42,73 @@ int print_iterator(MongoIteratorInterface *iter) {
   return num_iterations;
 }
 
-int main(int argc, char *argv[]) {
+void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
+  std::string key1;
+  std::string json_doc;
+  MongoResponseInterface *resp1 = NULL;
+  MongoResponseInterface *resp2 = NULL;
+  // Creation Test
+  std::cout << "Writing Document to Mongo DB" << std::endl;
+  AOSSL::MongoBuffer *buf = new AOSSL::MongoBuffer;
+  std::string dkey1 = "name";
+  std::string dkey2 = "first";
+  std::string dkey3 = "last";
+  std::string dkey4 = "numbers";
+  std::string dkey5 = "integers";
+  std::string dkey6 = "double";
+  std::string dval1 = "Alex";
+  std::string dval2 = "Barry";
+  buf->start_object(dkey1);
+  buf->add_string(dkey2, dval1);
+  buf->add_string(dkey3, dval2);
+  buf->end_object();
+  buf->start_object(dkey4);
+  buf->start_array(dkey5);
+  buf->add_int(1);
+  buf->add_int(2);
+  buf->end_array();
+  buf->add_double(dkey6, 1.01);
+  buf->end_object();
+  try {
+    resp1 = mongo->create_document(buf);
+    key1 = resp1->get_value();
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+    assert(false);
+  }
+  std::cout << "Document written to Mongo DB: " << key1 << std::endl;
+  if (resp1) {
+    delete resp1;
+  }
+  // Load Test
+  try {
+    resp2 = mongo->load_document(key1);
+    json_doc = resp2->get_value();
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+    assert(false);
+  }
+
+  std::cout << "Document Loaded from Mongo: " << json_doc << std::endl;
+  assert(!(json_doc.empty()));
+  if (resp2) {
+    delete resp2;
+  }
+  // Delete Test
+  try {
+    mongo->delete_document(key1);
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+    assert(false);
+  }
+
+  std::cout << "Document deleted from Mongo DB" << std::endl;
+}
+
+void test_json_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
   const char *json = "{\"name\": {\"first\":\"Grace\", \"last\":\"Hopper\"}}";
   const char *json2 = "{\"name\": {\"first\":\"Alex\", \"last\":\"Barry\"}}";
   const char *json3 = \
@@ -56,11 +123,6 @@ int main(int argc, char *argv[]) {
   std::string key3;
   std::string key4;
   std::string json_doc;
-
-  MongoComponentFactory mongo_factory;
-  MongoInterface *mongo = \
-  mongo_factory.get_mongo_interface("mongodb://localhost:27017/", \
-  "mydb", "mycoll");
 
   MongoResponseInterface *resp1 = NULL;
   MongoResponseInterface *resp2 = NULL;
@@ -283,8 +345,6 @@ int main(int argc, char *argv[]) {
   }
 
   // Failure Tests
-  MongoInterface *bad_mongo = mongo_factory.get_mongo_interface(\
-    "mongodb://localhost:27018/", "mydb", "mycoll");
 
     key1 = "";
 
@@ -341,6 +401,18 @@ int main(int argc, char *argv[]) {
     catch (std::exception& e) {
       std::cout << e.what() << std::endl;
     }
+}
+
+int main(int argc, char *argv[]) {
+    MongoComponentFactory mongo_factory;
+    MongoInterface *mongo = mongo_factory.get_mongo_interface(\
+      "mongodb://localhost:27017/", "mydb", "mycoll");
+    MongoInterface *bad_mongo = mongo_factory.get_mongo_interface(\
+      "mongodb://localhost:27018/", "mydb", "mycoll");
+
+    // Run Tests
+    test_json_api(mongo, bad_mongo);
+    test_bson_api(mongo, bad_mongo);
 
     if (mongo) {
       delete mongo;

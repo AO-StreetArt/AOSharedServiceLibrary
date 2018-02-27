@@ -29,6 +29,8 @@ THE SOFTWARE.
 #include <exception>
 #include <vector>
 
+#include "mongo_buffer_interface.h"
+
 //! Mongo Exception, used to store errors passed from Mongo
 struct MongoException: public std::exception {
   //! An error message passed on initialization
@@ -87,6 +89,8 @@ class MongoInterface {
   //! Create JSON Document, returns the document key
   virtual MongoResponseInterface* create_document(std::string doc, \
     std::string collection_name) = 0;
+  //! Create JSON Document, returns the document key
+  virtual MongoResponseInterface* create_document(AOSSL::MongoBufferInterface *document) = 0;
 
   //! Delete a JSON Document, returns true if successful
   virtual void delete_document(const char * key) = 0;
@@ -120,6 +124,9 @@ class MongoInterface {
   //! Update an existing document, returns true if successful
   virtual void save_document(std::string doc, std::string key, \
     std::string collection_name) = 0;
+  //! Update an existing document
+  virtual void save_document(AOSSL::MongoBufferInterface *document, \
+    const char * key) = 0;
 
   // Advanced Operations
 
