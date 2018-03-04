@@ -91,11 +91,52 @@ void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
     assert(false);
   }
 
-  std::cout << "Document Loaded from Mongo: " << json_doc << std::endl;
+  std::cout << "Document bufLoaded from Mongo: " << json_doc << std::endl;
   assert(!(json_doc.empty()));
   if (resp2) {
     delete resp2;
   }
+
+  // Update by Query Test
+  AOSSL::MongoBuffer *update_buffer = new AOSSL::MongoBuffer;
+  std::string update_op_key = "$set";
+  std::string update_key = "name.first";
+  std::string first_name = "JellyBean";
+  update_buffer->start_object(update_op_key);
+  update_buffer->add_string(update_key, first_name);
+  update_buffer->end_object();
+
+  AOSSL::MongoBuffer *query_buffer = new AOSSL::MongoBuffer;
+  std::string query_key = "name.first";
+  std::string query_val = "Alex";
+  query_buffer->add_string(query_key, query_val);
+
+  try {
+    mongo->update_by_query(query_buffer, update_buffer);
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+    assert(false);
+  }
+
+  std::cout << "Update by query made successfully" << std::endl;
+
+  // Load Test
+  try {
+    resp2 = mongo->load_document(key1);
+    json_doc = resp2->get_value();
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+    assert(false);
+  }
+
+  std::cout << "Document bufLoaded from Mongo: " << json_doc << std::endl;
+  assert(!(json_doc.empty()));
+  if (resp2) {
+    delete resp2;
+  }
+
   // Delete Test
   try {
     mongo->delete_document(key1);
@@ -106,6 +147,10 @@ void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
   }
 
   std::cout << "Document deleted from Mongo DB" << std::endl;
+
+  delete buf;
+  delete update_buffer;
+  delete query_buffer;
 }
 
 void test_json_api(MongoInterface *mongo, MongoInterface *bad_mongo) {

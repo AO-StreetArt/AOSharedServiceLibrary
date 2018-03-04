@@ -33,6 +33,7 @@ THE SOFTWARE.
 #include <exception>
 #include <vector>
 #include <mutex>
+#include <iostream>
 
 #include "mongo_interface.h"
 #include "mongo_buffer_interface.h"
@@ -370,6 +371,19 @@ class MongoClient: public MongoInterface {
 
   inline MongoIteratorInterface* query(std::string query_str) {
     return query(query_str.c_str());
+  }
+
+  //! Update by Query
+
+  //! Updates documents which match the provided query
+  //! If update_multiple is true, then update all of the documents that match
+  //! Otherwise, update only the first match
+  void update_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update, bool update_multiple);
+
+  void update_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update) {
+    update_by_query(query, update, true);
   }
 };
 

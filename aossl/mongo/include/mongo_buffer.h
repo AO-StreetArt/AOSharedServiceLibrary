@@ -47,7 +47,7 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
   //! Build a new Mongo Buffer
   MongoBuffer() {bson_t *b = new bson_t; bson_init (b); children.push_back(b);}
   //! Destroy the Mongo Buffer
-  ~MongoBuffer() {for (int i = 0; i < children.size(); i++) {bson_destroy (children[i]); delete children[i];}}
+  ~MongoBuffer() {bson_destroy(children[0]); delete children[0];}
   //! Is a successful response
   bool successful() {return Buffer::success;}
   //! Error message

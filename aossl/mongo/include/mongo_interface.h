@@ -164,6 +164,20 @@ class MongoInterface {
   //! Accept the query in JSON format.
   //! Return an iterator which can be used to access query results
   virtual MongoIteratorInterface* query(std::string query_str) = 0;
+
+  //! Update by Query
+
+  //! Updates documents which match the provided query
+  //! If update_multiple is true, then update all of the documents that match
+  //! Otherwise, update only the first match
+  virtual void update_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update, bool update_multiple) = 0;
+
+  //! Update by Query
+
+  //! Updates all documents which match the provided query
+  virtual void update_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update) = 0;
 };
 
 #endif  // AOSSL_MONGO_INCLUDE_MONGO_INTERFACE_H_

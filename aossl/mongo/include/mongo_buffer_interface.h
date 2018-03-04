@@ -61,6 +61,7 @@ struct BsonException: public std::exception {
 //! A Structure for holding a BSON Document
 class MongoBufferInterface {
  public:
+  virtual ~MongoBufferInterface() {}
   //! Is a successful response
   virtual bool successful() = 0;
   //! Error message

@@ -71,9 +71,6 @@ void MongoClient::create_document(bson_t *doc, bson_oid_t &oid, bson_error_t &er
   // Release the database connection
   pool->release_connection(ms);
 
-  // Free the BSON Document
-  bson_destroy(doc);
-
   if (!success) {
     delete[] out_str;
     std::string err1 = "Error Creating Document: ";
@@ -107,6 +104,8 @@ MongoResponseInterface* MongoClient::create_document(const char * document) {
     throw MongoException(err1+err2);
   } else {
     create_document(doc, oid, error, c_str);
+    // Free the BSON Document
+    bson_destroy(doc);
   }
 
   return new MongoResponse(c_str, MONGO_RESPONSE_CRT);
@@ -136,7 +135,6 @@ void MongoClient::save_document(const char * key, bson_t *doc, bson_oid_t &oid, 
   // Release the database connection
   pool->release_connection(ms);
 
-  bson_destroy(doc);
   bson_destroy(selector);
 
   if (!success) {
@@ -172,6 +170,7 @@ void MongoClient::save_document(const char * document, const char * key) {
       throw MongoException(err1+err2);
     } else {
       save_document(key, doc, oid, error);
+      bson_destroy(doc);
     }
   } else {
     throw MongoException("No Key Passed to Delete Document Method");
@@ -286,11 +285,6 @@ MongoIteratorInterface* MongoClient::query(bson_t *q, bson_t *o, mongoc_cursor_t
     iter = new MongoIterator(cursor, pool, ms);
   }
 
-  if (o) {
-    bson_destroy(o);
-  }
-  bson_destroy(q);
-
   return iter;
 }
 
@@ -319,10 +313,37 @@ MongoIteratorInterface* MongoClient::query(const char * query_str, \
       if (!o) {throw MongoException(error.message);}
     }
 
-    return query(q, o, cursor);
+    MongoIteratorInterface *iter = query(q, o, cursor);
+    if (o) {
+      bson_destroy(o);
+    }
+    bson_destroy(q);
+    return iter;
   } else {
     throw MongoException("No Query Passed to Query Method");
   }
+}
+
+void MongoClient::update_by_query(AOSSL::MongoBufferInterface *query, \
+  AOSSL::MongoBufferInterface *update, bool update_multiple) {
+    // Retrieve a database connection from the pool
+    MongoSession *ms = pool->get_connection();
+    std::cout << "Retrieved Connection" << std::endl;
+    bson_error_t error;
+    mongoc_update_flags_t q_flags;
+    if (update_multiple) q_flags = MONGOC_UPDATE_MULTI_UPDATE;
+    mongoc_write_concern_t *w_concern = mongoc_write_concern_new();
+    mongoc_write_concern_set_w(w_concern, MONGOC_WRITE_CONCERN_W_DEFAULT);
+    mongoc_collection_set_write_concern (ms->collection, w_concern);
+    std::cout << "Running Query" << std::endl;
+    // Execute the actual query
+    bson_t *qbson = query->get_bson();
+    bson_t *ubson = update->get_bson();
+    bool result = mongoc_collection_update(ms->collection, q_flags, qbson, ubson, w_concern, &error);
+    // Cleanup
+    pool->release_connection(ms);
+    mongoc_write_concern_destroy(w_concern);
+    if (!result) {throw MongoException(error.message);}
 }
 
 // Connection Pool
