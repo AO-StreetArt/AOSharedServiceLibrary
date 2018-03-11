@@ -422,47 +422,47 @@ int path_test() {
   if (!results) return -1;
 
   // Access the results
-  // std::cout << "Access Results" << std::endl;
-  // ResultTreeInterface* result = results->next();
-  // if (!result) assert(false);
-  // DbObjectInterface* path = result->get(0);
-  // std::cout << "Object Retrieved" << std::endl;
-  // assert(path->is_path());
-  // assert(path->size() == 5);
-  // for (int i = 0; i < 5; i++) {
-  //   DbObjectInterface* path_obj = path->get_path_element(i);
-  //   std::cout << path_obj->to_string() << std::endl;
-  //   // Generic Tests
-  //   if (i % 2 == 0) {
-  //     std::cout << "Testing Node " << i << std::endl;
-  //     assert(path_obj->is_node());
-  //     DbListInterface* label_list = path_obj->labels();
-  //     assert(label_list->get_string_element(0) == "CoordinateSystem");
-  //     delete label_list;
-  //   } else {
-  //     std::cout << "Testing Edge " << i << std::endl;
-  //     assert(path_obj->is_edge());
-  //     assert(path_obj->type() == "Transform");
-  //     assert(path_obj->forward());
-  //   }
-  //   // Properties Tests
-  //   DbMapInterface* map = path_obj->properties();
-  //   if (i == 0) {
-  //     assert(map->element_exists("name"));
-  //     assert(map->get_string_element("name") == "1");
-  //   } else if (i == 2) {
-  //     assert(map->element_exists("name"));
-  //     assert(map->get_string_element("name") == "2");
-  //   } else if (i == 4) {
-  //     assert(map->element_exists("name"));
-  //     assert(map->get_string_element("name") == "3");
-  //   }
-  //   delete map;
-  //   delete path_obj;
-  // }
-  //
-  // delete path;
-  // delete result;
+  std::cout << "Access Results" << std::endl;
+  ResultTreeInterface* result = results->next();
+  if (!result) assert(false);
+  DbObjectInterface* path = result->get(0);
+  std::cout << "Object Retrieved" << std::endl;
+  assert(path->is_path());
+  assert(path->size() == 5);
+  for (int i = 0; i < 5; i++) {
+    DbObjectInterface* path_obj = path->get_path_element(i);
+    std::cout << path_obj->to_string() << std::endl;
+    // Generic Tests
+    if (i % 2 == 0) {
+      std::cout << "Testing Node " << i << std::endl;
+      assert(path_obj->is_node());
+      DbListInterface* label_list = path_obj->labels();
+      assert(label_list->get_string_element(0) == "CoordinateSystem");
+      delete label_list;
+    } else {
+      std::cout << "Testing Edge " << i << std::endl;
+      assert(path_obj->is_edge());
+      assert(path_obj->type() == "Transform");
+      assert(path_obj->forward());
+    }
+    // Properties Tests
+    DbMapInterface* map = path_obj->properties();
+    if (i == 0) {
+      assert(map->element_exists("name"));
+      assert(map->get_string_element("name") == "1");
+    } else if (i == 2) {
+      assert(map->element_exists("name"));
+      assert(map->get_string_element("name") == "2");
+    } else if (i == 4) {
+      assert(map->element_exists("name"));
+      assert(map->get_string_element("name") == "3");
+    }
+    delete map;
+    delete path_obj;
+  }
+
+  delete path;
+  delete result;
   delete results;
   return 0;
 }
