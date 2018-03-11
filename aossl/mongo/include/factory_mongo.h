@@ -28,6 +28,8 @@ THE SOFTWARE.
 #include <string>
 #include "mongo_interface.h"
 #include "mongo_admin.h"
+#include "mongo_buffer_interface.h"
+#include "mongo_buffer.h"
 
 //! The Mongo Service Component Factory
 
@@ -42,6 +44,9 @@ class MongoComponentFactory {
 
   //! Delete a Service Component Factory
   ~MongoComponentFactory() {}
+
+  //! Get a Mongo Buffer, representing a BSON Document
+  inline AOSSL::MongoBufferInterface* get_mongo_buffer() {return new AOSSL::MongoBuffer;}
 
   //! Get a Mongo Interface instance
   inline MongoInterface* get_mongo_interface(const char * url, \
