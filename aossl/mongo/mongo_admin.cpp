@@ -386,7 +386,7 @@ void MongoConnectionPool::init_connections(std::string conn_str, \
 }
 
 MongoConnectionPool::~MongoConnectionPool() {
-  for (int i = 0; i < connections.size(); i++) {
+  for (unsigned int i = 0; i < connections.size(); i++) {
     // Release the connection
     mongoc_client_destroy(connections[i].connection);
   }
