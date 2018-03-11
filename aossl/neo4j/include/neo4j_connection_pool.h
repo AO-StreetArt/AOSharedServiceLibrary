@@ -112,7 +112,7 @@ class Neo4jConnectionPool : public AOSSL::ConnectionPoolInterface {
 
   // Destructor
   inline ~Neo4jConnectionPool() {
-    for (int i = 0; i < current_max_connection; i++) {
+    for (int i = 0; i < connections.size(); i++) {
       // Release the connection
       neo4j_close(connections[i].connection);
     }

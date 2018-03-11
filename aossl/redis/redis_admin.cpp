@@ -85,7 +85,7 @@ void RedisConnectionPool::init_connections(const char * conn_str, \
 
 // Clean up the connection pool
 RedisConnectionPool::~RedisConnectionPool() {
-  for (int i = 0; i < current_max_connection; i++) {
+  for (int i = 0; i < connections.size(); i++) {
     // Free the redis instance
     if (connections[i].connection) {
       redisFree(connections[i].connection);
