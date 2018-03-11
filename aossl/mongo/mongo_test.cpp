@@ -403,6 +403,7 @@ void test_json_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
 
     if (!(key1.empty())) {
       std::cout << "Document written to Mongo DB" << std::endl;
+      std::cout << key1 << std::endl;
       if (resp10) {delete resp10;}
       assert(false);
     }
@@ -456,8 +457,19 @@ int main(int argc, char *argv[]) {
       "mongodb://localhost:27018/", "mydb", "mycoll");
 
     // Run Tests
-    test_json_api(mongo, bad_mongo);
-    test_bson_api(mongo, bad_mongo);
+    try {
+      test_json_api(mongo, bad_mongo);
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+    }
+
+    try {
+      test_bson_api(mongo, bad_mongo);
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+    }
 
     if (mongo) {
       delete mongo;

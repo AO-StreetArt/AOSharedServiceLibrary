@@ -54,7 +54,7 @@ MongoClient::~MongoClient() {
   if (pool) {delete pool;}
 }
 
-void MongoClient::create_document(bson_t *doc, bson_oid_t &oid, bson_error_t &error, char *out_str) {
+bool MongoClient::create_document(bson_t *doc, bson_oid_t &oid, bson_error_t &error, char *out_str) {
   bool success = false;
   // Append the key
   bson_oid_init(&oid, NULL);
@@ -70,20 +70,20 @@ void MongoClient::create_document(bson_t *doc, bson_oid_t &oid, bson_error_t &er
 
   // Release the database connection
   pool->release_connection(ms);
-
-  if (!success) {
-    delete[] out_str;
-    std::string err1 = "Error Creating Document: ";
-    std::string err2(error.message);
-    throw MongoException(err1+err2);
-  }
+  return success;
 }
 
 MongoResponseInterface* MongoClient::create_document(AOSSL::MongoBufferInterface *document) {
   bson_error_t error;
   bson_oid_t oid;
   char * c_str = new char[25];
-  create_document(document->get_bson(), oid, error, c_str);
+  bool success = create_document(document->get_bson(), oid, error, c_str);
+  if (!success) {
+    delete[] c_str;
+    std::string err1 = "Error Creating Document: ";
+    std::string err2(error.message);
+    throw MongoException(err1+err2);
+  }
   return new MongoResponse(c_str, MONGO_RESPONSE_CRT);
 }
 
@@ -92,6 +92,7 @@ MongoResponseInterface* MongoClient::create_document(const char * document) {
   bson_error_t error;
   bson_oid_t oid;
   char * c_str = new char[25];
+  bool success = false;
 
   // Perform the conversion
   doc = bson_new_from_json((const uint8_t *)document, -1, &error);
@@ -103,15 +104,20 @@ MongoResponseInterface* MongoClient::create_document(const char * document) {
     std::string err2(error.message);
     throw MongoException(err1+err2);
   } else {
-    create_document(doc, oid, error, c_str);
+    success = create_document(doc, oid, error, c_str);
     // Free the BSON Document
     bson_destroy(doc);
   }
-
+  if (!success) {
+    delete[] c_str;
+    std::string err1 = "Error Creating Document: ";
+    std::string err2(error.message);
+    throw MongoException(err1+err2);
+  }
   return new MongoResponse(c_str, MONGO_RESPONSE_CRT);
 }
 
-void MongoClient::save_document(const char * key, bson_t *doc, bson_oid_t &oid, bson_error_t &error) {
+bool MongoClient::save_document(const char * key, bson_t *doc, bson_oid_t &oid, bson_error_t &error) {
   bson_t *selector = NULL;
   bool success = false;
   // Copy our key into a character array in a memory safe manner
@@ -136,19 +142,19 @@ void MongoClient::save_document(const char * key, bson_t *doc, bson_oid_t &oid, 
   pool->release_connection(ms);
 
   bson_destroy(selector);
-
-  if (!success) {
-    std::string err1 = "Error Saving Document: ";
-    std::string err2(error.message);
-    throw MongoException(err1+err2);
-  }
+  return success;
 }
 
 void MongoClient::save_document(AOSSL::MongoBufferInterface *document, const char * key) {
   if (key && key[0] != '\0') {
     bson_error_t error;
     bson_oid_t oid;
-    save_document(key, document->get_bson(), oid, error);
+    bool success = save_document(key, document->get_bson(), oid, error);
+    if (!success) {
+      std::string err1 = "Error Saving Document: ";
+      std::string err2(error.message);
+      throw MongoException(err1+err2);
+    }
   } else {
     throw MongoException("No Key Passed to Delete Document Method");
   }
@@ -169,9 +175,15 @@ void MongoClient::save_document(const char * document, const char * key) {
       std::string err2(error.message);
       throw MongoException(err1+err2);
     } else {
-      save_document(key, doc, oid, error);
-      bson_destroy(doc);
+      bool success = save_document(key, doc, oid, error);
+      if (!success) {
+        bson_destroy(doc);
+        std::string err1 = "Error Saving Document: ";
+        std::string err2(error.message);
+        throw MongoException(err1+err2);
+      }
     }
+    bson_destroy(doc);
   } else {
     throw MongoException("No Key Passed to Delete Document Method");
   }
@@ -374,7 +386,7 @@ void MongoConnectionPool::init_connections(std::string conn_str, \
 }
 
 MongoConnectionPool::~MongoConnectionPool() {
-  for (int i = 0; i < current_max_connection; i++) {
+  for (int i = 0; i < connections.size(); i++) {
     // Release the connection
     mongoc_client_destroy(connections[i].connection);
   }

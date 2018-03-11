@@ -185,10 +185,10 @@ class MongoClient: public MongoInterface {
   void initialize(const char * url, const char * db, \
     const char * collection_name, int size, int pstart_size, int pbatch);
 
-  void create_document(bson_t *doc, \
+  bool create_document(bson_t *doc, \
     bson_oid_t &oid, bson_error_t &error, char *out_str);
 
-  void save_document(const char * key, \
+  bool save_document(const char * key, \
     bson_t *doc, bson_oid_t &oid, bson_error_t &error);
 
   MongoIteratorInterface* query(bson_t *q, bson_t *o, mongoc_cursor_t *cursor);
