@@ -403,7 +403,7 @@ int path_test() {
   delete setup_result2;
   delete setup_results2;
 
-  setup_results3 = neo->execute(setup_query2);
+  setup_results3 = neo->execute(setup_query3);
   if (!setup_results3) return -1;
   ResultTreeInterface* setup_result3 = setup_results3->next();
   if (!setup_result3) assert(false);
