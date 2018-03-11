@@ -29,6 +29,8 @@ THE SOFTWARE.
 #include <exception>
 #include <vector>
 
+#include "mongo_buffer_interface.h"
+
 //! Mongo Exception, used to store errors passed from Mongo
 struct MongoException: public std::exception {
   //! An error message passed on initialization
@@ -87,6 +89,8 @@ class MongoInterface {
   //! Create JSON Document, returns the document key
   virtual MongoResponseInterface* create_document(std::string doc, \
     std::string collection_name) = 0;
+  //! Create JSON Document, returns the document key
+  virtual MongoResponseInterface* create_document(AOSSL::MongoBufferInterface *document) = 0;
 
   //! Delete a JSON Document, returns true if successful
   virtual void delete_document(const char * key) = 0;
@@ -120,6 +124,9 @@ class MongoInterface {
   //! Update an existing document, returns true if successful
   virtual void save_document(std::string doc, std::string key, \
     std::string collection_name) = 0;
+  //! Update an existing document
+  virtual void save_document(AOSSL::MongoBufferInterface *document, \
+    const char * key) = 0;
 
   // Advanced Operations
 
@@ -157,6 +164,20 @@ class MongoInterface {
   //! Accept the query in JSON format.
   //! Return an iterator which can be used to access query results
   virtual MongoIteratorInterface* query(std::string query_str) = 0;
+
+  //! Update by Query
+
+  //! Updates documents which match the provided query
+  //! If update_multiple is true, then update all of the documents that match
+  //! Otherwise, update only the first match
+  virtual void update_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update, bool update_multiple) = 0;
+
+  //! Update by Query
+
+  //! Updates all documents which match the provided query
+  virtual void update_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update) = 0;
 };
 
 #endif  // AOSSL_MONGO_INCLUDE_MONGO_INTERFACE_H_

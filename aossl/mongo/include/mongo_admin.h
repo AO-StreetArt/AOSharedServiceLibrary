@@ -33,8 +33,10 @@ THE SOFTWARE.
 #include <exception>
 #include <vector>
 #include <mutex>
+#include <iostream>
 
 #include "mongo_interface.h"
+#include "mongo_buffer_interface.h"
 
 #include "aossl/core/include/slot_pool.h"
 #include "aossl/core/include/connection.h"
@@ -183,6 +185,14 @@ class MongoClient: public MongoInterface {
   void initialize(const char * url, const char * db, \
     const char * collection_name, int size, int pstart_size, int pbatch);
 
+  bool create_document(bson_t *doc, \
+    bson_oid_t &oid, bson_error_t &error, char *out_str);
+
+  bool save_document(const char * key, \
+    bson_t *doc, bson_oid_t &oid, bson_error_t &error);
+
+  MongoIteratorInterface* query(bson_t *q, bson_t *o, mongoc_cursor_t *cursor);
+
  public:
   // Switch the current collection
   void switch_collection(const char * collection_name);
@@ -259,6 +269,8 @@ class MongoClient: public MongoInterface {
     return create_document(doc.c_str());
   }
 
+  MongoResponseInterface* create_document(AOSSL::MongoBufferInterface *document);
+
   inline MongoResponseInterface* create_document(const char * doc, \
     const char * collection_name) {
     switch_collection(collection_name);
@@ -310,6 +322,8 @@ class MongoClient: public MongoInterface {
   // Otherwise it will be inserted
   void save_document(const char * doc, const char * key);
 
+  void save_document(AOSSL::MongoBufferInterface *document, const char * key);
+
   inline void save_document(std::string doc, std::string key) {
     return save_document(doc.c_str(), key.c_str());
   }
@@ -330,6 +344,9 @@ class MongoClient: public MongoInterface {
   // Queries, accept the query in JSON format
   // May also include options in JSON format
   MongoIteratorInterface* query(const char * query_str, const char * opts_str);
+
+  MongoIteratorInterface* query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *opts);
 
   inline MongoIteratorInterface* query(std::string query_str, \
     std::string opts_str) {
@@ -354,6 +371,19 @@ class MongoClient: public MongoInterface {
 
   inline MongoIteratorInterface* query(std::string query_str) {
     return query(query_str.c_str());
+  }
+
+  //! Update by Query
+
+  //! Updates documents which match the provided query
+  //! If update_multiple is true, then update all of the documents that match
+  //! Otherwise, update only the first match
+  void update_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update, bool update_multiple);
+
+  void update_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update) {
+    update_by_query(query, update, true);
   }
 };
 
