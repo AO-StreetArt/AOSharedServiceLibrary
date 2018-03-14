@@ -42,11 +42,53 @@ int print_iterator(MongoIteratorInterface *iter) {
   return num_iterations;
 }
 
+void validate_document_fields() {
+
+}
+
+void test_mongo_buffer() {
+  AOSSL::MongoBuffer *buf = new AOSSL::MongoBuffer;
+  std::string dkey1 = "name";
+  std::string dkey2 = "first";
+  std::string dkey3 = "last";
+  std::string dkey4 = "numbers";
+  std::string dkey5 = "integers";
+  std::string dkey6 = "double";
+  std::string search_key = "name.last";
+  std::string dval1 = "Alex";
+  std::string dval2 = "Barry";
+  buf->add_string(dkey2, dval1);
+  assert(buf->has_field(dkey2));
+  assert(!(buf->has_field(dkey1)));
+  buf->add_int(dkey4, 1);
+  assert(buf->has_field(dkey4));
+  buf->add_double(dkey6, 1.01);
+  assert(buf->has_field(dkey6));
+  assert(buf->count_keys() == 3);
+  buf->start_object(dkey1);
+  buf->add_string(dkey3, dval2);
+  buf->end_object();
+  assert(buf->has_field(dkey1));
+  assert(buf->has_field(search_key));
+  assert(buf->count_keys() == 4);
+  buf->start_array(dkey5);
+  buf->add_int(1);
+  buf->add_int(2);
+  buf->end_array();
+  assert(buf->has_field(dkey5));
+  assert(buf->count_keys() == 5);
+  std::cout << "Test Mongo Buffer:" << std::endl;
+  std::cout << buf->to_json() << std::endl;
+  delete buf;
+}
+
 void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
   std::string key1;
   std::string json_doc;
+  std::string json_doc2;
   MongoResponseInterface *resp1 = NULL;
   MongoResponseInterface *resp2 = NULL;
+  MongoResponseInterface *resp3 = NULL;
   // Creation Test
   std::cout << "Writing Document to Mongo DB" << std::endl;
   AOSSL::MongoBuffer *buf = new AOSSL::MongoBuffer;
@@ -79,6 +121,7 @@ void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
   }
   std::cout << "Document written to Mongo DB: " << key1 << std::endl;
   if (resp1) {
+    assert(!(key1.empty()));
     delete resp1;
   }
   // Load Test
@@ -91,10 +134,55 @@ void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
     assert(false);
   }
 
-  std::cout << "Document bufLoaded from Mongo: " << json_doc << std::endl;
+  std::cout << "Document loaded from Mongo: " << json_doc << std::endl;
   assert(!(json_doc.empty()));
+
+  // Update test
+  AOSSL::MongoBuffer *update_buf = new AOSSL::MongoBuffer;
+  std::string uval1 = "Betty";
+  std::string uval2 = "Bear";
+  update_buf->start_object(dkey1);
+  update_buf->add_string(dkey2, uval1);
+  update_buf->add_string(dkey3, uval2);
+  update_buf->end_object();
+  update_buf->start_object(dkey4);
+  update_buf->start_array(dkey5);
+  update_buf->add_int(3);
+  update_buf->add_int(4);
+  update_buf->end_array();
+  update_buf->add_double(dkey6, 2.56);
+  update_buf->end_object();
+
+  try {
+    mongo->save_document(update_buf, key1);
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+    assert(false);
+  }
+
+  // Load Test
+  try {
+    resp3 = mongo->load_document(key1);
+    json_doc2 = resp3->get_value();
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+    assert(false);
+  }
+
+  std::cout << "Document loaded from Mongo: " << json_doc2 << std::endl;
+  assert(!(json_doc2.empty()));
+  // Compare the loaded object after creation with the loaded object after
+  // update.  If they are the same, then update didn't persist
+  std::cout << json_doc << std::endl;
+  std::cout << json_doc2 << std::endl;
+  assert(!(json_doc.compare(json_doc2) == 0));
   if (resp2) {
     delete resp2;
+  }
+  if (resp3) {
+    delete resp3;
   }
 
   // Update by Query Test
@@ -466,6 +554,13 @@ int main(int argc, char *argv[]) {
 
     try {
       test_bson_api(mongo, bad_mongo);
+    }
+    catch (std::exception& e) {
+      std::cout << e.what() << std::endl;
+    }
+
+    try {
+      test_mongo_buffer();
     }
     catch (std::exception& e) {
       std::cout << e.what() << std::endl;
