@@ -96,6 +96,20 @@ class MongoBufferInterface {
   virtual void start_object(std::string key) = 0;
   //! End a subdocument in the buffer
   virtual void end_object() = 0;
+  //! Count the number of keys in the BSON Document
+  virtual int count_keys() = 0;
+  //! Is a specific key present in the BSON Document
+  virtual bool has_field(std::string key) = 0;
+  //! Convert the BSON Buffer to a JSON Document and store internally in the Mongo Buffer
+
+  //! Note that the converted message will be retained in memory until the
+  //! Mongo Buffer is destroyed.  Not thread-safe
+  virtual std::string to_json() = 0;
+  //! Convert the BSON Buffer to a JSON Document and store internally in the Mongo Buffer
+
+  //! Note that the converted message will be retained in memory until the
+  //! Mongo Buffer is destroyed.  Not thread-safe
+  virtual std::string to_json(int string_length) = 0;
 };
 
 }  // namespace AOSSL

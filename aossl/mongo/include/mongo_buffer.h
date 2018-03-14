@@ -43,11 +43,13 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
   int parent_index = 0;
   int child_index = 0;
   std::vector<int> array_indices;
+  char *json_cstring = NULL;
+  std::string json_string;
  public:
   //! Build a new Mongo Buffer
   MongoBuffer() {bson_t *b = new bson_t; bson_init (b); children.push_back(b);}
   //! Destroy the Mongo Buffer
-  ~MongoBuffer() {bson_destroy(children[0]); delete children[0]; for (unsigned int i = 1; i < children.size(); i++) {delete children[i];}}
+  ~MongoBuffer() {if (json_cstring) {bson_free(json_cstring); json_cstring = NULL;} bson_destroy(children[0]); delete children[0]; for (unsigned int i = 1; i < children.size(); i++) {delete children[i];}}
   //! Is a successful response
   bool successful() {return Buffer::success;}
   //! Error message
@@ -137,6 +139,38 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
     bson_append_document_end(children[parent_index], children[child_index]);
     if (parent_index > 0) {parent_index--;}
     if (child_index > 0) {child_index--;}
+  }
+  //! Count the number of keys in the BSON Document
+  int count_keys() {
+    // int key_count = 0;
+    // for (unsigned int i = 0; i < children.size(); i++) {
+    //   key_count = key_count + bson_count_keys(children[i]);
+    // }
+    // return key_count;
+    return bson_count_keys(children[0]);
+  }
+  //! Is a specific key present in the BSON Document
+  bool has_field(std::string key) {
+    const char *key_str = key.c_str();
+    for (unsigned int i = 0; i < children.size(); i++) {
+      if (bson_has_field(children[i], key_str)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  //! Convert the BSON Buffer to a JSON Document and store it in json_string
+  std::string to_json() {
+    return to_json(256);
+  }
+  //! Convert the BSON Buffer to a JSON Document and store it in json_string
+  std::string to_json(int string_length) {
+    if (!json_cstring) {
+      json_cstring = bson_as_json(children[0], NULL);
+      if (!json_cstring) throw BsonException("JSON Translation failed for BSON Document");
+      json_string.assign(json_cstring);
+    }
+    return json_string;
   }
 };
 

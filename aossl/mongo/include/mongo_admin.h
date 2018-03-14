@@ -324,6 +324,10 @@ class MongoClient: public MongoInterface {
 
   void save_document(AOSSL::MongoBufferInterface *document, const char * key);
 
+  inline void save_document(AOSSL::MongoBufferInterface *document, std::string key) {
+    return save_document(document, key.c_str());
+  }
+
   inline void save_document(std::string doc, std::string key) {
     return save_document(doc.c_str(), key.c_str());
   }

@@ -127,6 +127,9 @@ class MongoInterface {
   //! Update an existing document
   virtual void save_document(AOSSL::MongoBufferInterface *document, \
     const char * key) = 0;
+  //! Update an existing document
+  virtual void save_document(AOSSL::MongoBufferInterface *document, \
+    std::string key) = 0;
 
   // Advanced Operations
 
