@@ -340,14 +340,12 @@ void MongoClient::update_by_query(AOSSL::MongoBufferInterface *query, \
   AOSSL::MongoBufferInterface *update, bool update_multiple) {
     // Retrieve a database connection from the pool
     MongoSession *ms = pool->get_connection();
-    std::cout << "Retrieved Connection" << std::endl;
     bson_error_t error;
     mongoc_update_flags_t q_flags;
     if (update_multiple) q_flags = MONGOC_UPDATE_MULTI_UPDATE;
     mongoc_write_concern_t *w_concern = mongoc_write_concern_new();
     mongoc_write_concern_set_w(w_concern, MONGOC_WRITE_CONCERN_W_DEFAULT);
     mongoc_collection_set_write_concern (ms->collection, w_concern);
-    std::cout << "Running Query" << std::endl;
     // Execute the actual query
     bson_t *qbson = query->get_bson();
     bson_t *ubson = update->get_bson();
