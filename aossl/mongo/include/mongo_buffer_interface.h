@@ -88,6 +88,10 @@ class MongoBufferInterface {
   virtual void add_double(std::string key, double value) = 0;
   //! Add a double value to the open array in the buffer
   virtual void add_double(double value) = 0;
+  //! Add a datetime value to the buffer
+  virtual void add_date(std::string key, int value) = 0;
+  //! Add an datetime value to the open array in the buffer
+  virtual void add_date(int value) = 0;
   //! Start an array in the buffer
   virtual void start_array(std::string key) = 0;
   //! End an array value in the buffer

@@ -110,6 +110,18 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
     bson_append_double(children[child_index], key, -1, value);
     array_indices[child_index]++;
   }
+  //! Add a datetime value to the buffer
+  void add_date(std::string key, int value) {
+    bson_append_date_time(children[child_index], key.c_str(), -1, value);
+  }
+  //! Add an datetime value to the open array in the buffer
+  void add_date(int value) {
+    char str[16];
+    const char *key;
+    bson_uint32_to_string(array_indices[child_index], &key, str, 16);
+    bson_append_date_time(children[child_index], key, -1, value);
+    array_indices[child_index]++;
+  }
   //! Start an array in the buffer
   inline void start_array(std::string key) {
     bson_t *child = new bson_t;
