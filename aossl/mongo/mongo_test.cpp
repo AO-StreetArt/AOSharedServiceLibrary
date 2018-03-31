@@ -54,6 +54,7 @@ void test_mongo_buffer() {
   std::string dkey4 = "numbers";
   std::string dkey5 = "integers";
   std::string dkey6 = "double";
+  std::string dkey7 = "date";
   std::string search_key = "name.last";
   std::string dval1 = "Alex";
   std::string dval2 = "Barry";
@@ -77,6 +78,9 @@ void test_mongo_buffer() {
   buf->end_array();
   assert(buf->has_field(dkey5));
   assert(buf->count_keys() == 5);
+  buf->add_date(dkey7, 1522515115);
+  assert(buf->has_field(dkey7));
+  assert(buf->count_keys() == 6);
   std::cout << "Test Mongo Buffer:" << std::endl;
   std::cout << buf->to_json() << std::endl;
   delete buf;
@@ -98,6 +102,7 @@ void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
   std::string dkey4 = "numbers";
   std::string dkey5 = "integers";
   std::string dkey6 = "double";
+  std::string dkey7 = "date";
   std::string dval1 = "Alex";
   std::string dval2 = "Barry";
   buf->start_object(dkey1);
@@ -111,6 +116,7 @@ void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
   buf->end_array();
   buf->add_double(dkey6, 1.01);
   buf->end_object();
+  buf->add_date(dkey7, 1522515115);
   try {
     resp1 = mongo->create_document(buf);
     key1 = resp1->get_value();
