@@ -61,7 +61,7 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
     // Copy our key into a character array in a memory safe manner
     // Mongo OID will be returned as 24 bit hex-encoded string
     char key_str[25];
-    strncpy(key_str, key.c_str(), 25);
+    strncpy(key_str, value.c_str(), 25);
     key_str[24] = '\0';
     // Copy the character array into the OID
     bson_oid_init_from_string(&oid, key_str);
