@@ -45,6 +45,7 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
   std::vector<int> array_indices;
   char *json_cstring = NULL;
   std::string json_string;
+  bson_oid_t oid;
  public:
   //! Build a new Mongo Buffer
   MongoBuffer() {bson_t *b = new bson_t; bson_init (b); children.push_back(b);}
@@ -56,6 +57,17 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
   std::string get_error_message() {return Buffer::err_msg;}
   //! Get the underlying bson_t document to pass to the mongoc driver
   bson_t* get_bson() {return children[0];}
+  inline void add_oid(std::string value) {
+    // Copy our key into a character array in a memory safe manner
+    // Mongo OID will be returned as 24 bit hex-encoded string
+    char key_str[25];
+    strncpy(key_str, value.c_str(), 25);
+    key_str[24] = '\0';
+    // Copy the character array into the OID
+    bson_oid_init_from_string(&oid, key_str);
+    // Append the OID to the root of the document
+    BSON_APPEND_OID(children[0], "_id", &oid);
+  }
   //! Add a string value to the buffer
   void add_string(std::string key, std::string value) {add_string(key, value, MONGO_STRING_UTF8);}
   //! Add a string value to the open array in the buffer
