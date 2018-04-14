@@ -68,6 +68,8 @@ class MongoBufferInterface {
   virtual std::string get_error_message() = 0;
   //! Get the underlying bson_t document to pass to the mongoc driver
   virtual bson_t* get_bson() = 0;
+  //! Add an OID value to the buffer
+  virtual void add_oid(std::string value) = 0;
   //! Add a string value to the buffer
   virtual void add_string(std::string key, std::string value) = 0;
   //! Add a string value to the open array in the buffer
