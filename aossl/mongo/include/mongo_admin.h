@@ -37,6 +37,7 @@ THE SOFTWARE.
 
 #include "mongo_interface.h"
 #include "mongo_buffer_interface.h"
+#include "mongo_buffer.h"
 
 #include "aossl/core/include/slot_pool.h"
 #include "aossl/core/include/connection.h"
@@ -389,6 +390,9 @@ class MongoClient: public MongoInterface {
     AOSSL::MongoBufferInterface *update) {
     update_by_query(query, update, true);
   }
+
+  AOSSL::MongoBufferInterface* update_single_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update);
 };
 
 #endif  // AOSSL_MONGO_INCLUDE_MONGO_ADMIN_H_

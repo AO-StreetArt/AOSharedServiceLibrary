@@ -215,6 +215,37 @@ void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
 
   std::cout << "Update by query made successfully" << std::endl;
 
+  // Update Single by query test
+  AOSSL::MongoBuffer *supdate_buffer = new AOSSL::MongoBuffer;
+  std::string supdate_op_key = "$set";
+  std::string supdate_key = "name.first";
+  std::string sfirst_name = "GummyBear";
+  supdate_buffer->start_object(supdate_op_key);
+  supdate_buffer->add_string(supdate_key, sfirst_name);
+  supdate_buffer->end_object();
+
+  AOSSL::MongoBuffer *squery_buffer = new AOSSL::MongoBuffer;
+  std::string squery_key = "name.first";
+  std::string squery_val = "JellyBean";
+  squery_buffer->add_string(query_key, query_val);
+
+  AOSSL::MongoBufferInterface *upd_response = NULL;
+
+  try {
+    upd_response = mongo->update_single_by_query(squery_buffer, supdate_buffer);
+    std::cout << upd_response->to_json() << std::endl;
+    std::string mdc_key = "modifiedCount";
+    std::string mtc_key = "matchedCount";
+    std::string mdc_val;
+    std::string mtc_val;
+    std::cout << upd_response->get_int(mdc_key) << std::endl;
+    std::cout << upd_response->get_int(mtc_key) << std::endl;
+  }
+  catch (std::exception& e) {
+    std::cout << e.what() << std::endl;
+    assert(false);
+  }
+
   // Load Test
   try {
     resp2 = mongo->load_document(key1);
@@ -245,6 +276,10 @@ void test_bson_api(MongoInterface *mongo, MongoInterface *bad_mongo) {
   delete buf;
   delete update_buffer;
   delete query_buffer;
+  delete supdate_buffer;
+  delete squery_buffer;
+  delete update_buf;
+  if (upd_response) delete upd_response;
 }
 
 void test_json_api(MongoInterface *mongo, MongoInterface *bad_mongo) {

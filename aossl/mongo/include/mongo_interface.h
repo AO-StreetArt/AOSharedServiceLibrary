@@ -178,8 +178,16 @@ class MongoInterface {
 
   //! Update by Query
 
-  //! Updates all documents which match the provided query
+  //! Updates all documents which
+  //! match the provided query
   virtual void update_by_query(AOSSL::MongoBufferInterface *query, \
+    AOSSL::MongoBufferInterface *update) = 0;
+
+  //! Update Single By Query
+
+  //! Updates the first document that matches the provided query.
+  //! Returns a MongoBufferInterface populated with the response from Mongo
+  virtual AOSSL::MongoBufferInterface* update_single_by_query(AOSSL::MongoBufferInterface *query, \
     AOSSL::MongoBufferInterface *update) = 0;
 };
 

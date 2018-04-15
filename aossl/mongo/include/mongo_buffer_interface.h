@@ -59,6 +59,10 @@ struct BsonException: public std::exception {
 };
 
 //! A Structure for holding a BSON Document
+
+//! Writing and reading from the buffer MUST be done independently
+//! In other words, once you start reading, you cannot do any more writing.
+//! Also, reads must happen on the document in order
 class MongoBufferInterface {
  public:
   virtual ~MongoBufferInterface() {}
@@ -70,6 +74,8 @@ class MongoBufferInterface {
   virtual bson_t* get_bson() = 0;
   //! Add an OID value to the buffer
   virtual void add_oid(std::string value) = 0;
+  //! Get an OID value from the buffer
+  virtual void get_oid(std::string key, std::string &value) = 0;
   //! Add a string value to the buffer
   virtual void add_string(std::string key, std::string value) = 0;
   //! Add a string value to the open array in the buffer
@@ -78,22 +84,32 @@ class MongoBufferInterface {
   virtual void add_string(std::string value) = 0;
   //! Add a string value to the buffer
   virtual void add_string(std::string key, std::string value, int encoding) = 0;
+  //! Get a string value from the buffer
+  virtual void get_string(std::string key, std::string &value) = 0;
   //! Add a boolean value to the buffer
   virtual void add_bool(std::string key, bool value) = 0;
   //! Add a boolean value to the open array in the buffer
   virtual void add_bool(bool value) = 0;
+  //! Get a boolean value from the buffer
+  virtual bool get_bool(std::string key) = 0;
   //! Add an integer value to the buffer
   virtual void add_int(std::string key, int value) = 0;
   //! Add an integer value to the open array in the buffer
   virtual void add_int(int value) = 0;
+  //! Get an integer value from the buffer
+  virtual int get_int(std::string key) = 0;
   //! Add a double value to the buffer
   virtual void add_double(std::string key, double value) = 0;
   //! Add a double value to the open array in the buffer
   virtual void add_double(double value) = 0;
+  //! Get a double value from the buffer
+  virtual double get_double(std::string key) = 0;
   //! Add a datetime value to the buffer
   virtual void add_date(std::string key, int value) = 0;
   //! Add an datetime value to the open array in the buffer
   virtual void add_date(int value) = 0;
+  //! Get a date value from the buffer
+  virtual int get_date(std::string key) = 0;
   //! Start an array in the buffer
   virtual void start_array(std::string key) = 0;
   //! End an array value in the buffer

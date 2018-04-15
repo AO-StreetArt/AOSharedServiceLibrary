@@ -46,11 +46,24 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
   char *json_cstring = NULL;
   std::string json_string;
   bson_oid_t oid;
+  bson_iter_t iterator;
+  bool iter_initialized = false;
+  inline void find_element(std::string key) {
+    if (!iter_initialized) {
+      bson_iter_init(&iterator, children[0]);
+      iter_initialized = true;
+    }
+    bson_iter_find(&iterator, key.c_str());
+    bson_type_t elt_type = bson_iter_type(&iterator);
+    if (elt_type == BSON_TYPE_EOD) {throw BsonException("Element not found");}
+  }
  public:
   //! Build a new Mongo Buffer
-  MongoBuffer() {bson_t *b = new bson_t; bson_init (b); children.push_back(b);}
+  MongoBuffer() {bson_t *b = bson_new(); children.push_back(b);}
+  //! Build a new Mongo Buffer
+  MongoBuffer(bson_t *b) {children.push_back(b);}
   //! Destroy the Mongo Buffer
-  ~MongoBuffer() {if (json_cstring) {bson_free(json_cstring); json_cstring = NULL;} bson_destroy(children[0]); delete children[0]; for (unsigned int i = 1; i < children.size(); i++) {delete children[i];}}
+  ~MongoBuffer() {if (json_cstring) {bson_free(json_cstring); json_cstring = NULL;} bson_destroy(children[0]); for (unsigned int i = 1; i < children.size(); i++) {delete children[i];}}
   //! Is a successful response
   bool successful() {return Buffer::success;}
   //! Error message
@@ -67,6 +80,13 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
     bson_oid_init_from_string(&oid, key_str);
     // Append the OID to the root of the document
     BSON_APPEND_OID(children[0], "_id", &oid);
+  }
+  inline void get_oid(std::string key, std::string &value) {
+    find_element(key);
+    const bson_oid_t *oid = bson_iter_oid(&iterator);
+    char str[25];
+    bson_oid_to_string(oid, str);
+    value.assign(str);
   }
   //! Add a string value to the buffer
   void add_string(std::string key, std::string value) {add_string(key, value, MONGO_STRING_UTF8);}
@@ -88,6 +108,12 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
       bson_append_utf8(children[child_index], key.c_str(), -1, value.c_str(), -1);
     }
   }
+  inline void get_string(std::string key, std::string &value) {
+    find_element(key);
+    const char *val_cstr = bson_iter_utf8(&iterator, NULL);
+    value.assign(val_cstr);
+    //bson_free(val_cstr); // this may cause a memory leak, but want to try it
+  }
   //! Add a boolean value to the buffer
   inline void add_bool(std::string key, bool value) {
     bson_append_bool(children[child_index], key.c_str(), -1, value);
@@ -99,6 +125,10 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
     bson_uint32_to_string(array_indices[child_index], &key, str, 16);
     bson_append_bool(children[child_index], key, -1, value);
     array_indices[child_index]++;
+  }
+  inline bool get_bool(std::string key) {
+    find_element(key);
+    return bson_iter_bool(&iterator);
   }
   //! Add an integer value to the buffer
   inline void add_int(std::string key, int value) {
@@ -112,6 +142,10 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
     bson_append_int32(children[child_index], key, -1, value);
     array_indices[child_index]++;
   }
+  inline int get_int(std::string key) {
+    find_element(key);
+    return bson_iter_int32(&iterator);
+  }
   //! Add a double value to the buffer
   void add_double(std::string key, double value) {bson_append_double(children[child_index], key.c_str(), -1, value);}
   //! Add a double value to the open array in the buffer
@@ -121,6 +155,10 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
     bson_uint32_to_string(array_indices[child_index], &key, str, 16);
     bson_append_double(children[child_index], key, -1, value);
     array_indices[child_index]++;
+  }
+  inline double get_double(std::string key) {
+    find_element(key);
+    return bson_iter_double(&iterator);
   }
   //! Add a datetime value to the buffer
   void add_date(std::string key, int value) {
@@ -133,6 +171,10 @@ class MongoBuffer: public Buffer, public MongoBufferInterface {
     bson_uint32_to_string(array_indices[child_index], &key, str, 16);
     bson_append_date_time(children[child_index], key, -1, value);
     array_indices[child_index]++;
+  }
+  inline int get_date(std::string key) {
+    find_element(key);
+    return bson_iter_date_time(&iterator);
   }
   //! Start an array in the buffer
   inline void start_array(std::string key) {

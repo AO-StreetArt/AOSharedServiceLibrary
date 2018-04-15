@@ -356,6 +356,30 @@ void MongoClient::update_by_query(AOSSL::MongoBufferInterface *query, \
     if (!result) {throw MongoException(error.message);}
 }
 
+AOSSL::MongoBufferInterface* MongoClient::update_single_by_query(AOSSL::MongoBufferInterface *query, \
+  AOSSL::MongoBufferInterface *update) {
+  // Retrieve a database connection from the pool
+  MongoSession *ms = pool->get_connection();
+  bson_error_t error;
+  bson_t *opts = bson_new();
+  bson_t reply;
+  mongoc_write_concern_t *w_concern = mongoc_write_concern_new();
+  mongoc_write_concern_set_w(w_concern, MONGOC_WRITE_CONCERN_W_DEFAULT);
+  mongoc_write_concern_append (w_concern, opts);
+  // Execute the actual query
+  bson_t *qbson = query->get_bson();
+  bson_t *ubson = update->get_bson();
+  bool result = mongoc_collection_update_one(ms->collection, qbson, ubson, opts, &reply, &error);
+  bson_t *response_bson = bson_copy(&reply);
+  AOSSL::MongoBufferInterface *response = new AOSSL::MongoBuffer(response_bson);
+  // Cleanup
+  pool->release_connection(ms);
+  mongoc_write_concern_destroy(w_concern);
+  if (!result) {throw MongoException(error.message);}
+  bson_destroy(opts);
+  return response;
+}
+
 // Connection Pool
 
 void MongoConnectionPool::init_slots() {
