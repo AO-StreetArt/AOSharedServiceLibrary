@@ -28,9 +28,9 @@ printf "Starting with apt-get dependencies"
 apt-get -y -q install build-essential libtool pkg-config automake cmake uuid-dev libhiredis-dev libcurl4-openssl-dev libevent-dev git libsnappy-dev liblog4cpp5-dev libssl-dev openssl neo4j-client libneo4j-client-dev
 
 printf "Building Mongo C Driver"
-wget https://github.com/mongodb/mongo-c-driver/releases/download/1.6.3/mongo-c-driver-1.6.3.tar.gz
-tar xzf mongo-c-driver-1.6.3.tar.gz
-cd mongo-c-driver-1.6.3 && ./configure --disable-automatic-init-and-cleanup --with-libbson=bundled && make && make install
+wget https://github.com/mongodb/mongo-c-driver/releases/download/1.9.4/mongo-c-driver-1.9.4.tar.gz
+tar xzf mongo-c-driver-1.9.4.tar.gz
+cd mongo-c-driver-1.9.4 && ./configure --disable-automatic-init-and-cleanup --with-libbson=bundled && make && make install
 
 if [ ! -f /usr/local/include/zmq.h ]; then
 

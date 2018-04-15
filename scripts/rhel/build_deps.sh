@@ -32,9 +32,9 @@ cd $PRE/neo/libneo4j-client-2.1.3 && ./configure --disable-tools --without-tls &
 cd ../../
 
 printf "Building Mongo C Driver"
-wget https://github.com/mongodb/mongo-c-driver/releases/download/1.6.3/mongo-c-driver-1.6.3.tar.gz
-tar xzf mongo-c-driver-1.6.3.tar.gz
-cd mongo-c-driver-1.6.3 && ./configure --disable-automatic-init-and-cleanup --with-libbson=bundled && make && make install
+wget https://github.com/mongodb/mongo-c-driver/releases/download/1.9.4/mongo-c-driver-1.9.4.tar.gz
+tar xzf mongo-c-driver-1.9.4.tar.gz
+cd mongo-c-driver-1.9.4 && ./configure --disable-automatic-init-and-cleanup --with-libbson=bundled && make && make install
 
 #Determine if we Need Redis Client
 if [ ! -d /usr/local/include/hiredis ]; then
