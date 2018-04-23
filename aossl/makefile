@@ -5,7 +5,6 @@ make_subfolders:
 	cd consul && $(MAKE)
 	cd commandline && $(MAKE)
 	cd properties && $(MAKE)
-	cd logging && $(MAKE)
 	cd uuid && $(MAKE)
 
 install:
@@ -14,7 +13,6 @@ install:
 	cd consul && $(MAKE) install
 	cd commandline && $(MAKE) install
 	cd properties && $(MAKE) install
-	cd logging && $(MAKE) install
 	cd uuid && $(MAKE) install
 
 tests:
@@ -22,14 +20,12 @@ tests:
 	cd http && $(MAKE) tests
 	cd commandline && $(MAKE) tests
 	cd properties && $(MAKE) tests
-	cd logging && $(MAKE) tests
 	cd uuid && $(MAKE) tests
 	cd consul && $(MAKE) tests
 
 benchmarks:
 	cd http && $(MAKE) benchmark
 	cd consul && $(MAKE) benchmark
-	cd logging && $(MAKE) benchmark
 	cd uuid && $(MAKE) benchmark
 
 clean:
@@ -38,5 +34,4 @@ clean:
 	cd consul && $(MAKE) clean
 	cd commandline && $(MAKE) clean
 	cd properties && $(MAKE) clean
-	cd logging && $(MAKE) clean
 	cd uuid && $(MAKE) clean

@@ -4,8 +4,6 @@
 #  -Wall turns on most, but not all, compiler warnings
 #
 
-.PHONY: examples
-
 #Compilation Variables
 CC = g++
 SLC = ar rcs
@@ -17,8 +15,8 @@ export INSTALL_DIR = /usr/local/include/aossl
 INSTALL_LIB_DIR = /usr/local/lib
 
 #Library Objects
-OBJS = aossl/commandline/cli.o aossl/logging/logging.o aossl/http/client/http_admin.o\
-	aossl/consul/consul_admin.o aossl/logging/logging_interface.o aossl/uuid/uuid_admin.o \
+OBJS = aossl/commandline/cli.o aossl/http/client/http_admin.o\
+	aossl/consul/consul_admin.o aossl/uuid/uuid_admin.o \
 		aossl/consul/service.o aossl/properties/properties_reader.o
 
 
@@ -45,10 +43,6 @@ benchmarks:
 # typing 'sudo make install' will install the libraries into system paths
 install: $(INSTALL_DIR) $(INSTALL_LIB_DIR)/libaossl.a install_subfolders
 
-# 'make examples' will build all of the examples
-examples:
-	@$(MAKE) -C examples
-
 $(INSTALL_DIR):
 	mkdir $@
 
@@ -65,7 +59,6 @@ install_subfolders:
 clean:
 	$(RM) libaossl.a *~
 	cd aossl && $(MAKE) clean
-	cd examples && $(MAKE) clean
 
 # To remove the installed library, type 'make uninstall'.
 uninstall:
