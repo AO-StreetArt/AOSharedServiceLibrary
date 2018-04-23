@@ -1,5 +1,0 @@
-*.o
-*.log
-*.log.*
-*_test
-zmq_shell

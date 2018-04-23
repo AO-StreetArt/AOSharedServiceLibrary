@@ -11,16 +11,10 @@ communications to perform complex tasks.
 While designed with a Microservice architecture in mind, AOSSL also seeks to maintain enough flexibility to allow for use with any program architecture and any other libraries.  AOSSL uses a plug-and-play architecture to allow users to pick and choose components they would like to use, and exclude others.  This is meant to reduce time-to-market on C++ Services, and is designed to be easy to use and reliable, while maintaining high performance standards.
 
 ### Features:
-#### Core Frameworks revolving around inter-service messaging protocols
-* HTTP Service Framework
-* ZeroMQ Service Framework
 
 #### Connections to Critical External Tools
 
-* Mongo Interface
-* Redis Interface
 * Consul Interface
-* Neo4j Interface
 
 #### Basic Tools
 * Asynchronous Logging Module

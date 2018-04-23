@@ -8,10 +8,6 @@ addons:
     packages:
     - gcc-5
     - g++-5
-services:
-- redis-server
-- mongodb
-- docker
 before_install:
 - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
 - sudo unlink /usr/bin/g++ && sudo ln -s /usr/bin/g++-5 /usr/bin/g++
@@ -26,30 +22,21 @@ install:
 - wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
 - unzip consul_0.6.4_linux_amd64.zip
 - "./consul agent -dev -bind=127.0.0.1 &"
-- sudo docker pull neo4j
-- sudo docker run -d --publish=7474:7474 --publish=7687:7687 --env=NEO4J_AUTH=none
-  --volume=$HOME/neo4j/data:/data neo4j
 before_script:
 - gcc --version
 - ldd --version
 script:
 - make
-- make rhel-test
-- make rhel-benchmarks
+- make tests
+- make benchmarks
 - sudo make install
 - make examples
-- cd $TRAVIS_BUILD_DIR/aossl/http/server && ./http_server_test &
 - cd $TRAVIS_BUILD_DIR/aossl/properties && ./properties_reader_test
 - cd $TRAVIS_BUILD_DIR/aossl/commandline && ./cli_test name=test
 - cd $TRAVIS_BUILD_DIR/aossl/http/client && ./http_test
 - cd $TRAVIS_BUILD_DIR/aossl/logging && ./logging_test
 - cd $TRAVIS_BUILD_DIR/aossl/uuid && ./uuid_test
-- cd $TRAVIS_BUILD_DIR/aossl/zmq && ./zmqio_test
-- cd $TRAVIS_BUILD_DIR/aossl/redis && ./redis_test
-- cd $TRAVIS_BUILD_DIR/aossl/mongo && ./mongo_test
-- cd $TRAVIS_BUILD_DIR/scripts && sudo ./test_http_server.sh
 - cd $TRAVIS_BUILD_DIR/aossl/consul && ./consul_test
-- cd $TRAVIS_BUILD_DIR/aossl/neo4j && ./neo4j_test
 notifications:
   slack:
     secure: hnjVThmuokboFFs3gAoFEPGLCdageH2jeLq9yG9p1/6S0ZU+OsZm2PgQf85Ik8ZqU+ikIfPI+BZuG4ApQ7WU8pvhiWnyOJtX6gQU8y6nRZ2B8H0pfHbZDTEQ4roz9FdX0PrG4W6w00lCwU+Rg6/HF3kX0mziF1+V2rsdSDuY0vEL6FTxdn/eIm8ewhCBnuVnsASW49lfabdMSjD0ayURgnysJ4O4SYU3yRYF0Yj0izrMdmoPf6k6Y2htiyVYegRQ8c/4ohlRppI/J8NtpisqEcj3Ydnyudhr/Uui3wMtywy8XRxWPYkrXMFuUtQJwRfUz3eykBCFS9dnlhhtZPNRfHj6zpwR9ypOybcYtVRce0cp1DWfdaUxNM12yq2s2yJ2wBWDvIo+T/mIB3YH9YD072ncn23Yb+JIG8NAGk6QBz1eDFHXJfEf0voinWVMTlEvnLvCEq0ArJrwgNRxi2cJaztzJ8x20CctY9Bgy/biNFavZCyW1a7KN1TzURUjevQ4RTrqzhQms2fUBMYDNTS+HpfFdpbrY9dpYhf2lDH1FhLP2hAqIPpYGORXegAc8rdCtecyVRvYiY0AdnSQts/vjkMtmCKxwHD+vGmn3vDVNEAciUgUzPOR8cXs0pwyg0/XiJmedrMxTnMzjrmM26PpvJ9LqzqGNyNXehCSz5gEDm8=
