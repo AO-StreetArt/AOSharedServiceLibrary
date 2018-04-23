@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 #include "include/service.h"
 
-Service::Service() {
+AOSSL::Service::Service() {
   id = "";
   name = "";
   address = "";
@@ -32,7 +32,7 @@ Service::Service() {
   check.script = "";
 }
 
-Service::Service(std::string new_id, std::string new_name) {
+AOSSL::Service::Service(std::string new_id, std::string new_name) {
   id = new_id;
   name = new_name;
   address = "";
@@ -40,7 +40,7 @@ Service::Service(std::string new_id, std::string new_name) {
   check.script = "";
 }
 
-Service::Service(std::string new_id, std::string new_name, \
+AOSSL::Service::Service(std::string new_id, std::string new_name, \
   std::string new_address, std::string new_port) {
   id = new_id;
   name = new_name;
@@ -49,7 +49,7 @@ Service::Service(std::string new_id, std::string new_name, \
   check.script = "";
 }
 
-Service::Service(std::string new_id, std::string new_name, \
+AOSSL::Service::Service(std::string new_id, std::string new_name, \
   std::string new_address, std::string new_port, \
   std::vector<std::string> new_tags) {
   id = new_id;
@@ -60,7 +60,7 @@ Service::Service(std::string new_id, std::string new_name, \
   check.script = "";
 }
 
-std::string Service::to_json() const {
+std::string AOSSL::Service::to_json() const {
   std::string id_key = "ID";
   std::string name_key = "Name";
   std::string tags_key = "Tags";

@@ -22,32 +22,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_UUID_INCLUDE_UUID_ADMIN_H_
-#define AOSSL_UUID_INCLUDE_UUID_ADMIN_H_
-
 #include <string.h>
 #include <uuid/uuid.h>
 #include <string>
+
 #include "uuid_interface.h"
+#include "aossl/core/include/buffers.h"
+
+#ifndef AOSSL_UUID_INCLUDE_UUID_ADMIN_H_
+#define AOSSL_UUID_INCLUDE_UUID_ADMIN_H_
+
+namespace AOSSL {
 
 // UUID Admin
 
 // The UUID Admin is in charge of generating any Universally Unique
 // ID's that are required throughout program execution
-class uuidAdmin: public uuidInterface {
-UuidContainer cont;
-
+class UuidAdmin: public UuidInterface {
  public:
   uuidAdmin() {}
   ~uuidAdmin() {}
-  // Generate a new UUID
+  //! Generate a new UUID and allocate memory for it.
 
-  // The method will generate on the means of generation present on your system
-  // In some cases, this may result in UUID's being generated that pose a
-  // security risk.  In this case, that fact will be clearly called out in the
-  // logs, and it is recommended that production systems are tested to ensure
-  // that UUID's are generated in a safe manner
-  UuidContainer generate();
+  //! The method will generate on the means of generation present on your
+  //! system.  In some cases, this may result in UUID's being generated that
+  //! pose a security risk.  In this case, that fact will be clearly called out
+  //! in the logs, and it is recommended that production systems are
+  //! tested to ensure that UUID's are generated in a safe manner
+  StringBuffer* generate();
+  //! Generate a new UUID in the pre-existing string buffer.
+
+  //! The method will generate on the means of generation present on your
+  //! system.  In some cases, this may result in UUID's being generated that
+  //! pose a security risk.  In this case, that fact will be clearly called out
+  //! in the logs, and it is recommended that production systems are
+  //! tested to ensure that UUID's are generated in a safe manner
+  void generate(StringBuffer& buf);
 };
+
+}
 
 #endif  // AOSSL_UUID_INCLUDE_UUID_ADMIN_H_

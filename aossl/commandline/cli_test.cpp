@@ -30,8 +30,8 @@ THE SOFTWARE.
 int main(int argc, char** argv) {
 
   // Build a command line interpreter
-  CommandLineInterpreterFactory cli_factory;
-  CommandLineInterface *cli = \
+  AOSSL::CommandLineInterpreterFactory cli_factory;
+  AOSSL::CommandLineInterface *cli = \
     cli_factory.get_command_line_interface(argc, argv);
 
   // Test the command line interpreter

@@ -22,12 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-//! The HTTP Administrator
-//! Responsible for placing HTTP Requests using curl
-
-#ifndef AOSSL_HTTP_CLIENT_INCLUDE_HTTP_ADMIN_H_
-#define AOSSL_HTTP_CLIENT_INCLUDE_HTTP_ADMIN_H_
-
 #include <string>
 #include <string.h>
 #include <sstream>
@@ -36,13 +30,28 @@ THE SOFTWARE.
 
 #include "http_interface.h"
 
+//! The HTTP Administrator
+//! Responsible for placing HTTP Requests using curl
+
+#ifndef AOSSL_HTTP_CLIENT_INCLUDE_HTTP_ADMIN_H_
+#define AOSSL_HTTP_CLIENT_INCLUDE_HTTP_ADMIN_H_
+
+namespace AOSSL {
+
 //! HTTP Callbacks
 //! A String to store response data
 extern std::string writedata;
 
 //! This is the callback that gets called when we recieve the response to the
 //! Get Curl Request
-size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up);
+size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up) {
+  // Put the response into a string
+  for (size_t c = 0; c < size*nmemb; c++) {
+    writedata.push_back(buf[c]);
+  }
+
+  return size*nmemb;
+}
 
 //! The HTTP Requests Administrators
 
@@ -101,5 +110,7 @@ class HttpAdmin: public HttpInterface {
   //! with the specified timeout
   bool del(std::string url, int timeout);
 };
+
+}
 
 #endif  // AOSSL_HTTP_CLIENT_INCLUDE_HTTP_ADMIN_H_

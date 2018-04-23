@@ -34,8 +34,8 @@ THE SOFTWARE.
 #include "include/consul_interface.h"
 #include "include/factory_consul.h"
 
-ConsulInterface *consul;
-ServiceInterface *service;
+AOSSL::ConsulInterface *consul;
+AOSSL::ServiceInterface *service;
 
 std::vector<std::string> uuid_list;
 int register_counter = 0;
@@ -105,7 +105,7 @@ BENCHMARK(CONSUL, DeleteConfigurationValue, 10, 100) {
 // Main Method
 
 int main() {
-  ConsulComponentFactory consul_factory;
+  AOSSL::ConsulComponentFactory consul_factory;
 
   // Set up UUID Generator
   consul = consul_factory.get_consul_interface("localhost:8500");

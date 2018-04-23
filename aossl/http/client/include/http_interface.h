@@ -27,6 +27,8 @@ THE SOFTWARE.
 #ifndef AOSSL_HTTP_CLIENT_INCLUDE_HTTP_INTERFACE_H_
 #define AOSSL_HTTP_CLIENT_INCLUDE_HTTP_INTERFACE_H_
 
+namespace AOSSL {
+
 //! An Implementation of std::exception that
 //! denotes an error during an http operation
 struct HttpRequestException: public std::exception {
@@ -88,5 +90,7 @@ class HttpInterface {
   //! with the specified timeout
   virtual bool del(std::string url, int timeout) = 0;
 };
+
+}
 
 #endif  // AOSSL_HTTP_CLIENT_INCLUDE_HTTP_INTERFACE_H_

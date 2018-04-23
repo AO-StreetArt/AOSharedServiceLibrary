@@ -25,7 +25,7 @@ THE SOFTWARE.
 #include "include/cli.h"
 
 // Constructor
-CommandLineInterpreter::CommandLineInterpreter(int argc, char* argv[]) {
+AOSSL::CommandLineInterpreter::CommandLineInterpreter(int argc, char* argv[]) {
   name = argv[0];
   for (int i = 1; i < argc; i++) {
     // Find the command line parameter string and look for an equals sign
@@ -47,7 +47,7 @@ CommandLineInterpreter::CommandLineInterpreter(int argc, char* argv[]) {
 }
 
 // Does a key exist?
-bool CommandLineInterpreter::opt_exist(std::string key) {
+bool AOSSL::CommandLineInterpreter::opt_exist(std::string key) {
   auto search = opts.find(key);
   if (search != opts.end()) {
     return true;

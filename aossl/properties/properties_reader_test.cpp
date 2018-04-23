@@ -30,8 +30,8 @@ THE SOFTWARE.
 #include "include/properties_reader_interface.h"
 
 int main(int argc, char** argv) {
-  PropertyReaderFactory prop_factory;
-  PropertiesReaderInterface *reader = \
+  AOSSL::PropertyReaderFactory prop_factory;
+  AOSSL::PropertiesReaderInterface *reader = \
     prop_factory.get_properties_reader_interface("test.properties");
   if ( reader->opt_exist("DB_Password") ) {
     assert(reader->get_opt("DB_Password") == "default");

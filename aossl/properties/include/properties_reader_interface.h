@@ -22,11 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <string>
+#include <vector>
+
 #ifndef AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_INTERFACE_H_
 #define AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_INTERFACE_H_
 
-#include <string>
-#include <vector>
+namespace AOSSL {
 
 //! PropertiesReaderInterface
 
@@ -53,5 +55,7 @@ class PropertiesReaderInterface {
   //! Get a list that exists within the configuration
   virtual std::vector<std::string> get_list(std::string key) = 0;
 };
+
+}
 
 #endif  // AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_INTERFACE_H_

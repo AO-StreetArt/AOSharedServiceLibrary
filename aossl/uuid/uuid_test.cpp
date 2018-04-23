@@ -30,12 +30,12 @@ THE SOFTWARE.
 #include "include/factory_uuid.h"
 
 int main() {
-  uuidComponentFactory id_factory;
+  AOSSL::uuidComponentFactory id_factory;
   // Initialize the UUID Admin
-  uuidInterface *uuid = id_factory.get_uuid_interface();
+  AOSSL::uuidInterface *uuid = id_factory.get_uuid_interface();
 
   // Generate a UUID
-  UuidContainer id_container = uuid->generate();
+  AOSSL::UuidContainer id_container = uuid->generate();
   std::string id_str = id_container.id;
   assert(!(id_str.empty()));
   std::cout << id_str << std::endl;

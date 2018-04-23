@@ -22,11 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include "commandline_interface.h"
+#include "cli.h"
+
 #ifndef AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_
 #define AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_
 
-#include "commandline_interface.h"
-#include "cli.h"
+namespace AOSSL {
 
 //! The Command Line Interpreter Service Component Factory
 
@@ -47,5 +49,7 @@ class CommandLineInterpreterFactory {
     return new CommandLineInterpreter( argc, argv );
   }
 };
+
+}
 
 #endif  // AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_

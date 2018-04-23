@@ -26,15 +26,15 @@ THE SOFTWARE.
 
 // Consul Administrator
 
-ConsulAdmin::ConsulAdmin(std::string caddr) {
-  HttpClientFactory http_factory;
+AOSSL::ConsulAdmin::ConsulAdmin(std::string caddr) {
+  AOSSL::HttpClientFactory http_factory;
   ha = http_factory.get_http_interface();
   consul_addr = caddr;
   timeout = 5;
 }
 
 AOSSL::StringBuffer* \
-  ConsulAdmin::base64_decode_safe(std::string const& encoded_string) {
+  AOSSL::ConsulAdmin::base64_decode_safe(std::string const& encoded_string) {
   std::string decode_return_string = "";
   static const std::string base64_chars =
                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -88,7 +88,7 @@ AOSSL::StringBuffer* \
   return buf;
 }
 
-std::string ConsulAdmin::base64_decode(std::string const& encoded_string) {
+std::string AOSSL::ConsulAdmin::base64_decode(std::string const& encoded_string) {
   base64_return_string.clear();
 
   static const std::string base64_chars =
@@ -140,7 +140,7 @@ std::string ConsulAdmin::base64_decode(std::string const& encoded_string) {
 }
 
 // Post a query to consul
-AOSSL::StringBuffer* ConsulAdmin::query_safe(std::string query_url) {
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::query_safe(std::string query_url) {
   // Get the URL
   std::string url_string = consul_addr;
   url_string = url_string + query_url;
@@ -167,7 +167,7 @@ AOSSL::StringBuffer* ConsulAdmin::query_safe(std::string query_url) {
 }
 
 // Post a query to consul
-std::string ConsulAdmin::query(std::string query_url) {
+std::string AOSSL::ConsulAdmin::query(std::string query_url) {
   // Get the URL
   std::string url_string = consul_addr;
   url_string = url_string + query_url;
@@ -183,7 +183,7 @@ std::string ConsulAdmin::query(std::string query_url) {
 
 // Service Registry Functions
 
-bool ConsulAdmin::register_service(const ServiceInterface& s) {
+bool AOSSL::ConsulAdmin::register_service(const ServiceInterface& s) {
   // Get the URL
   std::string query_url = "/v1/agent/service/register";
   std::string url_string = consul_addr + query_url;
@@ -196,7 +196,7 @@ bool ConsulAdmin::register_service(const ServiceInterface& s) {
   return success;
 }
 
-bool ConsulAdmin::deregister_service(const ServiceInterface& s) {
+bool AOSSL::ConsulAdmin::deregister_service(const ServiceInterface& s) {
   // Get the URL
   std::string query_url = "/v1/agent/service/deregister/";
   query_url = query_url.append(s.get_id());
@@ -210,42 +210,42 @@ bool ConsulAdmin::deregister_service(const ServiceInterface& s) {
 
 // Basic Queries
 
-std::string ConsulAdmin::services() {
+std::string AOSSL::ConsulAdmin::services() {
   std::string url = "/v1/agent/services";
   query_return_string = query(url);
   return query_return_string;
 }
 
-AOSSL::StringBuffer* ConsulAdmin::services_safe() {
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::services_safe() {
   std::string url = "/v1/agent/services";
   return query_safe(url);
 }
 
-std::string ConsulAdmin::agent_info() {
+std::string AOSSL::ConsulAdmin::agent_info() {
   std::string url = "/v1/agent/self";
   query_return_string = query(url);
   return query_return_string;
 }
 
-AOSSL::StringBuffer* ConsulAdmin::agent_info_safe() {
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::agent_info_safe() {
   std::string url = "/v1/agent/self";
   return query_safe(url);
 }
 
-std::string ConsulAdmin::healthy_services() {
+std::string AOSSL::ConsulAdmin::healthy_services() {
   std::string url = "v1/health/service/web?passing";
   query_return_string = query(url);
   return query_return_string;
 }
 
-AOSSL::StringBuffer* ConsulAdmin::healthy_services_safe() {
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::healthy_services_safe() {
   std::string url = "v1/health/service/web?passing";
   return query_safe(url);
 }
 
 // Configuration Key-Value Storage Functions
 
-bool ConsulAdmin::set_config_value(std::string key, std::string val) {
+bool AOSSL::ConsulAdmin::set_config_value(std::string key, std::string val) {
   // Get the URL
   std::string query_url = "/v1/kv/";
   query_url = query_url.append(key);
@@ -256,19 +256,19 @@ bool ConsulAdmin::set_config_value(std::string key, std::string val) {
   return success;
 }
 
-std::string ConsulAdmin::get_config_value(std::string key) {
+std::string AOSSL::ConsulAdmin::get_config_value(std::string key) {
   std::string url = "/v1/kv/";
   url = url.append(key);
   return query(url);
 }
 
-AOSSL::StringBuffer* ConsulAdmin::get_config_value_safe(std::string key) {
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::get_config_value_safe(std::string key) {
   std::string url = "/v1/kv/";
   url = url.append(key);
   return query_safe(url);
 }
 
-bool ConsulAdmin::del_config_value(std::string key) {
+bool AOSSL::ConsulAdmin::del_config_value(std::string key) {
   // Get the URL
   std::string query_url = "/v1/kv/";
   query_url = query_url.append(key);
@@ -278,15 +278,15 @@ bool ConsulAdmin::del_config_value(std::string key) {
   return success;
 }
 
-std::string ConsulAdmin::datacenters() {
+std::string AOSSL::ConsulAdmin::datacenters() {
   return query("/v1/catalog/datacenters");
 }
 
-AOSSL::StringBuffer* ConsulAdmin::datacenters_safe() {
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::datacenters_safe() {
   return query_safe("/v1/catalog/datacenters");
 }
 
-std::string ConsulAdmin::nodes_dc(std::string data_center) {
+std::string AOSSL::ConsulAdmin::nodes_dc(std::string data_center) {
   std::string url = "/v1/catalog/nodes";
   if (!data_center.empty()) {
     url = url.append("?dc=");
@@ -295,7 +295,7 @@ std::string ConsulAdmin::nodes_dc(std::string data_center) {
   return query(url);
 }
 
-AOSSL::StringBuffer* ConsulAdmin::nodes_dc_safe(std::string data_center) {
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::nodes_dc_safe(std::string data_center) {
   std::string url = "/v1/catalog/nodes";
   if (!data_center.empty()) {
     url = url.append("?dc=");
@@ -304,7 +304,7 @@ AOSSL::StringBuffer* ConsulAdmin::nodes_dc_safe(std::string data_center) {
   return query_safe(url);
 }
 
-std::string ConsulAdmin::services_dc(std::string data_center) {
+std::string AOSSL::ConsulAdmin::services_dc(std::string data_center) {
   std::string url = "/v1/catalog/services";
   if (!data_center.empty()) {
     url = url.append("?dc=");
@@ -313,7 +313,7 @@ std::string ConsulAdmin::services_dc(std::string data_center) {
   return query(url);
 }
 
-AOSSL::StringBuffer* ConsulAdmin::services_dc_safe(std::string data_center) {
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::services_dc_safe(std::string data_center) {
   std::string url = "/v1/catalog/services";
   if (!data_center.empty()) {
     url = url.append("?dc=");
@@ -322,19 +322,19 @@ AOSSL::StringBuffer* ConsulAdmin::services_dc_safe(std::string data_center) {
   return query_safe(url);
 }
 
-std::string ConsulAdmin::nodes_service(std::string service) {
+std::string AOSSL::ConsulAdmin::nodes_service(std::string service) {
   std::string url = "/v1/catalog/service/";
   url = url.append(service);
   return query(url);
 }
 
-AOSSL::StringBuffer* ConsulAdmin::nodes_service_safe(std::string service) {
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::nodes_service_safe(std::string service) {
   std::string url = "/v1/catalog/service/";
   url = url.append(service);
   return query_safe(url);
 }
 
-std::string ConsulAdmin::services_node(std::string node, \
+std::string AOSSL::ConsulAdmin::services_node(std::string node, \
   std::string data_center) {
   std::string url = "/v1/catalog/node/";
   url = url.append(node);
@@ -345,7 +345,7 @@ std::string ConsulAdmin::services_node(std::string node, \
   return query(url);
 }
 
-AOSSL::StringBuffer* ConsulAdmin::services_node_safe(std::string node, \
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::services_node_safe(std::string node, \
   std::string data_center) {
   std::string url = "/v1/catalog/node/";
   url = url.append(node);

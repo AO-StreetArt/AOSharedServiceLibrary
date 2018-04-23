@@ -22,9 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_
-#define AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_
-
 #include <string.h>
 #include <string>
 #include <vector>
@@ -36,6 +33,11 @@ THE SOFTWARE.
 
 #include "consul_interface.h"
 #include "service.h"
+
+#ifndef AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_
+#define AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_
+
+namespace AOSSL {
 
 // Consul Admin
 
@@ -132,5 +134,7 @@ class ConsulAdmin: public ConsulInterface {
   AOSSL::StringBuffer* \
     services_node_safe(std::string node, std::string data_center);
 };
+
+}
 
 #endif  // AOSSL_CONSUL_INCLUDE_CONSUL_ADMIN_H_

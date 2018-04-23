@@ -22,9 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_H_
-#define AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_H_
-
 #include <sys/stat.h>
 #include <unordered_map>
 #include <string>
@@ -34,6 +31,11 @@ THE SOFTWARE.
 #include <vector>
 
 #include "properties_reader_interface.h"
+
+#ifndef AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_H_
+#define AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_H_
+
+namespace AOSSL {
 
 class PropertiesReader: public PropertiesReaderInterface {
   // An unordered map of options from the command line
@@ -64,5 +66,7 @@ class PropertiesReader: public PropertiesReaderInterface {
   // Get the option list
   std::unordered_map<std::string, std::string> get_opts() {return opts;}
 };
+
+}
 
 #endif  // AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_H_

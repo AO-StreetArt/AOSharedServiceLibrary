@@ -33,23 +33,23 @@ THE SOFTWARE.
 #include "aossl/core/include/buffers.h"
 
 int main() {
-  ConsulComponentFactory consul_factory;
+  AOSSL::ConsulComponentFactory consul_factory;
 
   // Construction tests
-  ConsulInterface *ca = consul_factory.get_consul_interface("localhost:8500");
+  AOSSL::ConsulInterface *ca = consul_factory.get_consul_interface("localhost:8500");
 
-  ServiceInterface *s0 = \
+  AOSSL::ServiceInterface *s0 = \
     consul_factory.get_service_interface("0", "CLyman", "tcp://*", "5555");
 
-  ServiceInterface *s = \
+  AOSSL::ServiceInterface *s = \
     consul_factory.get_service_interface("1", "CLyman", "tcp://*", "5555");
   s->add_tag("Testing");
 
-  ServiceInterface *s2 = \
+  AOSSL::ServiceInterface *s2 = \
     consul_factory.get_service_interface("2", "CLyman", "tcp://*", "5557");
   s2->add_tag("Test");
 
-  ServiceInterface *s3 = \
+  AOSSL::ServiceInterface *s3 = \
     consul_factory.get_service_interface("3", "OthrService", "tcp://*", "5559");
   s3->add_tag("Test");
   s3->clear_tags();

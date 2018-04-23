@@ -25,7 +25,7 @@ THE SOFTWARE.
 #include "include/properties_reader.h"
 
 // Constructor
-PropertiesReader::PropertiesReader(std::string file_path) {
+AOSSL::PropertiesReader::PropertiesReader(std::string file_path) {
   // Open the file
   std::string line;
 
@@ -76,14 +76,14 @@ PropertiesReader::PropertiesReader(std::string file_path) {
 }
 
 // Does a key exist?
-bool PropertiesReader::opt_exist(std::string key) {
+bool AOSSL::PropertiesReader::opt_exist(std::string key) {
   auto search = opts.find(key);
   if (search != opts.end()) return true;
   return false;
 }
 
 // Does a key exist?
-bool PropertiesReader::list_exist(std::string key) {
+bool AOSSL::PropertiesReader::list_exist(std::string key) {
   auto search = opt_lists.find(key);
   if (search != opt_lists.end()) return true;
   return false;

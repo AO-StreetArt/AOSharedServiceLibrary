@@ -42,8 +42,8 @@ int main() {
 
   // Central Test
 
-  HttpClientFactory http_factory;
-  HttpInterface *ha = http_factory.get_http_interface();
+  AOSSL::HttpClientFactory http_factory;
+  AOSSL::HttpInterface *ha = http_factory.get_http_interface();
 
   // Get
 

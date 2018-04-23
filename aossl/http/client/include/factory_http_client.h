@@ -28,6 +28,8 @@ THE SOFTWARE.
 #ifndef AOSSL_HTTP_CLIENT_INCLUDE_FACTORY_HTTP_CLIENT_H_
 #define AOSSL_HTTP_CLIENT_INCLUDE_FACTORY_HTTP_CLIENT_H_
 
+namespace AOSSL {
+
 //! The HTTP Client Service Component Factory
 
 //! The Service Component Factory tracks the HTTP Client
@@ -45,5 +47,7 @@ class HttpClientFactory {
   //! Get the HTTP Interface instance
   HttpInterface* get_http_interface() {return new HttpAdmin;}
 };
+
+}
 
 #endif  // AOSSL_HTTP_CLIENT_INCLUDE_FACTORY_HTTP_CLIENT_H_

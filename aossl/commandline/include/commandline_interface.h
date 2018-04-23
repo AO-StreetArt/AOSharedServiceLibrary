@@ -22,10 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <string>
+
 #ifndef AOSSL_COMMANDLINE_INCLUDE_COMMANDLINE_INTERFACE_H_
 #define AOSSL_COMMANDLINE_INCLUDE_COMMANDLINE_INTERFACE_H_
 
-#include <string>
+namespace AOSSL {
 
 //! CommandLineInterface
 
@@ -49,5 +51,7 @@ class CommandLineInterface {
   //! run.
   virtual std::string get_program_name() = 0;
 };
+
+}
 
 #endif  // AOSSL_COMMANDLINE_INCLUDE_COMMANDLINE_INTERFACE_H_

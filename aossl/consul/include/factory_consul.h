@@ -22,15 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_
-#define AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_
-
 #include <string.h>
 #include <string>
 #include <vector>
 #include "consul_interface.h"
 #include "service.h"
 #include "consul_admin.h"
+
+
+#ifndef AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_
+#define AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_
+
+namespace AOSSL {
 
 //! The Consul Service Component Factory
 
@@ -72,5 +75,7 @@ class ConsulComponentFactory {
       return new Service( new_id, new_name, new_address, new_port, new_tags );
     }
 };
+
+}
 
 #endif  // AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_

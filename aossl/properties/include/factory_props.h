@@ -22,12 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_
-#define AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_
-
 #include <string>
 #include "properties_reader_interface.h"
 #include "properties_reader.h"
+
+#ifndef AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_
+#define AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_
+
+namespace AOSSL {
 
 //! The Property File Reader Service Component Factory
 
@@ -49,5 +51,7 @@ class PropertyReaderFactory {
     return new PropertiesReader(filename);
   }
 };
+
+}
 
 #endif  // AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_

@@ -22,38 +22,42 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_UUID_INCLUDE_UUID_INTERFACE_H_
-#define AOSSL_UUID_INCLUDE_UUID_INTERFACE_H_
-
 #include <string.h>
 #include <string>
 #include <exception>
 
-//! A return structure which captures any security error messages
-//! thrown by the framework
-struct UuidContainer {
-  //! The UUID generated
-  std::string id;
+#include "aossl/core/include/buffers.h"
 
-  //! Is either empty or contains an error message
-  std::string err;
-};
+#ifndef AOSSL_UUID_INCLUDE_UUID_INTERFACE_H_
+#define AOSSL_UUID_INCLUDE_UUID_INTERFACE_H_
+
+namespace AOSSL {
 
 //! UUID Admin
 
 //! The UUID Admin is in charge of generating any Universally Unique
 //! ID's that are required throughout program execution
-class uuidInterface {
+class UuidInterface {
  public:
   virtual ~uuidInterface() {}
-  //! Generate a new UUID
+  //! Generate a new UUID and allocate memory for it.
 
   //! The method will generate on the means of generation present on your
   //! system.  In some cases, this may result in UUID's being generated that
   //! pose a security risk.  In this case, that fact will be clearly called out
   //! in the logs, and it is recommended that production systems are
   //! tested to ensure that UUID's are generated in a safe manner
-  virtual UuidContainer generate() = 0;
+  virtual StringBuffer* generate() = 0;
+  //! Generate a new UUID in the pre-existing string buffer.
+
+  //! The method will generate on the means of generation present on your
+  //! system.  In some cases, this may result in UUID's being generated that
+  //! pose a security risk.  In this case, that fact will be clearly called out
+  //! in the logs, and it is recommended that production systems are
+  //! tested to ensure that UUID's are generated in a safe manner
+  virtual void generate(StringBuffer& buf) = 0;
 };
+
+}
 
 #endif  // AOSSL_UUID_INCLUDE_UUID_INTERFACE_H_

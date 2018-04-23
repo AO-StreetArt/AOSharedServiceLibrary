@@ -22,14 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_COMMANDLINE_INCLUDE_CLI_H_
-#define AOSSL_COMMANDLINE_INCLUDE_CLI_H_
-
 #include <unordered_map>
 #include <string>
 #include <iterator>
 
 #include "commandline_interface.h"
+
+#ifndef AOSSL_COMMANDLINE_INCLUDE_CLI_H_
+#define AOSSL_COMMANDLINE_INCLUDE_CLI_H_
+
+namespace AOSSL {
 
 class CommandLineInterpreter: public CommandLineInterface {
   // An unordered map of options from the command line
@@ -59,5 +61,7 @@ class CommandLineInterpreter: public CommandLineInterface {
   // run.
   std::string get_program_name() {return name;}
 };
+
+}
 
 #endif  // AOSSL_COMMANDLINE_INCLUDE_CLI_H_

@@ -38,7 +38,7 @@ std::string put = "http://httpbin.org/put";
 std::string get = "http://httpbin.org/get";
 std::string del = "http://httpbin.org/delete";
 
-HttpInterface *http;
+AOSSL::HttpInterface *http;
 
 // Benchmarks
 
@@ -80,7 +80,7 @@ BENCHMARK(HTTP, Delete, 10, 100) {
 // Main Method
 
 int main() {
-  HttpClientFactory http_client_factory;
+  AOSSL::HttpClientFactory http_client_factory;
 
   // Set up internal variables
   std::cout << "Internal Logging Intialized" <<std::endl;

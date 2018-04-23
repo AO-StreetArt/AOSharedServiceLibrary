@@ -22,13 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_CONSUL_INCLUDE_SERVICE_H_
-#define AOSSL_CONSUL_INCLUDE_SERVICE_H_
-
 #include <string.h>
 #include <string>
 #include <vector>
 #include "consul_interface.h"
+
+#ifndef AOSSL_CONSUL_INCLUDE_SERVICE_H_
+#define AOSSL_CONSUL_INCLUDE_SERVICE_H_
+
+namespace AOSSL {
 
 //! A Service class which can be registered with Consul for each app instance
 
@@ -104,5 +106,7 @@ class Service: public ServiceInterface {
     check.interval = std::to_string(interval_seconds) + "s";
   }
 };
+
+}
 
 #endif  // AOSSL_CONSUL_INCLUDE_SERVICE_H_

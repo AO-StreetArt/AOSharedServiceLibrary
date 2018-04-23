@@ -22,14 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_
-#define AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_
-
 #include <string.h>
 #include <string>
 #include <vector>
 
 #include "aossl/core/include/buffers.h"
+
+#ifndef AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_
+#define AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_
+
+namespace AOSSL {
 
 // ----------------------------Health Checks----------------------------------//
 
@@ -277,5 +279,7 @@ class ConsulInterface {
   virtual AOSSL::StringBuffer* \
     services_node_safe(std::string node, std::string data_center) = 0;
 };
+
+}
 
 #endif  // AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_

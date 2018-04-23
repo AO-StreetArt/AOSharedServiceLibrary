@@ -23,23 +23,26 @@ THE SOFTWARE.
 */
 
 #include "include/uuid_admin.h"
-
-// Generate a new UUID
-UuidContainer uuidAdmin::generate() {
+//! Generate a new UUID and allocate memory for it.
+AOSSL::StringBuffer* AOSSL::UuidAdmin::generate() {
+  StringBuffer *ret_buf = new StringBuffer();
+  generate(*ret_buf);
+  return ret_buf;
+}
+//! Generate a new UUID in the pre-existing string buffer.
+void generate(AOSSL::StringBuffer& buf) {
   int uuid_gen_result = 0;
   uuid_t uuid;
   uuid_gen_result = uuid_generate_time_safe(uuid);
 
   if (uuid_gen_result == -1) {
-    cont.err = "Security Risk Found : http://linux.die.net/man/3/uuid_generate";
+    buf.err_msg.assign("Security Risk Found : http://linux.die.net/man/3/uuid_generate");
+    buf.success = false;
   } else {
-    cont.err = "";
+    buf.success = true;
   }
 
   char uuid_str[37];
   uuid_unparse_lower(uuid, uuid_str);
-
-  std::string str(uuid_str);
-  cont.id = str;
-  return cont;
+  buf.val.assign(uuid_str);
 }
