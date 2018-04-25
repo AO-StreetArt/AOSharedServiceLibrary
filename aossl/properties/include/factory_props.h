@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 
 #include <string>
-#include "properties_reader_interface.h"
+#include "aossl/core/include/kv_store.h"
 #include "properties_reader.h"
 
 #ifndef AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_
@@ -46,7 +46,7 @@ class PropertyReaderFactory {
   ~PropertyReaderFactory() {}
 
   //! Get a Properties File Interface Instance
-  inline PropertiesReaderInterface* \
+  inline KeyValueStore* \
     get_properties_reader_interface(std::string filename) {
     return new PropertiesReader(filename);
   }

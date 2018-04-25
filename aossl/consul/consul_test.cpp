@@ -61,48 +61,42 @@ int main() {
   ca->register_service(*s);
   ca->register_service(*s0);
 
-  std::cout << ca->services() << std::endl;
-
-  // Test Queries
-
-  std::string empty = "";
-  std::string clyman = "CLyman";
-  std::cout << ca->datacenters() << std::endl;
-  std::cout << ca->nodes_dc(empty) << std::endl;
-  std::cout << ca->nodes_service(clyman) << std::endl;
-
   // We need to figure out how to find nodes on the network
-  std::cout << ca->services_node(empty, empty) << std::endl;
+  // std::cout << ca->services_node(empty, empty) << std::endl;
 
   // Test Key-Value Store
   bool success = ca->set_config_value("Test", "123");
   assert(success);
 
-  std::string test_val = ca->get_config_value("Test");
-  std::cout << test_val << std::endl;
   // This doesnt work since the return values are json messages and
   // the "Value" element is stored in base64 encoding
   // assert(test_val == "123");
 
   // Threadsafe tests
-  AOSSL::StringBuffer *buf1 = ca->datacenters_safe();
-  AOSSL::StringBuffer *buf2 = ca->nodes_dc_safe(empty);
-  AOSSL::StringBuffer *buf3 = ca->nodes_service_safe(clyman);
-  AOSSL::StringBuffer *buf4 = ca->services_node_safe(empty, empty);
-  AOSSL::StringBuffer *buf5 = ca->get_config_value_safe("Test");
+  std::string empty;
+  std::string clyman = "Clyman";
+  AOSSL::StringBuffer *buf0 = ca->services();
+  AOSSL::StringBuffer *buf1 = ca->datacenters();
+  AOSSL::StringBuffer *buf2 = ca->nodes_dc(empty);
+  AOSSL::StringBuffer *buf3 = ca->nodes_service(clyman);
+  AOSSL::StringBuffer *buf4 = ca->services_node(empty, empty);
+  AOSSL::StringBuffer *buf5 = ca->get_opt("Test");
 
   std::cout << buf1->val << std::endl;
   std::cout << buf2->val << std::endl;
   std::cout << buf3->val << std::endl;
   std::cout << buf4->val << std::endl;
   std::cout << buf5->val << std::endl;
+  std::cout << buf0->val << std::endl;
 
   assert(buf1->success);
   assert(buf2->success);
   assert(buf3->success);
   assert(buf4->success);
   assert(buf5->success);
+  assert(buf0->success);
 
+  delete buf0;
   delete buf1;
   delete buf2;
   delete buf3;
@@ -116,8 +110,6 @@ int main() {
   // Test Service Deregistration
   ca->deregister_service(*s);
   ca->deregister_service(*s0);
-
-  std::cout << ca->services() << std::endl;
 
   delete ca;
   delete s;

@@ -22,20 +22,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <assert.h>
-#include <string.h>
-#include <iostream>
 #include <string>
-#include "include/uuid_admin.h"
-#include "aossl/core/include/buffers.h"
 
-int main() {
-  AOSSL::UuidAdmin uuid;
-  // Generate a UUID
-  AOSSL::StringBuffer id_container;
-  uuid.generate(id_container);
-  std::string id_str = id_container.val;
-  assert(!(id_str.empty()));
-  std::cout << id_str << std::endl;
-  std::cout << id_container.err_msg << std::endl;
+#include "buffers.h"
+
+#ifndef AOSSL_CORE_INCLUDE_KV_STORE_INTERFACE_H_
+#define AOSSL_CORE_INCLUDE_KV_STORE_INTERFACE_H_
+
+namespace AOSSL {
+
+//! Key Value Store
+
+//! A Key-Value store accesses configuration values by keys
+//! Interface which requires implementation
+class KeyValueStoreInterface {
+ public:
+  //! Does a key exist?
+  virtual bool opt_exist(std::string key) = 0;
+
+  //! Get an option by key
+  virtual StringBuffer* get_opt(std::string key) = 0;
+
+  //! Get an option by key
+  virtual void get_opt(std::string key, StringBuffer& val) = 0;
+
+  //! Re-load configuration
+  virtual void load_config() = 0;
+};
+
 }
+
+#endif  // AOSSL_CORE_INCLUDE_KV_STORE_INTERFACE_H_

@@ -2,10 +2,10 @@
 CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
-INCL = $(INSTALL_DIR)/properties/include/factory_props.h	$(INSTALL_DIR)/properties/include/properties_reader_interface.h $(INSTALL_DIR)/properties/include/properties_reader.h
+INCL = $(INSTALL_DIR)/properties/include/factory_props.h $(INSTALL_DIR)/properties/include/properties_reader.h
 INCL_DIR = $(INSTALL_DIR)/properties
 RM = rm -f
-INCL_DIRS = -I$(CURDIR)/../../../
+INCL_DIRS = -I$(CURDIR)/../../
 
 #Makefile Targets
 default: properties_reader.o
@@ -27,9 +27,6 @@ $(INSTALL_DIR)/properties:
 $(INSTALL_DIR)/properties/include/factory_props.h: include/factory_props.h
 	cp $< $@
 
-$(INSTALL_DIR)/properties/include/properties_reader_interface.h: include/properties_reader_interface.h
-	cp $< $@
-
 $(INSTALL_DIR)/properties/include/properties_reader.h: include/properties_reader.h
 	cp $< $@
 
@@ -46,5 +43,5 @@ properties_reader: properties_reader_test.o properties_reader_test.cpp
 	$(CC) $(CFLAGS) -o $@ -c properties_reader_test.cpp $(STD) $(INCL_DIRS)
 
 # Build ZMQ Object file
-properties_reader.o: properties_reader.cpp include/properties_reader.h include/properties_reader_interface.h
+properties_reader.o: properties_reader.cpp include/properties_reader.h
 	$(CC) $(CFLAGS) -o $@ -c properties_reader.cpp $(STD) $(INCL_DIRS)

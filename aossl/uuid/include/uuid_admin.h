@@ -40,8 +40,8 @@ namespace AOSSL {
 // ID's that are required throughout program execution
 class UuidAdmin: public UuidInterface {
  public:
-  uuidAdmin() {}
-  ~uuidAdmin() {}
+  UuidAdmin() {}
+  ~UuidAdmin() {}
   //! Generate a new UUID and allocate memory for it.
 
   //! The method will generate on the means of generation present on your

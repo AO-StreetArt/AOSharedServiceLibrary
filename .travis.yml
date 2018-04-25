@@ -8,6 +8,8 @@ addons:
     packages:
     - gcc-5
     - g++-5
+services:
+- docker
 before_install:
 - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
 - sudo unlink /usr/bin/g++ && sudo ln -s /usr/bin/g++-5 /usr/bin/g++
@@ -15,13 +17,9 @@ before_install:
 - sudo cp scripts/deb/build_deps.sh ../aossl_deps
 - cd ../aossl_deps && sudo ./build_deps.sh
 - cd $TRAVIS_BUILD_DIR
-- sudo apt-get install libssl-dev
-- git clone https://github.com/miloyip/rapidjson.git
-- sudo cp -r rapidjson/include/rapidjson/ /usr/local/include
 install:
-- wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
-- unzip consul_0.6.4_linux_amd64.zip
-- "./consul agent -dev -bind=127.0.0.1 &"
+- docker pull consul
+- docker run -d -p 8500:8500 --name=registry consul agent --dev
 before_script:
 - gcc --version
 - ldd --version

@@ -36,22 +36,12 @@ AOSSL::CommandLineInterpreter::CommandLineInterpreter(int argc, char* argv[]) {
     if (pos != std::string::npos) {
       std::string key = full_line.substr(0, pos);
       std::string value = full_line.substr(pos+1);
-      opts.emplace(key, value);
+      KeyValueStore::set_opt(key, value);
     } else {
       // We have an opt flag, and these can be driven by opt_exist directly
       std::string key = full_line;
       std::string value = "N/A";
-      opts.emplace(full_line, value);
+      KeyValueStore::set_opt(full_line, value);
     }
-  }
-}
-
-// Does a key exist?
-bool AOSSL::CommandLineInterpreter::opt_exist(std::string key) {
-  auto search = opts.find(key);
-  if (search != opts.end()) {
-    return true;
-  } else {
-    return false;
   }
 }

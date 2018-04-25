@@ -26,16 +26,15 @@ THE SOFTWARE.
 #include <string>
 #include <iterator>
 
-#include "commandline_interface.h"
+#include "aossl/core/include/kv_store.h"
+#include "aossl/core/include/buffers.h"
 
 #ifndef AOSSL_COMMANDLINE_INCLUDE_CLI_H_
 #define AOSSL_COMMANDLINE_INCLUDE_CLI_H_
 
 namespace AOSSL {
 
-class CommandLineInterpreter: public CommandLineInterface {
-  // An unordered map of options from the command line
-  std::unordered_map<std::string, std::string> opts;
+class CommandLineInterpreter: public KeyValueStore {
   std::string name;
 
  public:
@@ -49,17 +48,8 @@ class CommandLineInterpreter: public CommandLineInterface {
 
   ~CommandLineInterpreter() {}
 
-  // Does a key exist?
-  bool opt_exist(std::string key);
-
-  // Get an option by key
-  std::string get_opt(std::string key) {return opts[key];}
-
-  // Get the program name
-
-  // Get the name of the executable currently being
-  // run.
-  std::string get_program_name() {return name;}
+  std::string get_name() {return name;}
+  void load_config() {}
 };
 
 }

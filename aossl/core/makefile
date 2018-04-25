@@ -3,11 +3,12 @@ CC = g++
 CFLAGS  = -g -Wall
 STD = -std=c++11
 RM = rm -f
-INCL = $(INSTALL_DIR)/core/include/buffers.h	$(INSTALL_DIR)/core/include/slot_pool.h $(INSTALL_DIR)/core/include/connection.h $(INSTALL_DIR)/core/include/connection_pool_interface.h
+CORE_INSTALL_DIR = $(INSTALL_DIR)/core/include
+INCL = $(CORE_INSTALL_DIR)/buffers.h $(CORE_INSTALL_DIR)/kv_store.h $(CORE_INSTALL_DIR)/kv_store_interface.h $(CORE_INSTALL_DIR)/app_session.h
 INCL_DIR = $(INSTALL_DIR)/core
 
 # Central Targets
-tests: buffer_test slot_pool_test
+tests: buffer_test
 
 install: $(INCL_DIR) $(INCL)
 
@@ -18,12 +19,6 @@ buffer_test.o: buffer_test.cpp include/buffers.h
 buffer_test: buffer_test.o
 	$(CC) $(CFLAGS) -o $@ $^ $(STD)
 
-slot_pool_test.o: slot_pool_test.cpp include/slot_pool.h
-	$(CC) $(CFLAGS) -o $@ -c slot_pool_test.cpp $(STD)
-
-slot_pool_test: slot_pool_test.o
-	$(CC) $(CFLAGS) -o $@ $^ $(STD)
-
 clean:
 	$(RM) *.o *~ *_test
 
@@ -32,14 +27,14 @@ $(INSTALL_DIR)/core:
 	mkdir $@
 	mkdir $@/include
 
-$(INSTALL_DIR)/core/include/buffers.h: include/buffers.h
+$(CORE_INSTALL_DIR)/buffers.h: include/buffers.h
 	cp $< $@
 
-$(INSTALL_DIR)/core/include/slot_pool.h: include/slot_pool.h
+$(CORE_INSTALL_DIR)/kv_store.h: include/kv_store.h
 	cp $< $@
 
-$(INSTALL_DIR)/core/include/connection.h : include/connection.h
+$(CORE_INSTALL_DIR)/kv_store_interface.h: include/kv_store_interface.h
 	cp $< $@
 
-$(INSTALL_DIR)/core/include/connection_pool_interface.h: include/connection_pool_interface.h
+$(CORE_INSTALL_DIR)/app_session.h: include/app_session.h
 	cp $< $@

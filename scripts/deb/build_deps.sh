@@ -14,6 +14,10 @@ apt-get -y update
 #Install the basic tools we need
 apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ssh software-properties-common build-essential libtool pkg-config automake cmake uuid-dev libcurl4-openssl-dev git libsnappy-dev liblog4cpp5-dev libssl-dev openssl
 
+printf "Installing Rapidjson"
+git clone https://github.com/miloyip/rapidjson.git
+cp -r rapidjson/include/rapidjson/ /usr/local/include
+
 printf "Building Hayai, optional, for benchmarks"
 git clone https://github.com/nickbruun/hayai.git
 cd hayai && cmake . && make && make install

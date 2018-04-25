@@ -44,7 +44,7 @@ extern std::string writedata;
 
 //! This is the callback that gets called when we recieve the response to the
 //! Get Curl Request
-size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up) {
+inline size_t writeCallback(char * buf, size_t size, size_t nmemb, void* up) {
   // Put the response into a string
   for (size_t c = 0; c < size*nmemb; c++) {
     writedata.push_back(buf[c]);

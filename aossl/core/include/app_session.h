@@ -24,34 +24,26 @@ THE SOFTWARE.
 
 #include <string>
 
-#ifndef AOSSL_COMMANDLINE_INCLUDE_COMMANDLINE_INTERFACE_H_
-#define AOSSL_COMMANDLINE_INCLUDE_COMMANDLINE_INTERFACE_H_
+#include "aossl/core/include/kv_store.h"
+
+#ifndef AOSSL_CORE_INCLUDE_APP_SESSION_H_
+#define AOSSL_CORE_INCLUDE_APP_SESSION_H_
 
 namespace AOSSL {
 
-//! CommandLineInterface
+class ApplicationSession: public KeyValueStore {
+  std::string name;
 
-//! Here we create a new interpreter by passing in the two arguments
-//! from the main method, int argc & char* argv[].
-//! This parses arguments passed in the form:
-//! arg_key=arg_val
-class CommandLineInterface {
  public:
-  virtual ~CommandLineInterface() {}
+  // TO-DO
+  ApplicationSession() {}
 
-  //! Does a key exist?
-  virtual bool opt_exist(std::string key) = 0;
+  ~ApplicationSession() {}
 
-  //! Get an option by key
-  virtual std::string get_opt(std::string key) = 0;
-
-  //! Get the program name
-
-  //! Get the name of the executable currently being
-  //! run.
-  virtual std::string get_program_name() = 0;
+  // TO-DO
+  void load_config() {}
 };
 
 }
 
-#endif  // AOSSL_COMMANDLINE_INCLUDE_COMMANDLINE_INTERFACE_H_
+#endif  // AOSSL_CORE_INCLUDE_APP_SESSION_H_

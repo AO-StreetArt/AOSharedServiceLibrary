@@ -55,17 +55,18 @@ class ConsulAdmin: public ConsulInterface {
   std::string return_string = "";
   std::string query_return_string = "";
   int timeout;
-  std::string query(std::string query_url);
   AOSSL::StringBuffer* query_safe(std::string query_url);
+  void query_by_reference(std::string query_url, StringBuffer& ret_buffer);
   inline static bool is_base64(unsigned char c) {
     return (isalnum(c) || (c == '+') || (c == '/'));
   }
 
  public:
-  std::string base64_decode(std::string const& encoded_string);
+  void base64_decode_by_reference(std::string const& encoded_string, StringBuffer& ret_buffer);
   AOSSL::StringBuffer* base64_decode_safe(std::string const& encoded_string);
 
   // Construct a consul admin, passing in the connection string
+  // TO-DO: Parameterize the timeout
   ConsulAdmin(std::string caddr);
 
   // Delete a consul admin
@@ -87,10 +88,6 @@ class ConsulAdmin: public ConsulInterface {
   // Otherwise, it will update the existing key.
   bool set_config_value(std::string key, std::string val);
 
-  // Get a configuration value
-  std::string get_config_value(std::string key);
-  AOSSL::StringBuffer* get_config_value_safe(std::string key);
-
   // Delete a configuration value
   bool del_config_value(std::string key);
 
@@ -100,39 +97,74 @@ class ConsulAdmin: public ConsulInterface {
   // Local Agent Queries
 
   // Query the local agent for services registered
-  std::string services();
-  AOSSL::StringBuffer* services_safe();
+  AOSSL::StringBuffer* services();
 
   // Query the local agent for it's info
-  std::string agent_info();
-  AOSSL::StringBuffer* agent_info_safe();
+  AOSSL::StringBuffer* agent_info();
 
   // Query for healthy services only
-  std::string healthy_services();
-  AOSSL::StringBuffer* healthy_services_safe();
+  AOSSL::StringBuffer* healthy_services();
 
   // Catalog Queries
 
   // Query the catalog for datacenters
-  std::string datacenters();
-  AOSSL::StringBuffer* datacenters_safe();
+  AOSSL::StringBuffer* datacenters();
 
   // Query the catalog for the nodes in a particular datacenter
-  std::string nodes_dc(std::string data_center);
-  AOSSL::StringBuffer* nodes_dc_safe(std::string data_center);
+  AOSSL::StringBuffer* nodes_dc(std::string data_center);
 
   // Query the catalog for the services in a particular datacenter
-  std::string services_dc(std::string data_center);
-  AOSSL::StringBuffer* services_dc_safe(std::string data_center);
+  AOSSL::StringBuffer* services_dc(std::string data_center);
 
   // Query the catalog for the nodes running a particular service
-  std::string nodes_service(std::string service);
-  AOSSL::StringBuffer* nodes_service_safe(std::string service);
+  AOSSL::StringBuffer* nodes_service(std::string service);
 
   // Query the catalog for the services provided by a particular node
-  std::string services_node(std::string node, std::string data_center);
   AOSSL::StringBuffer* \
-    services_node_safe(std::string node, std::string data_center);
+    services_node(std::string node, std::string data_center);
+
+  // Implementations of KeyValueStore interface
+  //! Does a key exist?
+  inline bool opt_exist(std::string key) {
+    std::string url = "/v1/kv/";
+    url = url.append(key);
+    StringBuffer *buf = query_safe(url);
+    bool ret_val = false;
+    if (buf->success) {
+      ret_val = true;
+    }
+    delete buf;
+    return ret_val;
+  }
+
+  //! Get an option by key
+
+  //! Decode the Base64 String
+  //! prior to returning
+  inline StringBuffer* get_opt(std::string key) {
+    std::string url = "/v1/kv/";
+    url = url.append(key);
+    StringBuffer *buf = query_safe(url);
+    //base64_decode_by_reference(buf->val, *buf);
+    return buf;
+  }
+
+  //! Get an option by key
+
+  //! Decode the Base64 String
+  //! prior to returning
+  inline void get_opt(std::string key, StringBuffer& val) {
+    std::string url = "/v1/kv/";
+    url = url.append(key);
+    query_by_reference(url, val);
+    //base64_decode_by_reference(val.val, val);
+  }
+
+  // Empty as getting any key always gets the most up-to-date
+  // so we don't need to load our configuration repeatedly
+  inline void load_config() {
+
+  }
 };
 
 }

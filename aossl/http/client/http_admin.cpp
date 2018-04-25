@@ -25,7 +25,7 @@ THE SOFTWARE.
 #include "include/http_admin.h"
 
 // Global writedata instantiation to store HTTP Callbacks
-std::string writedata;
+std::string AOSSL::writedata;
 
 bool AOSSL::HttpAdmin::send(std::string url, int timeout) {
   const char * url_cstr = url.c_str();

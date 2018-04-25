@@ -74,7 +74,7 @@ BENCHMARK(CONSUL, DeregisterService, 10, 100) {
 
 // Configuration Value Retrieval
 BENCHMARK(CONSUL, GetConfigurationValue, 10, 100) {
-  std::string test_val = consul->get_config_value("Test");
+  std::string test_val = consul->get_opt("Test");
   std::cout << test_val << std::endl;
 }
 

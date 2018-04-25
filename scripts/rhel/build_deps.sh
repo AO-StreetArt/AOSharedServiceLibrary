@@ -21,6 +21,10 @@ printf "Addressing pre-build requirements"
 yum -y install build-essential libtool pkg-config autoconf automake cmake make git wget gcc gcc-c++ epel-release libuuid-devel libcurl-devel
 yum repolist
 
+printf "Installing Rapidjson"
+git clone https://github.com/miloyip/rapidjson.git
+cp -r rapidjson/include/rapidjson/ /usr/local/include
+
 printf "Building Hayai, optional, for benchmarks"
 
 #Install hayai, for compiling benchmarks

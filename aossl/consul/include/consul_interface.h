@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include <vector>
 
 #include "aossl/core/include/buffers.h"
+#include "aossl/core/include/kv_store_interface.h"
 
 #ifndef AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_
 #define AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_
@@ -106,19 +107,8 @@ class ServiceInterface {
 //! in order to register.  It's responses are JSON strings that are recieved
 //! from Consul.  Note that the values returned from the Key-Value store
 //! will be stored in base64 format
-class ConsulInterface {
+class ConsulInterface: public KeyValueStoreInterface  {
  public:
-  //! Convinience Method for base64 decoding
-
-  //! \deprecated Will be removed in v2.0.
-  //! This is needed as all configuration values are returned
-  //! from Consul in base64, and need to be decoded after the json
-  //! is parsed.
-  /*!
-    \param encoded_string The string to decode
-  */
-  virtual std::string base64_decode(std::string const& encoded_string) = 0;
-
   //! Convinience Method for base64 decoding
 
   //! This is needed as all configuration values are returned
@@ -158,21 +148,6 @@ class ConsulInterface {
   */
   virtual bool set_config_value(std::string key, std::string val) = 0;
 
-  //! Get a configuration value
-
-  //! \deprecated Will be removed in
-  //! v2.0
-  /*!
-    \param key A string key that will be retrieved from the KV Store
-  */
-  virtual std::string get_config_value(std::string key) = 0;
-
-  //! Get a configuration value
-  /*!
-    \param key A string key that will be retrieved from the KV Store
-  */
-  virtual AOSSL::StringBuffer* get_config_value_safe(std::string key) = 0;
-
   //! Delete a configuration value
   virtual bool del_config_value(std::string key) = 0;
 
@@ -183,93 +158,35 @@ class ConsulInterface {
 
   //! Query the local agent for services registered
 
-  //! \deprecated Will be removed in
-  //! v2.0
-  virtual std::string services() = 0;
-
   //! Query the local agent for services registered
-  virtual AOSSL::StringBuffer* services_safe() = 0;
+  virtual AOSSL::StringBuffer* services() = 0;
 
   //! Query the local agent for it's info
-
-  //! \deprecated Will be removed in
-  //! v2.0
-  virtual std::string agent_info() = 0;
-
-  //! Query the local agent for it's info
-  virtual AOSSL::StringBuffer* agent_info_safe() = 0;
+  virtual AOSSL::StringBuffer* agent_info() = 0;
 
   //! Query for healthy services only
-
-  //! \deprecated Will be removed in
-  //! v2.0
-  virtual std::string healthy_services() = 0;
-
-  //! Query for healthy services only
-  virtual AOSSL::StringBuffer* healthy_services_safe() = 0;
-
-  // Catalog Queries
+  virtual AOSSL::StringBuffer* healthy_services() = 0;
 
   //! Query the catalog for datacenters
-
-  //! \deprecated Will be removed in
-  //! v2.0
-  virtual std::string datacenters() = 0;
-
-  //! Query the catalog for datacenters
-  virtual AOSSL::StringBuffer* datacenters_safe() = 0;
-
-  //! Query the catalog for the nodes in a particular datacenter
-
-  //! \deprecated Will be removed in
-  //! v2.0
-  /*!
-    \param data_center The string identifier for the data center to query
-  */
-  virtual std::string nodes_dc(std::string data_center) = 0;
+  virtual AOSSL::StringBuffer* datacenters() = 0;
 
   //! Query the catalog for the nodes in a particular datacenter
   /*!
     \param data_center The string identifier for the data center to query
   */
-  virtual AOSSL::StringBuffer* nodes_dc_safe(std::string data_center) = 0;
-
-  //! Query the catalog for the services in a particular datacenter
-
-  //! \deprecated Will be removed in
-  //! v2.0
-  /*!
-    \param data_center The string identifier for the data center to query
-  */
-  virtual std::string services_dc(std::string data_center) = 0;
+  virtual AOSSL::StringBuffer* nodes_dc(std::string data_center) = 0;
 
   //! Query the catalog for the services in a particular datacenter
   /*!
     \param data_center The string identifier for the data center to query
   */
-  virtual AOSSL::StringBuffer* services_dc_safe(std::string data_center) = 0;
-
-  //! Query the catalog for the nodes running a particular service
-
-  //! \deprecated Will be removed in
-  //! v2.0
-  /*!
-    \param service The string identifier for the service to query
-  */
-  virtual std::string nodes_service(std::string service) = 0;
+  virtual AOSSL::StringBuffer* services_dc(std::string data_center) = 0;
 
   //! Query the catalog for the nodes running a particular service
   /*!
     \param service The string identifier for the service to query
   */
-  virtual AOSSL::StringBuffer* nodes_service_safe(std::string service) = 0;
-
-  //! Query the catalog for the services provided by a particular node
-
-  //! \deprecated Will be removed in
-  //! v2.0
-  virtual std::string \
-    services_node(std::string node, std::string data_center) = 0;
+  virtual AOSSL::StringBuffer* nodes_service(std::string service) = 0;
 
   //! Query the catalog for the services provided by a particular node
   /*!
@@ -277,7 +194,7 @@ class ConsulInterface {
     \param data_center The string id for the data center which holds the node
   */
   virtual AOSSL::StringBuffer* \
-    services_node_safe(std::string node, std::string data_center) = 0;
+    services_node(std::string node, std::string data_center) = 0;
 };
 
 }

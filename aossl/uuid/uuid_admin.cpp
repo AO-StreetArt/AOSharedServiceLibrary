@@ -30,7 +30,7 @@ AOSSL::StringBuffer* AOSSL::UuidAdmin::generate() {
   return ret_buf;
 }
 //! Generate a new UUID in the pre-existing string buffer.
-void generate(AOSSL::StringBuffer& buf) {
+void AOSSL::UuidAdmin::generate(AOSSL::StringBuffer& buf) {
   int uuid_gen_result = 0;
   uuid_t uuid;
   uuid_gen_result = uuid_generate_time_safe(uuid);

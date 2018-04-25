@@ -22,27 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "include/factory_cli.h"
-#include "include/commandline_interface.h"
+#include "include/cli.h"
 #include <iostream>
 #include <assert.h>
 
 int main(int argc, char** argv) {
 
   // Build a command line interpreter
-  AOSSL::CommandLineInterpreterFactory cli_factory;
-  AOSSL::CommandLineInterface *cli = \
-    cli_factory.get_command_line_interface(argc, argv);
+  AOSSL::CommandLineInterpreter cli(argc, argv);
 
   // Test the command line interpreter
-  std::cout << cli->get_program_name() << std::endl;
-  assert(cli->get_program_name() == "./cli_test");
-  assert(cli->opt_exist("name"));
-  if (cli->opt_exist("name")) {
-    std::cout << cli->get_opt("name") << std::endl;
-    assert(cli->get_opt("name") == "test");
+  std::cout << cli.get_name() << std::endl;
+  assert(cli.get_name() == "./cli_test");
+  assert(cli.opt_exist("name"));
+  if (cli.opt_exist("name")) {
+    AOSSL::StringBuffer value_buffer;
+    cli.get_opt("name", value_buffer);
+    std::cout << value_buffer.val << std::endl;
+    assert(value_buffer.val == "test");
   }
 
-  delete cli;
   return 0;
 }

@@ -30,18 +30,15 @@ THE SOFTWARE.
 #include <fstream>
 #include <vector>
 
-#include "properties_reader_interface.h"
+#include "aossl/core/include/kv_store.h"
 
 #ifndef AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_H_
 #define AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_H_
 
 namespace AOSSL {
 
-class PropertiesReader: public PropertiesReaderInterface {
-  // An unordered map of options from the command line
-  std::unordered_map<std::string, std::string> opts;
-  std::unordered_map<std::string, std::vector<std::string>> opt_lists;
-  std::string name;
+class PropertiesReader: public KeyValueStore {
+  std::string config_file;
 
  public:
   // Create a new Command Line Interpreter
@@ -51,20 +48,7 @@ class PropertiesReader: public PropertiesReaderInterface {
 
   ~PropertiesReader() {}
 
-  // Does a key exist?
-  bool opt_exist(std::string key);
-
-  // Get an option by key
-  std::string get_opt(std::string key) {return opts[key];}
-
-  // Check if a parameter list exists
-  bool list_exist(std::string key);
-
-  // Get a parameter list
-  std::vector<std::string> get_list(std::string key) {return opt_lists[key];}
-
-  // Get the option list
-  std::unordered_map<std::string, std::string> get_opts() {return opts;}
+  void load_config();
 };
 
 }

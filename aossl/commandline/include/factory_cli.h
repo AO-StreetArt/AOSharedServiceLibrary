@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "commandline_interface.h"
+#include "aossl/core/include/kv_store.h"
 #include "cli.h"
 
 #ifndef AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_
@@ -45,7 +45,7 @@ class CommandLineInterpreterFactory {
   ~CommandLineInterpreterFactory() {}
 
   //! Get the Command Line Interface instance
-  CommandLineInterface* get_command_line_interface(int argc, char* argv[]) {
+  KeyValueStore* get_command_line_interface(int argc, char* argv[]) {
     return new CommandLineInterpreter( argc, argv );
   }
 };

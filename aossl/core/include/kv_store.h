@@ -23,39 +23,49 @@ THE SOFTWARE.
 */
 
 #include <string>
-#include <vector>
 
-#ifndef AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_INTERFACE_H_
-#define AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_INTERFACE_H_
+#include "buffers.h"
+#include "kv_store_interface.h"
+
+#ifndef AOSSL_CORE_INCLUDE_KV_STORE_H_
+#define AOSSL_CORE_INCLUDE_KV_STORE_H_
 
 namespace AOSSL {
 
-//! PropertiesReaderInterface
+//! Key Value Store
 
-//! Here we create a new interpreter by passing in a single argument, the
-//! address of a properties file.  This file is opened and read, with
-//! properties in the form:
-//! property_name=property_value
-//! This also accepts lists in the form
-//! -list_name-list_value
-//! -list_name-list_value2
-class PropertiesReaderInterface {
+//! A Key-Value store accesses configuration values by keys
+//! Interface which requires implementation
+class KeyValueStore: public KeyValueStoreInterface {
+  std::unordered_map<std::string, std::string> opts;
  public:
-  virtual ~PropertiesReaderInterface() {}
-
   //! Does a key exist?
-  virtual bool opt_exist(std::string key) = 0;
+  inline bool opt_exist(std::string key) {
+    auto search = opts.find(key);
+    if (search != opts.end()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   //! Get an option by key
-  virtual std::string get_opt(std::string key) = 0;
+  inline StringBuffer* get_opt(std::string key) {
+    StringBuffer *ret_buf = new StringBuffer();
+    get_opt(key, *ret_buf);
+    return ret_buf;
+  }
 
-  //! Does a list exist within the configuration?
-  virtual bool list_exist(std::string key) = 0;
+  //! Get an option by key
+  inline void get_opt(std::string key, StringBuffer& val) {
+    val.val.assign(opts[key]);
+    val.success = true;
+  }
 
-  //! Get a list that exists within the configuration
-  virtual std::vector<std::string> get_list(std::string key) = 0;
+  //! Set an option
+  void set_opt(std::string key, std::string value) {opts.emplace(key, value);}
 };
 
 }
 
-#endif  // AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_INTERFACE_H_
+#endif  // AOSSL_CORE_INCLUDE_KV_STORE_H_

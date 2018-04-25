@@ -39,7 +39,7 @@ namespace AOSSL {
 //! ID's that are required throughout program execution
 class UuidInterface {
  public:
-  virtual ~uuidInterface() {}
+  virtual ~UuidInterface() {}
   //! Generate a new UUID and allocate memory for it.
 
   //! The method will generate on the means of generation present on your

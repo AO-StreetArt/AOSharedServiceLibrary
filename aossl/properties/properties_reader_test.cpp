@@ -26,26 +26,18 @@ THE SOFTWARE.
 #include <iostream>
 #include <vector>
 #include <string>
-#include "include/factory_props.h"
-#include "include/properties_reader_interface.h"
+#include "include/properties_reader.h"
+#include "aossl/core/include/buffers.h"
 
 int main(int argc, char** argv) {
-  AOSSL::PropertyReaderFactory prop_factory;
-  AOSSL::PropertiesReaderInterface *reader = \
-    prop_factory.get_properties_reader_interface("test.properties");
-  if ( reader->opt_exist("DB_Password") ) {
-    assert(reader->get_opt("DB_Password") == "default");
+  AOSSL::PropertiesReader reader("test.properties");
+  if ( reader.opt_exist("DB_Password") ) {
+    AOSSL::StringBuffer buf;
+    reader.get_opt("DB_Password", buf);
+    assert(buf.val == "default");
   } else {
     assert(false);
   }
 
-  if ( reader->list_exist("RedisConnectionString") ) {
-    std::vector<std::string> list = reader->get_list("RedisConnectionString");
-    assert(list.size() == 2);
-  } else {
-    assert(false);
-  }
-
-  delete reader;
   return 0;
 }
