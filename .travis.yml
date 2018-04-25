@@ -8,8 +8,6 @@ addons:
     packages:
     - gcc-5
     - g++-5
-services:
-- docker
 before_install:
 - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
 - sudo unlink /usr/bin/g++ && sudo ln -s /usr/bin/g++-5 /usr/bin/g++
@@ -18,8 +16,9 @@ before_install:
 - cd ../aossl_deps && sudo ./build_deps.sh
 - cd $TRAVIS_BUILD_DIR
 install:
-- docker pull consul
-- docker run -d -p 8500:8500 --name=registry consul agent --dev
+- wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
+- unzip consul_0.6.4_linux_amd64.zip
+- "./consul agent -dev -bind=127.0.0.1 &"
 before_script:
 - gcc --version
 - ldd --version
@@ -32,6 +31,7 @@ script:
 - cd $TRAVIS_BUILD_DIR/aossl/commandline && ./cli_test name=test
 - cd $TRAVIS_BUILD_DIR/aossl/http/client && ./http_test
 - cd $TRAVIS_BUILD_DIR/aossl/uuid && ./uuid_test
+- sleep 5
 - cd $TRAVIS_BUILD_DIR/aossl/consul && ./consul_test
 notifications:
   slack:

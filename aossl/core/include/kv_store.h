@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 
 #include <string>
+#include <unordered_map>
 
 #include "buffers.h"
 #include "kv_store_interface.h"
@@ -64,6 +65,9 @@ class KeyValueStore: public KeyValueStoreInterface {
 
   //! Set an option
   void set_opt(std::string key, std::string value) {opts.emplace(key, value);}
+
+  //! Set the map of opts
+  void set_opts(std::unordered_map<std::string, std::string> new_opts) {opts=new_opts;}
 };
 
 }
