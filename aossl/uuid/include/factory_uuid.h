@@ -36,16 +36,16 @@ namespace AOSSL {
 //! objects exposed by the framework and passes back
 //! instances of interfaces.  This allows for the publicly exposed methods
 //! to be independent of the implementations.
-class uuidComponentFactory {
+class UuidComponentFactory {
  public:
   //! Create a new Service Component Factory
-  uuidComponentFactory() {}
+  UuidComponentFactory() {}
 
   //! Delete a Service Component Factory
-  ~uuidComponentFactory() {}
+  ~UuidComponentFactory() {}
 
   //! Get the UUID Interface instance
-  uuidInterface* get_uuid_interface() {return new uuidAdmin;}
+  UuidInterface* get_uuid_interface() {return new UuidAdmin;}
 };
 
 }

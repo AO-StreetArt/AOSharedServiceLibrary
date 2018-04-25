@@ -74,15 +74,16 @@ BENCHMARK(CONSUL, DeregisterService, 10, 100) {
 
 // Configuration Value Retrieval
 BENCHMARK(CONSUL, GetConfigurationValue, 10, 100) {
-  std::string test_val = consul->get_opt("Test");
-  std::cout << test_val << std::endl;
+  AOSSL::StringBuffer buf;
+  consul->get_opt("Test", buf);
+  std::cout << buf.val << std::endl;
 }
 
 // Configuration Value Update
 BENCHMARK(CONSUL, UpdateConfigurationValue, 10, 100) {
   std::string uuid_str = uuid_list[update_counter];
   bool success = consul->set_config_value("Test", uuid_str);
-
+  assert(success);
   update_counter = update_counter + 1;
 }
 
@@ -90,7 +91,7 @@ BENCHMARK(CONSUL, UpdateConfigurationValue, 10, 100) {
 BENCHMARK(CONSUL, CreateConfigurationValue, 10, 100) {
   std::string uuid_str = uuid_list[create_counter];
   bool success = consul->set_config_value(uuid_str, "Test");
-
+  assert(success);
   create_counter = create_counter + 1;
 }
 
@@ -98,7 +99,7 @@ BENCHMARK(CONSUL, CreateConfigurationValue, 10, 100) {
 BENCHMARK(CONSUL, DeleteConfigurationValue, 10, 100) {
   std::string uuid_str = uuid_list[delete_counter];
   bool success = consul->del_config_value(uuid_str);
-
+  assert(success);
   delete_counter = delete_counter + 1;
 }
 

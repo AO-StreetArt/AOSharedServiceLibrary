@@ -6,6 +6,7 @@ INCL = $(INSTALL_DIR)/http/client/include/factory_http_client.h	$(INSTALL_DIR)/h
 INCL_DIR = $(INSTALL_DIR)/http/client
 LIBS = -lcurl
 RM = rm -f
+INCL_DIRS = -I$(CURDIR)/../../../
 
 #Makefile Targets
 default: http_admin.o
@@ -28,7 +29,7 @@ clean:
 # Makefile Instructions
 # Create the object file http_admin.o
 http_admin.o:  http_admin.cpp include/http_admin.h include/http_interface.h
-	$(CC) $(CFLAGS) -o $@ -c http_admin.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c http_admin.cpp $(STD) $(INCL_DIRS)
 
 # Install
 $(INSTALL_DIR)/http/client:
@@ -46,15 +47,15 @@ $(INSTALL_DIR)/http/client/include/http_interface.h: include/http_interface.h
 # Test
 # Create the executable file zmqio_test
 http_test: http_admin.o http_test.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_DIRS)
 
 # Create the object file zmqio_test.o
 http_test.o: http_test.cpp
-	$(CC) $(CFLAGS) -o $@ -c http_test.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c http_test.cpp $(STD) $(INCL_DIRS)
 
 # Benchmark
 http_benchmark: http_benchmark.o http_admin.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_DIRS)
 
 http_benchmark.o: http_benchmark.cpp
-	$(CC) $(CFLAGS) -o $@ -c $^ $(STD)
+	$(CC) $(CFLAGS) -o $@ -c $^ $(STD) $(INCL_DIRS)

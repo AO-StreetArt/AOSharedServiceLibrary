@@ -32,15 +32,16 @@ THE SOFTWARE.
 #include "include/uuid_interface.h"
 #include "include/factory_uuid.h"
 
-AOSSL::uuidInterface *uuid;
+AOSSL::UuidInterface *uuid;
 
 // Benchmarks
 BENCHMARK(UUID, Generate, 10, 100) {
-  AOSSL::UuidContainer uuid_str = uuid->generate();
+  AOSSL::StringBuffer uuid_str;
+  uuid->generate(uuid_str);
 }
 
 int main() {
-  AOSSL::uuidComponentFactory uuid_factory;
+  AOSSL::UuidComponentFactory uuid_factory;
 
   // Set up UUID Generator
   uuid = uuid_factory.get_uuid_interface();
