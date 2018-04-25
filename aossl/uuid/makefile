@@ -52,5 +52,5 @@ uuid_test.o: uuid_test.cpp
 uuid_benchmark: uuid_benchmark.o uuid_admin.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_DIRS)
 
-lib/uuid_benchmark.o: uuid_benchmark.cpp
+uuid_benchmark.o: uuid_benchmark.cpp
 	$(CC) $(CFLAGS) -o $@ -c $^ $(STD) $(INCL_DIRS)
