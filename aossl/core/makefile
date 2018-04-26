@@ -4,7 +4,7 @@ CFLAGS  = -g -Wall
 STD = -std=c++11
 RM = rm -f
 CORE_INSTALL_DIR = $(INSTALL_DIR)/core/include
-INCL = $(CORE_INSTALL_DIR)/buffers.h $(CORE_INSTALL_DIR)/kv_store.h $(CORE_INSTALL_DIR)/kv_store_interface.h $(CORE_INSTALL_DIR)/app_session.h
+INCL = $(CORE_INSTALL_DIR)/buffers.h $(CORE_INSTALL_DIR)/kv_store.h $(CORE_INSTALL_DIR)/kv_store_interface.h
 INCL_DIR = $(INSTALL_DIR)/core
 
 # Central Targets
@@ -34,7 +34,4 @@ $(CORE_INSTALL_DIR)/kv_store.h: include/kv_store.h
 	cp $< $@
 
 $(CORE_INSTALL_DIR)/kv_store_interface.h: include/kv_store_interface.h
-	cp $< $@
-
-$(CORE_INSTALL_DIR)/app_session.h: include/app_session.h
 	cp $< $@
