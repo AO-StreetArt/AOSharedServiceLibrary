@@ -40,6 +40,7 @@ namespace AOSSL {
 class KeyValueStore: public KeyValueStoreInterface {
   std::unordered_map<std::string, std::string> opts;
  public:
+  virtual ~KeyValueStore() {}
   //! Does a key exist?
   inline bool opt_exist(std::string key) {
     auto search = opts.find(key);
@@ -63,11 +64,13 @@ class KeyValueStore: public KeyValueStoreInterface {
     val.success = true;
   }
 
-  //! Set an option
-  void set_opt(std::string key, std::string value) {opts.emplace(key, value);}
+  std::unordered_map<std::string, std::string> get_opts() {return opts;}
 
-  //! Set the map of opts
-  void set_opts(std::unordered_map<std::string, std::string> new_opts) {opts=new_opts;}
+  //! Add an option
+  void add_opt(std::string& key, std::string& value) {opts.emplace(key, value);}
+
+  //! Set an option
+  void set_opt(std::string& key, std::string& value) {opts[key] = value;}
 };
 
 }

@@ -14,6 +14,7 @@ install:
 	cd commandline && $(MAKE) install
 	cd properties && $(MAKE) install
 	cd uuid && $(MAKE) install
+	cd profile && $(MAKE) install
 
 tests:
 	cd core && $(MAKE) tests
@@ -22,6 +23,7 @@ tests:
 	cd properties && $(MAKE) tests
 	cd uuid && $(MAKE) tests
 	cd consul && $(MAKE) tests
+	cd profile && $(MAKE) tests
 
 benchmarks:
 	cd http && $(MAKE) benchmark
@@ -35,3 +37,4 @@ clean:
 	cd commandline && $(MAKE) clean
 	cd properties && $(MAKE) clean
 	cd uuid && $(MAKE) clean
+	cd profile && $(MAKE) clean

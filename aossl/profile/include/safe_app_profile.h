@@ -23,34 +23,28 @@ THE SOFTWARE.
 */
 
 #include <string>
-#include <iterator>
+#include <unordered_map>
 
 #include "aossl/core/include/kv_store.h"
-#include "aossl/core/include/buffers.h"
+#include "app_profile.h"
 
-#ifndef AOSSL_COMMANDLINE_INCLUDE_CLI_H_
-#define AOSSL_COMMANDLINE_INCLUDE_CLI_H_
+#ifndef AOSSL_SESSION_INCLUDE_SAFE_APP_SESSION_H_
+#define AOSSL_SESSION_INCLUDE_SAFE_APP_SESSION_H_
 
 namespace AOSSL {
 
-class CommandLineInterpreter: public KeyValueStore {
-  std::string name;
+//! Application Session which accepts default configuration values.
 
+//! Accepts a dictionary of default values
+//! and exposes them as a KV Store
+class SafeApplicationProfile: public ApplicationProfile, public KeyValueStore{
  public:
-  // Create a new Command Line Interpreter
+  SafeApplicationProfile(int argc, char* argv[]) : \
+      ApplicationProfile(argc, argv) {}
 
-  // Here we create a new interpreter by passing in the two
-  // arguments from the main method, int argc & char* argv[].
-  // This parses arguments passed in the form:
-  // arg_key=arg_val
-  CommandLineInterpreter(int argc, char* argv[]);
-
-  ~CommandLineInterpreter() {}
-
-  std::string get_name() {return name;}
-  void load_config() {}
+  virtual ~SafeApplicationProfile() {}
 };
 
 }
 
-#endif  // AOSSL_COMMANDLINE_INCLUDE_CLI_H_
+#endif  // AOSSL_SESSION_INCLUDE_SAFE_APP_SESSION_H_

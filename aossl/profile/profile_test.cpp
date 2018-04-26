@@ -22,28 +22,43 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <assert.h>
 #include <string>
+#include <unistd.h>
+#include "include/tiered_app_profile.h"
 
-#include "aossl/core/include/kv_store.h"
+int main(int argc, char** argv) {
+  // Strings
+  std::string key1 = "first";
+  std::string key2 = "second";
+  std::string key3 = "third";
+  std::string bad_key = "badkey";
+  std::string val1 = "one";
+  std::string val2 = "two";
+  std::string val3 = "three";
+  std::string val4 = "four";
 
-#ifndef AOSSL_CORE_INCLUDE_APP_SESSION_H_
-#define AOSSL_CORE_INCLUDE_APP_SESSION_H_
+  // Build the profile
+  AOSSL::TieredApplicationProfile profile(argc, argv);
+  profile.add_opt(key1, val1);
+  profile.add_opt(key2, val2);
+  assert(profile.opt_exist(key1));
+  assert(profile.opt_exist(key2));
+  assert(!(profile.opt_exist(bad_key)));
+  AOSSL::StringBuffer buf;
+  profile.get_opt(key1, buf);
+  assert(buf.val == val1);
+  AOSSL::StringBuffer buf2;
+  profile.get_opt(key2, buf2);
+  assert(buf2.val == val2);
 
-namespace AOSSL {
-
-class ApplicationSession: public KeyValueStore {
-  std::string name;
-
- public:
-  // TO-DO
-  ApplicationSession() {}
-
-  ~ApplicationSession() {}
-
-  // TO-DO
-  void load_config() {}
-};
-
+  // Set a property file
+  profile.set_property_file(std::string("test/test.properties"));
+  profile.load_config();
+  AOSSL::StringBuffer buf3;
+  profile.get_opt(key1, buf3);
+  assert(buf3.val == val3);
+  AOSSL::StringBuffer buf4;
+  profile.get_opt(key2, buf4);
+  assert(buf4.val == val4);
 }
-
-#endif  // AOSSL_CORE_INCLUDE_APP_SESSION_H_

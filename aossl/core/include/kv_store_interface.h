@@ -37,6 +37,7 @@ namespace AOSSL {
 //! Interface which requires implementation
 class KeyValueStoreInterface {
  public:
+  virtual ~KeyValueStoreInterface() {}
   //! Does a key exist?
   virtual bool opt_exist(std::string key) = 0;
 
