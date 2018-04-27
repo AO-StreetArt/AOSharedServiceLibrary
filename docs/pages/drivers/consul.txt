@@ -8,21 +8,21 @@
  *
  * We start by importing the necessary interfaces and establish the service factory.
  *
- *     #include "aossl/consul/consul_interface.h"
- *     #include "aossl/consul/factory_consul.h"
+ *     #include "aossl/consul/include/consul_interface.h"
+ *     #include "aossl/consul/include/factory_consul.h"
  *
- *     ConsulComponentFactory consul_factory;
+ *     AOSSL::ConsulComponentFactory consul_factory;
  *
  * Next, we define a Service which represents the current instance of the code.
  *
  * This contains an ID, a name, a connection, and a port number.  Tags can be added or not:
  *
- *     ServiceInterface *s = consul_factory.get_service_interface("1", "test", "http://localhost/", "5555");
+ *     AOSSL::ServiceInterface *s = consul_factory.get_service_interface("1", "test", "http://localhost/", "5555");
  *     s->add_tag("Testing");
  *
  * And build our Consul Admin, specifying the connection address:
  *
- *     ConsulInterface *ca = consul_factory.get_consul_interface("localhost:8500");
+ *     AOSSL::ConsulInterface *ca = consul_factory.get_consul_interface("localhost:8500");
  *
  * Now, we can register the currently running instance of a service with Consul
  *

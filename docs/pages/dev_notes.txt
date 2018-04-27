@@ -13,10 +13,9 @@
  * - the location of the dependency script: current valid paths are linux/deb (uses apt-get) and linux/rhel (uses yum)
  *
  * ## Security Notes
- * Currently AOSSL components are unsecured.  Three critical security needs have been identified:
+ * Currently AOSSL components are unsecured.  Two security needs have been identified:
  * - Consul 'Secret Store' using Hashicorp Vault as a backend.  Allow for secure storage of private config values.
- * - ZMQ LibCurve encryption, using built-in security mechanisms of 0MQ to encrypt messages sent and decrypt messages recieved.
- * - HTTPS Support, for securing HTTP Communications.  Further encryptions via HTTP would need to be handled by end user.
+ * - Enabling HTTPS for the HTTP Client
  *
  * \ref index "Go Home"
  */

@@ -1,53 +1,113 @@
 /*! \page use_index How to Use the AO Shared Service Library
  *
+ * ## TieredApplicationProfile
+ *
+ * The TieredApplicationProfile class provides a means of automatic configuration
+ * from a variety of sources.  Let's take a look at a profile to read from Command
+ * Line options and Environment Variables:
+ *
+ *     #include <iostream>
+ *     #include <string>
+ *     #include "include/tiered_app_profile.h"
+ *
+ *     int main(int argc, char** argv) {
+ *         AOSSL::TieredApplicationProfile profile(argc, argv, \
+ *           std::string("MyApplication"), std::string("MyProfile"));
+ *
+ *         std::string key = "testKey";
+ *         profile.add_opt(key, std::string("defaultValue"));
+ *
+ * Thus far, we've created a new TieredApplicationProfile, passing in 4 arguments
+ * to the constructor.  First, we pass in both arguments from the main method, to
+ * be parsed.  Then, we provide an Application Name and Profile Name (we'll see
+ * how these get used in a few moments).  Finally, we call add_opt to inform the
+ * profile of a key to search for, as well as it's default value.
+ *
+ * Next, let's add some additional configuration sources to the profile:
+ *
+ *         profile.set_property_file(std::string("test/test.properties"));
+ *         profile.set_consul_address("localhost:8500");
+ *
+ * Here, we've specified both a configuration file, as well as a network address
+ * at which we can reach a Consul Agent.  Calling these methods prior to loading
+ * the configuration is not required, so you can use any combination of the config
+ * sources.  If you don't want to use Command Line Arguments, you can call an alternative
+ * constructor passing only the application and profile name.
+ *
+ * Alternatively, we can pass any of the following arguments, which will trigger pulling
+ * from a configuration source:
+ *
+ * ### Command Line
+ * - consul: Set the Consul Agent Address (ie. consul=localhost:8500)
+ * - props: Set the path to the Configuration File (ie. props=app.properties)
+ *
+ * ### Environment Variables
+ * - AOSSL_CONSUL_ADDRESS (ie. `export AOSSL_CONSUL_ADDRESS=localhost:8500`)
+ * - AOSSL_PROPS_FILE (ie. `export AOSSL_PROPS_FILE=/etc/aossl/app.properties`)
+ *
+ * ### Properties File
+ * - consul: Set the Consul Agent Address (ie. consul=localhost:8500)
+ *
+ * Please see the Consul Documentation for
+ * more information on setting up an agent (https://www.consul.io/docs/agent/basics.html).
+ * Docker can also be used to start a Consul Agent (https://hub.docker.com/_/consul/).
+ *
+ * Our next step is to call load_config(), which will go out to the various sources
+ * and populate the specified values in an internal hash map (std::unordered_map).
+ * This ensures that runtime access of configuration elements happens in constant time.
+ *
+ * Note that the profile will only search for keys that have been specified with add_opt().
+ *
+ *         profile.load_config();
+ *
+ * Values will be populated with the following priority:
+ * - 1. Command Line Arguments
+ * - 2. Environment variables
+ * - 3. Consul Key-Value store variables
+ * - 4. Properties File values
+ * - 5. Default values
+ *
+ *         AOSSL::StringBuffer buf;
+ *         if (profile.opt_exist(key)) {
+ *             profile.get_opt(key, buf);
+ *             std::cout << buf.val << std::endl;
+ *         }
+ *     }
+ *
+ * ## Extending the SafeApplicationProfile
+ *
+ *
+ *
  * ## Service Component Factories
  *
  * The Service Component Factories are components which allow us to build instances of the interfaces exposed by the library.
+ * These can be used to build individual instances of the underlying components, rather than using an ApplicationProfile.
  *
  * It's important that we use the factory to get instances of the interfaces as the interfaces guarantee backwards-compatibility.  While particular implementations may change,
  * the interfaces will remain the same across major versions of the library.  For example:
  *
  *     #include "aossl/commandline/include/factory_cli.h"
- *     #include "aossl/commandline/include/commandline_interface.h"
+ *     #include "aossl/core/include/kv_store_interface.h"
  *
  *     // Set up a Service Component Factory, where we get our application components
- *     CommandLineInterpreterFactory cli_factory;
+ *     AOSSL::CommandLineInterpreterFactory cli_factory;
  *
  * The factory then provides us access to instances of the interfaces exposed by the library.
  *
- *     CommandLineInterface *cli = cli_factory.get_command_line_interface( argc, argv );
+ *     AOSSL::KeyValueStoreInterface *cli = cli_factory.get_command_line_interface( argc, argv );
  *
  * Note: Be sure to delete anything you build with the factories!  Due to the nature of C++ and a desire to retain flexibility, AOSSL is implemented such that it hands over responsibility for the memory allocated to the end user whenever a factory call is made.
- *
- * ## Choose a Framework
- *
- * AOSSL Comes with two message-based frameworks which can be used to construct an API: HTTP and ZeroMQ.
- *
- * It is not necessary to use one of the frameworks provided, as the tools included in the library will function with any other framework that is utilized.  Please note that neither the HTTP nor ZeroMQ Server should be called on different threads as they are not thread-safe.  The respective clients, however, are thread-safe.
- *
- * - \ref http_server "HTTP Server"
- * - \ref http_client "HTTP Client"
- * - \ref zeromq "ZeroMQ Sockets"
  *
  * ## Tools
  *
  * A Variety of tools are provided by AOSSL, all of which are thread safe.
  *
- * ### Connections to Critical External Tools
- *
- * - \ref mongo "Mongo Interface"
- * - \ref redis "Redis Interface"
- * - \ref neo4j "Neo4j Interface"
  * - \ref consul "Consul Interface"
- *
- * ### Basic Tools
- *
- * - \ref logging "Logging"
  * - \ref uuid "UUID"
  * - \ref cli "Command Line Argument Parser"
  * - \ref props "Property File Reader"
  *
- * ## Tests
+ * ## Compilation
  * Please continue on to the \ref compilation "Compilation" section of the documentation to learn about building an application with the library.
  *
  * \ref index "Go Home"

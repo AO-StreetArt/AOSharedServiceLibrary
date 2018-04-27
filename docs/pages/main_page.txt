@@ -18,13 +18,7 @@
  *
  * \section features Components
  *
- * - \ref zeromq "ZeroMQ Service Framework"
- * - \ref http_server "HTTP Service Framework"
- * - \ref mongo "Mongo Interface"
- * - \ref redis "Redis Interface"
  * - \ref consul "Consul Interface"
- * - \ref neo4j "Neo4j Interface"
- * - \ref logging "Asynchronous Logging Module"
  * - \ref uuid "Universally Unique ID Generator"
  * - \ref cli "Command Line Argument Parser"
  * - \ref props "Properties File Parser"

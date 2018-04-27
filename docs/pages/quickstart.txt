@@ -26,27 +26,6 @@
  *
  * Docker images are also available for many of the external tools connected to within the library.
  *
- * #### Mongo
- *
- * In times when you need to connect to an instance of [Mongo](https://www.mongodb.com), you can use the docker image (full instructions can be found [here](https://hub.docker.com/_/mongo/)).
- *
- *     docker run --name some-mongo -d mongo
- *
- * #### Neo4j
- *
- * In times when you need to connect to an instance of [Neo4j](https://neo4j.com/), you can use the docker image (full instructions can be found [here](https://hub.docker.com/_/neo4j/)).
- *
- *     docker run \
- *         --publish=7474:7474 --publish=7687:7687 \
- *         --volume=$HOME/neo4j/data:/data \
- *         neo4j
- *
- * #### Redis
- *
- * In times when you need to connect to an instance of [Redis](http://redis.io/), you can use the docker image (full instructions can be found [here](https://hub.docker.com/_/redis/)).
- *
- *     docker run --name some-redis -d redis
- *
  * #### Consul
  *
  * In times when you need to connect to an instance of [Consul](https://www.consul.io/), you can use the docker image (full instructions can be found [here](https://hub.docker.com/_/consul/))
@@ -156,19 +135,10 @@
  *
  * #### Build the Tests/Benchmarks
  *
- * ##### Ubuntu 16.04/Debian 7
- *
  * Run the following to build the library test executables and the benchmarking apps
  *
  *     make tests
  *     make benchmarks
- *
- * ##### CentOS 7/Redhat Enterprise Linux 7
- *
- * Run the following to build the library test executables and the benchmarking apps
- *
- *     make rhel-test
- *     make rhel-benchmarks
  *
  * ## Use
  * Please continue on to the \ref use_index "Use" section of the documentation to see example uses of the library.

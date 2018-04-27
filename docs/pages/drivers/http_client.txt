@@ -16,10 +16,10 @@
  *     #include "aossl/http/client/factory_http_client.h"
  *     #include "aossl/http/client/http_interface.h"
  *
- *     HttpClientFactory http_client_factory;
+ *     AOSSL::HttpClientFactory http_client_factory;
  *
  *     //Declare the admin
- *     HttpInterface *ha = http_client_factory.get_http_interface();
+ *     AOSSL::HttpInterface *ha = http_client_factory.get_http_interface();
  *
  * Send a get request:
  *
@@ -39,7 +39,7 @@
  *
  * ## Multi-Threading
  *
- * The HTTP Admin has a mutex around the internal send() method, called by all exposed API methods.  This means that the HTTP Administrator is thread-safe, but only one message will be sent at a time.
+ * The libcurl HTTP Admin implementation has a mutex around the global send() method, called by all exposed API methods.  This means that the HTTP Administrator is thread-safe, but only one message will be sent at a time.
  *
  * \ref index "Go Home"
  */

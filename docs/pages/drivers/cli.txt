@@ -9,22 +9,20 @@
  *
  * We start by importing the necessary interfaces and establish the service factory.
  *
- *     #include "include/commandline/factory_cli.h"
- *     #include "include/commandline/commandline_interface.h"
+ *     #include "aossl/commandline/include/factory_cli.h"
+ *     #include "aossl/core/include/kv_store_interface.h"
  *
  *     int main( int argc, char** argv )
  *     {
- *     CommandLineInterpreterFactory cli_factory;
- *     CommandLineInterface *cli = cli_factory.get_command_line_interface( argc, argv );
- *
- * We can utilize get_program_name to return the current program name executing on this instance.
- *
- *     std::cout << cli->get_program_name() << std::endl;
+ *     AOSSL::CommandLineInterpreterFactory cli_factory;
+ *     AOSSL::KeyValueStoreInterface *cli = cli_factory.get_command_line_interface( argc, argv );
  *
  * We have access to an opt_exist method to determine if an option was entered, and we can use get_opt to pull parameter values.
  *
  *     if ( cli->opt_exist("name") ) {
- *       std::cout << cli->get_opt("name") << std::endl;
+ *       AOSSL::StringBuffer buf;
+ *       cli->get_opt("name", buf);
+ *       std::cout << buf.val << std::endl;
  *     }
  *
  *     return 0;

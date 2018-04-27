@@ -6,14 +6,15 @@
  *     #include "aossl/uuid/uuid_interface.h"
  *     #include <iostream>
  *
- *     uuidComponentFactory id_factory;
+ *     AOSSL::UuidComponentFactory id_factory;
  *     //Initialize the UUID Admin
- *     uuidInterface *uuid = id_factory.get_uuid_interface();
+ *     AOSSL::UuidInterface *uuid = id_factory.get_uuid_interface();
  *
  *     //Generate a UUID
- *     UuidContainer id_container = uuid->generate();
- *     std::cout << id_container.id << std::endl;
- *     std::cout << id_container.err << std::endl;
+ *     AOSSL::StringBuffer id_container;
+ *     uuid->generate(id_container);
+ *     std::cout << id_container.val << std::endl;
+ *     std::cout << id_container.err_msg << std::endl;
  *
  * \ref index "Go Home"
  */

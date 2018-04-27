@@ -6,10 +6,18 @@
  * within a larger architecture.  It looks to provide a developer kit which will decrease
  * overall time-to-market for these services, while allowing for maximum flexibility.
  *
- * The long-term vision of AOSSL is to ensure that this architecture is robust, secure,
- * and modular, and to continue to add functionality and drivers for major use-cases.
- * In addition, in future versions, AOSSL will look to become a full fledged framework,
- * rather than simply a collection of drivers.
+ * The long-term vision of AOSSL is to provide the core elements of this framework,
+ * while not encumbering developers with components they don't need.
+ *
+ * While the library previously contained a number of database drivers and messaging
+ * frameworks, particular applications only needed some small number of these, and
+ * not all of them packaged together.  As a result, these have either been split
+ * out into separate libraries (https://github.com/AO-StreetArt/NeoCpp), or abandoned
+ * in favor of existing drivers (https://github.com/mongodb/mongo-cxx-driver).
+ *
+ * By keeping the data modules independent, we can use AOSSL to provide the core
+ * components of a C++ Microservice (in the fashion of Spring Boot).  The first
+ * piece of this that is available is automated configuration.
  *
  * \ref index "Go Home"
  */
