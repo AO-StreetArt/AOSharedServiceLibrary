@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 
 #include <algorithm>
+#include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <cstdlib>
@@ -53,6 +54,10 @@ namespace AOSSL {
 //! 4. Properties File values
 //! 5. Default values
 class TieredApplicationProfile: public SafeApplicationProfile{
+  inline bool exists_test (const std::string& name) {
+    struct stat buffer;
+    return (stat (name.c_str(), &buffer) == 0);
+  }
   // Load a value from a KV Store
   inline void load_config_value(KeyValueStoreInterface *kv, std::string& key) {
     if (kv) {
@@ -118,13 +123,53 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       KeyValueStore::set_opt(key, env_str);
     }
   }
+  // Initialize the Profile
+  inline void init() {
+    // Check the CLI and Environment Variables for Consul Address and Properties File
+    const char *env_consul_value = std::getenv("AOSSL_CONSUL_ADDRESS");
+    if (env_consul_value) {
+      std::string consul_addr_str(env_consul_value);
+      ApplicationProfile::set_consul_address(consul_addr_str);
+    }
+    if (ApplicationProfile::get_cli()) {
+      if (ApplicationProfile::get_cli()->opt_exist(std::string("consul"))) {
+        StringBuffer consul_buf;
+        ApplicationProfile::get_cli()->get_opt(std::string("consul"), consul_buf);
+        ApplicationProfile::set_consul_address(consul_buf.val);
+      }
+    }
+    const char *env_props_value = std::getenv("AOSSL_PROPS_FILE");
+    if (env_props_value) {
+      std::string props_file_str(env_props_value);
+      ApplicationProfile::set_property_file(props_file_str);
+    }
+    if (ApplicationProfile::get_cli()) {
+      if (ApplicationProfile::get_cli()->opt_exist(std::string("props"))) {
+        StringBuffer props_buf;
+        ApplicationProfile::get_cli()->get_opt(std::string("props"), props_buf);
+        ApplicationProfile::set_property_file(props_buf.val);
+      }
+    }
+    // Check for an app.properties file
+    if ((!(ApplicationProfile::get_props())) && exists_test(std::string("app.properties"))) {
+      ApplicationProfile::set_property_file("app.properties");
+    }
+    // Check the Properties file for the Consul Address
+    if (ApplicationProfile::get_props()) {
+        if (ApplicationProfile::get_props()->opt_exist(std::string("consul"))) {
+          StringBuffer pconsul_buf;
+          ApplicationProfile::get_cli()->get_opt(std::string("consul"), pconsul_buf);
+          ApplicationProfile::set_consul_address(pconsul_buf.val);
+        }
+    }
+  }
  public:
   TieredApplicationProfile(int argc, char* argv[]) : \
-      SafeApplicationProfile(argc, argv) {}
+      SafeApplicationProfile(argc, argv) {init();}
   TieredApplicationProfile(int argc, char* argv[], std::string app_name, \
-      std::string prof_name) : SafeApplicationProfile(argc, argv, app_name, prof_name) {}
+      std::string prof_name) : SafeApplicationProfile(argc, argv, app_name, prof_name) {init();}
   TieredApplicationProfile(std::string app_name, std::string prof_name) : \
-      SafeApplicationProfile(app_name, prof_name) {}
+      SafeApplicationProfile(app_name, prof_name) {init();}
 
   ~TieredApplicationProfile() {}
 
