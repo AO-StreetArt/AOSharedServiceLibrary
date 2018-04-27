@@ -115,9 +115,20 @@ class ConsulInterface: public KeyValueStoreInterface  {
   //! from Consul in base64, and need to be decoded after the json
   //! is parsed.
   /*!
+   \param encoded_string The string to decode
+   \param ret_buffer A String buffer in which to populate the response
+  */
+  virtual void base64_decode_by_reference(std::string const& encoded_string, \
+    StringBuffer& ret_buffer) = 0;
+  //! Convinience Method for base64 decoding
+
+  //! This is needed as all configuration values are returned
+  //! from Consul in base64, and need to be decoded after the json
+  //! is parsed.
+  /*!
     \param encoded_string The string to decode
   */
-  virtual AOSSL::StringBuffer* \
+  virtual StringBuffer* \
     base64_decode_safe(std::string const& encoded_string) = 0;
 
   virtual ~ConsulInterface() {}

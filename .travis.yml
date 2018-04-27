@@ -27,6 +27,8 @@ script:
 - make tests
 - make benchmarks
 - sudo make install
+- cd $TRAVIS_BUILD_DIR/scripts && ./profile_test_setup.sh
+- cd $TRAVIS_BUILD_DIR/aossl/profile && ./profile_test
 - cd $TRAVIS_BUILD_DIR/aossl/properties && ./properties_reader_test
 - cd $TRAVIS_BUILD_DIR/aossl/commandline && ./cli_test name=test
 - cd $TRAVIS_BUILD_DIR/aossl/http/client && ./http_test

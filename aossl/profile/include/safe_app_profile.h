@@ -28,8 +28,8 @@ THE SOFTWARE.
 #include "aossl/core/include/kv_store.h"
 #include "app_profile.h"
 
-#ifndef AOSSL_SESSION_INCLUDE_SAFE_APP_SESSION_H_
-#define AOSSL_SESSION_INCLUDE_SAFE_APP_SESSION_H_
+#ifndef AOSSL_SESSION_INCLUDE_SAFE_APP_PROFILE_H_
+#define AOSSL_SESSION_INCLUDE_SAFE_APP_PROFILE_H_
 
 namespace AOSSL {
 
@@ -41,10 +41,13 @@ class SafeApplicationProfile: public ApplicationProfile, public KeyValueStore{
  public:
   SafeApplicationProfile(int argc, char* argv[]) : \
       ApplicationProfile(argc, argv) {}
-
+  SafeApplicationProfile(int argc, char* argv[], std::string app_name, \
+      std::string prof_name) : ApplicationProfile(argc, argv, app_name, prof_name) {}
+  SafeApplicationProfile(std::string app_name, std::string prof_name) : \
+      ApplicationProfile(app_name, prof_name) {}
   virtual ~SafeApplicationProfile() {}
 };
 
 }
 
-#endif  // AOSSL_SESSION_INCLUDE_SAFE_APP_SESSION_H_
+#endif  // AOSSL_SESSION_INCLUDE_SAFE_APP_PROFILE_H_

@@ -22,19 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <algorithm>
 #include <stdlib.h>
 #include <unistd.h>
 #include <cstdlib>
+#include <iostream>
 #include <string>
 #include <unordered_map>
+#include <exception>
+
+#include "rapidjson/document.h"
+#include "rapidjson/error/en.h"
 
 #include "aossl/core/include/kv_store.h"
 #include "aossl/core/include/kv_store_interface.h"
 #include "app_profile.h"
 #include "safe_app_profile.h"
 
-#ifndef AOSSL_SESSION_INCLUDE_BIASED_APP_SESSION_H_
-#define AOSSL_SESSION_INCLUDE_BIASED_APP_SESSION_H_
+#ifndef AOSSL_SESSION_INCLUDE_TIERED_APP_PROFILE_H_
+#define AOSSL_SESSION_INCLUDE_TIERED_APP_PROFILE_H_
 
 namespace AOSSL {
 
@@ -57,8 +63,55 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       }
     }
   }
+  // Load a value from Consul
+  inline void load_consul_value(ConsulInterface *kv, std::string& key) {
+    if (kv) {
+      std::string query_key;
+      // Prefix the key with the application & profile name
+      // to ensure we get unique values for different apps
+      if (!(ApplicationProfile::get_app_name().empty() && ApplicationProfile::get_profile_name().empty())) {
+        query_key = ApplicationProfile::get_app_name() + std::string("/") + \
+            ApplicationProfile::get_profile_name() + std::string("/");
+      }
+      query_key = query_key + key;
+      if (kv->opt_exist(query_key)) {
+        AOSSL::StringBuffer buf;
+        kv->get_opt(query_key, buf);
+        // Parse the response
+        rapidjson::Document d;
+        d.Parse<rapidjson::kParseStopWhenDoneFlag>(buf.val.c_str());
+        if (d.HasParseError()) {
+          throw std::invalid_argument(GetParseError_En(d.GetParseError()));
+        }
+        // Pull the value field
+        StringBuffer parsed_buffer;
+        std::string value_string;
+        if (d.IsArray()) {
+          for (auto& itr : d.GetArray()) {
+            rapidjson::Value::ConstMemberIterator val_iter = \
+                itr.FindMember("Value");
+            if (val_iter != itr.MemberEnd()) {
+              if (!(val_iter->value.IsNull())) {
+                parsed_buffer.val.assign(val_iter->value.GetString());
+              }
+            }
+          }
+        }
+        // decode the base64 value
+        StringBuffer decoded_buffer;
+        ApplicationProfile::get_consul()->base64_decode_by_reference(parsed_buffer.val, decoded_buffer);
+        KeyValueStore::set_opt(key, decoded_buffer.val);
+      }
+    }
+  }
   // Load a value from an environment variable
   inline void load_environment_variable(std::string& key) {
+    // Copy the key before modifying in-place
+    std::string env_key;
+    env_key.assign(key);
+    // Convert to all caps
+    std::transform(env_key.begin(), env_key.end(), env_key.begin(), toupper);
+    // Get the environment variable
     const char *env_value = std::getenv(key.c_str());
     if (env_value) {
       std::string env_str(env_value);
@@ -68,6 +121,10 @@ class TieredApplicationProfile: public SafeApplicationProfile{
  public:
   TieredApplicationProfile(int argc, char* argv[]) : \
       SafeApplicationProfile(argc, argv) {}
+  TieredApplicationProfile(int argc, char* argv[], std::string app_name, \
+      std::string prof_name) : SafeApplicationProfile(argc, argv, app_name, prof_name) {}
+  TieredApplicationProfile(std::string app_name, std::string prof_name) : \
+      SafeApplicationProfile(app_name, prof_name) {}
 
   ~TieredApplicationProfile() {}
 
@@ -79,7 +136,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       // Load Properties File values, if present
       load_config_value(ApplicationProfile::get_props(), element.first);
       // Load Consul Values, if present
-      load_config_value(ApplicationProfile::get_consul(), element.first);
+      load_consul_value(ApplicationProfile::get_consul(), element.first);
       // Load Environment variables
       load_environment_variable(element.first);
       // Load Commandline Values, if present
@@ -90,4 +147,4 @@ class TieredApplicationProfile: public SafeApplicationProfile{
 
 }
 
-#endif  // AOSSL_SESSION_INCLUDE_BIASED_APP_SESSION_H_
+#endif  // AOSSL_SESSION_INCLUDE_TIERED_APP_PROFILE_H_

@@ -63,7 +63,7 @@ class ConsulAdmin: public ConsulInterface {
 
  public:
   void base64_decode_by_reference(std::string const& encoded_string, StringBuffer& ret_buffer);
-  AOSSL::StringBuffer* base64_decode_safe(std::string const& encoded_string);
+  StringBuffer* base64_decode_safe(std::string const& encoded_string);
 
   // Construct a consul admin, passing in the connection string
   // TO-DO: Parameterize the timeout

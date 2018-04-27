@@ -35,8 +35,8 @@ THE SOFTWARE.
 #include "aossl/consul/include/factory_consul.h"
 #include "aossl/uuid/include/factory_uuid.h"
 
-#ifndef AOSSL_SESSION_INCLUDE_APP_SESSION_H_
-#define AOSSL_SESSION_INCLUDE_APP_SESSION_H_
+#ifndef AOSSL_SESSION_INCLUDE_APP_PROFILE_H_
+#define AOSSL_SESSION_INCLUDE_APP_PROFILE_H_
 
 namespace AOSSL {
 
@@ -53,13 +53,28 @@ class ApplicationProfile {
   KeyValueStoreInterface *cfile = NULL;
   ConsulInterface *consul = NULL;
   UuidInterface *uuid = NULL;
+  std::string application_name;
+  std::string profile_name;
  public:
   //! Create a new Application Session with Command Line Arguments
-  ApplicationProfile(int argc, char* argv[]) \
-      {cli = cli_factory.get_command_line_interface(argc, argv);\
-      uuid = uuid_factory.get_uuid_interface();}
+  ApplicationProfile(int argc, char* argv[]) {
+    cli = cli_factory.get_command_line_interface(argc, argv);
+    uuid = uuid_factory.get_uuid_interface();
+  }
+  //! Create a new Application Session with Command Line Arguments
+  ApplicationProfile(int argc, char* argv[], std::string app_name, \
+      std::string prof_name) {
+    cli = cli_factory.get_command_line_interface(argc, argv);
+    uuid = uuid_factory.get_uuid_interface();
+    application_name.assign(app_name);
+    profile_name.assign(prof_name);
+  }
   //! Create a new Application Session without any Command Line Arguments
-  ApplicationProfile() {uuid = uuid_factory.get_uuid_interface();}
+  ApplicationProfile(std::string app_name, std::string prof_name) {
+    uuid = uuid_factory.get_uuid_interface();
+    application_name.assign(app_name);
+    profile_name.assign(prof_name);
+  }
 
   virtual inline ~ApplicationProfile() {
     if (cli) {delete cli;}
@@ -82,8 +97,16 @@ class ApplicationProfile {
   ConsulInterface* get_consul() {return consul;}
   //! Get the UUID Interface
   UuidInterface* get_uuid() {return uuid;}
+  //! Get the Application Name
+  std::string get_app_name() {return application_name;}
+  //! Get the Profile Name
+  std::string get_profile_name() {return profile_name;}
+  //! Get the Application Name
+  void set_app_name(std::string name) {application_name.assign(name);}
+  //! Get the Profile Name
+  void set_profile_name(std::string prof) {profile_name.assign(prof);}
 };
 
 }
 
-#endif  // AOSSL_SESSION_INCLUDE_APP_SESSION_H_
+#endif  // AOSSL_SESSION_INCLUDE_APP_PROFILE_H_
