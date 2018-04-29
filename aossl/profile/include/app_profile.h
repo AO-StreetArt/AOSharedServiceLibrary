@@ -69,6 +69,19 @@ class ApplicationProfile {
     application_name.assign(app_name);
     profile_name.assign(prof_name);
   }
+   //! Create a new Application Session with Command Line Arguments
+   ApplicationProfile(const std::vector<std::string>& args) {
+     cli = cli_factory.get_command_line_interface(args);
+     uuid = uuid_factory.get_uuid_interface();
+   }
+   //! Create a new Application Session with Command Line Arguments
+   ApplicationProfile(const std::vector<std::string>& args, std::string app_name, \
+       std::string prof_name) {
+     cli = cli_factory.get_command_line_interface(args);
+     uuid = uuid_factory.get_uuid_interface();
+     application_name.assign(app_name);
+     profile_name.assign(prof_name);
+   }
   //! Create a new Application Session without any Command Line Arguments
   ApplicationProfile(std::string app_name, std::string prof_name) {
     uuid = uuid_factory.get_uuid_interface();

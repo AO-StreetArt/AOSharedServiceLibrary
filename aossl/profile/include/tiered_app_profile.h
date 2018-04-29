@@ -168,6 +168,10 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       SafeApplicationProfile(argc, argv) {init();}
   TieredApplicationProfile(int argc, char* argv[], std::string app_name, \
       std::string prof_name) : SafeApplicationProfile(argc, argv, app_name, prof_name) {init();}
+   TieredApplicationProfile(const std::vector<std::string>& args) : \
+       SafeApplicationProfile(args) {init();}
+   TieredApplicationProfile(const std::vector<std::string>& args, std::string app_name, \
+       std::string prof_name) : SafeApplicationProfile(args, app_name, prof_name) {init();}
   TieredApplicationProfile(std::string app_name, std::string prof_name) : \
       SafeApplicationProfile(app_name, prof_name) {init();}
 

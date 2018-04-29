@@ -24,24 +24,35 @@ THE SOFTWARE.
 
 #include "include/cli.h"
 
+void AOSSL::CommandLineInterpreter::process_arg(const std::string& arg) {
+  std::size_t pos = arg.find("=");
+
+  // We have a key-value pair
+  if (pos != std::string::npos) {
+    std::string key = arg.substr(0, pos);
+    std::string value = arg.substr(pos+1);
+    KeyValueStore::set_opt(key, value);
+  } else {
+    // We have an opt flag, and these can be driven by opt_exist directly
+    std::string key;
+    key.assign(arg);
+    std::string value = "N/A";
+    KeyValueStore::set_opt(key, value);
+  }
+}
+
 // Constructor
 AOSSL::CommandLineInterpreter::CommandLineInterpreter(int argc, char* argv[]) {
   name = argv[0];
   for (int i = 1; i < argc; i++) {
-    // Find the command line parameter string and look for an equals sign
     std::string full_line(argv[i]);
-    std::size_t pos = full_line.find("=");
+    process_arg(full_line);
+  }
+}
 
-    // We have a key-value pair
-    if (pos != std::string::npos) {
-      std::string key = full_line.substr(0, pos);
-      std::string value = full_line.substr(pos+1);
-      KeyValueStore::set_opt(key, value);
-    } else {
-      // We have an opt flag, and these can be driven by opt_exist directly
-      std::string key = full_line;
-      std::string value = "N/A";
-      KeyValueStore::set_opt(full_line, value);
-    }
+AOSSL::CommandLineInterpreter::CommandLineInterpreter(const std::vector<std::string>& args) {
+  name = args[0];
+  for (std::string elt : args) {
+    process_arg(elt);
   }
 }

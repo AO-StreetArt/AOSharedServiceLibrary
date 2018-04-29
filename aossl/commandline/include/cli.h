@@ -27,6 +27,7 @@ THE SOFTWARE.
 
 #include "aossl/core/include/kv_store.h"
 #include "aossl/core/include/buffers.h"
+#include <vector>
 
 #ifndef AOSSL_COMMANDLINE_INCLUDE_CLI_H_
 #define AOSSL_COMMANDLINE_INCLUDE_CLI_H_
@@ -35,7 +36,7 @@ namespace AOSSL {
 
 class CommandLineInterpreter: public KeyValueStore {
   std::string name;
-
+  void process_arg(const std::string& arg);
  public:
   // Create a new Command Line Interpreter
 
@@ -44,6 +45,13 @@ class CommandLineInterpreter: public KeyValueStore {
   // This parses arguments passed in the form:
   // arg_key=arg_val
   CommandLineInterpreter(int argc, char* argv[]);
+  // Create a new Command Line Interpreter
+
+  // Here we create a new interpreter by passing in the two
+  // arguments from the main method, int argc & char* argv[].
+  // This parses arguments passed in the form:
+  // arg_key=arg_val
+  CommandLineInterpreter(const std::vector<std::string>& args);
 
   ~CommandLineInterpreter() {}
 

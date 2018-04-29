@@ -43,6 +43,10 @@ class SafeApplicationProfile: public ApplicationProfile, public KeyValueStore{
       ApplicationProfile(argc, argv) {}
   SafeApplicationProfile(int argc, char* argv[], std::string app_name, \
       std::string prof_name) : ApplicationProfile(argc, argv, app_name, prof_name) {}
+  SafeApplicationProfile(const std::vector<std::string>& args) : \
+      ApplicationProfile(args) {}
+  SafeApplicationProfile(const std::vector<std::string>& args, std::string app_name, \
+      std::string prof_name) : ApplicationProfile(args, app_name, prof_name) {}
   SafeApplicationProfile(std::string app_name, std::string prof_name) : \
       ApplicationProfile(app_name, prof_name) {}
   virtual ~SafeApplicationProfile() {}

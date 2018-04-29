@@ -25,12 +25,9 @@ THE SOFTWARE.
 #include "include/cli.h"
 #include <iostream>
 #include <assert.h>
+#include <vector>
 
-int main(int argc, char** argv) {
-
-  // Build a command line interpreter
-  AOSSL::CommandLineInterpreter cli(argc, argv);
-
+void validate_cli(AOSSL::CommandLineInterpreter& cli) {
   // Test the command line interpreter
   std::cout << cli.get_name() << std::endl;
   assert(cli.get_name() == "./cli_test");
@@ -41,6 +38,27 @@ int main(int argc, char** argv) {
     std::cout << value_buffer.val << std::endl;
     assert(value_buffer.val == "test");
   }
+}
+
+int main(int argc, char** argv) {
+
+  std::vector<std::string> vargs;
+  for (int i = 0; i < argc; i++) {
+    std::string full_line(argv[i]);
+    vargs.push_back(full_line);
+  }
+
+  // Build a command line interpreter with an array of args
+  AOSSL::CommandLineInterpreter cli(argc, argv);
+
+  // Test the command line interpreter
+  validate_cli(cli);
+
+  // Build the command line interpreter with a vector of args
+  AOSSL::CommandLineInterpreter vcli(vargs);
+
+  // Test the command line interpreter
+  validate_cli(vcli);
 
   return 0;
 }

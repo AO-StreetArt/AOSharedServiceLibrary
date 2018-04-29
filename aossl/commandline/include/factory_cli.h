@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <vector>
 #include "aossl/core/include/kv_store.h"
 #include "cli.h"
 
@@ -47,6 +48,11 @@ class CommandLineInterpreterFactory {
   //! Get the Command Line Interface instance
   KeyValueStore* get_command_line_interface(int argc, char* argv[]) {
     return new CommandLineInterpreter( argc, argv );
+  }
+
+  //! Get the Command Line Interface instance
+  KeyValueStore* get_command_line_interface(const std::vector<std::string>& args) {
+    return new CommandLineInterpreter( args );
   }
 };
 
