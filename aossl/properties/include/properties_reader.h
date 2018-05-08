@@ -44,7 +44,10 @@ class PropertiesReader: public KeyValueStore {
   // Create a new Command Line Interpreter
   // Here we create a new interpreter by passing in a single argument, the
   // address of a properties file.
-  PropertiesReader(std::string file_path);
+  PropertiesReader(std::string file_path) : KeyValueStore() {
+    config_file.assign(file_path);
+    load_config();
+  }
 
   ~PropertiesReader() {}
 

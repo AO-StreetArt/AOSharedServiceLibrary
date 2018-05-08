@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 #include <string>
 #include <unordered_map>
+#include <iostream>
 
 #include "aossl/core/include/kv_store.h"
 #include "app_profile.h"

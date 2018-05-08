@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 #include <string>
 #include <unordered_map>
+#include <iostream>
 
 #include "buffers.h"
 #include "kv_store_interface.h"
@@ -40,6 +41,7 @@ namespace AOSSL {
 class KeyValueStore: public KeyValueStoreInterface {
   std::unordered_map<std::string, std::string> opts;
  public:
+  KeyValueStore() {}
   virtual ~KeyValueStore() {}
   //! Does a key exist?
   inline bool opt_exist(std::string key) {
@@ -67,7 +69,7 @@ class KeyValueStore: public KeyValueStoreInterface {
   std::unordered_map<std::string, std::string> get_opts() {return opts;}
 
   //! Add an option
-  void add_opt(std::string& key, std::string& value) {opts.emplace(key, value);}
+  void add_opt(const std::string& key, const std::string& value) {opts.emplace(key, value);}
 
   //! Set an option
   void set_opt(std::string& key, std::string& value) {opts[key] = value;}

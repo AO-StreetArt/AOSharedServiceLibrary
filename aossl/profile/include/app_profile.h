@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 
 #include <string>
+#include <iostream>
 
 #include "aossl/core/include/buffers.h"
 #include "aossl/core/include/kv_store_interface.h"

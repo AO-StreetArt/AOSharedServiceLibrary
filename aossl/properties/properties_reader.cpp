@@ -24,12 +24,6 @@ THE SOFTWARE.
 
 #include "include/properties_reader.h"
 
-// Constructor
-AOSSL::PropertiesReader::PropertiesReader(std::string file_path) {
-  config_file.assign(file_path);
-  load_config();
-}
-
 void AOSSL::PropertiesReader::load_config() {
   std::string line;
   struct stat buffer;

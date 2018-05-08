@@ -31,28 +31,12 @@ void AOSSL::CommandLineInterpreter::process_arg(const std::string& arg) {
   if (pos != std::string::npos) {
     std::string key = arg.substr(0, pos);
     std::string value = arg.substr(pos+1);
-    KeyValueStore::set_opt(key, value);
+    KeyValueStore::add_opt(key, value);
   } else {
     // We have an opt flag, and these can be driven by opt_exist directly
     std::string key;
     key.assign(arg);
     std::string value = "N/A";
-    KeyValueStore::set_opt(key, value);
-  }
-}
-
-// Constructor
-AOSSL::CommandLineInterpreter::CommandLineInterpreter(int argc, char* argv[]) {
-  name = argv[0];
-  for (int i = 1; i < argc; i++) {
-    std::string full_line(argv[i]);
-    process_arg(full_line);
-  }
-}
-
-AOSSL::CommandLineInterpreter::CommandLineInterpreter(const std::vector<std::string>& args) {
-  name = args[0];
-  for (std::string elt : args) {
-    process_arg(elt);
+    KeyValueStore::add_opt(key, value);
   }
 }

@@ -105,7 +105,9 @@ class TieredApplicationProfile: public SafeApplicationProfile{
         // decode the base64 value
         StringBuffer decoded_buffer;
         ApplicationProfile::get_consul()->base64_decode_by_reference(parsed_buffer.val, decoded_buffer);
-        KeyValueStore::set_opt(key, decoded_buffer.val);
+        if (KeyValueStore::opt_exist(key)) {
+          KeyValueStore::set_opt(key, decoded_buffer.val);
+        }
       }
     }
   }
@@ -116,9 +118,11 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     env_key.assign(key);
     // Convert to all caps
     std::transform(env_key.begin(), env_key.end(), env_key.begin(), toupper);
+    // Convert '.' to '_'
+    std::replace(env_key.begin(), env_key.end(), '.', '_');
     // Get the environment variable
-    const char *env_value = std::getenv(key.c_str());
-    if (env_value) {
+    const char *env_value = std::getenv(env_key.c_str());
+    if (env_value && KeyValueStore::opt_exist(key)) {
       std::string env_str(env_value);
       KeyValueStore::set_opt(key, env_str);
     }
@@ -150,9 +154,15 @@ class TieredApplicationProfile: public SafeApplicationProfile{
         ApplicationProfile::set_property_file(props_buf.val);
       }
     }
-    // Check for an app.properties file
-    if ((!(ApplicationProfile::get_props())) && exists_test(std::string("app.properties"))) {
-      ApplicationProfile::set_property_file("app.properties");
+    // Check for possible property files
+    std::vector<std::string> props_file_names;
+    props_file_names.push_back(std::string("app.properties"));
+    props_file_names.push_back(ApplicationProfile::get_app_name() + std::string(".properties"));
+    props_file_names.push_back(ApplicationProfile::get_app_name() + std::string("d.properties"));
+    for (std::string file_name : props_file_names) {
+      if ((!(ApplicationProfile::get_props())) && exists_test(file_name)) {
+        ApplicationProfile::set_property_file(file_name);
+      }
     }
     // Check the Properties file for the Consul Address
     if (ApplicationProfile::get_props()) {

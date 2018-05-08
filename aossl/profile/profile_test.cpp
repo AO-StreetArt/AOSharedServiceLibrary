@@ -46,6 +46,15 @@ int main(int argc, char** argv) {
   std::string val7 = "seven";
   std::string val8 = "eight";
 
+  // Vector-arg profile tests
+  std::string akey = "test";
+  std::string avalue = "1";
+  std::vector<std::string> args;
+  args.push_back(std::string("test=1"));
+  AOSSL::TieredApplicationProfile basic_profile(args, std::string("test2"), std::string("prof2"));
+  basic_profile.add_opt(akey, avalue);
+  basic_profile.load_config();
+
   // Basic Profile Tests
   AOSSL::TieredApplicationProfile profile(argc, argv, \
       std::string("test"), std::string("prof"));

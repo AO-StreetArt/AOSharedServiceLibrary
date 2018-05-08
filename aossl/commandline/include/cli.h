@@ -44,14 +44,25 @@ class CommandLineInterpreter: public KeyValueStore {
   // arguments from the main method, int argc & char* argv[].
   // This parses arguments passed in the form:
   // arg_key=arg_val
-  CommandLineInterpreter(int argc, char* argv[]);
+  CommandLineInterpreter(int argc, char* argv[]) : KeyValueStore() {
+    name = argv[0];
+    for (int i = 1; i < argc; i++) {
+      std::string full_line(argv[i]);
+      process_arg(full_line);
+    }
+  }
   // Create a new Command Line Interpreter
 
   // Here we create a new interpreter by passing in the two
   // arguments from the main method, int argc & char* argv[].
   // This parses arguments passed in the form:
   // arg_key=arg_val
-  CommandLineInterpreter(const std::vector<std::string>& args);
+  CommandLineInterpreter(const std::vector<std::string>& args) : KeyValueStore() {
+    name = args[0];
+    for (std::string elt : args) {
+      process_arg(elt);
+    }
+  }
 
   ~CommandLineInterpreter() {}
 
