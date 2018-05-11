@@ -77,7 +77,8 @@ int main(int argc, char** argv) {
   assert(buf2.val == val2);
 
   // Property File Tests
-  profile.set_property_file(std::string("test/test.properties"));
+  std::string props_file_name = "test/test.properties";
+  profile.set_property_file(props_file_name);
   profile.load_config();
   AOSSL::StringBuffer buf3;
   profile.get_opt(key1, buf3);

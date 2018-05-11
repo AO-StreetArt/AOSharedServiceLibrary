@@ -17,7 +17,7 @@ INSTALL_LIB_DIR = /usr/local/lib
 #Library Objects
 OBJS = aossl/commandline/cli.o aossl/http/client/http_admin.o\
 	aossl/consul/consul_admin.o aossl/uuid/uuid_admin.o \
-		aossl/consul/service.o aossl/properties/properties_reader.o
+		aossl/consul/service.o
 
 
 # typing 'make' will invoke the first target entry in the file

@@ -8,8 +8,6 @@ RM = rm -f
 INCL_DIRS = -I$(CURDIR)/../../
 
 #Makefile Targets
-default: properties_reader.o
-
 tests: properties_reader_test
 
 install: $(INCL_DIR) $(INCL)
@@ -32,16 +30,8 @@ $(INSTALL_DIR)/properties/include/properties_reader.h: include/properties_reader
 
 # Test
 # Create the executable file zmqio_test
-properties_reader_test: properties_reader.o properties_reader_test.o
+properties_reader_test: properties_reader_test.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_DIRS)
 
 properties_reader_test.o: properties_reader_test.cpp include/properties_reader.h
 	$(CC) $(CFLAGS) -o $@ -c properties_reader_test.cpp $(STD) $(INCL_DIRS)
-
-# Create the object file zmqio_test.o
-properties_reader: properties_reader_test.o properties_reader_test.cpp
-	$(CC) $(CFLAGS) -o $@ -c properties_reader_test.cpp $(STD) $(INCL_DIRS)
-
-# Build ZMQ Object file
-properties_reader.o: properties_reader.cpp include/properties_reader.h
-	$(CC) $(CFLAGS) -o $@ -c properties_reader.cpp $(STD) $(INCL_DIRS)

@@ -98,7 +98,7 @@ class ApplicationProfile {
   }
 
   //! Set the location of the properties file
-  void set_property_file(std::string filename) \
+  void set_property_file(std::string& filename) \
       {cfile = props_factory.get_properties_reader_interface(filename);}
   //! Set the address of the consul agent
   void set_consul_address(std::string caddr) \

@@ -54,6 +54,7 @@ namespace AOSSL {
 //! 4. Properties File values
 //! 5. Default values
 class TieredApplicationProfile: public SafeApplicationProfile{
+  std::string props_file_name;
   inline bool exists_test (const std::string& name) {
     struct stat buffer;
     return (stat (name.c_str(), &buffer) == 0);
@@ -155,14 +156,9 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       }
     }
     // Check for possible property files
-    std::vector<std::string> props_file_names;
-    props_file_names.push_back(std::string("app.properties"));
-    props_file_names.push_back(ApplicationProfile::get_app_name() + std::string(".properties"));
-    props_file_names.push_back(ApplicationProfile::get_app_name() + std::string("d.properties"));
-    for (std::string file_name : props_file_names) {
-      if ((!(ApplicationProfile::get_props())) && exists_test(file_name)) {
-        ApplicationProfile::set_property_file(file_name);
-      }
+    props_file_name = "app.properties";
+    if ((!(ApplicationProfile::get_props())) && exists_test(props_file_name)) {
+      ApplicationProfile::set_property_file(props_file_name);
     }
     // Check the Properties file for the Consul Address
     if (ApplicationProfile::get_props()) {

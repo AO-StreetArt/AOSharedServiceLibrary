@@ -30,7 +30,8 @@ THE SOFTWARE.
 #include "aossl/core/include/buffers.h"
 
 int main(int argc, char** argv) {
-  AOSSL::PropertiesReader reader("test.properties");
+  std::string props_file_name = "test.properties";
+  AOSSL::PropertiesReader reader(props_file_name);
   if ( reader.opt_exist("DB_Password") ) {
     AOSSL::StringBuffer buf;
     reader.get_opt("DB_Password", buf);
