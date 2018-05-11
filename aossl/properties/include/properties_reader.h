@@ -44,7 +44,7 @@ class PropertiesReader: public KeyValueStore {
   // Create a new Command Line Interpreter
   // Here we create a new interpreter by passing in a single argument, the
   // address of a properties file.
-  PropertiesReader(std::string& file_path) : KeyValueStore() {
+  explicit PropertiesReader(std::string& file_path) : KeyValueStore() {
     std::string line;
     std::ifstream file(file_path.c_str());
 
@@ -74,6 +74,6 @@ class PropertiesReader: public KeyValueStore {
   void load_config() {}
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_PROPERTIES_INCLUDE_PROPERTIES_READER_H_

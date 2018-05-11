@@ -31,20 +31,13 @@ THE SOFTWARE.
 
 #include "include/http_interface.h"
 #include "include/factory_http_client.h"
-
-// Globals (Strings used in all benchmarks)
-std::string post = "http://httpbin.org/post";
-std::string put = "http://httpbin.org/put";
-std::string get = "http://httpbin.org/get";
-std::string del = "http://httpbin.org/delete";
-
 AOSSL::HttpInterface *http;
 
 // Benchmarks
 
 BENCHMARK(HTTP, Get, 10, 100) {
   // Send the request
-  std::string ret_val = http->get(get, 5);
+  std::string ret_val = http->get(std::string("http://httpbin.org/get"), 5);
   if (ret_val.empty()) {
     std::cout <<"Get Request Failed" << std::endl;
   }
@@ -52,7 +45,7 @@ BENCHMARK(HTTP, Get, 10, 100) {
 
 BENCHMARK(HTTP, Put, 10, 100) {
   // Send the request
-  bool success = http->put(put, "123", 5);
+  bool success = http->put(std::string("http://httpbin.org/put"), "123", 5);
   if (!success) {
     // We now have the full response
     std::cout <<"Put Request Failed" << std::endl;
@@ -61,8 +54,8 @@ BENCHMARK(HTTP, Put, 10, 100) {
 
 BENCHMARK(HTTP, Post, 10, 100) {
   // Send the request
-  bool success = http->post(post, "CLYMAN", 5);
-  if (!success) {
+  bool succ = http->post(std::string("http://httpbin.org/post"), "CLYMAN", 5);
+  if (!succ) {
     // We now have the full response
     std::cout <<"Post Request Failed" << std::endl;
   }
@@ -70,7 +63,7 @@ BENCHMARK(HTTP, Post, 10, 100) {
 
 BENCHMARK(HTTP, Delete, 10, 100) {
   // Send the request
-  bool success = http->del(del, 5);
+  bool success = http->del(std::string("http://httpbin.org/delete"), 5);
   if (!success) {
     // We now have the full response
     std::cout <<"Delete Request Failed" << std::endl;

@@ -25,9 +25,9 @@ THE SOFTWARE.
 #include <string.h>
 #include <string>
 #include <vector>
-#include "consul_interface.h"
-#include "service.h"
-#include "consul_admin.h"
+#include "aossl/consul/include/consul_interface.h"
+#include "aossl/consul/include/service.h"
+#include "aossl/consul/include/consul_admin.h"
 
 
 #ifndef AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_
@@ -76,6 +76,6 @@ class ConsulComponentFactory {
     }
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_CONSUL_INCLUDE_FACTORY_CONSUL_H_

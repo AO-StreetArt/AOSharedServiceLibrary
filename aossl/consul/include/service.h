@@ -25,7 +25,7 @@ THE SOFTWARE.
 #include <string.h>
 #include <string>
 #include <vector>
-#include "consul_interface.h"
+#include "aossl/consul/include/consul_interface.h"
 
 #ifndef AOSSL_CONSUL_INCLUDE_SERVICE_H_
 #define AOSSL_CONSUL_INCLUDE_SERVICE_H_
@@ -107,6 +107,6 @@ class Service: public ServiceInterface {
   }
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_CONSUL_INCLUDE_SERVICE_H_

@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "http_interface.h"
-#include "http_admin.h"
+#include "aossl/http/client/include/http_interface.h"
+#include "aossl/http/client/include/http_admin.h"
 
 #ifndef AOSSL_HTTP_CLIENT_INCLUDE_FACTORY_HTTP_CLIENT_H_
 #define AOSSL_HTTP_CLIENT_INCLUDE_FACTORY_HTTP_CLIENT_H_
@@ -48,6 +48,6 @@ class HttpClientFactory {
   HttpInterface* get_http_interface() {return new HttpAdmin;}
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_HTTP_CLIENT_INCLUDE_FACTORY_HTTP_CLIENT_H_

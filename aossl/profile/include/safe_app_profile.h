@@ -25,12 +25,13 @@ THE SOFTWARE.
 #include <string>
 #include <unordered_map>
 #include <iostream>
+#include <vector>
 
 #include "aossl/core/include/kv_store.h"
-#include "app_profile.h"
+#include "aossl/profile/include/app_profile.h"
 
-#ifndef AOSSL_SESSION_INCLUDE_SAFE_APP_PROFILE_H_
-#define AOSSL_SESSION_INCLUDE_SAFE_APP_PROFILE_H_
+#ifndef AOSSL_PROFILE_INCLUDE_SAFE_APP_PROFILE_H_
+#define AOSSL_PROFILE_INCLUDE_SAFE_APP_PROFILE_H_
 
 namespace AOSSL {
 
@@ -41,18 +42,24 @@ namespace AOSSL {
 class SafeApplicationProfile: public ApplicationProfile, public KeyValueStore{
  public:
   SafeApplicationProfile(int argc, char* argv[]) : \
-      ApplicationProfile(argc, argv) {}
+    ApplicationProfile(argc, argv) {}
+
   SafeApplicationProfile(int argc, char* argv[], std::string app_name, \
-      std::string prof_name) : ApplicationProfile(argc, argv, app_name, prof_name) {}
-  SafeApplicationProfile(const std::vector<std::string>& args) : \
-      ApplicationProfile(args) {}
-  SafeApplicationProfile(const std::vector<std::string>& args, std::string app_name, \
-      std::string prof_name) : ApplicationProfile(args, app_name, prof_name) {}
+    std::string prof_name) : \
+      ApplicationProfile(argc, argv, app_name, prof_name) {}
+
+  explicit SafeApplicationProfile(const std::vector<std::string>& args) : \
+    ApplicationProfile(args) {}
+
+  SafeApplicationProfile(const std::vector<std::string>& args, \
+    std::string app_name, std::string prof_name) : \
+      ApplicationProfile(args, app_name, prof_name) {}
+
   SafeApplicationProfile(std::string app_name, std::string prof_name) : \
-      ApplicationProfile(app_name, prof_name) {}
+    ApplicationProfile(app_name, prof_name) {}
   virtual ~SafeApplicationProfile() {}
 };
 
-}
+}  // namespace AOSSL
 
-#endif  // AOSSL_SESSION_INCLUDE_SAFE_APP_PROFILE_H_
+#endif  // AOSSL_PROFILE_INCLUDE_SAFE_APP_PROFILE_H_

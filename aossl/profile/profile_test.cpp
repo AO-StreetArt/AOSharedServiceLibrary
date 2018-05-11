@@ -23,9 +23,11 @@ THE SOFTWARE.
 */
 
 #include <assert.h>
+#include <unistd.h>
 #include <iostream>
 #include <string>
-#include <unistd.h>
+#include <vector>
+
 #include "include/tiered_app_profile.h"
 
 int main(int argc, char** argv) {
@@ -51,7 +53,8 @@ int main(int argc, char** argv) {
   std::string avalue = "1";
   std::vector<std::string> args;
   args.push_back(std::string("test=1"));
-  AOSSL::TieredApplicationProfile basic_profile(args, std::string("test2"), std::string("prof2"));
+  AOSSL::TieredApplicationProfile basic_profile(args, \
+    std::string("test2"), std::string("prof2"));
   basic_profile.add_opt(akey, avalue);
   basic_profile.load_config();
 

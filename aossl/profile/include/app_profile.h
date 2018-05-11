@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 #include "aossl/core/include/buffers.h"
 #include "aossl/core/include/kv_store_interface.h"
@@ -36,8 +37,8 @@ THE SOFTWARE.
 #include "aossl/consul/include/factory_consul.h"
 #include "aossl/uuid/include/factory_uuid.h"
 
-#ifndef AOSSL_SESSION_INCLUDE_APP_PROFILE_H_
-#define AOSSL_SESSION_INCLUDE_APP_PROFILE_H_
+#ifndef AOSSL_PROFILE_INCLUDE_APP_PROFILE_H_
+#define AOSSL_PROFILE_INCLUDE_APP_PROFILE_H_
 
 namespace AOSSL {
 
@@ -56,6 +57,7 @@ class ApplicationProfile {
   UuidInterface *uuid = NULL;
   std::string application_name;
   std::string profile_name;
+
  public:
   //! Create a new Application Session with Command Line Arguments
   ApplicationProfile(int argc, char* argv[]) {
@@ -70,19 +72,19 @@ class ApplicationProfile {
     application_name.assign(app_name);
     profile_name.assign(prof_name);
   }
-   //! Create a new Application Session with Command Line Arguments
-   ApplicationProfile(const std::vector<std::string>& args) {
-     cli = cli_factory.get_command_line_interface(args);
-     uuid = uuid_factory.get_uuid_interface();
-   }
-   //! Create a new Application Session with Command Line Arguments
-   ApplicationProfile(const std::vector<std::string>& args, std::string app_name, \
-       std::string prof_name) {
-     cli = cli_factory.get_command_line_interface(args);
-     uuid = uuid_factory.get_uuid_interface();
-     application_name.assign(app_name);
-     profile_name.assign(prof_name);
-   }
+  //! Create a new Application Session with Command Line Arguments
+  explicit ApplicationProfile(const std::vector<std::string>& args) {
+    cli = cli_factory.get_command_line_interface(args);
+    uuid = uuid_factory.get_uuid_interface();
+  }
+  //! Create a new Application Session with Command Line Arguments
+  ApplicationProfile(const std::vector<std::string>& args, \
+    std::string app_name, std::string prof_name) {
+    cli = cli_factory.get_command_line_interface(args);
+    uuid = uuid_factory.get_uuid_interface();
+    application_name.assign(app_name);
+    profile_name.assign(prof_name);
+  }
   //! Create a new Application Session without any Command Line Arguments
   ApplicationProfile(std::string app_name, std::string prof_name) {
     uuid = uuid_factory.get_uuid_interface();
@@ -121,6 +123,6 @@ class ApplicationProfile {
   void set_profile_name(std::string prof) {profile_name.assign(prof);}
 };
 
-}
+}  // namespace AOSSL
 
-#endif  // AOSSL_SESSION_INCLUDE_APP_PROFILE_H_
+#endif  // AOSSL_PROFILE_INCLUDE_APP_PROFILE_H_

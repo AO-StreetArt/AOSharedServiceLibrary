@@ -36,7 +36,8 @@ int main() {
   AOSSL::ConsulComponentFactory consul_factory;
 
   // Construction tests
-  AOSSL::ConsulInterface *ca = consul_factory.get_consul_interface("localhost:8500");
+  AOSSL::ConsulInterface *ca = \
+    consul_factory.get_consul_interface("localhost:8500");
 
   AOSSL::ServiceInterface *s0 = \
     consul_factory.get_service_interface("0", "CLyman", "tcp://*", "5555");

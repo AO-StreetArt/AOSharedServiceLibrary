@@ -22,26 +22,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <algorithm>
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <exception>
+#include <vector>
+#include <utility>
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 
 #include "aossl/core/include/kv_store.h"
 #include "aossl/core/include/kv_store_interface.h"
-#include "app_profile.h"
-#include "safe_app_profile.h"
+#include "aossl/profile/include/app_profile.h"
+#include "aossl/profile/include/safe_app_profile.h"
 
-#ifndef AOSSL_SESSION_INCLUDE_TIERED_APP_PROFILE_H_
-#define AOSSL_SESSION_INCLUDE_TIERED_APP_PROFILE_H_
+#ifndef AOSSL_PROFILE_INCLUDE_TIERED_APP_PROFILE_H_
+#define AOSSL_PROFILE_INCLUDE_TIERED_APP_PROFILE_H_
 
 namespace AOSSL {
 
@@ -55,7 +57,7 @@ namespace AOSSL {
 //! 5. Default values
 class TieredApplicationProfile: public SafeApplicationProfile{
   std::string props_file_name;
-  inline bool exists_test (const std::string& name) {
+  inline bool exists_test(const std::string& name) {
     struct stat buffer;
     return (stat (name.c_str(), &buffer) == 0);
   }
@@ -75,7 +77,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       std::string query_key;
       // Prefix the key with the application & profile name
       // to ensure we get unique values for different apps
-      if (!(ApplicationProfile::get_app_name().empty() && ApplicationProfile::get_profile_name().empty())) {
+      if (!(ApplicationProfile::get_app_name().empty() && \
+          ApplicationProfile::get_profile_name().empty())) {
         query_key = ApplicationProfile::get_app_name() + std::string("/") + \
             ApplicationProfile::get_profile_name() + std::string("/");
       }
@@ -105,7 +108,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
         }
         // decode the base64 value
         StringBuffer decoded_buffer;
-        ApplicationProfile::get_consul()->base64_decode_by_reference(parsed_buffer.val, decoded_buffer);
+        ApplicationProfile::get_consul()->base64_decode_by_reference(\
+          parsed_buffer.val, decoded_buffer);
         if (KeyValueStore::opt_exist(key)) {
           KeyValueStore::set_opt(key, decoded_buffer.val);
         }
@@ -130,7 +134,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   }
   // Initialize the Profile
   inline void init() {
-    // Check the CLI and Environment Variables for Consul Address and Properties File
+    // Check the CLI and Env Variables for Consul Address and Properties File
     const char *env_consul_value = std::getenv("AOSSL_CONSUL_ADDRESS");
     if (env_consul_value) {
       std::string consul_addr_str(env_consul_value);
@@ -139,7 +143,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     if (ApplicationProfile::get_cli()) {
       if (ApplicationProfile::get_cli()->opt_exist(std::string("consul"))) {
         StringBuffer consul_buf;
-        ApplicationProfile::get_cli()->get_opt(std::string("consul"), consul_buf);
+        ApplicationProfile::get_cli()->get_opt(std::string("consul"), \
+          consul_buf);
         ApplicationProfile::set_consul_address(consul_buf.val);
       }
     }
@@ -164,20 +169,24 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     if (ApplicationProfile::get_props()) {
         if (ApplicationProfile::get_props()->opt_exist(std::string("consul"))) {
           StringBuffer pconsul_buf;
-          ApplicationProfile::get_cli()->get_opt(std::string("consul"), pconsul_buf);
+          ApplicationProfile::get_cli()->get_opt(std::string("consul"), \
+            pconsul_buf);
           ApplicationProfile::set_consul_address(pconsul_buf.val);
         }
     }
   }
+
  public:
   TieredApplicationProfile(int argc, char* argv[]) : \
       SafeApplicationProfile(argc, argv) {init();}
   TieredApplicationProfile(int argc, char* argv[], std::string app_name, \
-      std::string prof_name) : SafeApplicationProfile(argc, argv, app_name, prof_name) {init();}
-   TieredApplicationProfile(const std::vector<std::string>& args) : \
-       SafeApplicationProfile(args) {init();}
-   TieredApplicationProfile(const std::vector<std::string>& args, std::string app_name, \
-       std::string prof_name) : SafeApplicationProfile(args, app_name, prof_name) {init();}
+      std::string prof_name) : \
+      SafeApplicationProfile(argc, argv, app_name, prof_name) {init();}
+  explicit TieredApplicationProfile(const std::vector<std::string>& args) : \
+      SafeApplicationProfile(args) {init();}
+  TieredApplicationProfile(const std::vector<std::string>& args, \
+      std::string app_name, std::string prof_name) : \
+      SafeApplicationProfile(args, app_name, prof_name) {init();}
   TieredApplicationProfile(std::string app_name, std::string prof_name) : \
       SafeApplicationProfile(app_name, prof_name) {init();}
 
@@ -187,7 +196,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   inline void load_config() {
     // Iterate over the default values and pull
     // values from available sources with the same key
-    for (std::pair<std::string, std::string> element : KeyValueStore::get_opts()) {
+    for (std::pair<std::string, std::string> element : \
+        KeyValueStore::get_opts()) {
       // Load Properties File values, if present
       load_config_value(ApplicationProfile::get_props(), element.first);
       // Load Consul Values, if present
@@ -200,6 +210,6 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   }
 };
 
-}
+}  // namespace AOSSL
 
-#endif  // AOSSL_SESSION_INCLUDE_TIERED_APP_PROFILE_H_
+#endif  // AOSSL_PROFILE_INCLUDE_TIERED_APP_PROFILE_H_

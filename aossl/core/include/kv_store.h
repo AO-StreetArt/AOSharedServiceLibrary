@@ -40,6 +40,7 @@ namespace AOSSL {
 //! Interface which requires implementation
 class KeyValueStore: public KeyValueStoreInterface {
   std::unordered_map<std::string, std::string> opts;
+  
  public:
   KeyValueStore() {}
   virtual ~KeyValueStore() {}
@@ -69,12 +70,13 @@ class KeyValueStore: public KeyValueStoreInterface {
   std::unordered_map<std::string, std::string> get_opts() {return opts;}
 
   //! Add an option
-  void add_opt(const std::string& key, const std::string& value) {opts.emplace(key, value);}
+  void add_opt(const std::string& key, const std::string& value) \
+    {opts.emplace(key, value);}
 
   //! Set an option
   void set_opt(std::string& key, std::string& value) {opts[key] = value;}
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_CORE_INCLUDE_KV_STORE_H_

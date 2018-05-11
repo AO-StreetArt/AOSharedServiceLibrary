@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "uuid_interface.h"
-#include "uuid_admin.h"
+#include "aossl/uuid/include/uuid_interface.h"
+#include "aossl/uuid/include/uuid_admin.h"
 
 #ifndef AOSSL_UUID_INCLUDE_FACTORY_UUID_H_
 #define AOSSL_UUID_INCLUDE_FACTORY_UUID_H_
@@ -48,6 +48,6 @@ class UuidComponentFactory {
   UuidInterface* get_uuid_interface() {return new UuidAdmin;}
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_UUID_INCLUDE_FACTORY_UUID_H_

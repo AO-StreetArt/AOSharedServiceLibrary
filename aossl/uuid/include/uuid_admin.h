@@ -26,7 +26,7 @@ THE SOFTWARE.
 #include <uuid/uuid.h>
 #include <string>
 
-#include "uuid_interface.h"
+#include "aossl/uuid/include/uuid_interface.h"
 #include "aossl/core/include/buffers.h"
 
 #ifndef AOSSL_UUID_INCLUDE_UUID_ADMIN_H_
@@ -60,6 +60,6 @@ class UuidAdmin: public UuidInterface {
   void generate(StringBuffer& buf);
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_UUID_INCLUDE_UUID_ADMIN_H_

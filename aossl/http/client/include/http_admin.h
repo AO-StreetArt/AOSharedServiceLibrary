@@ -22,13 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <string>
-#include <string.h>
-#include <sstream>
 #include <curl/curl.h>
+#include <string.h>
+
+#include <string>
+#include <sstream>
 #include <mutex>
 
-#include "http_interface.h"
+#include "aossl/http/client/include/http_interface.h"
 
 //! The HTTP Administrator
 //! Responsible for placing HTTP Requests using curl
@@ -111,6 +112,6 @@ class HttpAdmin: public HttpInterface {
   bool del(std::string url, int timeout);
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_HTTP_CLIENT_INCLUDE_HTTP_ADMIN_H_

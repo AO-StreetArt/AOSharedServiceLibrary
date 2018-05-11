@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 
 #include "include/http_admin.h"
+#include <string>
 
 // Global writedata instantiation to store HTTP Callbacks
 std::string AOSSL::writedata;

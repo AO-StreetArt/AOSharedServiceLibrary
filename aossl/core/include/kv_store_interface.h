@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 #include <string>
 
-#include "buffers.h"
+#include "aossl/core/include/buffers.h"
 
 #ifndef AOSSL_CORE_INCLUDE_KV_STORE_INTERFACE_H_
 #define AOSSL_CORE_INCLUDE_KV_STORE_INTERFACE_H_
@@ -51,6 +51,6 @@ class KeyValueStoreInterface {
   virtual void load_config() = 0;
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_CORE_INCLUDE_KV_STORE_INTERFACE_H_

@@ -22,14 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "include/factory_http_client.h"
-#include "include/http_interface.h"
-#include <string>
+#include <assert.h>
 #include <string.h>
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include <assert.h>
+#include <string>
+
+#include "include/factory_http_client.h"
+#include "include/http_interface.h"
 
 int main() {
   // Setup

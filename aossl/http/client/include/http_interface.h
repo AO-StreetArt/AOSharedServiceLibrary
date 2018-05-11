@@ -91,6 +91,6 @@ class HttpInterface {
   virtual bool del(std::string url, int timeout) = 0;
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_HTTP_CLIENT_INCLUDE_HTTP_INTERFACE_H_

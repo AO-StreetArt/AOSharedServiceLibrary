@@ -29,14 +29,14 @@ THE SOFTWARE.
 
 namespace AOSSL {
 
-  //! A base buffer
-  struct Buffer {
-    //! Success flag
-    bool success;
+//! A base buffer
+struct Buffer {
+  //! Success flag
+  bool success;
 
-    //! Error Message
-    std::string err_msg;
-  };
+  //! Error Message
+  std::string err_msg;
+};
 
 //! A Structure for holding a single value
 struct StringBuffer: public Buffer {

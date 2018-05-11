@@ -33,7 +33,8 @@ AOSSL::ConsulAdmin::ConsulAdmin(std::string caddr) {
   timeout = 5;
 }
 
-void AOSSL::ConsulAdmin::base64_decode_by_reference(std::string const& encoded_string, AOSSL::StringBuffer& ret_buffer) {
+void AOSSL::ConsulAdmin::base64_decode_by_reference(\
+    std::string const& encoded_string, AOSSL::StringBuffer& ret_buffer) {
   std::string decode_return_string = "";
   static const std::string base64_chars =
                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -53,7 +54,8 @@ void AOSSL::ConsulAdmin::base64_decode_by_reference(std::string const& encoded_s
       for (i = 0; i <4; i++)
         char_array_4[i] = base64_chars.find(char_array_4[i]);
 
-      char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+      char_array_3[0] = \
+        (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
       char_array_3[1] = \
         ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
       char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
@@ -89,7 +91,8 @@ AOSSL::StringBuffer* \
   return buf;
 }
 
-void AOSSL::ConsulAdmin::query_by_reference(std::string query_url, AOSSL::StringBuffer& ret_buffer) {
+void AOSSL::ConsulAdmin::query_by_reference(std::string query_url, \
+    AOSSL::StringBuffer& ret_buffer) {
   // Get the URL
   std::string url_string = consul_addr;
   url_string = url_string + query_url;

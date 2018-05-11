@@ -208,6 +208,6 @@ class ConsulInterface: public KeyValueStoreInterface  {
     services_node(std::string node, std::string data_center) = 0;
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_CONSUL_INCLUDE_CONSUL_INTERFACE_H_

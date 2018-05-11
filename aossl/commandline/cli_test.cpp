@@ -23,9 +23,10 @@ THE SOFTWARE.
 */
 
 #include "include/cli.h"
-#include <iostream>
 #include <assert.h>
+#include <iostream>
 #include <vector>
+#include <string>
 
 void validate_cli(AOSSL::CommandLineInterpreter& cli) {
   // Test the command line interpreter
@@ -41,7 +42,6 @@ void validate_cli(AOSSL::CommandLineInterpreter& cli) {
 }
 
 int main(int argc, char** argv) {
-
   std::vector<std::string> vargs;
   for (int i = 0; i < argc; i++) {
     std::string full_line(argv[i]);

@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 #include <string>
 #include "aossl/core/include/kv_store.h"
-#include "properties_reader.h"
+#include "aossl/properties/include/properties_reader.h"
 
 #ifndef AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_
 #define AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_
@@ -52,6 +52,6 @@ class PropertyReaderFactory {
   }
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_PROPERTIES_INCLUDE_FACTORY_PROPS_H_

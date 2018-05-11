@@ -23,8 +23,9 @@ THE SOFTWARE.
 */
 
 #include <vector>
+#include <string>
 #include "aossl/core/include/kv_store.h"
-#include "cli.h"
+#include "aossl/commandline/include/cli.h"
 
 #ifndef AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_
 #define AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_
@@ -51,11 +52,12 @@ class CommandLineInterpreterFactory {
   }
 
   //! Get the Command Line Interface instance
-  KeyValueStore* get_command_line_interface(const std::vector<std::string>& args) {
+  KeyValueStore* get_command_line_interface(\
+      const std::vector<std::string>& args) {
     return new CommandLineInterpreter( args );
   }
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_COMMANDLINE_INCLUDE_FACTORY_CLI_H_

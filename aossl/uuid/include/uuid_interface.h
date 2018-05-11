@@ -58,6 +58,6 @@ class UuidInterface {
   virtual void generate(StringBuffer& buf) = 0;
 };
 
-}
+}  // namespace AOSSL
 
 #endif  // AOSSL_UUID_INCLUDE_UUID_INTERFACE_H_
