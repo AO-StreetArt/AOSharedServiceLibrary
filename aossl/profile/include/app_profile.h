@@ -100,11 +100,21 @@ class ApplicationProfile {
   }
 
   //! Set the location of the properties file
-  void set_property_file(std::string& filename) \
-      {cfile = props_factory.get_properties_reader_interface(filename);}
+  inline void set_property_file(std::string& filename) {
+    if (cfile) {
+      delete cfile;
+      cfile = NULL;
+    }
+    cfile = props_factory.get_properties_reader_interface(filename);
+  }
   //! Set the address of the consul agent
-  void set_consul_address(std::string caddr) \
-      {consul = consul_factory.get_consul_interface(caddr);}
+  inline void set_consul_address(std::string caddr) {
+    if (consul) {
+      delete consul;
+      consul = NULL;
+    }
+    consul = consul_factory.get_consul_interface(caddr);
+  }
   //! Get the Command Line Interface
   KeyValueStoreInterface* get_cli() {return cli;}
   //! Get the Properties File Reader
