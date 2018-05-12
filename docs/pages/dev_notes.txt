@@ -4,6 +4,27 @@
  *
  * This page contains a series of notes intended to be beneficial for any contributors to AOSSL.
  *
+ * ## Vagrant
+ * We provide a Vagrantfile to setup a development environment, but this requires that you install [Vagrant](https://www.vagrantup.com/).
+ * Once you have Vagrant installed, cd into the main directory and run:
+ *
+ * `vagrant up`
+ *
+ * Once the box starts, you can enter it with:
+ *
+ * `vagrant ssh`
+ *
+ * The Project folder on your machine is synced to the /vagrant folder in the VM, so you will
+ * need to move there before building.  Once in that folder, ensure that the tests pass:
+ *
+ * `make && make test`
+ *
+ * Make your changes and write tests for your changes, then ensure that all tests pass:
+ *
+ * `make clean && make && make test`
+ *
+ * Push to your fork and submit a pull request.
+ *
  * ## Generating Releases
  *
  * The release_gen.sh script is utilized to generate releases for various systems.  It is run from within the scripts folder.

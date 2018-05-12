@@ -1,10 +1,17 @@
 We love pull requests from everyone.  By participating in this project, you agree to abide by the Code of Conduct, specified in the CODE_OF_CONDUCT.md file.
 
-Start by forking and cloning the repository, then following the instructions to [build from source](http://aosharedservicelibrary.readthedocs.io/en/latest/quickstart.html).
+Start by forking and cloning the repository.  We provide a Vagrantfile to setup a development environment, but this requires that you install [Vagrant](https://www.vagrantup.com/).
 
-Note that you may, at your leisure, build and test your changes within the [AOSSL Docker Image](http://aosharedservicelibrary.readthedocs.io/en/latest/quickstart.html).  Simply run the image, clone your fork inside of it, and issue the below instructions from within the container.  This has the added benefit of coming with all of the dependencies pre-installed.
+Once you have Vagrant installed, cd into the main directory and run:
 
-Ensure that the tests pass:
+`vagrant up`
+
+Once the box starts, you can enter it with:
+
+`vagrant ssh`
+
+The Project folder on your machine is synced to the /vagrant folder in the VM, so you will
+need to move there before building.  Once in that folder, ensure that the tests pass:
 
 `make && make test`
 
