@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 #This script will install the pre-packaged release of AOSSL
 
 #Pull the command line parameters
