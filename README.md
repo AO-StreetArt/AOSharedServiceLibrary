@@ -25,7 +25,7 @@ It also exposes several useful interfaces:
 * Support for Ubuntu 14.04, Ubuntu 16.04, Debian 7, Debian 8, CentOS 7, RHEL 7
 
 ## Documentation
-Check out online documentation of the latest version at [ReadTheDocs](http://aosharedservicelibrary.readthedocs.io/en/latest/index.html).
+Check out online documentation for v2 at [ReadTheDocs](http://aosharedservicelibrary.readthedocs.io/en/v2/).
 
 Stuck and need help?  Have general questions about the library?  Reach out to the development team at aossl@emaillist.io
 

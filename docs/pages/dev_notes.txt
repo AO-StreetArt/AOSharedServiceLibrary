@@ -10,7 +10,7 @@
  * It accepts three command line arguments:
  * - the name of the release: aossl-*os_name*-*os_version*
  * - the version of the release: we follow [semantic versioning](http://semver.org/)
- * - the location of the dependency script: current valid paths are linux/deb (uses apt-get) and linux/rhel (uses yum)
+ * - the location of the dependency script: current valid paths are deb (uses apt-get) and rhel (uses yum)
  *
  * ## Security Notes
  * Currently AOSSL components are unsecured.  Two security needs have been identified:
