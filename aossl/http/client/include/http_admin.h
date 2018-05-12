@@ -91,25 +91,25 @@ class HttpAdmin: public HttpInterface {
 
   //! Put to the given URL the supplied data
   //! with the specified timeout
-  bool put(std::string url, std::string data, int timeout);
+  bool put(std::string& url, std::string data, int timeout);
 
   //! Get
 
   //! Get from the given URL
   //! with the specified timeout
-  std::string get(std::string url, int timeout);
+  std::string get(std::string& url, int timeout);
 
   //! Post
 
   //! Post to the given URL the supplied data
   //! with the specified timeout
-  bool post(std::string url, std::string data, int timeout);
+  bool post(std::string& url, std::string data, int timeout);
 
   //! Delete
 
   //! Delete from the given URL
   //! with the specified timeout
-  bool del(std::string url, int timeout);
+  bool del(std::string& url, int timeout);
 };
 
 }  // namespace AOSSL

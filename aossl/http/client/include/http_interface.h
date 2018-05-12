@@ -37,8 +37,8 @@ struct HttpRequestException: public std::exception {
   const char * int_msg_cstr;
 
   //! Create a HTTP Request Exception, and store the given error message
-  inline HttpRequestException(std::string msg) {
-    int_msg = "Error Sending HTTP Request: " + msg;
+  inline HttpRequestException(std::string msg) : \
+      int_msg(std::string("Error Sending HTTP Request: ") + msg) {
     int_msg_cstr = int_msg.c_str();
   }
 
@@ -70,25 +70,25 @@ class HttpInterface {
 
   //! Put to the given URL the supplied data
   //! with the specified timeout
-  virtual bool put(std::string url, std::string data, int timeout) = 0;
+  virtual bool put(std::string& url, std::string data, int timeout) = 0;
 
   //! Get
 
   //! Get from the given URL
   //! with the specified timeout
-  virtual std::string get(std::string url, int timeout) = 0;
+  virtual std::string get(std::string& url, int timeout) = 0;
 
   //! Post
 
   //! Post to the given URL the supplied data
   //! with the specified timeout
-  virtual bool post(std::string url, std::string data, int timeout) = 0;
+  virtual bool post(std::string& url, std::string data, int timeout) = 0;
 
   //! Delete
 
   //! Delete from the given URL
   //! with the specified timeout
-  virtual bool del(std::string url, int timeout) = 0;
+  virtual bool del(std::string& url, int timeout) = 0;
 };
 
 }  // namespace AOSSL

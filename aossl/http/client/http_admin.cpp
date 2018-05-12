@@ -52,7 +52,7 @@ bool AOSSL::HttpAdmin::send(std::string url, int timeout) {
   return ret;
 }
 
-bool AOSSL::HttpAdmin::put(std::string url, std::string data, int timeout) {
+bool AOSSL::HttpAdmin::put(std::string& url, std::string data, int timeout) {
   std::lock_guard<std::mutex> lock(data_mutex);
   const char * data_cstr = data.c_str();
   char *data_s = new char[data.length() + 1];
@@ -66,7 +66,7 @@ bool AOSSL::HttpAdmin::put(std::string url, std::string data, int timeout) {
 }
 
 // Needs a write function registered
-std::string AOSSL::HttpAdmin::get(std::string url, int timeout) {
+std::string AOSSL::HttpAdmin::get(std::string& url, int timeout) {
   std::lock_guard<std::mutex> lock(data_mutex);
   // Clear the string that will hold the response data.
   writedata.clear();
@@ -74,7 +74,7 @@ std::string AOSSL::HttpAdmin::get(std::string url, int timeout) {
   return writedata;
 }
 
-bool AOSSL::HttpAdmin::post(std::string url, std::string data, int timeout) {
+bool AOSSL::HttpAdmin::post(std::string& url, std::string data, int timeout) {
   std::lock_guard<std::mutex> lock(data_mutex);
   const char * data_cstr = data.c_str();
   char *data_s = new char[data.length() + 1];
@@ -87,7 +87,7 @@ bool AOSSL::HttpAdmin::post(std::string url, std::string data, int timeout) {
   return ret_val;
 }
 
-bool AOSSL::HttpAdmin::del(std::string url, int timeout) {
+bool AOSSL::HttpAdmin::del(std::string& url, int timeout) {
   std::lock_guard<std::mutex> lock(data_mutex);
   curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
   return send(url, timeout);

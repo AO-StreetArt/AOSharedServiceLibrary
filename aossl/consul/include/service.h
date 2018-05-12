@@ -46,18 +46,22 @@ class Service: public ServiceInterface {
 
  public:
   //! Construct a Service
-  Service();
+  Service() : id(""), name(""), address(""), port("") {check.script = "";}
 
   //! Construct a Service
-  Service(std::string new_id, std::string new_name);
-
-  //! Construct a Service
-  Service(std::string new_id, std::string new_name, std::string new_address, \
-     std::string new_port);
+  Service(std::string new_id, std::string new_name) : id(new_id), \
+    name(new_name), address(""), port("") {check.script = "";}
 
   //! Construct a Service
   Service(std::string new_id, std::string new_name, std::string new_address, \
-     std::string new_port, std::vector<std::string> new_tags);
+     std::string new_port) : id(new_id), name(new_name), address(new_address), \
+      port(new_port) {check.script = "";}
+
+  //! Construct a Service
+  Service(std::string new_id, std::string new_name, std::string new_address, \
+     std::string new_port, std::vector<std::string> new_tags) : id(new_id), \
+      name(new_name), address(new_address), port(new_port) \
+        {tags = new_tags;check.script = "";}
 
   //! Convert the Service into a JSON Message
 
