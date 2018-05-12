@@ -27,8 +27,6 @@ make
 printf "Generating Release Folders"
 mkdir ../$RELEASE_NAME
 mkdir ../$RELEASE_NAME/deps
-mkdir ../$RELEASE_NAME/examples
-mkdir ../$RELEASE_NAME/examples/hello_world
 mkdir ../$RELEASE_NAME/aossl
 mkdir ../$RELEASE_NAME/licenses
 
@@ -47,13 +45,9 @@ printf "Copying library into release folders"
 cp libaossl.a ../$RELEASE_NAME
 cp makefile ../$RELEASE_NAME
 cp LICENSE.txt ../$RELEASE_NAME
-cp CODE_OF_CONDUCT.md ../$RELEASE_NAME
 
 #Library files
 cp -r aossl/ ../$RELEASE_NAME/
-
-#Examples
-cp examples/hello_world/* ../$RELEASE_NAME/examples/hello_world
 
 #Documentation
 cp -r docs ../$RELEASE_NAME

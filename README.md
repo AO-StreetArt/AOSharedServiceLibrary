@@ -23,7 +23,6 @@ It also exposes several useful interfaces:
 
 ## Platform Support
 * Support for Ubuntu 14.04, Ubuntu 16.04, Debian 7, Debian 8, CentOS 7, RHEL 7
-* Easy to construct Docker Images with templates
 
 ## Documentation
 Check out online documentation of the latest version at [ReadTheDocs](http://aosharedservicelibrary.readthedocs.io/en/latest/index.html).
