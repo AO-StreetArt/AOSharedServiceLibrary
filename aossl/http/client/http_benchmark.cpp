@@ -37,7 +37,8 @@ AOSSL::HttpInterface *http;
 
 BENCHMARK(HTTP, Get, 10, 100) {
   // Send the request
-  std::string ret_val = http->get(std::string("http://httpbin.org/get"), 5);
+  std::string url = "http://httpbin.org/get";
+  std::string ret_val = http->get(url, 5);
   if (ret_val.empty()) {
     std::cout <<"Get Request Failed" << std::endl;
   }
@@ -45,7 +46,8 @@ BENCHMARK(HTTP, Get, 10, 100) {
 
 BENCHMARK(HTTP, Put, 10, 100) {
   // Send the request
-  bool success = http->put(std::string("http://httpbin.org/put"), "123", 5);
+  std::string url = "http://httpbin.org/put";
+  bool success = http->put(url, "123", 5);
   if (!success) {
     // We now have the full response
     std::cout <<"Put Request Failed" << std::endl;
@@ -54,7 +56,8 @@ BENCHMARK(HTTP, Put, 10, 100) {
 
 BENCHMARK(HTTP, Post, 10, 100) {
   // Send the request
-  bool succ = http->post(std::string("http://httpbin.org/post"), "CLYMAN", 5);
+  std::string url = "http://httpbin.org/post";
+  bool succ = http->post(url, "CLYMAN", 5);
   if (!succ) {
     // We now have the full response
     std::cout <<"Post Request Failed" << std::endl;
@@ -63,7 +66,8 @@ BENCHMARK(HTTP, Post, 10, 100) {
 
 BENCHMARK(HTTP, Delete, 10, 100) {
   // Send the request
-  bool success = http->del(std::string("http://httpbin.org/delete"), 5);
+  std::string url = "http://httpbin.org/delete";
+  bool success = http->del(url, 5);
   if (!success) {
     // We now have the full response
     std::cout <<"Delete Request Failed" << std::endl;
