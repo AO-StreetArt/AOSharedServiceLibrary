@@ -54,6 +54,21 @@ class ConsulComponentFactory {
     return new ConsulAdmin(caddr);
   }
 
+  //! Get a Consul Interface instance
+  inline ConsulInterface* get_consul_interface(std::string caddr, int port) {
+    return new ConsulAdmin(caddr, port);
+  }
+
+  //! Get a Consul Interface instance
+  inline ConsulInterface* get_consul_interface(std::string caddr, std::string ssl_cert) {
+    return new ConsulAdmin(caddr, ssl_cert);
+  }
+
+  //! Get a Consul Interface instance
+  inline ConsulInterface* get_consul_interface(std::string caddr, int port, std::string ssl_cert) {
+    return new ConsulAdmin(caddr, port, ssl_cert);
+  }
+
   ServiceInterface* get_service_interface() {return new Service;}
 
   //! Get a Service Interface instance

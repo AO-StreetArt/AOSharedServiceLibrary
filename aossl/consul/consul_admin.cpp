@@ -26,11 +26,16 @@ THE SOFTWARE.
 
 // Consul Administrator
 
-AOSSL::ConsulAdmin::ConsulAdmin(std::string caddr) {
-  AOSSL::HttpClientFactory http_factory;
-  ha = http_factory.get_http_interface();
-  consul_addr = caddr;
-  timeout = 5;
+void AOSSL::ConsulAdmin::init(std::string& caddr, int tout) {
+  consul_addr.assign(caddr);
+  timeout = tout;
+}
+
+void AOSSL::ConsulAdmin::init(std::string& caddr, int tout, std::string& cert) {
+  consul_addr.assign(caddr);
+  timeout = tout;
+  secured = true;
+  cert_location.assign(cert);
 }
 
 void AOSSL::ConsulAdmin::base64_decode_by_reference(\
@@ -91,19 +96,117 @@ AOSSL::StringBuffer* \
   return buf;
 }
 
-void AOSSL::ConsulAdmin::query_by_reference(std::string query_url, \
+void AOSSL::ConsulAdmin::secure_put(std::string query_url, std::string body,\
     AOSSL::StringBuffer& ret_buffer) {
   // Get the URL
   std::string url_string = consul_addr;
-  url_string = url_string + query_url;
-
-  // Send the HTTP Request
-  ret_buffer.val.assign(ha->get(url_string, timeout));
-  if (ret_buffer.val.empty()) {
-    ret_buffer.success = false;
-    ret_buffer.err_msg.assign("No HTTP Response Recovered");
-  } else {
+  try {
+    const Poco::URI uri( url_string );
+    const Poco::Net::Context::Ptr context( new Poco::Net::Context( Poco::Net::Context::CLIENT_USE, "", "", cert_location ) );
+    Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(), context );
+    Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_PUT, query_url );
+    req.setContentLength(body.length());
+    session.sendRequest(req) << body;
+    Poco::Net::HTTPResponse res;
+    std::istream& rs = session.receiveResponse(res);
+    std::istreambuf_iterator<char> eos;
+    std::string resp(std::istreambuf_iterator<char>(rs), eos);
     ret_buffer.success = true;
+    ret_buffer.val.assign(resp);
+  } catch( const Poco::Net::SSLException& e ) {
+    ret_buffer.success = false;
+    ret_buffer.err_msg.assign(e.message());
+  } catch( const std::exception& e ) {
+    ret_buffer.success = false;
+    ret_buffer.err_msg.assign(e.what());
+  }
+}
+
+void AOSSL::ConsulAdmin::put_by_reference(std::string query_url, std::string body,\
+    AOSSL::StringBuffer& ret_buffer) {
+  // Get the URL
+  std::string url_string = consul_addr;
+  try {
+    const Poco::URI uri( url_string );
+    Poco::Net::HTTPClientSession session(uri.getHost(), uri.getPort());
+    Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_PUT, query_url );
+    req.setContentLength(body.length());
+    session.sendRequest(req) << body;
+    Poco::Net::HTTPResponse res;
+    std::istream& rs = session.receiveResponse(res);
+    std::istreambuf_iterator<char> eos;
+    std::string resp(std::istreambuf_iterator<char>(rs), eos);
+    ret_buffer.success = true;
+    ret_buffer.val.assign(resp);
+  } catch( const Poco::Net::SSLException& e ) {
+    ret_buffer.success = false;
+    ret_buffer.err_msg.assign(e.message());
+  } catch( const std::exception& e ) {
+    std::cout << e.what() << std::endl;
+    ret_buffer.success = false;
+    ret_buffer.err_msg.assign(e.what());
+  }
+}
+
+void AOSSL::ConsulAdmin::query_by_reference(std::string query_url, \
+    AOSSL::StringBuffer& ret_buffer, bool is_get) {
+  // Get the URL
+  std::string url_string = consul_addr;
+  try {
+    const Poco::URI uri( url_string );
+    Poco::Net::HTTPClientSession session(uri.getHost(), uri.getPort());
+    std::string req_type;
+    if (is_get) {
+      req_type = Poco::Net::HTTPRequest::HTTP_GET;
+    } else {
+      req_type = Poco::Net::HTTPRequest::HTTP_DELETE;
+    }
+    Poco::Net::HTTPRequest req(req_type, query_url );
+    session.sendRequest(req);
+    Poco::Net::HTTPResponse res;
+    std::istream& rs = session.receiveResponse(res);
+    std::istreambuf_iterator<char> eos;
+    std::string resp(std::istreambuf_iterator<char>(rs), eos);
+    ret_buffer.success = true;
+    ret_buffer.val.assign(resp);
+  } catch( const Poco::Net::SSLException& e ) {
+    ret_buffer.success = false;
+    ret_buffer.err_msg.assign(e.message());
+  } catch( const std::exception& e ) {
+    ret_buffer.success = false;
+    std::cout << e.what() << std::endl;
+    ret_buffer.err_msg.assign(e.what());
+  }
+}
+
+void AOSSL::ConsulAdmin::secure_query(std::string query_url, \
+    AOSSL::StringBuffer& ret_buffer, bool is_get) {
+  // Get the URL
+  std::string url_string = consul_addr;
+  try {
+    const Poco::URI uri( url_string );
+    const Poco::Net::Context::Ptr context( new Poco::Net::Context( Poco::Net::Context::CLIENT_USE, "", "", cert_location ) );
+    Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(), context );
+    std::string req_type;
+    if (is_get) {
+      req_type = Poco::Net::HTTPRequest::HTTP_GET;
+    } else {
+      req_type = Poco::Net::HTTPRequest::HTTP_DELETE;
+    }
+    Poco::Net::HTTPRequest req(req_type, query_url );
+    session.sendRequest(req);
+    Poco::Net::HTTPResponse res;
+    std::istream& rs = session.receiveResponse(res);
+    std::istreambuf_iterator<char> eos;
+    std::string resp(std::istreambuf_iterator<char>(rs), eos);
+    ret_buffer.success = true;
+    ret_buffer.val.assign(resp);
+  } catch( const Poco::Net::SSLException& e ) {
+    ret_buffer.success = false;
+    ret_buffer.err_msg.assign(e.message());
+  } catch( const std::exception& e ) {
+    ret_buffer.success = false;
+    ret_buffer.err_msg.assign(e.what());
   }
 }
 
@@ -115,48 +218,76 @@ AOSSL::StringBuffer* AOSSL::ConsulAdmin::query_safe(std::string query_url) {
   return buf;
 }
 
+// Post a query to consul
+AOSSL::StringBuffer* AOSSL::ConsulAdmin::secure_query_safe(std::string query_url) {
+  // Build the request buffer
+  AOSSL::StringBuffer *buf = new AOSSL::StringBuffer;
+  secure_query(query_url, *buf);
+  return buf;
+}
+
 // Service Registry Functions
 
 bool AOSSL::ConsulAdmin::register_service(const ServiceInterface& s) {
   // Get the URL
   std::string query_url = "/v1/agent/service/register";
-  std::string url_string = consul_addr + query_url;
 
   // Get the message body
   std::string body_str = s.to_json();
 
   // Send the HTTP Request
-  bool success = ha->put(url_string, body_str, timeout);
-  return success;
+  AOSSL::StringBuffer buf;
+  if (!secured) {
+    put_by_reference(query_url, body_str, buf);
+  } else {
+    secure_put(query_url, body_str, buf);
+  }
+  return buf.success;
 }
 
 bool AOSSL::ConsulAdmin::deregister_service(const ServiceInterface& s) {
   // Get the URL
   std::string query_url = "/v1/agent/service/deregister/";
   query_url = query_url.append(s.get_id());
-  std::string url_string = consul_addr + query_url;
 
   // Send the HTTP Request
-  std::string empty_str = "";
-  bool success = ha->put(url_string, empty_str, timeout);
-  return success;
+  AOSSL::StringBuffer buf;
+  std::string body_str = "";
+  if (!secured) {
+    put_by_reference(query_url, body_str, buf);
+  } else {
+    secure_put(query_url, body_str, buf);
+  }
+  return buf.success;
 }
 
 // Basic Queries
 
 AOSSL::StringBuffer* AOSSL::ConsulAdmin::services() {
   std::string url = "/v1/agent/services";
-  return query_safe(url);
+  if (!secured) {
+    return query_safe(url);
+  } else {
+    return secure_query_safe(url);
+  }
 }
 
 AOSSL::StringBuffer* AOSSL::ConsulAdmin::agent_info() {
   std::string url = "/v1/agent/self";
-  return query_safe(url);
+  if (!secured) {
+    return query_safe(url);
+  } else {
+    return secure_query_safe(url);
+  }
 }
 
 AOSSL::StringBuffer* AOSSL::ConsulAdmin::healthy_services() {
   std::string url = "v1/health/service/web?passing";
-  return query_safe(url);
+  if (!secured) {
+    return query_safe(url);
+  } else {
+    return secure_query_safe(url);
+  }
 }
 
 // Configuration Key-Value Storage Functions
@@ -165,25 +296,41 @@ bool AOSSL::ConsulAdmin::set_config_value(std::string key, std::string val) {
   // Get the URL
   std::string query_url = "/v1/kv/";
   query_url = query_url.append(key);
-  std::string url_string = consul_addr + query_url;
 
   // Send the HTTP Request
-  bool success = ha->put(url_string, val, timeout);
-  return success;
+  AOSSL::StringBuffer buf;
+  if (!secured) {
+    put_by_reference(query_url, val, buf);
+  } else {
+    secure_put(query_url, val, buf);
+  }
+  return buf.success;
 }
 
 bool AOSSL::ConsulAdmin::del_config_value(std::string key) {
   // Get the URL
   std::string query_url = "/v1/kv/";
   query_url = query_url.append(key);
-  std::string url_string = consul_addr + query_url;
+
+  AOSSL::StringBuffer *buf = new AOSSL::StringBuffer;
+  if (!secured) {
+    query_by_reference(query_url, *buf, false);
+  } else {
+    secure_query(query_url, *buf, false);
+  }
   // Send the HTTP Request
-  bool success = ha->del(url_string, timeout);
+  bool success = buf->success;
+  delete buf;
   return success;
 }
 
 AOSSL::StringBuffer* AOSSL::ConsulAdmin::datacenters() {
-  return query_safe("/v1/catalog/datacenters");
+  std::string url = "/v1/catalog/datacenters";
+  if (!secured) {
+    return query_safe(url);
+  } else {
+    return secure_query_safe(url);
+  }
 }
 
 AOSSL::StringBuffer* AOSSL::ConsulAdmin::nodes_dc(std::string data_center) {
@@ -192,7 +339,11 @@ AOSSL::StringBuffer* AOSSL::ConsulAdmin::nodes_dc(std::string data_center) {
     url = url.append("?dc=");
     url = url.append(data_center);
   }
-  return query_safe(url);
+  if (!secured) {
+    return query_safe(url);
+  } else {
+    return secure_query_safe(url);
+  }
 }
 
 AOSSL::StringBuffer* AOSSL::ConsulAdmin::services_dc(std::string data_center) {
@@ -201,13 +352,21 @@ AOSSL::StringBuffer* AOSSL::ConsulAdmin::services_dc(std::string data_center) {
     url = url.append("?dc=");
     url = url.append(data_center);
   }
-  return query_safe(url);
+  if (!secured) {
+    return query_safe(url);
+  } else {
+    return secure_query_safe(url);
+  }
 }
 
 AOSSL::StringBuffer* AOSSL::ConsulAdmin::nodes_service(std::string service) {
   std::string url = "/v1/catalog/service/";
   url = url.append(service);
-  return query_safe(url);
+  if (!secured) {
+    return query_safe(url);
+  } else {
+    return secure_query_safe(url);
+  }
 }
 
 AOSSL::StringBuffer* AOSSL::ConsulAdmin::services_node(std::string node, \
@@ -218,5 +377,9 @@ AOSSL::StringBuffer* AOSSL::ConsulAdmin::services_node(std::string node, \
     url = url.append("?dc=");
     url = url.append(data_center);
   }
-  return query_safe(url);
+  if (!secured) {
+    return query_safe(url);
+  } else {
+    return secure_query_safe(url);
+  }
 }

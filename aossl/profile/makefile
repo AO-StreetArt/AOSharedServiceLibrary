@@ -1,14 +1,9 @@
 # Makefile Variables
-CC = g++
-CFLAGS  = -g -Wall
-STD = -std=c++11
-RM = rm -f
 SESSION_INSTALL_DIR = $(INSTALL_DIR)/profile/include
 INCL = $(SESSION_INSTALL_DIR)/safe_app_profile.h $(SESSION_INSTALL_DIR)/tiered_app_profile.h $(SESSION_INSTALL_DIR)/app_profile.h
 INCL_DIR = $(INSTALL_DIR)/profile
 INCL_DIRS = -I$(CURDIR)/../../
-INCL_OBJS = $(CURDIR)/../http/client/http_admin.o $(CURDIR)/../uuid/uuid_admin.o $(CURDIR)/../consul/consul_admin.o $(CURDIR)/../commandline/cli.o
-LIBS = -lcurl -luuid
+INCL_OBJS = $(CURDIR)/../uuid/uuid_admin.o $(CURDIR)/../consul/consul_admin.o $(CURDIR)/../commandline/cli.o
 
 # Central Targets
 tests: profile_test

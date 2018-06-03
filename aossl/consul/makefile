@@ -1,13 +1,7 @@
 # Makefile Variables
-CC = g++
-CFLAGS  = -g -Wall
-STD = -std=c++11
 INSTALL_FILES = $(INSTALL_DIR)/consul/include/factory_consul.h	$(INSTALL_DIR)/consul/include/consul_admin.h $(INSTALL_DIR)/consul/include/consul_interface.h $(INSTALL_DIR)/consul/include/service.h
 CONSUL_INSTALL_DIR = $(INSTALL_DIR)/consul
-LIBS = -lcurl
-RM = rm -f
 OBJS = consul_admin.o service.o
-INCL_OBJS = $(CURDIR)/../http/client/http_admin.o
 INCL_DIRS = -I$(CURDIR)/../../
 
 #Makefile Targets
@@ -50,7 +44,7 @@ $(CONSUL_INSTALL_DIR)/include/service.h: include/service.h
 # Test
 # Create the executable file zmqio_test
 consul_test: consul_test.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_OBJS) $(INCL_DIRS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_DIRS)
 
 # Create the object file zmqio_test.o
 consul_test.o: consul_test.cpp
@@ -58,7 +52,7 @@ consul_test.o: consul_test.cpp
 
 # Benchmark
 consul_benchmark: consul_benchmark.o $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_OBJS) $(INCL_DIRS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_DIRS)
 
 consul_benchmark.o: consul_benchmark.cpp
 	$(CC) $(CFLAGS) -o $@ -c $^ $(STD) $(INCL_DIRS)

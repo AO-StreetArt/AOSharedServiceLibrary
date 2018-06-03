@@ -1,10 +1,6 @@
 # Makefile Variables
-CC = g++
-CFLAGS  = -g -Wall
-STD = -std=c++11
 INCL = $(INSTALL_DIR)/properties/include/factory_props.h $(INSTALL_DIR)/properties/include/properties_reader.h
 INCL_DIR = $(INSTALL_DIR)/properties
-RM = rm -f
 INCL_DIRS = -I$(CURDIR)/../../
 
 #Makefile Targets

@@ -1,12 +1,7 @@
 # Makefile Variables
-CC = g++
-CFLAGS  = -g -Wall
-STD = -std=c++11
 INCL_DIRS = -I$(CURDIR)/../../
 INCL = $(INSTALL_DIR)/uuid/include/factory_uuid.h	$(INSTALL_DIR)/uuid/include/uuid_admin.h $(INSTALL_DIR)/uuid/include/uuid_interface.h
 INCL_DIR = $(INSTALL_DIR)/uuid
-LIBS = -luuid
-RM = rm -f
 
 #Makefile Targets
 default: uuid_admin.o

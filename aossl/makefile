@@ -1,7 +1,6 @@
 # Simple makefile to allow for building & installation of all subfolders
 
 make_subfolders:
-	cd http && $(MAKE)
 	cd consul && $(MAKE)
 	cd commandline && $(MAKE)
 	cd properties && $(MAKE)
@@ -9,7 +8,6 @@ make_subfolders:
 
 install:
 	cd core && $(MAKE) install
-	cd http && $(MAKE) install
 	cd consul && $(MAKE) install
 	cd commandline && $(MAKE) install
 	cd properties && $(MAKE) install
@@ -18,7 +16,6 @@ install:
 
 tests:
 	cd core && $(MAKE) tests
-	cd http && $(MAKE) tests
 	cd commandline && $(MAKE) tests
 	cd properties && $(MAKE) tests
 	cd uuid && $(MAKE) tests
@@ -26,13 +23,11 @@ tests:
 	cd profile && $(MAKE) tests
 
 benchmarks:
-	cd http && $(MAKE) benchmark
 	cd consul && $(MAKE) benchmark
 	cd uuid && $(MAKE) benchmark
 
 clean:
 	cd core && $(MAKE) clean
-	cd http && $(MAKE) clean
 	cd consul && $(MAKE) clean
 	cd commandline && $(MAKE) clean
 	cd properties && $(MAKE) clean

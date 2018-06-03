@@ -25,11 +25,16 @@ THE SOFTWARE.
 #include <string.h>
 #include <string>
 #include <vector>
+#include <iostream>
 
-#include "aossl/http/client/include/http_admin.h"
-#include "aossl/http/client/include/http_interface.h"
-#include "aossl/http/client/include/factory_http_client.h"
 #include "aossl/core/include/buffers.h"
+
+#include "Poco/URI.h"
+#include "Poco/Net/Context.h"
+#include "Poco/Net/HTTPRequest.h"
+#include "Poco/Net/HTTPSClientSession.h"
+#include "Poco/Net/HTTPResponse.h"
+#include "Poco/Net/SSLException.h"
 
 #include "consul_interface.h"
 #include "service.h"
@@ -49,28 +54,44 @@ namespace AOSSL {
 // from Consul.  Note that the values returned from the Key-Value store
 // will be stored in base64 format
 class ConsulAdmin: public ConsulInterface {
-  HttpInterface *ha = NULL;
   std::string consul_addr;
   std::string base64_return_string = "";
   std::string return_string = "";
   std::string query_return_string = "";
   int timeout;
+  bool secured = false;
+  std::string cert_location;
+  AOSSL::StringBuffer* secure_query_safe(std::string query_url);
   AOSSL::StringBuffer* query_safe(std::string query_url);
-  void query_by_reference(std::string query_url, StringBuffer& ret_buffer);
+  void query_by_reference(std::string query_url, StringBuffer& ret_buffer, bool is_get);
+  void query_by_reference(std::string query_url, StringBuffer& ret_buffer) {query_by_reference(query_url, ret_buffer, true);}
+  void secure_query(std::string query_url, StringBuffer& ret_buffer) {secure_query(query_url, ret_buffer, true);}
+  void secure_query(std::string query_url, StringBuffer& ret_buffer, bool is_get);
+  void put_by_reference(std::string query_url, std::string body, StringBuffer& ret_buffer);
+  void secure_put(std::string query_url, std::string body, StringBuffer& ret_buffer);
   inline static bool is_base64(unsigned char c) {
     return (isalnum(c) || (c == '+') || (c == '/'));
   }
-
+  void init(std::string& caddr, int tout);
+  void init(std::string& caddr, int tout, std::string& cert);
  public:
   void base64_decode_by_reference(std::string const& encoded_string, StringBuffer& ret_buffer);
   StringBuffer* base64_decode_safe(std::string const& encoded_string);
 
   // Construct a consul admin, passing in the connection string
-  // TO-DO: Parameterize the timeout
-  ConsulAdmin(std::string caddr);
+  ConsulAdmin(std::string& caddr) {init(caddr, 5);}
+
+  // Construct a consul admin, passing in the connection string and timeout
+  ConsulAdmin(std::string& caddr, int tout) {init(caddr, tout);}
+
+  // Construct a consul admin, passing in the connection string and ssl cert
+  ConsulAdmin(std::string& caddr, std::string& cert) {init(caddr, 5, cert);}
+
+  // Construct a consul admin, passing in the connection string, timeout, and ssl cert
+  ConsulAdmin(std::string& caddr, int tout, std::string& cert) {init(caddr, tout, cert);}
 
   // Delete a consul admin
-  ~ConsulAdmin() {delete ha;}
+  ~ConsulAdmin() {}
 
   // Service Registry Functions
 

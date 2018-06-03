@@ -5,18 +5,20 @@
 #
 
 #Compilation Variables
-CC = g++
-SLC = ar rcs
-CFLAGS  = -g -Wall
-STD = -std=c++11
+export CC = g++
+export SLC = ar rcs
+export CFLAGS  = -g -Wall
+export STD = -std=c++11
+export POCO_LIBS = -lPocoNetSSL -lPocoCrypto -lPocoNet -lPocoUtil -lPocoFoundation
+export LIBS = -lssl -lcrypto -luuid $(POCO_LIBS)
+export RM = rm -f
 
 #Install Variables
 export INSTALL_DIR = /usr/local/include/aossl
-INSTALL_LIB_DIR = /usr/local/lib
+export INSTALL_LIB_DIR = /usr/local/lib
 
 #Library Objects
-OBJS = aossl/commandline/cli.o aossl/http/client/http_admin.o\
-	aossl/consul/consul_admin.o aossl/uuid/uuid_admin.o \
+OBJS = aossl/commandline/cli.o aossl/consul/consul_admin.o aossl/uuid/uuid_admin.o \
 		aossl/consul/service.o
 
 

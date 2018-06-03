@@ -1,8 +1,4 @@
 # Makefile Variables
-CC = g++
-CFLAGS  = -g -Wall
-STD = -std=c++11
-RM = rm -f
 CORE_INSTALL_DIR = $(INSTALL_DIR)/core/include
 INCL = $(CORE_INSTALL_DIR)/buffers.h $(CORE_INSTALL_DIR)/kv_store.h $(CORE_INSTALL_DIR)/kv_store_interface.h
 INCL_DIR = $(INSTALL_DIR)/core

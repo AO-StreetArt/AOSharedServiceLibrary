@@ -74,6 +74,13 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   // Load a value from Consul
   inline void load_consul_value(ConsulInterface *kv, std::string& key) {
     if (kv) {
+      // Copy the key before modifying in-place
+      std::string env_key;
+      env_key.assign(key);
+      // Convert to all caps
+      std::transform(env_key.begin(), env_key.end(), env_key.begin(), toupper);
+      // Convert '.' to '_'
+      std::replace(env_key.begin(), env_key.end(), '.', '_');
       std::string query_key;
       // Prefix the key with the application & profile name
       // to ensure we get unique values for different apps
@@ -82,7 +89,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
         query_key = ApplicationProfile::get_app_name() + std::string("/") + \
             ApplicationProfile::get_profile_name() + std::string("/");
       }
-      query_key = query_key + key;
+      query_key = query_key + env_key;
       if (kv->opt_exist(query_key)) {
         AOSSL::StringBuffer buf;
         kv->get_opt(query_key, buf);
