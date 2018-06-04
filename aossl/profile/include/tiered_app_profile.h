@@ -78,12 +78,10 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       // Copy the key before modifying in-place
       std::string env_key;
       env_key.assign(key);
-      std::cout << env_key << std::endl;
       // Convert to all caps
       std::transform(env_key.begin(), env_key.end(), env_key.begin(), toupper);
       // Convert '.' to '_'
       std::replace(env_key.begin(), env_key.end(), '.', '_');
-      std::cout << env_key << std::endl;
       std::string query_key;
       // Prefix the key with the application & profile name
       // to ensure we get unique values for different apps
@@ -93,7 +91,6 @@ class TieredApplicationProfile: public SafeApplicationProfile{
             ApplicationProfile::get_profile_name() + std::string("/");
       }
       query_key = query_key + env_key;
-      std::cout << query_key << std::endl;
       if (kv->opt_exist(query_key)) {
         AOSSL::StringBuffer buf;
         kv->get_opt(query_key, buf);
@@ -126,7 +123,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
             KeyValueStore::set_opt(key, decoded_buffer.val);
           }
         } else {
-          
+
         }
       }
     }

@@ -21,7 +21,6 @@ export INSTALL_LIB_DIR = /usr/local/lib
 OBJS = aossl/commandline/cli.o aossl/consul/consul_admin.o aossl/uuid/uuid_admin.o \
 		aossl/consul/service.o
 
-
 # typing 'make' will invoke the first target entry in the file
 # (in this case the default target entry)
 # you can name this target entry anything, but "default" or "all"

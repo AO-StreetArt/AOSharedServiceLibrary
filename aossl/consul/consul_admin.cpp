@@ -142,7 +142,6 @@ void AOSSL::ConsulAdmin::put_by_reference(std::string query_url, std::string bod
     ret_buffer.success = false;
     ret_buffer.err_msg.assign(e.message());
   } catch( const std::exception& e ) {
-    std::cout << e.what() << std::endl;
     ret_buffer.success = false;
     ret_buffer.err_msg.assign(e.what());
   }
@@ -174,7 +173,6 @@ void AOSSL::ConsulAdmin::query_by_reference(std::string query_url, \
     ret_buffer.err_msg.assign(e.message());
   } catch( const std::exception& e ) {
     ret_buffer.success = false;
-    std::cout << e.what() << std::endl;
     ret_buffer.err_msg.assign(e.what());
   }
 }
