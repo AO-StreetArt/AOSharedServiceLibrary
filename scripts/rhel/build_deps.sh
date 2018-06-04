@@ -18,7 +18,7 @@ yum -y update
 printf "Addressing pre-build requirements"
 
 #Ensure that specific build requirements are satisfied
-yum -y install build-essential libtool autoconf automake cmake make git wget gcc gcc-c++ epel-release libuuid-devel
+yum -y install build-essential libtool autoconf automake cmake make git wget gcc gcc-c++ epel-release libuuid-devel zlib-devel
 yum repolist
 
 #Build POCO
