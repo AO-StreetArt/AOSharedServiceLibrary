@@ -74,13 +74,16 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   // Load a value from Consul
   inline void load_consul_value(ConsulInterface *kv, std::string& key) {
     if (kv) {
+      if (key.empty()) return;
       // Copy the key before modifying in-place
       std::string env_key;
       env_key.assign(key);
+      std::cout << env_key << std::endl;
       // Convert to all caps
       std::transform(env_key.begin(), env_key.end(), env_key.begin(), toupper);
       // Convert '.' to '_'
       std::replace(env_key.begin(), env_key.end(), '.', '_');
+      std::cout << env_key << std::endl;
       std::string query_key;
       // Prefix the key with the application & profile name
       // to ensure we get unique values for different apps
@@ -90,35 +93,40 @@ class TieredApplicationProfile: public SafeApplicationProfile{
             ApplicationProfile::get_profile_name() + std::string("/");
       }
       query_key = query_key + env_key;
+      std::cout << query_key << std::endl;
       if (kv->opt_exist(query_key)) {
         AOSSL::StringBuffer buf;
         kv->get_opt(query_key, buf);
-        // Parse the response
-        rapidjson::Document d;
-        d.Parse<rapidjson::kParseStopWhenDoneFlag>(buf.val.c_str());
-        if (d.HasParseError()) {
-          throw std::invalid_argument(GetParseError_En(d.GetParseError()));
-        }
-        // Pull the value field
-        StringBuffer parsed_buffer;
-        std::string value_string;
-        if (d.IsArray()) {
-          for (auto& itr : d.GetArray()) {
-            rapidjson::Value::ConstMemberIterator val_iter = \
-                itr.FindMember("Value");
-            if (val_iter != itr.MemberEnd()) {
-              if (!(val_iter->value.IsNull())) {
-                parsed_buffer.val.assign(val_iter->value.GetString());
+        if (!(buf.val.empty())) {
+          // Parse the response
+          rapidjson::Document d;
+          d.Parse<rapidjson::kParseStopWhenDoneFlag>(buf.val.c_str());
+          if (d.HasParseError()) {
+            throw std::invalid_argument(GetParseError_En(d.GetParseError()));
+          }
+          // Pull the value field
+          StringBuffer parsed_buffer;
+          std::string value_string;
+          if (d.IsArray()) {
+            for (auto& itr : d.GetArray()) {
+              rapidjson::Value::ConstMemberIterator val_iter = \
+                  itr.FindMember("Value");
+              if (val_iter != itr.MemberEnd()) {
+                if (!(val_iter->value.IsNull())) {
+                  parsed_buffer.val.assign(val_iter->value.GetString());
+                }
               }
             }
           }
-        }
-        // decode the base64 value
-        StringBuffer decoded_buffer;
-        ApplicationProfile::get_consul()->base64_decode_by_reference(\
-          parsed_buffer.val, decoded_buffer);
-        if (KeyValueStore::opt_exist(key)) {
-          KeyValueStore::set_opt(key, decoded_buffer.val);
+          // decode the base64 value
+          StringBuffer decoded_buffer;
+          ApplicationProfile::get_consul()->base64_decode_by_reference(\
+            parsed_buffer.val, decoded_buffer);
+          if (KeyValueStore::opt_exist(key)) {
+            KeyValueStore::set_opt(key, decoded_buffer.val);
+          }
+        } else {
+          
         }
       }
     }
@@ -208,7 +216,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       // Load Properties File values, if present
       load_config_value(ApplicationProfile::get_props(), element.first);
       // Load Consul Values, if present
-      load_consul_value(ApplicationProfile::get_consul(), element.first);
+      ConsulInterface *consul = ApplicationProfile::get_consul();
+      load_consul_value(consul, element.first);
       // Load Environment variables
       load_environment_variable(element.first);
       // Load Commandline Values, if present

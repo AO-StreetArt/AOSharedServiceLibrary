@@ -29,6 +29,7 @@ THE SOFTWARE.
 
 #include "aossl/core/include/buffers.h"
 
+#include "Poco/StreamCopier.h"
 #include "Poco/URI.h"
 #include "Poco/Net/Context.h"
 #include "Poco/Net/HTTPRequest.h"

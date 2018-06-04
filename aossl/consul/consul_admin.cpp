@@ -165,10 +165,10 @@ void AOSSL::ConsulAdmin::query_by_reference(std::string query_url, \
     session.sendRequest(req);
     Poco::Net::HTTPResponse res;
     std::istream& rs = session.receiveResponse(res);
-    std::istreambuf_iterator<char> eos;
-    std::string resp(std::istreambuf_iterator<char>(rs), eos);
+    std::string response_body;
+    Poco::StreamCopier::copyToString(rs, response_body);
     ret_buffer.success = true;
-    ret_buffer.val.assign(resp);
+    ret_buffer.val.assign(response_body);
   } catch( const Poco::Net::SSLException& e ) {
     ret_buffer.success = false;
     ret_buffer.err_msg.assign(e.message());
