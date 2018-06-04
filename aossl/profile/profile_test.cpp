@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
   assert(buf4.val == val4);
 
   // Consul Tests
-  profile.set_consul_address("localhost:8500");
+  profile.set_consul_address("http://127.0.0.1:8500");
   profile.load_config();
   AOSSL::StringBuffer buf5;
   profile.get_opt(key1, buf5);
