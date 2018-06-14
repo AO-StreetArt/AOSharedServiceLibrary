@@ -12,7 +12,7 @@ printf "apt-get setup\n"
 apt-get -y update
 
 #Install the basic tools we need
-apt-get install -y apt-utils debconf-utils iputils-ping wget curl mc htop ssh software-properties-common build-essential libtool pkg-config automake cmake uuid-dev libcurl4-openssl-dev git libsnappy-dev liblog4cpp5-dev libssl-dev openssl
+apt-get install -y zlib1g-dev apt-utils debconf-utils iputils-ping wget curl mc htop ssh software-properties-common build-essential libtool pkg-config automake cmake uuid-dev libcurl4-openssl-dev git libsnappy-dev liblog4cpp5-dev libssl-dev openssl
 
 #Build POCO
 printf "Installing Poco\n"
