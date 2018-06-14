@@ -18,14 +18,14 @@ yum -y update
 printf "Addressing pre-build requirements"
 
 #Ensure that specific build requirements are satisfied
-yum -y install build-essential libtool autoconf automake cmake make git wget gcc gcc-c++ epel-release libuuid-devel
+yum -y install build-essential libtool autoconf automake cmake make git wget gcc gcc-c++ epel-release libuuid-devel zlib-devel
 yum repolist
 
 #Build POCO
 printf "Installing Poco\n"
 wget https://pocoproject.org/releases/poco-1.9.0/poco-1.9.0-all.tar.gz
 tar -xvzf poco-1.9.0-all.tar.gz
-cd poco-1.9.0-all && ./configure --omit=Data/ODBC,Data/MySQL && make -s && sudo make -s install
+cd poco-1.9.0-all && ./configure --omit=Data/ODBC,Data/MySQL && make -s && make -s install
 cd ../
 
 printf "Installing Rapidjson"
