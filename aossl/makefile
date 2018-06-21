@@ -9,6 +9,7 @@ make_subfolders:
 install:
 	cd core && $(MAKE) install
 	cd consul && $(MAKE) install
+	cd vault && $(MAKE) install
 	cd commandline && $(MAKE) install
 	cd properties && $(MAKE) install
 	cd uuid && $(MAKE) install
@@ -20,6 +21,7 @@ tests:
 	cd properties && $(MAKE) tests
 	cd uuid && $(MAKE) tests
 	cd consul && $(MAKE) tests
+	cd vault && $(MAKE) tests
 	cd profile && $(MAKE) tests
 
 benchmarks:
@@ -29,6 +31,7 @@ benchmarks:
 clean:
 	cd core && $(MAKE) clean
 	cd consul && $(MAKE) clean
+	cd vault && $(MAKE) clean
 	cd commandline && $(MAKE) clean
 	cd properties && $(MAKE) clean
 	cd uuid && $(MAKE) clean
