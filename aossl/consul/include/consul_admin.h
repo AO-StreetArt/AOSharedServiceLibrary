@@ -61,7 +61,9 @@ class ConsulAdmin: public ConsulInterface {
   std::string query_return_string = "";
   int timeout;
   bool secured = false;
+  bool acl_active = false;
   std::string cert_location;
+  std::string acl_token;
   AOSSL::StringBuffer* secure_query_safe(std::string query_url);
   AOSSL::StringBuffer* query_safe(std::string query_url);
   void query_by_reference(std::string query_url, StringBuffer& ret_buffer, bool is_get);
@@ -90,6 +92,11 @@ class ConsulAdmin: public ConsulInterface {
 
   // Construct a consul admin, passing in the connection string, timeout, and ssl cert
   ConsulAdmin(std::string& caddr, int tout, std::string& cert) {init(caddr, tout, cert);}
+
+  // Construct a consul admin, passing in the connection string, timeout,
+  // ssl cert, and consul acl token
+  ConsulAdmin(std::string& caddr, int tout, std::string& cert, std::string& token) \
+      {init(caddr, tout, cert);acl_token.assign(token);acl_active=true;}
 
   // Delete a consul admin
   ~ConsulAdmin() {}

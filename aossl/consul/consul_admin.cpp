@@ -106,6 +106,9 @@ void AOSSL::ConsulAdmin::secure_put(std::string query_url, std::string body,\
     Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(), context );
     Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_PUT, query_url );
     req.setContentLength(body.length());
+    if (acl_active) {
+      req.add("X-Consul-Token", acl_token);
+    }
     session.sendRequest(req) << body;
     Poco::Net::HTTPResponse res;
     std::istream& rs = session.receiveResponse(res);
@@ -131,6 +134,9 @@ void AOSSL::ConsulAdmin::put_by_reference(std::string query_url, std::string bod
     Poco::Net::HTTPClientSession session(uri.getHost(), uri.getPort());
     Poco::Net::HTTPRequest req(Poco::Net::HTTPRequest::HTTP_PUT, query_url );
     req.setContentLength(body.length());
+    if (acl_active) {
+      req.add("X-Consul-Token", acl_token);
+    }
     session.sendRequest(req) << body;
     Poco::Net::HTTPResponse res;
     std::istream& rs = session.receiveResponse(res);
@@ -161,6 +167,9 @@ void AOSSL::ConsulAdmin::query_by_reference(std::string query_url, \
       req_type = Poco::Net::HTTPRequest::HTTP_DELETE;
     }
     Poco::Net::HTTPRequest req(req_type, query_url );
+    if (acl_active) {
+      req.add("X-Consul-Token", acl_token);
+    }
     session.sendRequest(req);
     Poco::Net::HTTPResponse res;
     std::istream& rs = session.receiveResponse(res);
@@ -192,6 +201,9 @@ void AOSSL::ConsulAdmin::secure_query(std::string query_url, \
       req_type = Poco::Net::HTTPRequest::HTTP_DELETE;
     }
     Poco::Net::HTTPRequest req(req_type, query_url );
+    if (acl_active) {
+      req.add("X-Consul-Token", acl_token);
+    }
     session.sendRequest(req);
     Poco::Net::HTTPResponse res;
     std::istream& rs = session.receiveResponse(res);
