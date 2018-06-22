@@ -23,10 +23,11 @@ install:
 - wget https://releases.hashicorp.com/vault/0.10.3/vault_0.10.3_linux_amd64.zip
 - unzip vault_0.10.3_linux_amd64.zip
 - "./vault server -dev &"
+- sleep 5
+- ./scripts/vault_test_setup.sh
 before_script:
 - gcc --version
 - ldd --version
-- ./scripts/vault_test_setup.sh
 script:
 - make
 - make tests
