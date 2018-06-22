@@ -2,6 +2,7 @@
 CORE_INSTALL_DIR = $(INSTALL_DIR)/vault/include
 INCL = $(CORE_INSTALL_DIR)/vault_admin.h $(CORE_INSTALL_DIR)/factory_vault.h
 INCL_DIR = $(INSTALL_DIR)/vault
+INCL_DIRS = -I$(CURDIR)/../../
 
 # Central Targets
 tests: vault_test
@@ -10,10 +11,10 @@ install: $(INCL_DIR) $(INCL)
 
 # Tests
 vault_test.o: vault_test.cpp include/vault_admin.h
-	$(CC) $(CFLAGS) -o $@ -c vault_test.cpp $(STD)
+	$(CC) $(CFLAGS) -o $@ -c vault_test.cpp $(STD) $(INCL_DIRS)
 
 vault_test: vault_test.o
-	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBS) $(STD) $(INCL_DIRS)
 
 # Clean
 clean:

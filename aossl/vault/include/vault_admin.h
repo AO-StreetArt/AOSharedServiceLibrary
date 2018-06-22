@@ -167,6 +167,7 @@ class VaultAdmin : public KeyValueStoreInterface {
           std::string("\", \"secret_id\": \"") + pw + std::string("\"}"));
     }
     post_by_reference(auth_url, auth_body, auth_response);
+    if (!(auth_response.success)) {throw std::invalid_argument(auth_response.err_msg);}
     // Parse out the returned Vault Auth Token and stuff it in the ret_buffer
     rapidjson::Document d;
     d.Parse<rapidjson::kParseStopWhenDoneFlag>(auth_response.val.c_str());
@@ -176,6 +177,9 @@ class VaultAdmin : public KeyValueStoreInterface {
     if (d.IsObject()) {
       const rapidjson::Value& token_val = d["auth"]["client_token"];
       vault_token.assign(token_val.GetString());
+      is_authenticated = true;
+    } else {
+      throw std::invalid_argument("Invalid response from Vault");
     }
   }
  public:

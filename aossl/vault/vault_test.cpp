@@ -33,7 +33,7 @@ THE SOFTWARE.
 
 int main() {
   // Build the Vault admin
-  std::string vault_address = "http://localhost:8200";
+  std::string vault_address = "http://127.0.0.1:8200";
   std::string secrets_url = "/v1/secret/";
   std::string secret_key = "testKey";
   std::string un = "test";
@@ -43,6 +43,11 @@ int main() {
   std::cout << "Sending Request" << std::endl;
   AOSSL::StringBuffer buf;
   vault.get_opt(secret_key, buf);
+  if (!(buf.success)) {
+    std::cout << "Error Retrieving secret: " << buf.err_msg << std::endl;
+    assert(false);
+  }
+  std::cout << buf.val << std::endl;
   // Parse out the data and compare it
   std::string data;
   rapidjson::Document d;
@@ -51,7 +56,7 @@ int main() {
     assert(false);
   }
   if (d.IsObject()) {
-    const rapidjson::Value& token_val = d["data"];
+    const rapidjson::Value& token_val = d["data"]["testKey"];
     data.assign(token_val.GetString());
     std::cout << data << std::endl;
     assert(data == std::string("testValue"));
