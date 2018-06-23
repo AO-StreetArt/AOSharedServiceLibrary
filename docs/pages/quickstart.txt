@@ -1,48 +1,8 @@
 /*! \page quickstart AOSSL Quick Start Guide
  *
- * ## Docker
+ * ## Vagrant
  *
- * The AO Shared Service Library is available as a docker image.  This allows developers to get a fully functional build environment with a single command, and offers a head-start on making application docker files.
- *
- * ### Setup
- *
- * Before we begin, we need to have a few things ready.
- *
- * #### Installing Docker
- *
- * If you do not already have Docker installed, please follow the instructions [here](https://docs.docker.com/engine/installation).
- *
- * ### Running the Docker Image
- *
- * You can create a fully functional build environment for new micro services via Docker, and ssh into that process.
- *
- *     docker run --name aossl -d -P aostreetart/ao-services
- *
- * Then, you can access the container with the following:
- *
- *     docker exec -i -t aossl /bin/bash
- *
- * ### Docker Images of External Tools
- *
- * Docker images are also available for many of the external tools connected to within the library.
- *
- * #### Consul
- *
- * In times when you need to connect to an instance of [Consul](https://www.consul.io/), you can use the docker image (full instructions can be found [here](https://hub.docker.com/_/consul/))
- *
- *     docker run -d --name=dev-consul consul
- *
- * ### Connecting Docker Images
- *
- * Connecting Docker images is done via the network command.  First, we start the network:
- *
- *     docker network create my-network
- *
- * Then, we utilize the \--network option when starting containers to connect them to the network:
- *
- *     docker run -d --name=registry --network=my-network consul
- *
- * When we start another docker container and connect it to my-network, we can access the first container by using it's container name as the hostname.  For example, we'd access the consul agent started above from another docker container in the network at the address 'registry:8500'.
+ * An AOSSL build environment can be created with Vagrant.  See \ref dev_notes "the Developer Notes" for more information.
  *
  * ## Use Latest Release
  *
