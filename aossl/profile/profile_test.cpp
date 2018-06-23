@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
 
   // Vault tests
   std::string vaddr("http://127.0.0.1:8200");
-  std::string secrets_path("/v1/secret");
+  std::string secrets_path("/v1/secret/");
   std::string un("test");
   std::string pw("test");
   profile.set_vault_address(vaddr, secrets_path, 5, 1, un, pw);
@@ -116,6 +116,11 @@ int main(int argc, char** argv) {
   profile.load_config();
   AOSSL::StringBuffer buf7;
   profile.get_opt(secretKey, buf7);
-  std::cout << buf7.val << std::endl;
-  assert(buf7.val == secretVal);
+  if (buf7.success) {
+    std::cout << buf7.val << std::endl;
+    assert(buf7.val == secretVal);
+  } else {
+    std::cout << buf7.err_msg << std::endl;
+    assert(false);
+  }
 }

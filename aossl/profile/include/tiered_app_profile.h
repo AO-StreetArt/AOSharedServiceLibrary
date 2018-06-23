@@ -83,8 +83,21 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     if (kv) {
       AOSSL::StringBuffer buf;
       kv->get_opt(key, buf);
-      if (buf.success) {
-        KeyValueStore::set_opt(key, buf.val);
+      if (buf.success && !(buf.val.empty())) {
+        // Parse out the data and compare it
+        std::string data;
+        rapidjson::Document d;
+        d.Parse<rapidjson::kParseStopWhenDoneFlag>(buf.val.c_str());
+        if (d.HasParseError()) {
+          throw std::invalid_argument(GetParseError_En(d.GetParseError()));
+        }
+        if (d.IsObject()) {
+          const rapidjson::Value& token_val = d["data"][key];
+          data.assign(token_val.GetString());
+        }
+        KeyValueStore::set_opt(key, data);
+      } else {
+        throw std::invalid_argument(buf.err_msg);
       }
     }
   }
@@ -112,7 +125,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       if (kv->opt_exist(query_key)) {
         AOSSL::StringBuffer buf;
         kv->get_opt(query_key, buf);
-        if (!(buf.val.empty())) {
+        if (!(buf.val.empty()) && buf.success) {
           // Parse the response
           rapidjson::Document d;
           d.Parse<rapidjson::kParseStopWhenDoneFlag>(buf.val.c_str());
@@ -140,8 +153,6 @@ class TieredApplicationProfile: public SafeApplicationProfile{
           if (KeyValueStore::opt_exist(key)) {
             KeyValueStore::set_opt(key, decoded_buffer.val);
           }
-        } else {
-
         }
       }
     }
@@ -172,7 +183,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       std::string vault_atype_key = "vault.authtype";
       std::string vault_un_key = "vault.un";
       std::string vault_pw_key = "vault.pw";
-      std::string secrets_path("/v1/secret");
+      std::string secrets_path("/v1/secret/");
       int auth_type = BASIC_AUTH_TYPE;
       StringBuffer vault_addr_buf;
       StringBuffer vault_cert_buf;
@@ -267,7 +278,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     if (env_vault_addr && env_vault_cert && env_vault_authtype && env_vault_authun && env_vault_authpw) {
       std::string vaddr(env_vault_addr);
       std::string cert(env_vault_cert);
-      std::string secrets_path("/v1/secret");
+      std::string secrets_path("/v1/secret/");
       std::string un(env_vault_authun);
       std::string pw(env_vault_authpw);
       std::string authtype_string(env_vault_authtype);
@@ -279,7 +290,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     } else if (env_vault_addr && env_vault_authtype && env_vault_authun && env_vault_authpw) {
       std::string vaddr(env_vault_addr);
       std::string cert(env_vault_cert);
-      std::string secrets_path("/v1/secret");
+      std::string secrets_path("/v1/secret/");
       std::string un(env_vault_authun);
       std::string pw(env_vault_authpw);
       std::string authtype_string(env_vault_authtype);
