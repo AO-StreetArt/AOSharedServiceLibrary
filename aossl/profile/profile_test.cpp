@@ -111,7 +111,7 @@ int main(int argc, char** argv) {
   std::string pw("test");
   profile.set_vault_address(vaddr, secrets_path, 5, 1, un, pw);
   std::string secretKey("testKey");
-  std::string secretVal("testVal");
+  std::string secretVal("testValue");
   profile.add_secure_opt(secretKey);
   profile.load_config();
   AOSSL::StringBuffer buf7;
