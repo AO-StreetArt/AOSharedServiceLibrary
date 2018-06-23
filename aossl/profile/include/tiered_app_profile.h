@@ -92,7 +92,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
           throw std::invalid_argument(GetParseError_En(d.GetParseError()));
         }
         if (d.IsObject()) {
-          const rapidjson::Value& token_val = d["data"][key.c_str()];
+          const rapidjson::Value& token_val = d["data"]["data"][key.c_str()];
           data.assign(token_val.GetString());
         }
         KeyValueStore::set_opt(key, data);
@@ -183,7 +183,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       std::string vault_atype_key = "vault.authtype";
       std::string vault_un_key = "vault.un";
       std::string vault_pw_key = "vault.pw";
-      std::string secrets_path("/v1/secret/");
+      std::string secrets_path("/v1/secret/data/");
       int auth_type = BASIC_AUTH_TYPE;
       StringBuffer vault_addr_buf;
       StringBuffer vault_cert_buf;
@@ -278,7 +278,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     if (env_vault_addr && env_vault_cert && env_vault_authtype && env_vault_authun && env_vault_authpw) {
       std::string vaddr(env_vault_addr);
       std::string cert(env_vault_cert);
-      std::string secrets_path("/v1/secret/");
+      std::string secrets_path("/v1/secret/data/");
       std::string un(env_vault_authun);
       std::string pw(env_vault_authpw);
       std::string authtype_string(env_vault_authtype);
@@ -290,7 +290,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     } else if (env_vault_addr && env_vault_authtype && env_vault_authun && env_vault_authpw) {
       std::string vaddr(env_vault_addr);
       std::string cert(env_vault_cert);
-      std::string secrets_path("/v1/secret/");
+      std::string secrets_path("/v1/secret/data/");
       std::string un(env_vault_authun);
       std::string pw(env_vault_authpw);
       std::string authtype_string(env_vault_authtype);

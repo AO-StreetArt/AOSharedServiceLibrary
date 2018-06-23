@@ -34,7 +34,7 @@ THE SOFTWARE.
 int main() {
   // Build the Vault admin
   std::string vault_address = "http://127.0.0.1:8200";
-  std::string secrets_url = "/v1/secret/";
+  std::string secrets_url = "/v1/secret/data/";
   std::string secret_key = "testKey";
   std::string un = "test";
   std::string pw = "test";
@@ -56,7 +56,7 @@ int main() {
     assert(false);
   }
   if (d.IsObject()) {
-    const rapidjson::Value& token_val = d["data"]["testKey"];
+    const rapidjson::Value& token_val = d["data"]["data"]["testKey"];
     data.assign(token_val.GetString());
     std::cout << data << std::endl;
     assert(data == std::string("testValue"));
