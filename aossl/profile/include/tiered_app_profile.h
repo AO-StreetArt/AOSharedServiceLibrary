@@ -387,8 +387,10 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     std::string consul_token_vault_key = ApplicationProfile::get_app_name() + std::string("ConsulToken");
     StringBuffer consul_cert_buf;
     StringBuffer consul_token_buf;
-    get_vault_secret(vault, consul_cert_vault_key, consul_cert_buf);
-    get_vault_secret(vault, consul_token_vault_key, consul_token_buf);
+    if (vault) {
+      get_vault_secret(vault, consul_cert_vault_key, consul_cert_buf);
+      get_vault_secret(vault, consul_token_vault_key, consul_token_buf);
+    }
 
     // Check Env Variables for Consul Information
     const char *env_consul_value = std::getenv("AOSSL_CONSUL_ADDRESS");
