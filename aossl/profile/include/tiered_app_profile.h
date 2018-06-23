@@ -92,7 +92,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
           throw std::invalid_argument(GetParseError_En(d.GetParseError()));
         }
         if (d.IsObject()) {
-          const rapidjson::Value& token_val = d["data"][key];
+          const rapidjson::Value& token_val = d["data"][key.c_str()];
           data.assign(token_val.GetString());
         }
         KeyValueStore::set_opt(key, data);
