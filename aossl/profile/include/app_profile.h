@@ -115,6 +115,22 @@ class ApplicationProfile {
     }
     consul = consul_factory.get_consul_interface(caddr);
   }
+  //! Set the address of the consul agent
+  inline void set_consul_address(std::string caddr, int tout, std::string ssl_cert) {
+    if (consul) {
+      delete consul;
+      consul = NULL;
+    }
+    consul = consul_factory.get_consul_interface(caddr, tout, ssl_cert);
+  }
+  //! Set the address of the consul agent
+  inline void set_consul_address(std::string caddr, int tout, std::string ssl_cert, std::string acl_token) {
+    if (consul) {
+      delete consul;
+      consul = NULL;
+    }
+    consul = consul_factory.get_consul_interface(caddr, tout, ssl_cert, acl_token);
+  }
   //! Get the Command Line Interface
   KeyValueStoreInterface* get_cli() {return cli;}
   //! Get the Properties File Reader

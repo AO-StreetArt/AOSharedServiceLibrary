@@ -103,4 +103,19 @@ int main(int argc, char** argv) {
   profile.get_opt(key2, buf6);
   std::cout << buf6.val << std::endl;
   assert(buf6.val == val6);
+
+  // Vault tests
+  std::string vaddr("http://127.0.0.1:8200");
+  std::string secrets_path("/v1/secret");
+  std::string un("test");
+  std::string pw("test");
+  profile.set_vault_address(vaddr, secrets_path, 5, 1, un, pw);
+  std::string secretKey("testKey");
+  std::string secretVal("testVal");
+  profile.add_secure_opt(secretKey);
+  profile.load_config();
+  AOSSL::StringBuffer buf7;
+  profile.get_opt(secretKey, buf7);
+  std::cout << buf7.val << std::endl;
+  assert(buf7.val == secretVal);
 }
