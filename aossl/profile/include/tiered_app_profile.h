@@ -33,6 +33,9 @@ THE SOFTWARE.
 #include <exception>
 #include <vector>
 #include <utility>
+#include <iterator>
+#include <sstream>
+#include <fstream>
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
@@ -78,26 +81,38 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     }
   }
 
-  // Load a value from Vault
-  inline void load_vault_secret(KeyValueStoreInterface *kv, std::string& key) {
-    if (kv) {
-      AOSSL::StringBuffer buf;
-      kv->get_opt(key, buf);
-      if (buf.success && !(buf.val.empty())) {
-        // Parse out the data and compare it
-        std::string data;
-        rapidjson::Document d;
-        d.Parse<rapidjson::kParseStopWhenDoneFlag>(buf.val.c_str());
-        if (d.HasParseError()) {
-          throw std::invalid_argument(GetParseError_En(d.GetParseError()));
-        }
+  // Retrieve a secret from Vault
+  inline void get_vault_secret(KeyValueStoreInterface *kv, std::string& key, StringBuffer& return_buf) {
+    StringBuffer buf;
+    kv->get_opt(key, buf);
+    if (buf.success && !(buf.val.empty())) {
+      // Parse out the data and compare it
+      std::string data;
+      rapidjson::Document d;
+      d.Parse<rapidjson::kParseStopWhenDoneFlag>(buf.val.c_str());
+      if (d.HasParseError()) {
+        return_buf.success = false;
+        return_buf.err_msg.assign(GetParseError_En(d.GetParseError()));
+      } else {
         if (d.IsObject()) {
           const rapidjson::Value& token_val = d["data"]["data"][key.c_str()];
           data.assign(token_val.GetString());
         }
-        KeyValueStore::set_opt(key, data);
-      } else {
-        throw std::invalid_argument(buf.err_msg);
+        return_buf.val.assign(data);
+      }
+    } else {
+      return_buf.success = false;
+      return_buf.err_msg.assign(buf.err_msg);
+    }
+  }
+
+  // Load a value from Vault into configuration
+  inline void load_vault_secret(KeyValueStoreInterface *kv, std::string& key) {
+    if (kv) {
+      StringBuffer buf;
+      get_vault_secret(kv, key, buf);
+      if (buf.success) {
+        KeyValueStore::set_opt(key, buf.val);
       }
     }
   }
@@ -175,7 +190,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     }
   }
 
-  inline void load_vault_info(KeyValueStoreInterface *kv) {
+  inline void load_vault_info(KeyValueStoreInterface *kv, \
+      bool auth_details_included, std::string& un, std::string& pw) {
     if (kv) {
       // Check the commandline arguments for Vault Information
       std::string vault_addr_key = "vault";
@@ -190,35 +206,43 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       StringBuffer vault_authtype_buf;
       StringBuffer vault_un_buf;
       StringBuffer vault_pw_buf;
-      if (kv->opt_exist(vault_addr_key) && kv->opt_exist(vault_cert_key) \
-          && kv->opt_exist(vault_atype_key) && kv->opt_exist(vault_un_key) \
-          && kv->opt_exist(vault_pw_key)) {
-        kv->get_opt(vault_addr_key, vault_addr_buf);
-        kv->get_opt(vault_cert_key, vault_cert_buf);
-        kv->get_opt(vault_atype_key, vault_authtype_buf);
-        kv->get_opt(vault_un_key, vault_un_buf);
-        kv->get_opt(vault_pw_key, vault_pw_buf);
-        if (vault_authtype_buf.val == "APPROLE") {
-          auth_type = APPROLE_AUTH_TYPE;
+      // Check for authentication info
+      if (auth_details_included || (kv->opt_exist(vault_un_key) && kv->opt_exist(vault_pw_key))) {
+        if (auth_details_included) {
+          vault_un_buf.val.assign(un);
+          vault_pw_buf.val.assign(pw);
+        } else {
+          kv->get_opt(vault_un_key, vault_un_buf);
+          kv->get_opt(vault_pw_key, vault_pw_buf);
         }
-        vault = vault_factory.get_vault_interface(vault_addr_buf.val, secrets_path, \
-            5, vault_cert_buf.val, auth_type, vault_un_buf.val, vault_pw_buf.val);
-      } else if (kv->opt_exist(vault_addr_key) && kv->opt_exist(vault_atype_key) \
-          && kv->opt_exist(vault_un_key) && kv->opt_exist(vault_pw_key)) {
-        kv->get_opt(vault_addr_key, vault_addr_buf);
-        kv->get_opt(vault_atype_key, vault_authtype_buf);
-        kv->get_opt(vault_un_key, vault_un_buf);
-        kv->get_opt(vault_pw_key, vault_pw_buf);
-        if (vault_authtype_buf.val == "APPROLE") {
-          auth_type = APPROLE_AUTH_TYPE;
+        // Check for the rest of the config info for Vault
+        if (kv->opt_exist(vault_addr_key) && kv->opt_exist(vault_cert_key) \
+            && kv->opt_exist(vault_atype_key)) {
+          kv->get_opt(vault_addr_key, vault_addr_buf);
+          kv->get_opt(vault_cert_key, vault_cert_buf);
+          kv->get_opt(vault_atype_key, vault_authtype_buf);
+          if (vault_authtype_buf.val == "APPROLE") {
+            auth_type = APPROLE_AUTH_TYPE;
+          }
+          vault = vault_factory.get_vault_interface(vault_addr_buf.val, secrets_path, \
+              5, vault_cert_buf.val, auth_type, vault_un_buf.val, vault_pw_buf.val);
+        } else if (kv->opt_exist(vault_addr_key) && kv->opt_exist(vault_atype_key)) {
+          kv->get_opt(vault_addr_key, vault_addr_buf);
+          kv->get_opt(vault_atype_key, vault_authtype_buf);
+          kv->get_opt(vault_un_key, vault_un_buf);
+          kv->get_opt(vault_pw_key, vault_pw_buf);
+          if (vault_authtype_buf.val == "APPROLE") {
+            auth_type = APPROLE_AUTH_TYPE;
+          }
+          vault = vault_factory.get_vault_interface(vault_addr_buf.val, \
+              secrets_path, 5, auth_type, vault_un_buf.val, vault_pw_buf.val);
         }
-        vault = vault_factory.get_vault_interface(vault_addr_buf.val, \
-            secrets_path, 5, auth_type, vault_un_buf.val, vault_pw_buf.val);
       }
     }
   }
 
-  inline void load_consul_info(KeyValueStoreInterface *kv) {
+  inline void load_consul_info(KeyValueStoreInterface *kv, \
+      StringBuffer& vconsul_cert_buf, StringBuffer& vconsul_token_buf) {
     if (kv) {
       // Check the commandline arguments for Consul Information
       std::string consul_add_key = "consul";
@@ -227,7 +251,12 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       StringBuffer consul_addr_buf;
       StringBuffer consul_cert_buf;
       StringBuffer consul_token_buf;
-      if (kv->opt_exist(consul_add_key) && \
+      if (kv->opt_exist(consul_add_key) && vconsul_cert_buf.success && \
+          vconsul_token_buf.success) {
+        kv->get_opt(consul_add_key, consul_addr_buf);
+        ApplicationProfile::set_consul_address(consul_addr_buf.val, 5, \
+            vconsul_cert_buf.val, vconsul_token_buf.val);
+      } else if (kv->opt_exist(consul_add_key) && \
           kv->opt_exist(consul_cert_key) && \
           kv->opt_exist(consul_token_key)) {
         kv->get_opt(consul_add_key, consul_addr_buf);
@@ -251,22 +280,55 @@ class TieredApplicationProfile: public SafeApplicationProfile{
 
   // Initialize the Profile
   inline void init() {
-    // Check Env Variables for Consul Information
-    const char *env_consul_value = std::getenv("AOSSL_CONSUL_ADDRESS");
-    const char *env_consul_cert_value = std::getenv("AOSSL_CONSUL_SSL_CERT");
-    const char *env_consul_token_value = std::getenv("AOSSL_CONSUL_ACL_TOKEN");
-    if (env_consul_value && env_consul_cert_value && env_consul_token_value) {
-      std::string consul_addr_str(env_consul_value);
-      std::string consul_cert_str(env_consul_value);
-      std::string consul_token_str(env_consul_value);
-      ApplicationProfile::set_consul_address(consul_addr_str, 5, consul_cert_str, env_consul_value);
-    } else if (env_consul_value && env_consul_cert_value) {
-      std::string consul_addr_str(env_consul_value);
-      std::string consul_cert_str(env_consul_value);
-      ApplicationProfile::set_consul_address(consul_addr_str, 5, consul_cert_str);
-    } else if (env_consul_value) {
-      std::string consul_addr_str(env_consul_value);
-      ApplicationProfile::set_consul_address(consul_addr_str);
+    // Start by looking for properties files, as values for other configs can
+    // be stored in the props files.
+
+    // Check Env Variables for a Properties File
+    std::string props_env_key("AOSSL_PROPS_FILE");
+    std::transform(props_env_key.begin(), props_env_key.end(), props_env_key.begin(), toupper);
+    const char *env_props_value = std::getenv(props_env_key.c_str());
+    if (env_props_value) {
+      std::string props_file_str(env_props_value);
+      ApplicationProfile::set_property_file(props_file_str);
+    }
+
+    // Check the commandline arguments for a properties file
+    if (ApplicationProfile::get_cli()) {
+      if (ApplicationProfile::get_cli()->opt_exist(std::string("props"))) {
+        StringBuffer props_buf;
+        ApplicationProfile::get_cli()->get_opt(std::string("props"), props_buf);
+        ApplicationProfile::set_property_file(props_buf.val);
+      }
+    }
+
+    // Check for default property files
+    props_file_name = "/etc/ivan/app.properties";
+    if ((!(ApplicationProfile::get_props())) && exists_test(props_file_name)) {
+      ApplicationProfile::set_property_file(props_file_name);
+    }
+    props_file_name = "app.properties";
+    if ((!(ApplicationProfile::get_props())) && exists_test(props_file_name)) {
+      ApplicationProfile::set_property_file(props_file_name);
+    }
+
+    // Next, we want to check for Vault information, as further
+    // security information needed for configuration may be held there.
+
+    std::string vault_un_file = "vault_un.txt";
+    std::string vault_pw_file = "vault_pw.txt";
+    std::string vault_un_value;
+    std::string vault_pw_value;
+    bool vault_auth_from_file = false;
+
+    // See if we have vault username/password files
+    if (exists_test(vault_un_file) && exists_test(vault_pw_file)) {
+      std::ifstream unfs(vault_un_file);
+      vault_un_value.assign((std::istreambuf_iterator<char>(unfs)), \
+          (std::istreambuf_iterator<char>()));
+      std::ifstream pwfs(vault_pw_file);
+      vault_pw_value.assign((std::istreambuf_iterator<char>(pwfs)), \
+          (std::istreambuf_iterator<char>()));
+      vault_auth_from_file = true;
     }
 
     // Check environment variables for vault information
@@ -275,24 +337,37 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     const char *env_vault_authtype = std::getenv("AOSSL_VAULT_AUTH_TYPE");
     const char *env_vault_authun = std::getenv("AOSSL_VAULT_AUTH_UN");
     const char *env_vault_authpw = std::getenv("AOSSL_VAULT_AUTH_PW");
-    if (env_vault_addr && env_vault_cert && env_vault_authtype && env_vault_authun && env_vault_authpw) {
-      std::string vaddr(env_vault_addr);
-      std::string cert(env_vault_cert);
-      std::string secrets_path("/v1/secret/data/");
-      std::string un(env_vault_authun);
-      std::string pw(env_vault_authpw);
-      std::string authtype_string(env_vault_authtype);
-      int auth_type = BASIC_AUTH_TYPE;
-      if (authtype_string == "APPROLE") {
-        auth_type = APPROLE_AUTH_TYPE;
+    std::string un;
+    std::string pw;
+    if (env_vault_addr && env_vault_cert && env_vault_authtype) {
+      if (vault_auth_from_file || (env_vault_authun && env_vault_authpw)) {
+        if (vault_auth_from_file) {
+          un.assign(vault_un_value);
+          pw.assign(vault_pw_value);
+        } else {
+          un.assign(env_vault_authun);
+          pw.assign(env_vault_authpw);
+        }
+        std::string vaddr(env_vault_addr);
+        std::string cert(env_vault_cert);
+        std::string secrets_path("/v1/secret/data/");
+        std::string authtype_string(env_vault_authtype);
+        int auth_type = BASIC_AUTH_TYPE;
+        if (authtype_string == "APPROLE") {
+          auth_type = APPROLE_AUTH_TYPE;
+        }
+        set_vault_address(vaddr, secrets_path, 5, cert, auth_type, un, pw);
       }
-      set_vault_address(vaddr, secrets_path, 5, cert, auth_type, un, pw);
     } else if (env_vault_addr && env_vault_authtype && env_vault_authun && env_vault_authpw) {
+      if (vault_auth_from_file) {
+        un.assign(vault_un_value);
+        pw.assign(vault_pw_value);
+      } else {
+        un.assign(env_vault_authun);
+        pw.assign(env_vault_authpw);
+      }
       std::string vaddr(env_vault_addr);
-      std::string cert(env_vault_cert);
       std::string secrets_path("/v1/secret/data/");
-      std::string un(env_vault_authun);
-      std::string pw(env_vault_authpw);
       std::string authtype_string(env_vault_authtype);
       int auth_type = BASIC_AUTH_TYPE;
       if (authtype_string == "APPROLE") {
@@ -300,33 +375,55 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       }
       set_vault_address(vaddr, secrets_path, 5, auth_type, un, pw);
     }
+    // Try to load vault information from the CLI arguments
+    load_vault_info(ApplicationProfile::get_cli(), vault_auth_from_file, vault_un_value, vault_pw_value);
+    // Try to load vault information from the Properties File
+    load_vault_info(ApplicationProfile::get_props(), vault_auth_from_file, vault_un_value, vault_pw_value);
 
-    // Check Env Variables for a Properties File
-    const char *env_props_value = std::getenv("AOSSL_PROPS_FILE");
-    if (env_props_value) {
-      std::string props_file_str(env_props_value);
-      ApplicationProfile::set_property_file(props_file_str);
-    }
+    // Next, we'll check for any Consul information
 
-    // Check the commandline arguments
-    load_consul_info(ApplicationProfile::get_cli());
-    load_vault_info(ApplicationProfile::get_cli());
-    if (ApplicationProfile::get_cli()) {
-      // Check the commandline arguments for a properties file
-      if (ApplicationProfile::get_cli()->opt_exist(std::string("props"))) {
-        StringBuffer props_buf;
-        ApplicationProfile::get_cli()->get_opt(std::string("props"), props_buf);
-        ApplicationProfile::set_property_file(props_buf.val);
+    // Start by checking Vault for any SSL Certs or ACL Tokens.
+    std::string consul_cert_vault_key = ApplicationProfile::get_app_name() + std::string("ConsulCert");
+    std::string consul_token_vault_key = ApplicationProfile::get_app_name() + std::string("ConsulToken");
+    StringBuffer consul_cert_buf;
+    StringBuffer consul_token_buf;
+    get_vault_secret(vault, consul_cert_vault_key, consul_cert_buf);
+    get_vault_secret(vault, consul_token_vault_key, consul_token_buf);
+
+    // Check Env Variables for Consul Information
+    const char *env_consul_value = std::getenv("AOSSL_CONSUL_ADDRESS");
+    const char *env_consul_cert_value = std::getenv("AOSSL_CONSUL_SSL_CERT");
+    const char *env_consul_token_value = std::getenv("AOSSL_CONSUL_ACL_TOKEN");
+    if (env_consul_value && env_consul_cert_value && env_consul_token_value) {
+      std::string consul_addr_str(env_consul_value);
+      std::string consul_cert_str(env_consul_cert_value);
+      std::string consul_token_str(env_consul_token_value);
+      ApplicationProfile::set_consul_address(consul_addr_str, 5, consul_cert_str, env_consul_value);
+    } else if (env_consul_value && env_consul_cert_value) {
+      std::string consul_addr_str(env_consul_value);
+      std::string consul_cert_str(env_consul_cert_value);
+      ApplicationProfile::set_consul_address(consul_addr_str, 5, consul_cert_str);
+    } else if (env_consul_value) {
+      // Mix environment variables with token/certs retrieved from Vault
+      std::string consul_addr_str(env_consul_value);
+      if (consul_cert_buf.success && consul_token_buf.success) {
+        ApplicationProfile::set_consul_address(consul_addr_str, 5, consul_cert_buf.val, consul_token_buf.val);
+      } else if (consul_cert_buf.success && env_consul_token_value) {
+        std::string consul_token_str(env_consul_token_value);
+        ApplicationProfile::set_consul_address(consul_addr_str, 5, consul_cert_buf.val, consul_token_str);
+      } else if (env_consul_cert_value && consul_token_buf.success) {
+        std::string consul_cert_str(env_consul_cert_value);
+        ApplicationProfile::set_consul_address(consul_addr_str, 5, consul_cert_str, consul_token_buf.val);
+      } else {
+        ApplicationProfile::set_consul_address(consul_addr_str);
       }
     }
-    // Check for possible property files
-    props_file_name = "app.properties";
-    if ((!(ApplicationProfile::get_props())) && exists_test(props_file_name)) {
-      ApplicationProfile::set_property_file(props_file_name);
-    }
-    // Check the Properties file for the Consul Address
-    load_consul_info(ApplicationProfile::get_props());
-    load_vault_info(ApplicationProfile::get_props());
+
+    // Check the commandline arguments for the Consul args
+    load_consul_info(ApplicationProfile::get_cli(), consul_cert_buf, consul_token_buf);
+
+    // Check the Properties file for the Consul args
+    load_consul_info(ApplicationProfile::get_props(), consul_cert_buf, consul_token_buf);
   }
 
  public:

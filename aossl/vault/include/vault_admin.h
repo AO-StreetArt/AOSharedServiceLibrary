@@ -74,12 +74,14 @@ class VaultAdmin : public KeyValueStoreInterface {
     Poco::Net::HTTPResponse res;
     std::istream& rs = session.receiveResponse(res);
     if (res.getStatus() > Poco::Net::HTTPResponse::HTTP_PARTIAL_CONTENT) {
-      throw std::logic_error("Error sending message to Vault: " + res.getReason());
+      ret_buffer.success = false;
+      ret_buffer.err_msg.assign("Error sending message to Vault: " + res.getReason());
+    } else {
+      std::istreambuf_iterator<char> eos;
+      std::string resp(std::istreambuf_iterator<char>(rs), eos);
+      ret_buffer.success = true;
+      ret_buffer.val.assign(resp);
     }
-    std::istreambuf_iterator<char> eos;
-    std::string resp(std::istreambuf_iterator<char>(rs), eos);
-    ret_buffer.success = true;
-    ret_buffer.val.assign(resp);
   }
   inline void send_http_request(Poco::Net::HTTPClientSession& session, \
       Poco::Net::HTTPRequest& req, AOSSL::StringBuffer& ret_buffer) {
@@ -173,13 +175,10 @@ class VaultAdmin : public KeyValueStoreInterface {
     d.Parse<rapidjson::kParseStopWhenDoneFlag>(auth_response.val.c_str());
     if (d.HasParseError()) {
       throw std::invalid_argument(GetParseError_En(d.GetParseError()));
-    }
-    if (d.IsObject()) {
+    } else if (d.IsObject()) {
       const rapidjson::Value& token_val = d["auth"]["client_token"];
       vault_token.assign(token_val.GetString());
       is_authenticated = true;
-    } else {
-      throw std::invalid_argument("Invalid response from Vault");
     }
   }
  public:
