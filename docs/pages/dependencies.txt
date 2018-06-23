@@ -9,13 +9,13 @@
  *
  * We rely also on a set of base libraries which are installable via most package managers:
  * - libuuid (UUID Generator)
- * - libcurl (HTTP Interface & Consul Interface)
  *
  * You will need [Hayai](https://github.com/nickbruun/hayai) to run the benchmarks.
  *
  * # External Services
  *
  * - [Consul](https://www.consul.io/) - Service Discovery, Distributed Configuration, Health Monitoring
+ * - [Vault](https://www.vaultproject.io/) - Secret Storage
  *
  * \ref index "Go Home"
  */

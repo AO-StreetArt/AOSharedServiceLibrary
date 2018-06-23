@@ -37,12 +37,16 @@
  * Alternatively, we can pass any of the following arguments, which will trigger pulling
  * from a configuration source:
  *
- * ### Command Line
+ * ### Command Line/Properties File
  * - consul: Set the Consul Agent Address (ie. consul=localhost:8500)
- * - props: Set the path to the Configuration File (ie. props=app.properties)
+ * - consul.cert (optional): Set the SSL Certificate to use when communicating with the Consul Agent (ie. /path/to/ssl/cert)
+ * - consul.token (optional): Set the Consul Access Control Layer Token to use when communicating with the Consul Agent (ie. /path/to/acl/token)
+ * - props (cli only): Set the path to the Configuration File (ie. props=app.properties)
  *
  * ### Environment Variables
  * - AOSSL_CONSUL_ADDRESS (ie. `export AOSSL_CONSUL_ADDRESS=localhost:8500`)
+ * - AOSSL_CONSUL_SSL_CERT (optional) (ie. `export AOSSL_CONSUL_SSL_CERT=/path/to/ssl/cert`)
+ * - AOSSL_CONSUL_ACL_TOKEN (optional) (ie. `export AOSSL_CONSUL_ACL_TOKEN=/path/to/acl/token`)
  * - AOSSL_PROPS_FILE (ie. `export AOSSL_PROPS_FILE=/etc/aossl/app.properties`)
  *
  * ### Properties File
@@ -74,9 +78,38 @@
  *         }
  *     }
  *
- * ## Extending the SafeApplicationProfile
+ * ## Secure Application Properties
  *
+ * During configuration, applications often need to load sensitive and/or secure
+ * values.  These are supported by integration with [Hashicorp Vault](https://www.vaultproject.io/).
  *
+ * Prior to calling `load_config()`, we can call `add_secure_opt(std:string& key)`.  This informs
+ * the application profile that it needs to look for secure properties.  Secure properties are loaded
+ * from three sources:
+ * - 1. Environment Variables
+ * - 2. Properties File Values
+ * - 3. Vault Secret Store Value
+ *
+ * Please note that environment variables and properties file values are loaded for debug purposes
+ * only, and should not be used in production scenarios.
+ *
+ * Vault connectivity information can be set via environment variables, command line values, or
+ * properties file values.  The SSL Certificate can be left out to disable HTTPS, but this should
+ * never be done in a production environment.
+ *
+ * ### Command Line/Properties File
+ * - vault: Set the Vault Server Address (ie. vault=localhost:8200)
+ * - vault.cert (optional): Set the SSL Certificate to use when communicating with the Vault Server
+ * - vault.authtype: 'APPROLE' to use AppRole authentication, 'BASIC' to use Username/Password authentication.
+ * - vault.un: Set the Username/Role-ID to use for authenticating with Vault
+ * - vault.pw: Set the Password/Secret-ID to use for authenticating with Vault
+ *
+ * ### Environment Variables
+ * - AOSSL_VAULT_ADDRESS (ie. `export AOSSL_VAULT_ADDRESS=localhost:8200`)
+ * - AOSSL_VAULT_SSL_CERT (ie. `export AOSSL_VAULT_SSL_CERT=/path/to/ssl/cert`)
+ * - AOSSL_VAULT_AUTH_TYPE (ie. `export AOSSL_VAULT_AUTH_TYPE=BASIC`)
+ * - AOSSL_VAULT_AUTH_UN (ie. `export AOSSL_VAULT_AUTH_UN=test`)
+ * - AOSSL_VAULT_AUTH_PW (ie. `export AOSSL_VAULT_AUTH_PW=test`)
  *
  * ## Service Component Factories
  *
@@ -103,6 +136,7 @@
  * A Variety of tools are provided by AOSSL, all of which are thread safe.
  *
  * - \ref consul "Consul Interface"
+ * - \ref vault "Vault Interface"
  * - \ref uuid "UUID"
  * - \ref cli "Command Line Argument Parser"
  * - \ref props "Property File Reader"

@@ -1,0 +1,33 @@
+/*! \page vault Vault Interface
+ *
+ * The Hashicorp Vault is a solution for secrets storage, and this driver makes pulling secrets down from the vault easy.
+ *
+ * ## Use
+ *
+ * We start by importing the necessary interfaces and establish the service factory.
+ *
+ *     #include "aossl/commandline/include/factory_vault.h"
+ *     #include "aossl/core/include/kv_store_interface.h"
+ *
+ *     int main( int argc, char** argv )
+ *     {
+ *     AOSSL::VaultComponentFactory vault_factory;
+ *     AOSSL::KeyValueStoreInterface *vault = vault_factory.get_command_line_interface( argc, argv );
+ *
+ * We have access to an opt_exist method to determine if an option was entered, and we can use get_opt to pull parameter values.
+ *
+ *     if ( vault->opt_exist("name") ) {
+ *       AOSSL::StringBuffer buf;
+ *       vault->get_opt("name", buf);
+ *       std::cout << buf.val << std::endl;
+ *     }
+ *
+ *     return 0;
+ *     }
+ *
+ * ## Multi-Threading
+ *
+ * The Vault Interface is threadsafe, and one instance can be shared across threads.
+ *
+ * \ref index "Go Home"
+ */
