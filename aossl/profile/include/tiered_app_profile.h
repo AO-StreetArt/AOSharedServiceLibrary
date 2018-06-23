@@ -373,12 +373,20 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   //! Update the Vault connectivity information
   inline void set_vault_address(std::string& vaddr, std::string& secrets_path, \
       int tout, std::string& cert, int auth_type, std::string& un, std::string& pw) {
+    if (vault) {
+      delete vault;
+      vault = nullptr;
+    }
     vault = vault_factory.get_vault_interface(vaddr, secrets_path, 5, cert, auth_type, un, pw);
   }
 
   //! Update the Vault connectivity information
   inline void set_vault_address(std::string& vaddr, std::string& secrets_path, \
       int tout, int auth_type, std::string& un, std::string& pw) {
+    if (vault) {
+      delete vault;
+      vault = nullptr;
+    }
     vault = vault_factory.get_vault_interface(vaddr, secrets_path, 5, auth_type, un, pw);
   }
 };
