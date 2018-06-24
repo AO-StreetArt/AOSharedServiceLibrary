@@ -25,7 +25,7 @@ THE SOFTWARE.
 #include <string.h>
 #include <string>
 #include <vector>
-#include "aossl/core/include/kv_store_interface.h"
+#include "aossl/vault/include/vault_interface.h"
 #include "aossl/vault/include/vault_admin.h"
 
 
@@ -49,13 +49,13 @@ class VaultComponentFactory {
   ~VaultComponentFactory() {}
 
   //! Get a Consul Interface instance
-  inline KeyValueStoreInterface* get_vault_interface(std::string& vaddr, \
+  inline VaultInterface* get_vault_interface(std::string& vaddr, \
       std::string& secrets_path, int tout, std::string& cert, \
       int auth_type, std::string& un, std::string& pw) {
     return new VaultAdmin(vaddr, secrets_path, tout, cert, auth_type, un, pw);
   }
 
-  inline KeyValueStoreInterface* get_vault_interface(std::string& vaddr, \
+  inline VaultInterface* get_vault_interface(std::string& vaddr, \
       std::string& secrets_path, int tout, int auth_type, \
       std::string& un, std::string& pw) {
     return new VaultAdmin(vaddr, secrets_path, tout, auth_type, un, pw);

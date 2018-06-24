@@ -40,13 +40,13 @@
  * ### Command Line/Properties File
  * - consul: Set the Consul Agent Address (ie. consul=localhost:8500)
  * - consul.cert (optional): Set the SSL Certificate to use when communicating with the Consul Agent (ie. /path/to/ssl/cert)
- * - consul.token (optional): Set the Consul Access Control Layer Token to use when communicating with the Consul Agent (ie. /path/to/acl/token)
+ * - consul.token (optional): Set the Consul Access Control Layer Token to use when communicating with the Consul Agent.  This should be the value of the token, not the location.
  * - props (cli only): Set the path to the Configuration File (ie. props=app.properties)
  *
  * ### Environment Variables
  * - AOSSL_CONSUL_ADDRESS (ie. `export AOSSL_CONSUL_ADDRESS=localhost:8500`)
  * - AOSSL_CONSUL_SSL_CERT (optional) (ie. `export AOSSL_CONSUL_SSL_CERT=/path/to/ssl/cert`)
- * - AOSSL_CONSUL_ACL_TOKEN (optional) (ie. `export AOSSL_CONSUL_ACL_TOKEN=/path/to/acl/token`)
+ * - AOSSL_CONSUL_ACL_TOKEN (optional) (ie. `export AOSSL_CONSUL_ACL_TOKEN=ACL_TOKEN_VALUE`)
  * - AOSSL_PROPS_FILE (ie. `export AOSSL_PROPS_FILE=/etc/aossl/app.properties`)
  *
  * ### Properties File

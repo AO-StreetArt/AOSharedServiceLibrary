@@ -24,49 +24,26 @@ THE SOFTWARE.
 
 #include <string>
 
-#ifndef AOSSL_CORE_INCLUDE_BUFFERS_H_
-#define AOSSL_CORE_INCLUDE_BUFFERS_H_
+#include "aossl/core/include/buffers.h"
+#include "aossl/core/include/kv_store_interface.h"
+
+#ifndef AOSSL_VAULT_INCLUDE_VAULT_INTERFACE_H_
+#define AOSSL_VAULT_INCLUDE_VAULT_INTERFACE_H_
 
 namespace AOSSL {
 
-//! A base buffer
-struct Buffer {
-  //! Success flag
-  bool success;
+//! Key Value Store
 
-  //! Error Message
-  std::string err_msg;
-};
-
-//! A Structure for holding a single value
-struct StringBuffer: public Buffer {
-  //! Value stored
-  std::string val;
-};
-
-//! A Structure for storing a Key-Value pair
-struct KvBuffer: public StringBuffer {
-  //! Key of the pair
-  std::string key;
-};
-
-//! A Structure for storing an SSL Certificate
-struct SslCertificateBuffer: public Buffer {
-  //! Certificate String
-  std::string certificate;
-  //! Issuing CA String
-  std::string issuing_ca;
-  //! CA Chain String
-  std::string ca_chain;
-  //! Private Key String
-  std::string private_key;
-  //! Private Key Type
-  std::string private_key_type;
-  //! Serial Number
-  std::string serial_number;
-  //! Amount of time the certificate will be valid
-  int lease_duration = 0;
+//! A Key-Value store accesses configuration values by keys
+//! Interface which requires implementation
+class VaultInterface: public KeyValueStoreInterface {
+ public:
+  virtual ~VaultInterface() {}
+  //! Generate an SSL Certificate
+  virtual void gen_ssl_cert(std::string& role_name, std::string& common_name, \
+      SslCertificateBuffer& cert_buf) = 0;
 };
 
 }  // namespace AOSSL
-#endif  // AOSSL_CORE_INCLUDE_BUFFERS_H_
+
+#endif  // AOSSL_VAULT_INCLUDE_VAULT_INTERFACE_H_

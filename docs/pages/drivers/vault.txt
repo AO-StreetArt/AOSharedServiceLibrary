@@ -6,13 +6,13 @@
  *
  * We start by importing the necessary interfaces and establish the service factory.
  *
- *     #include "aossl/commandline/include/factory_vault.h"
- *     #include "aossl/core/include/kv_store_interface.h"
+ *     #include "aossl/vault/include/factory_vault.h"
+ *     #include "aossl/vault/include/vault_interface.h"
  *
  *     int main( int argc, char** argv )
  *     {
  *     AOSSL::VaultComponentFactory vault_factory;
- *     AOSSL::KeyValueStoreInterface *vault = vault_factory.get_command_line_interface( argc, argv );
+ *     AOSSL::VaultInterface *vault = vault_factory.get_command_line_interface( argc, argv );
  *
  * We have access to an opt_exist method to determine if an option was entered, and we can use get_opt to pull parameter values.
  *
@@ -24,6 +24,14 @@
  *
  *     return 0;
  *     }
+ *
+ * In addition, the method gen_ssl_cert can be used to call the Generate Certificate method
+ * from the Vault PKI secrets engine.
+ *
+ *    AOSSL::SslCertificateBuffer buf;
+ *    std::string role_name = "test";
+ *    std::string common_name = "www.test.com";
+ *    vault->gen_ssl_cert(role_name, common_name, buf);
  *
  * ## Multi-Threading
  *

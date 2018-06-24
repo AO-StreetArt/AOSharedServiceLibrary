@@ -64,7 +64,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   std::string props_file_name;
   std::vector<std::string> secure_opt_keys;
   VaultComponentFactory vault_factory;
-  KeyValueStoreInterface *vault = nullptr;
+  VaultInterface *vault = nullptr;
   inline bool exists_test(const std::string& name) {
     struct stat buffer;
     return (stat (name.c_str(), &buffer) == 0);
@@ -499,6 +499,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     }
     vault = vault_factory.get_vault_interface(vaddr, secrets_path, 5, auth_type, un, pw);
   }
+
+  inline VaultInterface* get_vault() {return vault;}
 };
 
 }  // namespace AOSSL

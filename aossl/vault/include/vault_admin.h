@@ -25,7 +25,7 @@ THE SOFTWARE.
 #include <string>
 
 #include "aossl/core/include/buffers.h"
-#include "aossl/core/include/kv_store_interface.h"
+#include "aossl/vault/include/vault_interface.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
@@ -49,7 +49,7 @@ const int BASIC_AUTH_TYPE = 1;
 //! Vault Admin
 
 //! A Key-Value store for accessing secured values in Vault
-class VaultAdmin : public KeyValueStoreInterface {
+class VaultAdmin : public VaultInterface {
   int timeout;
   bool secured = false;
   std::string cert_location;
@@ -223,6 +223,42 @@ class VaultAdmin : public KeyValueStoreInterface {
     // Execute the Vault Request
     std::string request_path = secrets_url_path + key;
     get_by_reference(request_path, val);
+  }
+
+  inline void gen_ssl_cert(std::string& role_name, std::string& common_name, \
+      SslCertificateBuffer& cert_buf) {
+    if (!is_authenticated) {
+      // Authenticate
+      authenticate(authentication_type, username, password);
+    }
+    std::string req_body = std::string("{\"common_name\": \"") + common_name + std::string("\"}");
+    std::string request_path = std::string("/v1/pki/issue/") + role_name;
+    StringBuffer http_response;
+    post_by_reference(request_path, req_body, http_response);
+    if (!(http_response.success)) {
+      cert_buf.success = false;
+      cert_buf.err_msg.assign(http_response.err_msg);
+    }
+    // Parse out the returned Vault Auth Token and stuff it in the ret_buffer
+    rapidjson::Document d;
+    d.Parse<rapidjson::kParseStopWhenDoneFlag>(http_response.val.c_str());
+    if (d.HasParseError()) {
+      cert_buf.success = false;
+      cert_buf.err_msg.assign(GetParseError_En(d.GetParseError()));
+    } else if (d.IsObject()) {
+      const rapidjson::Value& cert_val = d["data"]["certificate"];
+      cert_buf.certificate.assign(cert_val.GetString());
+      const rapidjson::Value& issuing_ca_val = d["data"]["issuing_ca"];
+      cert_buf.issuing_ca.assign(issuing_ca_val.GetString());
+      const rapidjson::Value& ca_chain_val = d["data"]["ca_chain"];
+      cert_buf.ca_chain.assign(ca_chain_val.GetString());
+      const rapidjson::Value& private_key_val = d["data"]["private_key"];
+      cert_buf.private_key.assign(private_key_val.GetString());
+      const rapidjson::Value& private_key_type_val = d["data"]["private_key_type"];
+      cert_buf.private_key_type.assign(private_key_type_val.GetString());
+      const rapidjson::Value& serial_number_val = d["data"]["serial_number"];
+      cert_buf.serial_number.assign(serial_number_val.GetString());
+    }
   }
 
   //! Re-load configuration
