@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
   cli_args.push_back(std::string("consul=http://127.0.0.1:8500"));
   cli_args.push_back(std::string("props=test/test.properties"));
   AOSSL::TieredApplicationProfile startup_profile(cli_args, \
-    std::string("test3"), std::string("prof3"));
+    std::string("test"), std::string("prof"));
   startup_profile.add_opt(akey, avalue);
   startup_profile.add_opt(key1, val1);
   startup_profile.add_opt(key2, val2);
