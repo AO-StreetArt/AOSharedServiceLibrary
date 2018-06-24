@@ -82,9 +82,11 @@
  *
  * ## Thread-Safety
  *
- * Getting values from the profile is thread-safe, however updating the profile is not.
- * It is recommended that you replace the profile with a freshly created one if you
- * need to update the underlying config values once you are accessing them on another thread.
+ * Retrieving and writing values to the application profile is thread-safe.
+ * Updating profile sources is safe to perform from a unique thread, and other
+ * threads can continue to access the KV Store.  You will have issues if
+ * one thread calls load_config(), and another tries to update the consul
+ * address at the same time.
  *
  * ## Secure Application Properties
  *
