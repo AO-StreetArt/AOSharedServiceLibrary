@@ -52,6 +52,12 @@
  * ### Properties File
  * - consul: Set the Consul Agent Address (ie. consul=localhost:8500)
  *
+ * ### Default Sources
+ *
+ * By default, the profile will look for the following default sources, and use them if available:
+ * - 'app.properties' in the root folder for the application
+ * - '/etc/ivan/app.properties'
+ *
  * Please see the Consul Documentation for
  * more information on setting up an agent (https://www.consul.io/docs/agent/basics.html).
  * Docker can also be used to start a Consul Agent (https://hub.docker.com/_/consul/).
@@ -84,8 +90,8 @@
  *
  * Retrieving and writing values to the application profile is thread-safe.
  * Updating profile sources is safe to perform from a unique thread, and other
- * threads can continue to access the KV Store.  You will have issues if
- * one thread calls load_config(), and another tries to update the consul
+ * threads can continue to access the KV Store.  You will have issues if, for
+ * example, one thread calls load_config(), and another tries to update the consul
  * address at the same time.
  *
  * ## Secure Application Properties
@@ -104,8 +110,12 @@
  * only, and should not be used in production scenarios.
  *
  * Vault connectivity information can be set via environment variables, command line values, or
- * properties file values.  The SSL Certificate can be left out to disable HTTPS, but this should
+ * separate files.  The SSL Certificate can be left out to disable HTTPS, but this should
  * never be done in a production environment.
+ *
+ * The Tiered Application Profile is coded to v2 of the Vault KV API.  Please ensure
+ * that any instance of Vault being used has either Username/Password or AppRole
+ * authentication enabled, as well as the V2 KV API enabled.
  *
  * ### Command Line/Properties File
  * - vault: Set the Vault Server Address (ie. vault=localhost:8200)
@@ -120,6 +130,19 @@
  * - AOSSL_VAULT_AUTH_TYPE: (ie. `export AOSSL_VAULT_AUTH_TYPE=BASIC`)
  * - AOSSL_VAULT_AUTH_UN: (ie. `export AOSSL_VAULT_AUTH_UN=test`)
  * - AOSSL_VAULT_AUTH_PW: (ie. `export AOSSL_VAULT_AUTH_PW=test`)
+ *
+ * ### Secret Files
+ *
+ * The Vault Username/Role ID and Password/Secred ID can both be provided via a
+ * separate file.  This is the recommendation of Hashicorp, as command line arguments
+ * are often stored in shell histories.  These files are intended to be injected
+ * into the environment of an executable prior to be startup, by some other process.
+ *
+ * Keep in mind that these will override any CLI/Environment Variables provided,
+ * and will need to have at least a vault address and auth type specified.
+ *
+ * - vault_un.txt: Stores the Username/Role ID
+ * - vault_pw.txt: Stores the Password/Secret ID
  *
  * ## Service Component Factories
  *

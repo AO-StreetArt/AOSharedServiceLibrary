@@ -11,6 +11,7 @@ can pull configuration from the following sources:
 * Command Line Arguments
 * Environment Variables
 * Consul KV Values
+* Vault Secret Values
 * Properties File Values
 * Defaults
 
