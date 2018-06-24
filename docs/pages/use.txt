@@ -71,6 +71,8 @@
  * - 4. Properties File values
  * - 5. Default values
  *
+ * Accessing the values once they've been populated is quite simple:
+ *
  *         AOSSL::StringBuffer buf;
  *         if (profile.opt_exist(key)) {
  *             profile.get_opt(key, buf);
@@ -111,11 +113,11 @@
  * - vault.pw: Set the Password/Secret-ID to use for authenticating with Vault
  *
  * ### Environment Variables
- * - AOSSL_VAULT_ADDRESS (ie. `export AOSSL_VAULT_ADDRESS=localhost:8200`)
- * - AOSSL_VAULT_SSL_CERT (ie. `export AOSSL_VAULT_SSL_CERT=/path/to/ssl/cert`)
- * - AOSSL_VAULT_AUTH_TYPE (ie. `export AOSSL_VAULT_AUTH_TYPE=BASIC`)
- * - AOSSL_VAULT_AUTH_UN (ie. `export AOSSL_VAULT_AUTH_UN=test`)
- * - AOSSL_VAULT_AUTH_PW (ie. `export AOSSL_VAULT_AUTH_PW=test`)
+ * - AOSSL_VAULT_ADDRESS: (ie. `export AOSSL_VAULT_ADDRESS=localhost:8200`)
+ * - AOSSL_VAULT_SSL_CERT (optional): (ie. `export AOSSL_VAULT_SSL_CERT=/path/to/ssl/cert`)
+ * - AOSSL_VAULT_AUTH_TYPE: (ie. `export AOSSL_VAULT_AUTH_TYPE=BASIC`)
+ * - AOSSL_VAULT_AUTH_UN: (ie. `export AOSSL_VAULT_AUTH_UN=test`)
+ * - AOSSL_VAULT_AUTH_PW: (ie. `export AOSSL_VAULT_AUTH_PW=test`)
  *
  * ## Service Component Factories
  *
