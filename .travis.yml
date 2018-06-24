@@ -38,12 +38,12 @@ matrix:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 before_install:
 - eval "${MATRIX_EVAL}"
+- sudo apt-get update
 - mkdir ../aossl_deps
 - sudo cp scripts/deb/build_deps.sh ../aossl_deps
 - cd ../aossl_deps && sudo ./build_deps.sh > deps_log.txt
 - cd $TRAVIS_BUILD_DIR
 install:
-- apt-get update
 - wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
 - unzip consul_0.6.4_linux_amd64.zip
 - "./consul agent -dev -bind=127.0.0.1 &"
