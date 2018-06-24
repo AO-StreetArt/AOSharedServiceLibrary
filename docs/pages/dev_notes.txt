@@ -33,10 +33,5 @@
  * - the version of the release: we follow [semantic versioning](http://semver.org/)
  * - the location of the dependency script: current valid paths are deb (uses apt-get) and rhel (uses yum)
  *
- * ## Security Notes
- * Currently AOSSL components are unsecured.  Two security needs have been identified:
- * - Consul 'Secret Store' using Hashicorp Vault as a backend.  Allow for secure storage of private config values.
- * - Enabling HTTPS for the HTTP Client
- *
  * \ref index "Go Home"
  */
