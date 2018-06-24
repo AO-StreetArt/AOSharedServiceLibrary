@@ -143,28 +143,28 @@ int main(int argc, char** argv) {
   startup_profile.add_secure_opt(secretKey);
   startup_profile.load_config();
   // Make sure all the correct keys are still present
-  assert(profile.opt_exist(secretKey));
-  assert(profile.opt_exist(akey));
-  assert(profile.opt_exist(key1));
-  assert(profile.opt_exist(key2));
-  assert(profile.opt_exist(key3));
-  assert(profile.opt_exist(key4));
+  assert(startup_profile.opt_exist(secretKey));
+  assert(startup_profile.opt_exist(akey));
+  assert(startup_profile.opt_exist(key1));
+  assert(startup_profile.opt_exist(key2));
+  assert(startup_profile.opt_exist(key3));
+  assert(startup_profile.opt_exist(key4));
   // Compare the config values to make sure
   // they're picked up in the correct order
   AOSSL::StringBuffer stbuf;
-  profile.get_opt(secretKey, stbuf);
+  startup_profile.get_opt(secretKey, stbuf);
   std::cout << stbuf.val << std::endl;
   assert(stbuf.val == secretVal);
   AOSSL::StringBuffer stbuf2;
-  profile.get_opt(key1, stbuf2);
+  startup_profile.get_opt(key1, stbuf2);
   std::cout << stbuf2.val << std::endl;
   assert(stbuf2.val == val5);
   AOSSL::StringBuffer stbuf3;
-  profile.get_opt(key2, stbuf3);
+  startup_profile.get_opt(key2, stbuf3);
   std::cout << stbuf3.val << std::endl;
   assert(stbuf3.val == val6);
   AOSSL::StringBuffer stbuf4;
-  profile.get_opt(akey, stbuf4);
+  startup_profile.get_opt(akey, stbuf4);
   std::cout << stbuf4.val << std::endl;
   assert(stbuf4.val == avalue);
 }
