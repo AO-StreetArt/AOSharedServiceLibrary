@@ -123,4 +123,48 @@ int main(int argc, char** argv) {
     std::cout << buf7.err_msg << std::endl;
     assert(false);
   }
+
+  // Initialization logic tests
+  std::vector<std::string> cli_args;
+  cli_args.push_back(std::string("test=1"));
+  cli_args.push_back(std::string("vault=http://127.0.0.1:8200"));
+  cli_args.push_back(std::string("vault.authtype=BASIC"));
+  cli_args.push_back(std::string("vault.un=test"));
+  cli_args.push_back(std::string("vault.pw=test"));
+  cli_args.push_back(std::string("consul=http://127.0.0.1:8500"));
+  cli_args.push_back(std::string("props=test/test.properties"));
+  AOSSL::TieredApplicationProfile startup_profile(cli_args, \
+    std::string("test3"), std::string("prof3"));
+  startup_profile.add_opt(akey, avalue);
+  startup_profile.add_opt(key1, val1);
+  startup_profile.add_opt(key2, val2);
+  startup_profile.add_opt(key3, val1);
+  startup_profile.add_opt(key4, val2);
+  startup_profile.add_secure_opt(secretKey);
+  startup_profile.load_config();
+  // Make sure all the correct keys are still present
+  assert(profile.opt_exist(secretKey));
+  assert(profile.opt_exist(akey));
+  assert(profile.opt_exist(key1));
+  assert(profile.opt_exist(key2));
+  assert(profile.opt_exist(key3));
+  assert(profile.opt_exist(key4));
+  // Compare the config values to make sure
+  // they're picked up in the correct order
+  AOSSL::StringBuffer stbuf;
+  profile.get_opt(secretKey, stbuf);
+  std::cout << stbuf.val << std::endl;
+  assert(stbuf.val == secretVal);
+  AOSSL::StringBuffer stbuf2;
+  profile.get_opt(key1, stbuf2);
+  std::cout << stbuf2.val << std::endl;
+  assert(stbuf2.val == val5);
+  AOSSL::StringBuffer stbuf3;
+  profile.get_opt(key2, stbuf3);
+  std::cout << stbuf3.val << std::endl;
+  assert(stbuf3.val == val6);
+  AOSSL::StringBuffer stbuf4;
+  profile.get_opt(akey, stbuf4);
+  std::cout << stbuf4.val << std::endl;
+  assert(stbuf4.val == avalue);
 }
