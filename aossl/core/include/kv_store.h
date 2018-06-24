@@ -25,6 +25,7 @@ THE SOFTWARE.
 #include <string>
 #include <unordered_map>
 #include <iostream>
+#include "Poco/RWLock.h"
 
 #include "buffers.h"
 #include "kv_store_interface.h"
@@ -40,12 +41,13 @@ namespace AOSSL {
 //! Interface which requires implementation
 class KeyValueStore: public KeyValueStoreInterface {
   std::unordered_map<std::string, std::string> opts;
-  
+  Poco::RWLock rw_mutex;
  public:
   KeyValueStore() {}
   virtual ~KeyValueStore() {}
   //! Does a key exist?
   inline bool opt_exist(std::string key) {
+    Poco::ScopedReadRWLock lock(rw_mutex);
     auto search = opts.find(key);
     if (search != opts.end()) {
       return true;
@@ -63,18 +65,25 @@ class KeyValueStore: public KeyValueStoreInterface {
 
   //! Get an option by key
   inline void get_opt(std::string key, StringBuffer& val) {
+    Poco::ScopedReadRWLock lock(rw_mutex);
     val.val.assign(opts[key]);
     val.success = true;
   }
 
-  std::unordered_map<std::string, std::string> get_opts() {return opts;}
+  inline std::unordered_map<std::string, std::string> get_opts() {
+    Poco::ScopedReadRWLock lock(rw_mutex);
+    return opts;
+  }
 
   //! Add an option
   void add_opt(const std::string& key, const std::string& value) \
-    {opts.emplace(key, value);}
+      {opts.emplace(key, value);}
 
   //! Set an option
-  void set_opt(std::string& key, std::string& value) {opts[key] = value;}
+  inline void set_opt(std::string& key, std::string& value) {
+    Poco::ScopedWriteRWLock lock(rw_mutex);
+    opts[key] = value;
+  }
 };
 
 }  // namespace AOSSL

@@ -10,7 +10,7 @@ export SLC = ar rcs
 export CFLAGS  = -g -Wall
 export STD = -std=c++11
 export POCO_LIBS = -lPocoNetSSL -lPocoCrypto -lPocoNet -lPocoUtil -lPocoFoundation
-export LIBS = -lssl -lcrypto -luuid $(POCO_LIBS)
+export LIBS = -lssl -lcrypto -luuid -lpthread $(POCO_LIBS)
 export RM = rm -f
 
 #Install Variables
