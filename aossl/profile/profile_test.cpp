@@ -22,15 +22,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#include <stdlib.h>
 #include <assert.h>
 #include <unistd.h>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <vector>
 
-#include "include/tiered_app_profile.h"
+#include "include/network_app_profile.h"
+#include "aossl/consul/include/factory_consul.h"
 
 int main(int argc, char** argv) {
+  AOSSL::ConsulComponentFactory consul_factory;
   // Strings
   std::string key1 = "kone";
   std::string key2 = "ktwo";
@@ -53,13 +57,13 @@ int main(int argc, char** argv) {
   std::string avalue = "1";
   std::vector<std::string> args;
   args.push_back(std::string("test=1"));
-  AOSSL::TieredApplicationProfile basic_profile(args, \
+  AOSSL::NetworkApplicationProfile basic_profile(args, \
     std::string("test2"), std::string("prof2"));
   basic_profile.add_opt(akey, avalue);
   basic_profile.load_config();
 
   // Basic Profile Tests
-  AOSSL::TieredApplicationProfile profile(argc, argv, \
+  AOSSL::NetworkApplicationProfile profile(argc, argv, \
       std::string("test"), std::string("prof"));
   profile.add_opt(key1, val1);
   profile.add_opt(key2, val2);
@@ -133,7 +137,7 @@ int main(int argc, char** argv) {
   cli_args.push_back(std::string("vault.pw=test"));
   cli_args.push_back(std::string("consul=http://127.0.0.1:8500"));
   cli_args.push_back(std::string("props=test/test.properties"));
-  AOSSL::TieredApplicationProfile startup_profile(cli_args, \
+  AOSSL::NetworkApplicationProfile startup_profile(cli_args, \
     std::string("test"), std::string("prof"));
   startup_profile.add_opt(akey, avalue);
   startup_profile.add_opt(key1, val1);
@@ -167,4 +171,23 @@ int main(int argc, char** argv) {
   startup_profile.get_opt(akey, stbuf4);
   std::cout << stbuf4.val << std::endl;
   assert(stbuf4.val == avalue);
+
+  // Service Discovery Tests
+  // Register a test service
+  AOSSL::ServiceInterface *s = \
+    consul_factory.get_service_interface("1", "TestService", "127.0.0.1", "5555");
+  s->add_tag("Testing");
+  startup_profile.get_consul()->register_service(*s);
+  usleep(2500000);
+  // Ask the Network Profile for an instance of the TestService
+  AOSSL::ServiceInterface *found_service = \
+      startup_profile.get_service(std::string("TestService"));
+  assert(found_service);
+  std::cout << "Found Service: " << found_service->to_json() << std::endl;
+  assert(s->get_id() == found_service->get_id());
+  assert(s->get_name() == found_service->get_name());
+  assert(s->get_address() == found_service->get_address());
+  assert(s->get_port() == found_service->get_port());
+  delete s;
+  delete found_service;
 }

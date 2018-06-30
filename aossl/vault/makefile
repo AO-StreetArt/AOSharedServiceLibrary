@@ -1,6 +1,6 @@
 # Makefile Variables
 CORE_INSTALL_DIR = $(INSTALL_DIR)/vault/include
-INCL = $(CORE_INSTALL_DIR)/vault_admin.h $(CORE_INSTALL_DIR)/factory_vault.h
+INCL = $(CORE_INSTALL_DIR)/vault_admin.h $(CORE_INSTALL_DIR)/factory_vault.h $(CORE_INSTALL_DIR)/vault_interface.h
 INCL_DIR = $(INSTALL_DIR)/vault
 INCL_DIRS = -I$(CURDIR)/../../
 
@@ -26,6 +26,9 @@ $(INSTALL_DIR)/vault:
 	mkdir $@/include
 
 $(CORE_INSTALL_DIR)/factory_vault.h: include/factory_vault.h
+	cp $< $@
+
+$(CORE_INSTALL_DIR)/vault_interface.h: include/vault_interface.h
 	cp $< $@
 
 $(CORE_INSTALL_DIR)/vault_admin.h: include/vault_admin.h

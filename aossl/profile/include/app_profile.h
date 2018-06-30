@@ -37,6 +37,9 @@ THE SOFTWARE.
 #include "aossl/consul/include/factory_consul.h"
 #include "aossl/uuid/include/factory_uuid.h"
 
+#include "aossl/vault/include/vault_interface.h"
+#include "aossl/vault/include/factory_vault.h"
+
 #ifndef AOSSL_PROFILE_INCLUDE_APP_PROFILE_H_
 #define AOSSL_PROFILE_INCLUDE_APP_PROFILE_H_
 
@@ -51,6 +54,8 @@ class ApplicationProfile {
   PropertyReaderFactory props_factory;
   ConsulComponentFactory consul_factory;
   UuidComponentFactory uuid_factory;
+  VaultComponentFactory vault_factory;
+  VaultInterface *vault = nullptr;
   KeyValueStoreInterface *cli = NULL;
   KeyValueStoreInterface *cfile = NULL;
   ConsulInterface *consul = NULL;
@@ -64,6 +69,7 @@ class ApplicationProfile {
     cli = cli_factory.get_command_line_interface(argc, argv);
     uuid = uuid_factory.get_uuid_interface();
   }
+
   //! Create a new Application Session with Command Line Arguments
   ApplicationProfile(int argc, char* argv[], std::string app_name, \
       std::string prof_name) {
@@ -72,11 +78,13 @@ class ApplicationProfile {
     application_name.assign(app_name);
     profile_name.assign(prof_name);
   }
+
   //! Create a new Application Session with Command Line Arguments
   explicit ApplicationProfile(const std::vector<std::string>& args) {
     cli = cli_factory.get_command_line_interface(args);
     uuid = uuid_factory.get_uuid_interface();
   }
+
   //! Create a new Application Session with Command Line Arguments
   ApplicationProfile(const std::vector<std::string>& args, \
     std::string app_name, std::string prof_name) {
@@ -85,6 +93,7 @@ class ApplicationProfile {
     application_name.assign(app_name);
     profile_name.assign(prof_name);
   }
+  
   //! Create a new Application Session without any Command Line Arguments
   ApplicationProfile(std::string app_name, std::string prof_name) {
     uuid = uuid_factory.get_uuid_interface();
@@ -107,6 +116,7 @@ class ApplicationProfile {
     }
     cfile = props_factory.get_properties_reader_interface(filename);
   }
+
   //! Set the address of the consul agent
   inline void set_consul_address(std::string caddr) {
     if (consul) {
@@ -115,6 +125,7 @@ class ApplicationProfile {
     }
     consul = consul_factory.get_consul_interface(caddr);
   }
+
   //! Set the address of the consul agent
   inline void set_consul_address(std::string caddr, int tout, std::string ssl_cert) {
     if (consul) {
@@ -123,6 +134,7 @@ class ApplicationProfile {
     }
     consul = consul_factory.get_consul_interface(caddr, tout, ssl_cert);
   }
+
   //! Set the address of the consul agent
   inline void set_consul_address(std::string caddr, int tout, std::string ssl_cert, std::string acl_token) {
     if (consul) {
@@ -131,20 +143,51 @@ class ApplicationProfile {
     }
     consul = consul_factory.get_consul_interface(caddr, tout, ssl_cert, acl_token);
   }
+
+  //! Update the Vault connectivity information
+  inline void set_vault_address(std::string& vaddr, std::string& secrets_path, \
+      int tout, std::string& cert, int auth_type, std::string& un, std::string& pw) {
+    if (vault) {
+      delete vault;
+      vault = nullptr;
+    }
+    vault = vault_factory.get_vault_interface(vaddr, secrets_path, 5, cert, auth_type, un, pw);
+  }
+
+  //! Update the Vault connectivity information
+  inline void set_vault_address(std::string& vaddr, std::string& secrets_path, \
+      int tout, int auth_type, std::string& un, std::string& pw) {
+    if (vault) {
+      delete vault;
+      vault = nullptr;
+    }
+    vault = vault_factory.get_vault_interface(vaddr, secrets_path, 5, auth_type, un, pw);
+  }
+
   //! Get the Command Line Interface
   KeyValueStoreInterface* get_cli() {return cli;}
+
   //! Get the Properties File Reader
   KeyValueStoreInterface* get_props() {return cfile;}
+
   //! Get the Consul Interface
   ConsulInterface* get_consul() {return consul;}
+
+  //! Get the Vault Interface
+  VaultInterface* get_vault() {return vault;}
+
   //! Get the UUID Interface
   UuidInterface* get_uuid() {return uuid;}
+
   //! Get the Application Name
   std::string get_app_name() {return application_name;}
+
   //! Get the Profile Name
   std::string get_profile_name() {return profile_name;}
+
   //! Get the Application Name
   void set_app_name(std::string name) {application_name.assign(name);}
+
   //! Get the Profile Name
   void set_profile_name(std::string prof) {profile_name.assign(prof);}
 };
