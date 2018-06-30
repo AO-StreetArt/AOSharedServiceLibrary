@@ -466,7 +466,9 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   //! Load the configuration from the various sources
   inline void load_config() {
     // Update the configuration for the properties file reader
-    ApplicationProfile::get_props()->load_config();
+    if (ApplicationProfile::get_props()) {
+      ApplicationProfile::get_props()->load_config();
+    }
     // Iterate over the default values and pull
     // values from available sources with the same key
     for (std::pair<std::string, std::string> element : \
