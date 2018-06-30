@@ -137,8 +137,9 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
                 rapidjson::Value::ConstMemberIterator id_itr = \
                     itr.value.FindMember("ID");
                 return_service->set_address(address_itr->value.GetString());
-                return_service->set_port(port_itr->value.GetString());
+                return_service->set_port(std::to_string(port_itr->value.GetInt()));
                 return_service->set_id(id_itr->value.GetString());
+                return_service->set_name(service_identifier);
               }
               if (discovery_lvl == DISCOVERY_LEVEL_PRIMARY) {
                 service_found = true;
