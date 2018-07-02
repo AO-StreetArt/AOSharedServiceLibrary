@@ -9,3 +9,5 @@ export VAULT_ADDR='http://127.0.0.1:8200'
 ./vault policy write admins ci/conf/vault/vault_admin_policy.hcl
 ./vault kv put secret/testKey testKey=testValue
 ./vault kv get secret/testKey
+./vault kv put secret/TESTKEY TESTKEY=testValue
+./vault kv get secret/TESTKEY
