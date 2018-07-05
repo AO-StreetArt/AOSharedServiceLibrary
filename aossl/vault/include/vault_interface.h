@@ -42,6 +42,9 @@ class VaultInterface: public KeyValueStoreInterface {
   //! Generate an SSL Certificate
   virtual void gen_ssl_cert(std::string& role_name, std::string& common_name, \
       SslCertificateBuffer& cert_buf) = 0;
+  //! Generate a Consul ACL Token
+  virtual void gen_consul_token(std::string& role_name, \
+      StringBuffer& token_buf) = 0;
 };
 
 }  // namespace AOSSL

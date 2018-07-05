@@ -261,6 +261,30 @@ class VaultAdmin : public VaultInterface {
     }
   }
 
+  inline void gen_consul_token(std::string& role_name, StringBuffer& token_buf) {
+    if (!is_authenticated) {
+      // Authenticate
+      authenticate(authentication_type, username, password);
+    }
+    std::string request_path = std::string("/v1/consul/creds/") + role_name;
+    StringBuffer http_response;
+    get_by_reference(request_path, http_response);
+    if (!(http_response.success)) {
+      token_buf.success = false;
+      token_buf.err_msg.assign(http_response.err_msg);
+    }
+    // Parse out the returned Vault Auth Token and stuff it in the ret_buffer
+    rapidjson::Document d;
+    d.Parse<rapidjson::kParseStopWhenDoneFlag>(http_response.val.c_str());
+    if (d.HasParseError()) {
+      token_buf.success = false;
+      token_buf.err_msg.assign(GetParseError_En(d.GetParseError()));
+    } else if (d.IsObject()) {
+      const rapidjson::Value& token_val = d["data"]["token"];
+      token_buf.val.assign(token_val.GetString());
+    }
+  }
+
   //! Re-load configuration
   inline void load_config() {}
 };
