@@ -63,6 +63,7 @@ namespace AOSSL {
 class TieredApplicationProfile: public SafeApplicationProfile{
   std::string props_file_name;
   std::string cluster_name;
+  std::string configuration_key_start;
   std::vector<std::string> secure_opt_keys;
   std::vector<std::string> config_record;
   inline bool exists_test(const std::string& name) {
@@ -73,12 +74,13 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   // Load a value from a KV Store
   inline void load_config_value(KeyValueStoreInterface *kv, std::string& key) {
     if (kv) {
-      if (kv->opt_exist(key)) {
+      std::string config_key = configuration_key_start + key;
+      if (kv->opt_exist(config_key)) {
         AOSSL::StringBuffer buf;
-        kv->get_opt(key, buf);
-        KeyValueStore::set_opt(key, buf.val);
+        kv->get_opt(config_key, buf);
+        KeyValueStore::set_opt(config_key, buf.val);
         config_record.push_back(std::string("Retrieved Record: ") + buf.val \
-            + std::string(" for key: ") + key);
+            + std::string(" for key: ") + config_key);
       }
     }
   }
@@ -114,8 +116,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   inline void load_vault_secret(KeyValueStoreInterface *kv, std::string& key) {
     if (kv) {
       StringBuffer buf;
-      std::string vault_key;
-      vault_key.assign(key);
+      std::string vault_key = configuration_key_start + key;
       // Convert to all caps
       std::transform(vault_key.begin(), vault_key.end(), vault_key.begin(), toupper);
       // Convert '.' to '_'
@@ -132,8 +133,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     if (kv) {
       if (key.empty()) return;
       // Copy the key before modifying in-place
-      std::string env_key;
-      env_key.assign(key);
+      std::string env_key = configuration_key_start + key;
       // Convert to all caps
       std::transform(env_key.begin(), env_key.end(), env_key.begin(), toupper);
       // Convert '.' to '_'
@@ -188,8 +188,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   // Load a value from an environment variable
   inline void load_environment_variable(std::string& key) {
     // Copy the key before modifying in-place
-    std::string env_key;
-    env_key.assign(key);
+    std::string env_key = configuration_key_start + key;
     // Convert to all caps
     std::transform(env_key.begin(), env_key.end(), env_key.begin(), toupper);
     // Convert '.' to '_'
@@ -208,11 +207,11 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       bool auth_details_included, std::string& un, std::string& pw) {
     if (kv) {
       // Check the commandline arguments for Vault Information
-      std::string vault_addr_key = "vault";
-      std::string vault_cert_key = "vault.cert";
-      std::string vault_atype_key = "vault.authtype";
-      std::string vault_un_key = "vault.un";
-      std::string vault_pw_key = "vault.pw";
+      std::string vault_addr_key = configuration_key_start + "vault";
+      std::string vault_cert_key = configuration_key_start + "vault.cert";
+      std::string vault_atype_key = configuration_key_start + "vault.authtype";
+      std::string vault_un_key = configuration_key_start + "vault.un";
+      std::string vault_pw_key = configuration_key_start + "vault.pw";
       std::string secrets_path("/v1/secret/data/");
       int auth_type = BASIC_AUTH_TYPE;
       StringBuffer vault_addr_buf;
@@ -263,9 +262,9 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       StringBuffer& vconsul_cert_buf, StringBuffer& vconsul_token_buf) {
     if (kv) {
       // Check the commandline arguments for Consul Information
-      std::string consul_add_key = "consul";
-      std::string consul_cert_key = "consul.cert";
-      std::string consul_token_key = "consul.token";
+      std::string consul_add_key = configuration_key_start + "consul";
+      std::string consul_cert_key = configuration_key_start + "consul.cert";
+      std::string consul_token_key = configuration_key_start + "consul.token";
       StringBuffer consul_addr_buf;
       StringBuffer consul_cert_buf;
       StringBuffer consul_token_buf;
@@ -306,12 +305,35 @@ class TieredApplicationProfile: public SafeApplicationProfile{
 
   // Initialize the Profile
   inline void init() {
+    // See if we have a profile name provided
+    if (ApplicationProfile::get_cli()) {
+      if (ApplicationProfile::get_cli()->opt_exist(std::string("profile"))) {
+        StringBuffer profile_name_buf;
+        ApplicationProfile::get_cli()->get_opt(std::string("profile"), profile_name_buf);
+        ApplicationProfile::set_profile_name(profile_name_buf.val);
+      }
+    }
+
+    // What should the start of our config strings be?
+    std::string config_key_start;
+    if (!(ApplicationProfile::get_app_name().empty())) {
+      config_key_start += ApplicationProfile::get_app_name();
+      config_key_start += std::string(".");
+    }
+    if (!(ApplicationProfile::get_profile_name().empty())) {
+      config_key_start += ApplicationProfile::get_profile_name();
+      config_key_start += std::string(".");
+    }
+    configuration_key_start.assign(config_key_start);
+    std::string env_config_key_start(config_key_start);
+    std::transform(env_config_key_start.begin(), env_config_key_start.end(), \
+        env_config_key_start.begin(), toupper);
+    std::replace(env_config_key_start.begin(), env_config_key_start.end(), '.', '_');
     // Start by looking for properties files, as values for other configs can
     // be stored in the props files.
 
     // Check Env Variables for a Properties File
-    std::string props_env_key("AOSSL_PROPS_FILE");
-    std::transform(props_env_key.begin(), props_env_key.end(), props_env_key.begin(), toupper);
+    std::string props_env_key = env_config_key_start + std::string("PROPS_FILE");
     const char *env_props_value = std::getenv(props_env_key.c_str());
     if (env_props_value) {
       std::string props_file_str(env_props_value);
@@ -321,10 +343,11 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     }
 
     // Check the commandline arguments for a properties file
+    std::string props_key = config_key_start + std::string("props");
     if (ApplicationProfile::get_cli()) {
-      if (ApplicationProfile::get_cli()->opt_exist(std::string("props"))) {
+      if (ApplicationProfile::get_cli()->opt_exist(props_key)) {
         StringBuffer props_buf;
-        ApplicationProfile::get_cli()->get_opt(std::string("props"), props_buf);
+        ApplicationProfile::get_cli()->get_opt(props_key, props_buf);
         ApplicationProfile::set_property_file(props_buf.val);
         config_record.push_back(std::string("Setting Properties File: ") \
             + props_buf.val);
@@ -367,11 +390,16 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     }
 
     // Check environment variables for vault information
-    const char *env_vault_addr = std::getenv("AOSSL_VAULT_ADDRESS");
-    const char *env_vault_cert = std::getenv("AOSSL_VAULT_SSL_CERT");
-    const char *env_vault_authtype = std::getenv("AOSSL_VAULT_AUTH_TYPE");
-    const char *env_vault_authun = std::getenv("AOSSL_VAULT_AUTH_UN");
-    const char *env_vault_authpw = std::getenv("AOSSL_VAULT_AUTH_PW");
+    std::string env_vault_addr_key = env_config_key_start + std::string("VAULT_ADDRESS");
+    std::string env_vault_cert_key = env_config_key_start + std::string("VAULT_SSL_CERT");
+    std::string env_vault_authtype_key = env_config_key_start + std::string("VAULT_AUTH_TYPE");
+    std::string env_vault_authun_key = env_config_key_start + std::string("VAULT_AUTH_UN");
+    std::string env_vault_authpw_key = env_config_key_start + std::string("VAULT_AUTH_PW");
+    const char *env_vault_addr = std::getenv(env_vault_addr_key.c_str());
+    const char *env_vault_cert = std::getenv(env_vault_cert_key.c_str());
+    const char *env_vault_authtype = std::getenv(env_vault_authtype_key.c_str());
+    const char *env_vault_authun = std::getenv(env_vault_authun_key.c_str());
+    const char *env_vault_authpw = std::getenv(env_vault_authpw_key.c_str());
     std::string un;
     std::string pw;
     if (env_vault_addr && env_vault_cert && env_vault_authtype) {
@@ -422,8 +450,10 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     // Next, we'll check for any Consul information
 
     // Start by checking Vault for any SSL Certs or ACL Tokens.
-    std::string consul_cert_vault_key = ApplicationProfile::get_app_name() + std::string("AOSSL_CONSUL_SSL_CERT");
-    std::string consul_token_vault_key = ApplicationProfile::get_app_name() + std::string("AOSSL_CONSUL_ACL_TOKEN");
+    std::string consul_cert_vault_key = env_config_key_start \
+        + std::string("CONSUL_SSL_CERT");
+    std::string consul_token_vault_key = env_config_key_start \
+        + std::string("CONSUL_ACL_TOKEN");
     StringBuffer consul_cert_buf;
     StringBuffer consul_token_buf;
     if (ApplicationProfile::get_vault()) {
@@ -432,13 +462,45 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       get_vault_secret(ApplicationProfile::get_vault(), consul_token_vault_key, consul_token_buf);
     }
 
+    // See if we've been instructed to generate the Consul ACL token
+    // from the Vault Consul Secrets Engine, rather than the KV Store
+    bool generate_consul_token = false;
+    StringBuffer gen_consul_token_buf;
+    if (ApplicationProfile::get_cli()) {
+      std::string gen_consul_token_key = config_key_start + "consul.token.role";
+      if (ApplicationProfile::get_cli()->opt_exist(gen_consul_token_key)) {
+        generate_consul_token = true;
+        ApplicationProfile::get_cli()->get_opt(gen_consul_token_key, gen_consul_token_buf);
+      }
+    }
+
+    std::string env_get_consul_token_key = env_config_key_start \
+        + std::string("CONSUL_TOKEN_ROLE");
+    const char *env_gen_consul_token = std::getenv(env_get_consul_token_key.c_str());
+    if (env_gen_consul_token) {
+      gen_consul_token_buf.val.assign(env_gen_consul_token);
+      gen_consul_token_buf.success = true;
+      generate_consul_token = true;
+    }
+
+    if (generate_consul_token && gen_consul_token_buf.success) {
+      ApplicationProfile::get_vault()->gen_consul_token(gen_consul_token_buf.val, \
+          consul_token_buf);
+    }
+
     // Check the Properties file for the Consul args
     load_consul_info(ApplicationProfile::get_props(), consul_cert_buf, consul_token_buf);
 
     // Check Env Variables for Consul Information
-    const char *env_consul_value = std::getenv("AOSSL_CONSUL_ADDRESS");
-    const char *env_consul_cert_value = std::getenv("AOSSL_CONSUL_SSL_CERT");
-    const char *env_consul_token_value = std::getenv("AOSSL_CONSUL_ACL_TOKEN");
+    std::string env_consul_value_key = env_config_key_start \
+        + std::string("CONSUL_ADDRESS");
+    std::string env_consul_cert_key = env_config_key_start \
+        + std::string("CONSUL_SSL_CERT");
+    std::string env_consul_token_key = env_config_key_start \
+        + std::string("CONSUL_ACL_TOKEN");
+    const char *env_consul_value = std::getenv(env_consul_value_key.c_str());
+    const char *env_consul_cert_value = std::getenv(env_consul_cert_key.c_str());
+    const char *env_consul_token_value = std::getenv(env_consul_token_key.c_str());
     if (env_consul_value && env_consul_cert_value && env_consul_token_value) {
       std::string consul_addr_str(env_consul_value);
       std::string consul_cert_str(env_consul_cert_value);
@@ -474,23 +536,25 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     load_consul_info(ApplicationProfile::get_cli(), consul_cert_buf, consul_token_buf);
 
     // Check for a provided Cluster Name
+    std::string cluster_key = config_key_start + std::string("cluster");
+    std::string env_cluster_key = env_config_key_start + std::string("CLUSTER");
     if (ApplicationProfile::get_props()) {
-      if (ApplicationProfile::get_props()->opt_exist(std::string("cluster"))) {
+      if (ApplicationProfile::get_props()->opt_exist(cluster_key)) {
         StringBuffer cluster_name_buf;
-        ApplicationProfile::get_props()->get_opt(std::string("cluster"), cluster_name_buf);
+        ApplicationProfile::get_props()->get_opt(cluster_key, cluster_name_buf);
         cluster_name.assign(cluster_name_buf.val);
         config_record.push_back(std::string("Setting Cluster Name: ") + cluster_name);
       }
     }
     if (ApplicationProfile::get_cli()) {
-      if (ApplicationProfile::get_cli()->opt_exist(std::string("cluster"))) {
+      if (ApplicationProfile::get_cli()->opt_exist(cluster_key)) {
         StringBuffer cluster_name_buf;
-        ApplicationProfile::get_cli()->get_opt(std::string("cluster"), cluster_name_buf);
+        ApplicationProfile::get_cli()->get_opt(cluster_key, cluster_name_buf);
         cluster_name.assign(cluster_name_buf.val);
         config_record.push_back(std::string("Setting Cluster Name: ") + cluster_name);
       }
     }
-    const char *env_cluster_name = std::getenv("AOSSL_CLUSTER_NAME");
+    const char *env_cluster_name = std::getenv(env_cluster_key.c_str());
     if (env_cluster_name) {
       cluster_name.assign(env_cluster_name);
       config_record.push_back(std::string("Setting Cluster Name: ") + cluster_name);
@@ -552,7 +616,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   //! 2. Properties File values
   //! 3. Vault Secret Values
   inline void add_secure_opt(std::string& key) {
-    secure_opt_keys.push_back(key);
+    std::string final_key = configuration_key_start + key;
+    secure_opt_keys.push_back(final_key);
   }
 
   //! Get the Cluster Name
@@ -563,6 +628,24 @@ class TieredApplicationProfile: public SafeApplicationProfile{
 
   //! Get the latest Configuration Record
   std::vector<std::string> get_config_record() {return config_record;}
+
+  //! Get an option by key
+  inline void get_opt(std::string key, StringBuffer& val) {
+    std::string final_key = configuration_key_start + key;
+    KeyValueStore::get_opt(final_key, val);
+  }
+
+  //! Add an option
+  inline void add_opt(const std::string& key, const std::string& val) {
+    std::string final_key = configuration_key_start + key;
+    KeyValueStore::add_opt(final_key, val);
+  }
+
+  //! Set an option
+  inline void set_opt(std::string& key, std::string& val) {
+    std::string final_key = configuration_key_start + key;
+    KeyValueStore::set_opt(final_key, val);
+  }
 };
 
 }  // namespace AOSSL
