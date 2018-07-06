@@ -646,6 +646,12 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     std::string final_key = configuration_key_start + key;
     KeyValueStore::set_opt(final_key, val);
   }
+
+  //! Does an option exist?
+  inline bool opt_exist(std::string& key) {
+    std::string final_key = configuration_key_start + key;
+    return KeyValueStore::opt_exist(final_key);
+  }
 };
 
 }  // namespace AOSSL
