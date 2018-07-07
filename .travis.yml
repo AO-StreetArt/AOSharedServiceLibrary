@@ -51,7 +51,7 @@ before_install:
   - sleep 5
   - ./scripts/vault_test_setup.sh
   - sleep 1
-  - cd $TRAVIS_BUILD_DIR/scripts && ./profile_test_setup.sh
+  - ./scripts/profile_test_setup.sh
 install:
   - cd $TRAVIS_BUILD_DIR && make CC=$CXX && make tests CC=$CXX && make benchmarks CC=$CXX && sudo make install
 script:
