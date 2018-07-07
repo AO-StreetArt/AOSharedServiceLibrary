@@ -38,11 +38,14 @@ namespace AOSSL {
 
 //! A struct to hold health check information which can be added to a service
 struct HealthCheck {
-  //! The script to run for the health check
-  std::string script;
+  //! The HTTP URL to hit with a GET request for the healthcheck
+  std::string url;
 
   //! The interval for the health check
   std::string interval;
+
+  //! The TTL for the health check
+  std::string ttl;
 };
 
 // -------------------------------Service-------------------------------------//
@@ -97,6 +100,8 @@ class ServiceInterface {
   virtual HealthCheck get_check() = 0;
   //! Add a check
   virtual void set_check(std::string scr, int interval_seconds) = 0;
+  //! Add a check
+  virtual void set_check(std::string scr, int interv_seconds, int interv_ttl) = 0;
 };
 
 // ----------------------------Consul Admin-----------------------------------//

@@ -46,22 +46,22 @@ class Service: public ServiceInterface {
 
  public:
   //! Construct a Service
-  Service() : id(""), name(""), address(""), port("") {check.script = "";}
+  Service() : id(""), name(""), address(""), port("") {check.url = "";check.ttl = "";}
 
   //! Construct a Service
   Service(std::string new_id, std::string new_name) : id(new_id), \
-    name(new_name), address(""), port("") {check.script = "";}
+    name(new_name), address(""), port("") {check.url = "";check.ttl = "";}
 
   //! Construct a Service
   Service(std::string new_id, std::string new_name, std::string new_address, \
      std::string new_port) : id(new_id), name(new_name), address(new_address), \
-      port(new_port) {check.script = "";}
+      port(new_port) {check.url = "";check.ttl = "";}
 
   //! Construct a Service
   Service(std::string new_id, std::string new_name, std::string new_address, \
      std::string new_port, std::vector<std::string> new_tags) : id(new_id), \
       name(new_name), address(new_address), port(new_port) \
-        {tags = new_tags;check.script = "";}
+        {tags = new_tags;check.url = "";check.ttl = "";}
 
   //! Convert the Service into a JSON Message
 
@@ -105,9 +105,16 @@ class Service: public ServiceInterface {
   //! Get the health checks
   HealthCheck get_check() {return check;}
   //! Add a check
-  inline void set_check(std::string scr, int interval_seconds) {
-    check.script = scr;
+  inline void set_check(std::string http_url, int interval_seconds) {
+    check.url = http_url;
     check.interval = std::to_string(interval_seconds) + "s";
+    check.ttl = std::to_string(interval_seconds + 5) + "s";
+  }
+  //! Add a check
+  inline void set_check(std::string http_url, int interv_seconds, int interv_ttl) {
+    check.url = http_url;
+    check.interval = std::to_string(interv_seconds) + "s";
+    check.ttl = std::to_string(interv_ttl) + "s";
   }
 };
 

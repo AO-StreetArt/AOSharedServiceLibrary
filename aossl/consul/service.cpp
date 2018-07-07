@@ -54,9 +54,10 @@ std::string AOSSL::Service::to_json() const {
   ", \"" + port_key + "\": " + port;
 
   // Add the Health Check
-  if (!check.script.empty()) {
-    json_str = json_str + ", \"check\": {\"script\": \"" + check.script \
-    + "\", \"interval\": \"" + check.interval + "\"}";
+  if (!check.url.empty()) {
+    json_str = json_str + ", \"Check\": {\"HTTP\": \"" + check.url \
+        + "\", \"Interval\": \"" + check.interval + "\", \"TTL\": \"" \
+        + check.ttl + "\"}";
   }
 
   json_str = json_str + "}";
