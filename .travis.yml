@@ -49,7 +49,7 @@ before_install:
   - unzip vault_0.10.3_linux_amd64.zip
   - "./vault server -dev &"
   - sleep 5
-  - cd $TRAVIS_BUILD_DIR/scripts && ./vault_test_setup.sh
+  - ./scripts/vault_test_setup.sh
   - sleep 1
   - cd $TRAVIS_BUILD_DIR/scripts && ./profile_test_setup.sh
 install:
