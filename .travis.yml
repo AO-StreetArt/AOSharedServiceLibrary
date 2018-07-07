@@ -49,11 +49,12 @@ before_install:
   - unzip vault_0.10.3_linux_amd64.zip
   - "./vault server -dev &"
   - sleep 5
-  - ./scripts/vault_test_setup.sh
+  - cd $TRAVIS_BUILD_DIR/scripts && ./vault_test_setup.sh
+  - sleep 1
+  - cd $TRAVIS_BUILD_DIR/scripts && ./profile_test_setup.sh
 install:
   - cd $TRAVIS_BUILD_DIR && make CC=$CXX && make tests CC=$CXX && make benchmarks CC=$CXX && sudo make install
 script:
-  - cd $TRAVIS_BUILD_DIR/scripts && ./profile_test_setup.sh
   - cd $TRAVIS_BUILD_DIR/aossl/profile && ./profile_test
   - cd $TRAVIS_BUILD_DIR/aossl/properties && ./properties_reader_test
   - cd $TRAVIS_BUILD_DIR/aossl/commandline && ./cli_test name=test
