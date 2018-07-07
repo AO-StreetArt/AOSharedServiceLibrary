@@ -74,13 +74,12 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   // Load a value from a KV Store
   inline void load_config_value(KeyValueStoreInterface *kv, std::string& key) {
     if (kv) {
-      std::string config_key = configuration_key_start + key;
-      if (kv->opt_exist(config_key)) {
+      if (kv->opt_exist(key)) {
         AOSSL::StringBuffer buf;
-        kv->get_opt(config_key, buf);
-        KeyValueStore::set_opt(config_key, buf.val);
+        kv->get_opt(key, buf);
+        KeyValueStore::set_opt(key, buf.val);
         config_record.push_back(std::string("Retrieved Record: ") + buf.val \
-            + std::string(" for key: ") + config_key);
+            + std::string(" for key: ") + key);
       }
     }
   }
@@ -116,7 +115,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   inline void load_vault_secret(KeyValueStoreInterface *kv, std::string& key) {
     if (kv) {
       StringBuffer buf;
-      std::string vault_key = configuration_key_start + key;
+      std::string vault_key = key;
       // Convert to all caps
       std::transform(vault_key.begin(), vault_key.end(), vault_key.begin(), toupper);
       // Convert '.' to '_'
@@ -133,7 +132,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     if (kv) {
       if (key.empty()) return;
       // Copy the key before modifying in-place
-      std::string env_key = configuration_key_start + key;
+      std::string env_key = key;
       // Convert to all caps
       std::transform(env_key.begin(), env_key.end(), env_key.begin(), toupper);
       // Convert '.' to '_'
@@ -188,7 +187,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   // Load a value from an environment variable
   inline void load_environment_variable(std::string& key) {
     // Copy the key before modifying in-place
-    std::string env_key = configuration_key_start + key;
+    std::string env_key = key;
     // Convert to all caps
     std::transform(env_key.begin(), env_key.end(), env_key.begin(), toupper);
     // Convert '.' to '_'
@@ -324,6 +323,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       config_key_start += ApplicationProfile::get_profile_name();
       config_key_start += std::string(".");
     }
+    config_record.push_back(config_key_start);
     configuration_key_start.assign(config_key_start);
     std::string env_config_key_start(config_key_start);
     std::transform(env_config_key_start.begin(), env_config_key_start.end(), \
@@ -581,6 +581,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   inline void load_config() {
     config_record.clear();
     config_record.push_back(std::string("Loading Configuration"));
+    config_record.push_back(configuration_key_start);
     // Update the configuration for the properties file reader
     if (ApplicationProfile::get_props()) {
       ApplicationProfile::get_props()->load_config();
@@ -589,6 +590,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     // values from available sources with the same key
     for (std::pair<std::string, std::string> element : \
         KeyValueStore::get_opts()) {
+      config_record.push_back(std::string("Loading Records for Key: ") \
+          + element.first);
       // Load Properties File values, if present
       load_config_value(ApplicationProfile::get_props(), element.first);
       // Load Consul Values, if present

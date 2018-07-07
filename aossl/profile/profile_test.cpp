@@ -65,6 +65,11 @@ int main(int argc, char** argv) {
   // Basic Profile Tests
   AOSSL::NetworkApplicationProfile profile(argc, argv, \
       std::string("test"), std::string("prof"));
+  std::vector<std::string> startup_log = profile.get_config_record();
+  std::cout << "Startup Log" << std::endl;
+  for (auto& elt : startup_log) {
+    std::cout << elt << std::endl;
+  }
   profile.add_opt(key1, val1);
   profile.add_opt(key2, val2);
   profile.add_opt(key3, val1);
@@ -87,6 +92,11 @@ int main(int argc, char** argv) {
   std::string props_file_name = "test/test.properties";
   profile.set_property_file(props_file_name);
   profile.load_config();
+  std::vector<std::string> config_log = profile.get_config_record();
+  std::cout << "Config Log" << std::endl;
+  for (auto& elt : config_log) {
+    std::cout << elt << std::endl;
+  }
   AOSSL::StringBuffer buf3;
   profile.get_opt(key1, buf3);
   std::cout << buf3.val << std::endl;
