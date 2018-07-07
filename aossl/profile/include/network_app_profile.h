@@ -26,6 +26,7 @@ THE SOFTWARE.
 #include <unordered_map>
 #include <iostream>
 #include <vector>
+#include <atomic>
 
 #include "aossl/consul/include/consul_interface.h"
 #include "aossl/consul/include/factory_consul.h"
@@ -42,6 +43,7 @@ namespace AOSSL {
 //! Methods are added for finding particular services.
 class NetworkApplicationProfile: public TieredApplicationProfile {
   ConsulComponentFactory consul_factory;
+  std::atomic<int> last_returned_index{-1};
   static const int DISCOVERY_LEVEL_UNTAGGED = 0;
   static const int DISCOVERY_LEVEL_SECONDARY = 1;
   static const int DISCOVERY_LEVEL_PRIMARY = 2;
@@ -78,55 +80,20 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
     } else if (doc.IsObject()) {
       // We now have a parsed JSON Object which contains
       // a list of known services to our local Consul Agent
-      // We need to pull a service instance out of this.  We have 3 levels:
-      //  1. A Service with the tag 'Primary'
-      //  2. A Service with the tag 'Secondary'
-      //  3. Any Neo4j Service
-      // the last_discovery_lvl and discovery_lvl let us try to
-      // find all 3 layers in one iteration of the loop.  We also
-      // break out of the loop as soon as a primary node is found.
       bool service_found = false;
-      int last_discovery_lvl = -1;
-      int discovery_lvl = -1;
-      for (auto& itr : doc.GetObject()) {
-        std::vector<std::string> current_obj_tags;
-        if (service_found) break;
-        rapidjson::Value::ConstMemberIterator service_itr = \
-            itr.value.FindMember("Service");
-        if (service_itr != itr.value.MemberEnd()) {
-          if (!(service_itr->value.IsNull())) {
-            std::string service_name(service_itr->value.GetString());
-            if (service_name == service_identifier) {
-              //
-              if (discovery_lvl < DISCOVERY_LEVEL_UNTAGGED) {
-                discovery_lvl = DISCOVERY_LEVEL_UNTAGGED;
-              }
-              // We have identified a Neo4j node
-              rapidjson::Value::ConstMemberIterator tags_itr = \
-                  itr.value.FindMember("Tags");
-              if (tags_itr != itr.value.MemberEnd()) {
-                if (!(tags_itr->value.IsNull()) && tags_itr->value.IsArray()) {
-                  for (auto& tag_array_itr : tags_itr->value.GetArray()) {
-                    if (service_found) break;
-                    std::string tag(tag_array_itr.GetString());
-                    current_obj_tags.push_back(tag);
-                    // First, we should look for a primary node
-                    if (tag == "Primary") {
-                      last_discovery_lvl = discovery_lvl;
-                      discovery_lvl = DISCOVERY_LEVEL_PRIMARY;
-                    // Second, we should fallback to a secondary node
-                    } else if (tag == "Secondary") {
-                      if (discovery_lvl < DISCOVERY_LEVEL_SECONDARY) {
-                        last_discovery_lvl = discovery_lvl;
-                        discovery_lvl = DISCOVERY_LEVEL_SECONDARY;
-                      }
-                    }
-                  }
-                }
-              }
-              if (discovery_lvl > last_discovery_lvl) {
-                // Start by clearing out the return scene
-                return_service->clear_tags();
+      while (!service_found) {
+        int discovery_index = 0;
+        for (auto& itr : doc.GetObject()) {
+          std::vector<std::string> current_obj_tags;
+          rapidjson::Value::ConstMemberIterator service_itr = \
+              itr.value.FindMember("Service");
+          if (service_itr != itr.value.MemberEnd()) {
+            if (!(service_itr->value.IsNull())) {
+              std::string service_name(service_itr->value.GetString());
+              if ((service_name == service_identifier) \
+                  && (discovery_index > last_returned_index)) {
+                last_returned_index = discovery_index;
+                service_found = true;
                 for (auto& tag : current_obj_tags) {
                   return_service->add_tag(tag);
                 }
@@ -141,12 +108,11 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
                 return_service->set_id(id_itr->value.GetString());
                 return_service->set_name(service_identifier);
               }
-              if (discovery_lvl == DISCOVERY_LEVEL_PRIMARY) {
-                service_found = true;
-              }
             }
           }
+          discovery_index++;
         }
+        if (!service_found) last_returned_index = -1;
       }
     }
     if (services_buf) delete services_buf;
