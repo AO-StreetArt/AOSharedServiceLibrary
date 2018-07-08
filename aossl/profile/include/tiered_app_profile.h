@@ -100,8 +100,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
         if (d.IsObject()) {
           const rapidjson::Value& token_val = d["data"]["data"][key.c_str()];
           data.assign(token_val.GetString());
-          config_record.push_back(std::string("Retrieved Record: ") + data \
-              + std::string(" for key: ") + key + std::string(" from Vault"));
+          config_record.push_back(std::string("Retrieved Record for key: ") \
+              + key + std::string(" from Vault"));
         }
         return_buf.val.assign(data);
       }
@@ -649,7 +649,9 @@ class TieredApplicationProfile: public SafeApplicationProfile{
   //! 3. Vault Secret Values
   inline void add_secure_opt(std::string& key) {
     std::string final_key = configuration_key_start + key;
+    std::string blank_val;
     secure_opt_keys.push_back(final_key);
+    KeyValueStore::add_opt(final_key, blank_val);
   }
 
   //! Get the Cluster Name
