@@ -246,6 +246,7 @@ class VaultAdmin : public VaultInterface {
       cert_buf.success = false;
       cert_buf.err_msg.assign(GetParseError_En(d.GetParseError()));
     } else if (d.IsObject()) {
+      cert_buf.success = true;
       const rapidjson::Value& cert_val = d["data"]["certificate"];
       cert_buf.certificate.assign(cert_val.GetString());
       const rapidjson::Value& issuing_ca_val = d["data"]["issuing_ca"];
@@ -282,6 +283,7 @@ class VaultAdmin : public VaultInterface {
     } else if (d.IsObject()) {
       const rapidjson::Value& token_val = d["data"]["token"];
       token_buf.val.assign(token_val.GetString());
+      token_buf.success = true;
     }
   }
 

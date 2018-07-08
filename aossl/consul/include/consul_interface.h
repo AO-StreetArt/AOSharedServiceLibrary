@@ -211,6 +211,9 @@ class ConsulInterface: public KeyValueStoreInterface  {
   */
   virtual AOSSL::StringBuffer* \
     services_node(std::string node, std::string data_center) = 0;
+
+  //! Add an ACL Token to the Consul Admin
+  virtual void add_acl_token(std::string& token) = 0;
 };
 
 }  // namespace AOSSL

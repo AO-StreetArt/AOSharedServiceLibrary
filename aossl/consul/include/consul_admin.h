@@ -152,6 +152,11 @@ class ConsulAdmin: public ConsulInterface {
   AOSSL::StringBuffer* \
     services_node(std::string node, std::string data_center);
 
+  inline void add_acl_token(std::string& token) {
+    acl_token.assign(token);
+    acl_active=true;
+  }
+
   // Implementations of KeyValueStore interface
   //! Does a key exist?
   inline bool opt_exist(std::string key) {

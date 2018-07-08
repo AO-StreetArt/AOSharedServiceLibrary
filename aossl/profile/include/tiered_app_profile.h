@@ -267,6 +267,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       StringBuffer consul_addr_buf;
       StringBuffer consul_cert_buf;
       StringBuffer consul_token_buf;
+      // We have a pre-existing cert and token, and have been given an address
       if (kv->opt_exist(consul_add_key) && vconsul_cert_buf.success && \
           vconsul_token_buf.success) {
         kv->get_opt(consul_add_key, consul_addr_buf);
@@ -274,6 +275,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
             + consul_addr_buf.val);
         ApplicationProfile::set_consul_address(consul_addr_buf.val, 5, \
             vconsul_cert_buf.val, vconsul_token_buf.val);
+      // We have been given an address, cert, and token
       } else if (kv->opt_exist(consul_add_key) && \
           kv->opt_exist(consul_cert_key) && \
           kv->opt_exist(consul_token_key)) {
@@ -284,15 +286,37 @@ class TieredApplicationProfile: public SafeApplicationProfile{
             + consul_addr_buf.val);
         ApplicationProfile::set_consul_address(consul_addr_buf.val, 5, \
             consul_cert_buf.val, consul_token_buf.val);
+      // We have been given an address and a cert
       } else if (kv->opt_exist(consul_add_key) && \
-          kv->opt_exist(consul_cert_key) && \
-          kv->opt_exist(consul_token_key)) {
+          (kv->opt_exist(consul_cert_key) || vconsul_cert_buf.success)) {
         kv->get_opt(consul_add_key, consul_addr_buf);
-        kv->get_opt(consul_cert_key, consul_cert_buf);
-        config_record.push_back(std::string("Setting Consul Information: ") \
+        if (vconsul_cert_buf.success) {
+          consul_cert_buf.val = vconsul_cert_buf.val;
+          consul_cert_buf.success = true;
+        } else {
+          kv->get_opt(consul_cert_key, consul_cert_buf);
+        }
+        config_record.push_back(std::string("Secure Consul Connection: ") \
             + consul_addr_buf.val);
         ApplicationProfile::set_consul_address(consul_addr_buf.val, 5, \
             consul_cert_buf.val);
+      // We have been given an address and a token
+      } else if (kv->opt_exist(consul_add_key) && \
+          (kv->opt_exist(consul_token_key) || vconsul_token_buf.success)) {
+        kv->get_opt(consul_add_key, consul_addr_buf);
+        if (vconsul_token_buf.success) {
+          consul_token_buf.val = vconsul_token_buf.val;
+          consul_token_buf.success = true;
+        } else {
+          kv->get_opt(consul_token_key, consul_token_buf);
+        }
+        config_record.push_back(std::string("Authenticated Consul Connection: ") \
+            + consul_addr_buf.val);
+        ApplicationProfile::set_consul_address(consul_addr_buf.val);
+        config_record.push_back(std::string("Adding ACL Token: ") \
+            + consul_addr_buf.val);
+        ApplicationProfile::get_consul()->add_acl_token(consul_token_buf.val);
+      // We've been given an address
       } else if (kv->opt_exist(consul_add_key)) {
         kv->get_opt(consul_add_key, consul_addr_buf);
         config_record.push_back(std::string("Setting Consul Information: ") \
@@ -484,8 +508,13 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     }
 
     if (generate_consul_token && gen_consul_token_buf.success) {
+      config_record.push_back("Generating Consul ACL Token");
       ApplicationProfile::get_vault()->gen_consul_token(gen_consul_token_buf.val, \
           consul_token_buf);
+      if (!(consul_token_buf.success)) {
+        config_record.push_back(std::string("Failed to generate Consul ACL Token: ") \
+            + consul_token_buf.err_msg);
+      }
     }
 
     // Check the Properties file for the Consul args
