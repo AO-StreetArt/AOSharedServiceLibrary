@@ -76,7 +76,7 @@ class KeyValueStore: public KeyValueStoreInterface {
   }
 
   //! Add an option
-  void add_opt(const std::string& key, const std::string& value) \
+  void add_opt(const std::string& key, std::string value) \
       {opts.emplace(key, value);}
 
   //! Set an option

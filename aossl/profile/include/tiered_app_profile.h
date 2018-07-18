@@ -275,15 +275,24 @@ class TieredApplicationProfile: public SafeApplicationProfile{
             + consul_addr_buf.val);
         ApplicationProfile::set_consul_address(consul_addr_buf.val, 5, \
             vconsul_cert_buf.val, vconsul_token_buf.val);
-      // We have been given an address, cert, and token
+      // We have been given an address, cert, and a pre-existing token
+      } else if (kv->opt_exist(consul_add_key) && kv->opt_exist(consul_cert_key) && \
+          vconsul_token_buf.success) {
+        kv->get_opt(consul_add_key, consul_addr_buf);
+        kv->get_opt(consul_cert_key, consul_cert_buf);
+        config_record.push_back(std::string("Setting Consul Information: ") \
+            + consul_addr_buf.val);
+        ApplicationProfile::set_consul_address(consul_addr_buf.val, 5, \
+            consul_cert_buf.val, vconsul_token_buf.val);
+      // We have been given an address, cert, and a token
       } else if (kv->opt_exist(consul_add_key) && \
           kv->opt_exist(consul_cert_key) && \
           kv->opt_exist(consul_token_key)) {
+        config_record.push_back(std::string("Setting Consul Information: ") \
+            + consul_addr_buf.val);
         kv->get_opt(consul_add_key, consul_addr_buf);
         kv->get_opt(consul_cert_key, consul_cert_buf);
         kv->get_opt(consul_token_key, consul_token_buf);
-        config_record.push_back(std::string("Setting Consul Information: ") \
-            + consul_addr_buf.val);
         ApplicationProfile::set_consul_address(consul_addr_buf.val, 5, \
             consul_cert_buf.val, consul_token_buf.val);
       // We have been given an address and a cert
@@ -508,7 +517,7 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     }
 
     if (generate_consul_token && gen_consul_token_buf.success) {
-      config_record.push_back("Generating Consul ACL Token");
+      config_record.push_back("Generating Consul ACL Token with role: " + gen_consul_token_buf.val);
       ApplicationProfile::get_vault()->gen_consul_token(gen_consul_token_buf.val, \
           consul_token_buf);
       if (!(consul_token_buf.success)) {
@@ -639,6 +648,8 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       load_vault_secret(ApplicationProfile::get_vault(), secure_opt);
       // Load environment variables, if present
       load_environment_variable(secure_opt);
+      // Load Commandline Values, if present
+      load_config_value(ApplicationProfile::get_cli(), secure_opt);
     }
   }
 

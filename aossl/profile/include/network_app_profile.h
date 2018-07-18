@@ -81,7 +81,13 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
       // We now have a parsed JSON Object which contains
       // a list of known services to our local Consul Agent
       bool service_found = false;
+      int total_attempts = 0;
       while (!service_found) {
+        total_attempts++;
+        if (total_attempts > 2) {
+          if (services_buf) delete services_buf;
+          throw std::invalid_argument("Unable to find a Service Instance");
+        }
         int discovery_index = 0;
         for (auto& itr : doc.GetObject()) {
           std::vector<std::string> current_obj_tags;

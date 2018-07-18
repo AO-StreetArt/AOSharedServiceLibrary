@@ -32,12 +32,39 @@ THE SOFTWARE.
 #include "include/consul_interface.h"
 #include "aossl/core/include/buffers.h"
 
-int main() {
+int main(int argc, char** argv) {
   AOSSL::ConsulComponentFactory consul_factory;
+  std::cout << argc << std::endl;
+
+  std::string consul_addr;
+  std::string consul_cert;
+  std::string consul_token;
+  if (argc > 3) {
+    consul_token.assign(argv[3]);
+  }
+  if (argc > 2) {
+    consul_cert.assign(argv[2]);
+    if (consul_cert == "nocert") {
+      consul_cert.assign("");
+    }
+  }
+  if (argc > 1) {
+    consul_addr.assign(argv[1]);
+  }
+  if (argc == 0) {
+    consul_addr.assign("http://127.0.0.1:8500");
+  }
 
   // Construction tests
-  AOSSL::ConsulInterface *ca = \
-    consul_factory.get_consul_interface("http://127.0.0.1:8500");
+  AOSSL::ConsulInterface *ca = NULL;
+  if (argc > 3) {
+    ca = consul_factory.get_consul_interface(consul_addr, \
+        5, consul_cert, consul_token);
+  } else if (argc > 2) {
+    ca = consul_factory.get_consul_interface(consul_addr, 5, consul_cert);
+  } else {
+    ca = consul_factory.get_consul_interface(consul_addr);
+  }
 
   AOSSL::ServiceInterface *s0 = \
     consul_factory.get_service_interface("0", "CLyman", "tcp://*", "5555");
@@ -80,20 +107,20 @@ int main() {
   AOSSL::StringBuffer *buf1 = ca->datacenters();
   AOSSL::StringBuffer *buf2 = ca->nodes_dc(empty);
   AOSSL::StringBuffer *buf3 = ca->nodes_service(clyman);
-  AOSSL::StringBuffer *buf4 = ca->services_node(empty, empty);
+  // AOSSL::StringBuffer *buf4 = ca->services_node(empty, empty);
   AOSSL::StringBuffer *buf5 = ca->get_opt("Test");
 
   std::cout << buf1->val << std::endl;
   std::cout << buf2->val << std::endl;
   std::cout << buf3->val << std::endl;
-  std::cout << buf4->val << std::endl;
+  // std::cout << buf4->val << std::endl;
   std::cout << buf5->val << std::endl;
   std::cout << buf0->val << std::endl;
 
   assert(buf1->success);
   assert(buf2->success);
   assert(buf3->success);
-  assert(buf4->success);
+  // assert(buf4->success);
   assert(buf5->success);
   assert(buf0->success);
 
@@ -101,7 +128,7 @@ int main() {
   delete buf1;
   delete buf2;
   delete buf3;
-  delete buf4;
+  // delete buf4;
   delete buf5;
 
   // Cleanup tests

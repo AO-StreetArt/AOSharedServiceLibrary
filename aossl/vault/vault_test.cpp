@@ -28,21 +28,43 @@ THE SOFTWARE.
 #include <assert.h>
 #include <string>
 #include <iostream>
-#include "include/vault_admin.h"
+#include "include/vault_interface.h"
+#include "include/factory_vault.h"
 #include "aossl/core/include/buffers.h"
 
-int main() {
+int main(int argc, char** argv) {
+  std::cout << argc << std::endl;
+
+  std::string vault_address;
+  std::string vault_cert;
+  if (argc > 2) {
+    vault_cert.assign(argv[2]);
+    if (vault_cert == "nocert") {
+      vault_cert.assign("");
+    }
+  }
+  if (argc > 1) {
+    vault_address.assign(argv[1]);
+  }
+  if (argc == 0) {
+    vault_address.assign("http://127.0.0.1:8200");
+  }
+
   // Build the Vault admin
-  std::string vault_address = "http://127.0.0.1:8200";
   std::string secrets_url = "/v1/secret/data/";
   std::string secret_key = "testKey";
   std::string un = "test";
   std::string pw = "test";
-  AOSSL::VaultAdmin vault(vault_address, secrets_url, 5, AOSSL::BASIC_AUTH_TYPE, un, pw);
+  AOSSL::VaultInterface *vault = NULL;
+  if (argc > 2) {
+    vault = new AOSSL::VaultAdmin(vault_address, secrets_url, 5, vault_cert, AOSSL::BASIC_AUTH_TYPE, un, pw);
+  } else {
+    vault = new AOSSL::VaultAdmin(vault_address, secrets_url, 5, AOSSL::BASIC_AUTH_TYPE, un, pw);
+  }
   // Get the test buffer
   std::cout << "Sending Request" << std::endl;
   AOSSL::StringBuffer buf;
-  vault.get_opt(secret_key, buf);
+  vault->get_opt(secret_key, buf);
   if (!(buf.success)) {
     std::cout << "Error Retrieving secret: " << buf.err_msg << std::endl;
     assert(false);
@@ -53,6 +75,7 @@ int main() {
   rapidjson::Document d;
   d.Parse<rapidjson::kParseStopWhenDoneFlag>(buf.val.c_str());
   if (d.HasParseError()) {
+    delete vault;
     assert(false);
   }
   if (d.IsObject()) {
@@ -61,6 +84,8 @@ int main() {
     std::cout << data << std::endl;
     assert(data == std::string("testValue"));
   } else {
+    delete vault;
     assert(false);
   }
+  delete vault;
 }

@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include <vector>
 #include <iostream>
 
+#include "aossl/core/include/base_http_client.h"
 #include "aossl/core/include/buffers.h"
 
 #include "Poco/StreamCopier.h"
@@ -54,49 +55,38 @@ namespace AOSSL {
 // order to register.  It's responses are JSON strings that are recieved
 // from Consul.  Note that the values returned from the Key-Value store
 // will be stored in base64 format
-class ConsulAdmin: public ConsulInterface {
-  std::string consul_addr;
-  std::string base64_return_string = "";
-  std::string return_string = "";
-  std::string query_return_string = "";
-  int timeout;
-  bool secured = false;
-  bool acl_active = false;
-  std::string cert_location;
-  std::string acl_token;
-  AOSSL::StringBuffer* secure_query_safe(std::string query_url);
-  AOSSL::StringBuffer* query_safe(std::string query_url);
-  void query_by_reference(std::string query_url, StringBuffer& ret_buffer, bool is_get);
-  void query_by_reference(std::string query_url, StringBuffer& ret_buffer) {query_by_reference(query_url, ret_buffer, true);}
-  void secure_query(std::string query_url, StringBuffer& ret_buffer) {secure_query(query_url, ret_buffer, true);}
-  void secure_query(std::string query_url, StringBuffer& ret_buffer, bool is_get);
-  void put_by_reference(std::string query_url, std::string body, StringBuffer& ret_buffer);
-  void secure_put(std::string query_url, std::string body, StringBuffer& ret_buffer);
+class ConsulAdmin: public BaseHttpClient, public ConsulInterface {
   inline static bool is_base64(unsigned char c) {
     return (isalnum(c) || (c == '+') || (c == '/'));
   }
-  void init(std::string& caddr, int tout);
-  void init(std::string& caddr, int tout, std::string& cert);
  public:
+  // Base64 decoding function for accessing KV Store values
   void base64_decode_by_reference(std::string const& encoded_string, StringBuffer& ret_buffer);
   StringBuffer* base64_decode_safe(std::string const& encoded_string);
 
+  // Add an ACL Token to the Consul Admin
+  inline void add_acl_token(std::string& token) {
+    BaseHttpClient::set_acl_token(std::string("X-Consul-Token"), token);
+  }
+
   // Construct a consul admin, passing in the connection string
-  ConsulAdmin(std::string& caddr) {init(caddr, 5);}
+  ConsulAdmin(std::string& caddr) : BaseHttpClient(caddr, 5) {}
 
   // Construct a consul admin, passing in the connection string and timeout
-  ConsulAdmin(std::string& caddr, int tout) {init(caddr, tout);}
+  ConsulAdmin(std::string& caddr, int tout) : BaseHttpClient(caddr, tout) {}
 
   // Construct a consul admin, passing in the connection string and ssl cert
-  ConsulAdmin(std::string& caddr, std::string& cert) {init(caddr, 5, cert);}
+  ConsulAdmin(std::string& caddr, std::string& cert) : \
+      BaseHttpClient(caddr, 5, cert) {}
 
   // Construct a consul admin, passing in the connection string, timeout, and ssl cert
-  ConsulAdmin(std::string& caddr, int tout, std::string& cert) {init(caddr, tout, cert);}
+  ConsulAdmin(std::string& caddr, int tout, std::string& cert) : \
+      BaseHttpClient(caddr, tout, cert) {}
 
   // Construct a consul admin, passing in the connection string, timeout,
   // ssl cert, and consul acl token
-  ConsulAdmin(std::string& caddr, int tout, std::string& cert, std::string& token) \
-      {init(caddr, tout, cert);acl_token.assign(token);acl_active=true;}
+  ConsulAdmin(std::string& caddr, int tout, std::string& cert, std::string& token) : \
+      BaseHttpClient(caddr, tout, cert) {add_acl_token(token);}
 
   // Delete a consul admin
   ~ConsulAdmin() {}
@@ -126,72 +116,56 @@ class ConsulAdmin: public ConsulInterface {
   // Local Agent Queries
 
   // Query the local agent for services registered
-  AOSSL::StringBuffer* services();
+  StringBuffer* services();
 
   // Query the local agent for it's info
-  AOSSL::StringBuffer* agent_info();
+  StringBuffer* agent_info();
 
   // Query for healthy services only
-  AOSSL::StringBuffer* healthy_services();
+  StringBuffer* healthy_services();
 
   // Catalog Queries
 
   // Query the catalog for datacenters
-  AOSSL::StringBuffer* datacenters();
+  StringBuffer* datacenters();
 
   // Query the catalog for the nodes in a particular datacenter
-  AOSSL::StringBuffer* nodes_dc(std::string data_center);
+  StringBuffer* nodes_dc(std::string data_center);
 
   // Query the catalog for the services in a particular datacenter
-  AOSSL::StringBuffer* services_dc(std::string data_center);
+  StringBuffer* services_dc(std::string data_center);
 
   // Query the catalog for the nodes running a particular service
-  AOSSL::StringBuffer* nodes_service(std::string service);
+  StringBuffer* nodes_service(std::string service);
 
   // Query the catalog for the services provided by a particular node
-  AOSSL::StringBuffer* \
+  StringBuffer* \
     services_node(std::string node, std::string data_center);
-
-  inline void add_acl_token(std::string& token) {
-    acl_token.assign(token);
-    acl_active=true;
-  }
 
   // Implementations of KeyValueStore interface
   //! Does a key exist?
   inline bool opt_exist(std::string key) {
     std::string url = "/v1/kv/";
     url = url.append(key);
-    StringBuffer *buf = query_safe(url);
-    bool ret_val = false;
-    if (buf->success) {
-      ret_val = true;
-    }
-    delete buf;
-    return ret_val;
+    StringBuffer buf;
+    BaseHttpClient::get_by_reference(url, buf);
+    return buf.success;
   }
 
   //! Get an option by key
-
-  //! Decode the Base64 String
-  //! prior to returning
   inline StringBuffer* get_opt(std::string key) {
     std::string url = "/v1/kv/";
     url = url.append(key);
-    StringBuffer *buf = query_safe(url);
-    //base64_decode_by_reference(buf->val, *buf);
+    StringBuffer *buf = new StringBuffer;
+    BaseHttpClient::get_by_reference(url, *buf);
     return buf;
   }
 
   //! Get an option by key
-
-  //! Decode the Base64 String
-  //! prior to returning
   inline void get_opt(std::string key, StringBuffer& val) {
     std::string url = "/v1/kv/";
     url = url.append(key);
-    query_by_reference(url, val);
-    //base64_decode_by_reference(val.val, val);
+    BaseHttpClient::get_by_reference(url, val);
   }
 
   // Empty as getting any key always gets the most up-to-date
