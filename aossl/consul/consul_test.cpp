@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
   if (argc > 1) {
     consul_addr.assign(argv[1]);
   }
-  if (argc == 0) {
+  if (argc == 1) {
     consul_addr.assign("http://127.0.0.1:8500");
   }
 

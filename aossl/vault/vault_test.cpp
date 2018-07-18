@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
   if (argc > 1) {
     vault_address.assign(argv[1]);
   }
-  if (argc == 0) {
+  if (argc == 1) {
     vault_address.assign("http://127.0.0.1:8200");
   }
 
