@@ -90,7 +90,6 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     kv->get_opt(key, buf);
     if (buf.success && !(buf.val.empty())) {
       // Parse out the data and compare it
-      std::string data;
       rapidjson::Document d;
       d.Parse<rapidjson::kParseStopWhenDoneFlag>(buf.val.c_str());
       if (d.HasParseError()) {
@@ -99,11 +98,10 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       } else {
         if (d.IsObject()) {
           const rapidjson::Value& token_val = d["data"]["data"][key.c_str()];
-          data.assign(token_val.GetString());
+          return_buf.val.assign(token_val.GetString());
           config_record.push_back(std::string("Retrieved Record for key: ") \
               + key + std::string(" from Vault"));
         }
-        return_buf.val.assign(data);
       }
     } else {
       return_buf.success = false;
@@ -123,6 +121,9 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       get_vault_secret(kv, vault_key, buf);
       if (buf.success) {
         KeyValueStore::set_opt(key, buf.val);
+      } else {
+        config_record.push_back(std::string("Failed to retrieve Vault Secret: ") \
+            + buf.err_msg);
       }
     }
   }
@@ -641,15 +642,9 @@ class TieredApplicationProfile: public SafeApplicationProfile{
       load_config_value(ApplicationProfile::get_cli(), element.first);
     }
     // Get secure opts
-    for (std::string secure_opt : secure_opt_keys) {
-      // Load Properties File values, if present
-      load_config_value(ApplicationProfile::get_props(), secure_opt);
+    for (auto& secure_opt : secure_opt_keys) {
       // Load Vault Secret, if present
       load_vault_secret(ApplicationProfile::get_vault(), secure_opt);
-      // Load environment variables, if present
-      load_environment_variable(secure_opt);
-      // Load Commandline Values, if present
-      load_config_value(ApplicationProfile::get_cli(), secure_opt);
     }
   }
 

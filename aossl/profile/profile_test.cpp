@@ -140,13 +140,13 @@ int main(int argc, char** argv) {
 
   // Initialization logic tests
   std::vector<std::string> cli_args;
-  cli_args.push_back(std::string("test=1"));
-  cli_args.push_back(std::string("vault=http://127.0.0.1:8200"));
-  cli_args.push_back(std::string("vault.authtype=BASIC"));
-  cli_args.push_back(std::string("vault.un=test"));
-  cli_args.push_back(std::string("vault.pw=test"));
-  cli_args.push_back(std::string("consul=http://127.0.0.1:8500"));
-  cli_args.push_back(std::string("props=test/test.properties"));
+  cli_args.push_back(std::string("test.prof.test=1"));
+  cli_args.push_back(std::string("test.prof.vault=http://127.0.0.1:8200"));
+  cli_args.push_back(std::string("test.prof.vault.authtype=BASIC"));
+  cli_args.push_back(std::string("test.prof.vault.un=test"));
+  cli_args.push_back(std::string("test.prof.vault.pw=test"));
+  cli_args.push_back(std::string("test.prof.consul=http://127.0.0.1:8500"));
+  cli_args.push_back(std::string("test.prof.props=test/test.properties"));
   AOSSL::NetworkApplicationProfile startup_profile(cli_args, \
     std::string("test"), std::string("prof"));
   startup_profile.add_opt(akey, avalue);
@@ -155,11 +155,12 @@ int main(int argc, char** argv) {
   startup_profile.add_opt(key3, val1);
   startup_profile.add_opt(key4, val2);
   startup_profile.add_secure_opt(secretKey);
-  startup_profile.load_config();
+  std::vector<std::string> init_test_log = startup_profile.get_config_record();
   std::cout << "Startup Log" << std::endl;
-  for (auto& elt : startup_log) {
+  for (auto& elt : init_test_log) {
     std::cout << elt << std::endl;
   }
+  startup_profile.load_config();
   // Make sure all the correct keys are still present
   assert(startup_profile.opt_exist(secretKey));
   assert(startup_profile.opt_exist(akey));
