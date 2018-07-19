@@ -156,6 +156,10 @@ int main(int argc, char** argv) {
   startup_profile.add_opt(key4, val2);
   startup_profile.add_secure_opt(secretKey);
   startup_profile.load_config();
+  std::cout << "Startup Log" << std::endl;
+  for (auto& elt : startup_log) {
+    std::cout << elt << std::endl;
+  }
   // Make sure all the correct keys are still present
   assert(startup_profile.opt_exist(secretKey));
   assert(startup_profile.opt_exist(akey));
