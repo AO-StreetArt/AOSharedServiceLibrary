@@ -170,18 +170,33 @@ class VaultAdmin : public BaseHttpClient, public VaultInterface {
         cert_buf.err_msg.assign(GetParseError_En(d.GetParseError()));
       } else if (d.IsObject()) {
         cert_buf.success = true;
-        const rapidjson::Value& cert_val = d["data"]["certificate"];
-        cert_buf.certificate.assign(cert_val.GetString());
-        const rapidjson::Value& issuing_ca_val = d["data"]["issuing_ca"];
-        cert_buf.issuing_ca.assign(issuing_ca_val.GetString());
-        const rapidjson::Value& ca_chain_val = d["data"]["ca_chain"];
-        cert_buf.ca_chain.assign(ca_chain_val.GetString());
-        const rapidjson::Value& private_key_val = d["data"]["private_key"];
-        cert_buf.private_key.assign(private_key_val.GetString());
-        const rapidjson::Value& private_key_type_val = d["data"]["private_key_type"];
-        cert_buf.private_key_type.assign(private_key_type_val.GetString());
-        const rapidjson::Value& serial_number_val = d["data"]["serial_number"];
-        cert_buf.serial_number.assign(serial_number_val.GetString());
+        if (d.HasMember("data")) {
+          const rapidjson::Value& data_val = d["data"];
+          if (data_val.HasMember("certificate")) {
+            const rapidjson::Value& cert_val = d["data"]["certificate"];
+            cert_buf.certificate.assign(cert_val.GetString());
+          }
+          if (data_val.HasMember("issuing_ca")) {
+            const rapidjson::Value& issuing_ca_val = d["data"]["issuing_ca"];
+            cert_buf.issuing_ca.assign(issuing_ca_val.GetString());
+          }
+          if (data_val.HasMember("ca_chain")) {
+            const rapidjson::Value& ca_chain_val = d["data"]["ca_chain"];
+            cert_buf.ca_chain.assign(ca_chain_val.GetString());
+          }
+          if (data_val.HasMember("private_key")) {
+            const rapidjson::Value& private_key_val = d["data"]["private_key"];
+            cert_buf.private_key.assign(private_key_val.GetString());
+          }
+          if (data_val.HasMember("private_key_type")) {
+            const rapidjson::Value& private_key_type_val = d["data"]["private_key_type"];
+            cert_buf.private_key_type.assign(private_key_type_val.GetString());
+          }
+          if (data_val.HasMember("serial_number")) {
+            const rapidjson::Value& serial_number_val = d["data"]["serial_number"];
+            cert_buf.serial_number.assign(serial_number_val.GetString());
+          }
+        }
       }
     }
   }
