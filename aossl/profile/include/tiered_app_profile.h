@@ -389,7 +389,9 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     }
 
     // Check for default property files
-    props_file_name = "/etc/ivan/app.properties";
+    props_file_name = "/etc/";
+    props_file_name += ApplicationProfile::get_app_name();
+    props_file_name += "/app.properties";
     if ((!(ApplicationProfile::get_props())) && exists_test(props_file_name)) {
       ApplicationProfile::set_property_file(props_file_name);
       config_record.push_back(std::string("Setting Properties File: ") \
