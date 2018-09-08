@@ -3,6 +3,10 @@ set -e
 #This script will attempt to build AOSSL dependencies
 
 #Based on CentOS 7
+INSTALL_OPT="-none"
+if [ "$#" -eq 1 ]; then
+  INSTALL_OPT=$1
+fi
 
 printf "Creating Dependency Folder"
 PRE=./downloads
@@ -22,11 +26,13 @@ yum -y install build-essential libtool autoconf automake cmake make git wget gcc
 yum repolist
 
 #Build POCO
-printf "Installing Poco\n"
-wget https://pocoproject.org/releases/poco-1.9.0/poco-1.9.0-all.tar.gz
-tar -xvzf poco-1.9.0-all.tar.gz
-cd poco-1.9.0-all && ./configure --omit=Data/ODBC,Data/MySQL && make -s && make -s install
-cd ../
+if [ "$INSTALL_OPT" != "-no-poco" ]; then
+  printf "Installing Poco\n"
+  wget https://pocoproject.org/releases/poco-1.9.0/poco-1.9.0-all.tar.gz
+  tar -xvzf poco-1.9.0-all.tar.gz
+  cd poco-1.9.0-all && ./configure --omit=Data/ODBC,Data/MySQL && make -s && make -s install
+  cd ../
+fi
 
 printf "Installing Rapidjson"
 git clone https://github.com/miloyip/rapidjson.git
