@@ -491,7 +491,9 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     std::string consul_token_vault_key = env_config_key_start \
         + std::string("CONSUL_ACL_TOKEN");
     StringBuffer consul_cert_buf;
+    consul_cert_buf.success = false;
     StringBuffer consul_token_buf;
+    consul_token_buf.success = false;
     if (ApplicationProfile::get_vault()) {
       config_record.push_back(std::string("Checking Vault for Consul Security info"));
       get_vault_secret(ApplicationProfile::get_vault(), consul_cert_vault_key, consul_cert_buf);

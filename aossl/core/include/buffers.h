@@ -32,7 +32,7 @@ namespace AOSSL {
 //! A base buffer
 struct Buffer {
   //! Success flag
-  bool success = false;
+  bool success;
 
   //! Error Message
   std::string err_msg;
