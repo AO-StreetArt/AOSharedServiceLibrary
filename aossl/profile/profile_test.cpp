@@ -219,12 +219,8 @@ int main(int argc, char** argv) {
   // Ask the Network Profile for an instance of a TestService that doesn't exist
   bool error_finding = false;
   AOSSL::ServiceInterface *found_service2 = nullptr;
-  try {
-    found_service2 = startup_profile.get_service(std::string("TestService-1"));
-  } catch (std::exception& e) {
-    error_finding = true;
-  }
-  assert(error_finding);
+  found_service2 = startup_profile.get_service(std::string("TestService-1"));
+  assert(!(found_service2));
   delete s;
   delete found_service;
   if (found_service2) delete found_service2;
