@@ -55,68 +55,69 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
       // We now have a parsed JSON Object which contains
       // a list of known services to our local Consul Agent
       bool service_found = false;
-      int total_attempts = 0;
-      while (!service_found) {
-        total_attempts++;
-        if (total_attempts > 2) {
-          return_service = nullptr;
+      int discovery_index = 0;
+
+      // Iterate over the objects in the document
+      for (auto& itr : doc.GetObject()) {
+
+        // If we found a service and it's next up in the round robin,
+        // then break out of the loop and return it
+        if (service_found && discovery_index > last_returned_index) {
+          last_returned_index = discovery_index - 1;
           break;
         }
-        int discovery_index = 0;
 
-        // Iterate over the objects in the document
-        for (auto& itr : doc.GetObject()) {
-          std::vector<std::string> current_obj_tags;
+        std::vector<std::string> current_obj_tags;
 
-          // Is the service name equal to our target?
-          rapidjson::Value::ConstMemberIterator service_itr = \
-              itr.value.FindMember("Service");
-          if (service_itr != itr.value.MemberEnd()) {
-            if (!(service_itr->value.IsNull())) {
-              std::string service_name(service_itr->value.GetString());
-              if ((service_name == service_identifier) \
-                  && (discovery_index > last_returned_index)) {
+        // Is the service name equal to our target?
+        rapidjson::Value::ConstMemberIterator service_itr = \
+            itr.value.FindMember("Service");
+        if (service_itr != itr.value.MemberEnd()) {
+          if (!(service_itr->value.IsNull())) {
+            std::string service_name(service_itr->value.GetString());
+            if ((service_name == service_identifier)) {
 
-                // Determine if the matched service has the necessary tags
-                rapidjson::Value::ConstMemberIterator tag_itr = \
-                    itr.value.FindMember("Tags");
-                bool metadata_matches = false;
-                if (tag_itr != itr.value.MemberEnd()) {
-                  if (tag_itr->value.IsArray()) {
-                    for (auto& tagv : tag_itr->value.GetArray()) {
-                      if (tagv.IsString()) {
-                        if (tagv.GetString() == metadata_key + std::string("=") + metadata_value) {
-                          metadata_matches = true;
-                        }
+              // Determine if the matched service has the necessary tags
+              rapidjson::Value::ConstMemberIterator tag_itr = \
+                  itr.value.FindMember("Tags");
+              bool metadata_matches = false;
+              if (tag_itr != itr.value.MemberEnd()) {
+                if (tag_itr->value.IsArray()) {
+                  for (auto& tagv : tag_itr->value.GetArray()) {
+                    if (tagv.IsString()) {
+                      if (tagv.GetString() == metadata_key + std::string("=") + metadata_value) {
+                        metadata_matches = true;
                       }
                     }
                   }
                 }
+              }
 
-                // Set the return service information
-                if (!filter_metadata || metadata_matches) {
-                  last_returned_index = discovery_index;
-                  service_found = true;
-                  for (auto& tag : current_obj_tags) {
-                    return_service->add_tag(tag);
-                  }
-                  rapidjson::Value::ConstMemberIterator address_itr = \
-                      itr.value.FindMember("Address");
-                  rapidjson::Value::ConstMemberIterator port_itr = \
-                      itr.value.FindMember("Port");
-                  rapidjson::Value::ConstMemberIterator id_itr = \
-                      itr.value.FindMember("ID");
-                  return_service->set_address(address_itr->value.GetString());
-                  return_service->set_port(std::to_string(port_itr->value.GetInt()));
-                  return_service->set_id(id_itr->value.GetString());
-                  return_service->set_name(service_identifier);
+              // Set the return service information
+              if (!filter_metadata || metadata_matches) {
+                service_found = true;
+                for (auto& tag : current_obj_tags) {
+                  return_service->add_tag(tag);
                 }
+                rapidjson::Value::ConstMemberIterator address_itr = \
+                    itr.value.FindMember("Address");
+                rapidjson::Value::ConstMemberIterator port_itr = \
+                    itr.value.FindMember("Port");
+                rapidjson::Value::ConstMemberIterator id_itr = \
+                    itr.value.FindMember("ID");
+                return_service->set_address(address_itr->value.GetString());
+                return_service->set_port(std::to_string(port_itr->value.GetInt()));
+                return_service->set_id(id_itr->value.GetString());
+                return_service->set_name(service_identifier);
               }
             }
           }
-          discovery_index++;
         }
-        if (!service_found) last_returned_index = -1;
+        discovery_index++;
+      }
+      if (!service_found) {
+        if (return_service) delete return_service;
+        return_service = nullptr;
       }
     }
   }
@@ -150,12 +151,13 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
     rapidjson::Document doc;
     doc.Parse<rapidjson::kParseStopWhenDoneFlag>(services_buf->val.c_str());
     if (doc.HasParseError()) {
-      if (services_buf) delete services_buf;
+      delete return_service;
+      delete services_buf;
       throw std::invalid_argument(GetParseError_En(doc.GetParseError()));
     } else {
       find_service_in_doc(return_service, doc, service_identifier, metadata_key, metadata_value, true);
     }
-    if (services_buf) delete services_buf;
+    delete services_buf;
     return return_service;
   }
 
@@ -168,12 +170,13 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
     rapidjson::Document doc;
     doc.Parse<rapidjson::kParseStopWhenDoneFlag>(services_buf->val.c_str());
     if (doc.HasParseError()) {
-      if (services_buf) delete services_buf;
+      delete return_service;
+      delete services_buf;
       throw std::invalid_argument(GetParseError_En(doc.GetParseError()));
     } else {
       find_service_in_doc(return_service, doc, service_identifier, std::string(""), std::string(""), false);
     }
-    if (services_buf) delete services_buf;
+    delete services_buf;
     return return_service;
   }
 };
