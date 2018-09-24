@@ -191,9 +191,21 @@ int main(int argc, char** argv) {
   // Register a test service
   AOSSL::ServiceInterface *s = \
     consul_factory.get_service_interface("TestService", "TestService", "127.0.0.1", "5555");
-  s->add_tag("Testing");
+  s->add_tag("cluster=test");
   startup_profile.get_consul()->register_service(*s);
   usleep(2500000);
+
+  // Ask the Network Profile for an instance of the TestService
+  AOSSL::ServiceInterface *meta_service = \
+      startup_profile.get_service_by_metadata(std::string("TestService"), \
+      std::string("cluster"), std::string("test"));
+  assert(meta_service);
+  std::cout << "Found Service: " << meta_service->to_json() << std::endl;
+  assert(s->get_id() == meta_service->get_id());
+  assert(s->get_name() == meta_service->get_name());
+  assert(s->get_address() == meta_service->get_address());
+  assert(s->get_port() == meta_service->get_port());
+
   // Ask the Network Profile for an instance of the TestService
   AOSSL::ServiceInterface *found_service = \
       startup_profile.get_service(std::string("TestService"));
@@ -203,15 +215,17 @@ int main(int argc, char** argv) {
   assert(s->get_name() == found_service->get_name());
   assert(s->get_address() == found_service->get_address());
   assert(s->get_port() == found_service->get_port());
-  // Ask the Network Profile for an instance of the TestService
+
+  // Ask the Network Profile for an instance of a TestService that doesn't exist
   bool error_finding = false;
+  AOSSL::ServiceInterface *found_service2 = nullptr;
   try {
-    AOSSL::ServiceInterface *found_service2 = \
-        startup_profile.get_service(std::string("TestService-1"));
+    found_service2 = startup_profile.get_service(std::string("TestService-1"));
   } catch (std::exception& e) {
     error_finding = true;
   }
   assert(error_finding);
   delete s;
   delete found_service;
+  if (found_service2) delete found_service2;
 }
