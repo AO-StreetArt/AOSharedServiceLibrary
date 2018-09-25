@@ -55,6 +55,7 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
       // We now have a parsed JSON Object which contains
       // a list of known services to our local Consul Agent
       bool service_found = false;
+      bool loop_ended_early = false;
       int discovery_index = 0;
 
       // Iterate over the objects in the document
@@ -64,6 +65,7 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
         // then break out of the loop and return it
         if (service_found && discovery_index > last_returned_index) {
           last_returned_index = discovery_index - 1;
+          loop_ended_early = true;
           break;
         }
 
@@ -114,6 +116,9 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
           }
         }
         discovery_index++;
+      }
+      if (!loop_ended_early) {
+        last_returned_index = -1;
       }
       if (!service_found) {
         if (return_service) delete return_service;
