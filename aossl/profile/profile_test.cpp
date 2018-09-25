@@ -221,7 +221,7 @@ int main(int argc, char** argv) {
   AOSSL::ServiceInterface *found_service2 = NULL;
   try {
     found_service2 = startup_profile.get_service(std::string("TestService-1"));
-  catch (std::exception& e) {
+  } catch (std::exception& e) {
     error_detected = true;
   }
   assert(error_detected);
