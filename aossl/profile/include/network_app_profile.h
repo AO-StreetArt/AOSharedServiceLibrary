@@ -122,7 +122,7 @@ class NetworkApplicationProfile: public TieredApplicationProfile {
       }
       if (!service_found) {
         if (return_service) delete return_service;
-        return_service = nullptr;
+        return_service = NULL;
       }
     }
   }

@@ -217,8 +217,8 @@ int main(int argc, char** argv) {
   assert(s->get_port() == found_service->get_port());
 
   // Ask the Network Profile for an instance of a TestService that doesn't exist
-  AOSSL::ServiceInterface *found_service2 = nullptr;
-  found_service2 = startup_profile.get_service(std::string("TestService-1"));
+  AOSSL::ServiceInterface *found_service2 = \
+      startup_profile.get_service(std::string("TestService-1"));
   if (found_service) {
     std::cout << "Found Service: " << found_service2->to_json() << std::endl;
   }
