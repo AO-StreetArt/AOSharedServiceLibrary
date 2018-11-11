@@ -56,7 +56,7 @@
  *
  * By default, the profile will look for the following default sources, and use them if available:
  * - 'app.properties' in the root folder for the application
- * - '/etc/ivan/app.properties'
+ * - '/etc/{application-name}/app.properties'
  *
  * Please see the Consul Documentation for
  * more information on setting up an agent (https://www.consul.io/docs/agent/basics.html).
