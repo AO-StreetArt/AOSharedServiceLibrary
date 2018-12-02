@@ -51,35 +51,76 @@ class BaseHttpClient {
   std::string http_addr;
   std::string acl_token;
   std::string acl_token_name;
+
   inline void init(std::string& vaddr, int tout) {
     timeout=tout;
     http_addr.assign(vaddr);
   }
+
   inline void get_http_response(Poco::Net::HTTPClientSession& session, \
       AOSSL::StringBuffer& ret_buffer) {
     Poco::Net::HTTPResponse res;
-    std::istream& rs = session.receiveResponse(res);
-    if (res.getStatus() > Poco::Net::HTTPResponse::HTTP_PARTIAL_CONTENT) {
+    try {
+      std::istream& rs = session.receiveResponse(res);
+      if (res.getStatus() > Poco::Net::HTTPResponse::HTTP_PARTIAL_CONTENT) {
+        ret_buffer.success = false;
+        ret_buffer.err_msg.assign("Error sending message to Vault: " + res.getReason());
+      } else if (!(rs.good())) {
+        ret_buffer.success = false;
+        ret_buffer.err_msg.assign("Unknown error retrieving response from Vault");
+      } else {
+        std::istreambuf_iterator<char> eos;
+        std::string resp(std::istreambuf_iterator<char>(rs), eos);
+        ret_buffer.success = true;
+        ret_buffer.val.assign(resp);
+      }
+    } catch (std::exception& e) {
+      session.reset();
       ret_buffer.success = false;
-      ret_buffer.err_msg.assign("Error sending message to Vault: " + res.getReason());
-    } else {
-      std::istreambuf_iterator<char> eos;
-      std::string resp(std::istreambuf_iterator<char>(rs), eos);
-      ret_buffer.success = true;
-      ret_buffer.val.assign(resp);
+      ret_buffer.err_msg.assign(e.what());
     }
   }
+
   inline void send_http_request(Poco::Net::HTTPClientSession& session, \
       Poco::Net::HTTPRequest& req, AOSSL::StringBuffer& ret_buffer) {
-    session.sendRequest(req);
-    get_http_response(session, ret_buffer);
+    try {
+      std::ostream& request_body_inp = session.sendRequest(req);
+      if (request_body_inp.good()) {
+        get_http_response(session, ret_buffer);
+      } else {
+        // Reset the HTTP Session after a failure
+        session.reset();
+        ret_buffer.success = false;
+        ret_buffer.err_msg.assign("Unkown Failure sending HTTP Request");
+      }
+    } catch (std::exception& e) {
+      session.reset();
+      ret_buffer.success = false;
+      ret_buffer.err_msg.assign(e.what());
+    }
   }
+
   inline void send_http_request(Poco::Net::HTTPClientSession& session, \
       Poco::Net::HTTPRequest& req, std::string& body, AOSSL::StringBuffer& ret_buffer) {
     req.setContentLength(body.length());
-    session.sendRequest(req) << body;
-    get_http_response(session, ret_buffer);
+    try {
+      std::ostream& request_body_inp = session.sendRequest(req);
+      if (request_body_inp.good()) {
+         request_body_inp << body;
+         get_http_response(session, ret_buffer);
+      } else {
+        // Reset the HTTP Session after a failure
+        session.reset();
+        ret_buffer.success = false;
+        ret_buffer.err_msg.assign("Unkown Failure sending HTTP Request");
+      }
+    } catch (std::exception& e) {
+      session.reset();
+      ret_buffer.success = false;
+      ret_buffer.err_msg.assign(e.what());
+    }
   }
+
   inline void create_and_send_request(std::string& req_type, bool use_body, \
       std::string& query_url, std::string& body, AOSSL::StringBuffer& ret_buffer) {
     ret_buffer.success = false;
@@ -118,6 +159,7 @@ class BaseHttpClient {
       ret_buffer.err_msg.assign(e.what());
     }
   }
+
  public:
    //! Construct a secured HTTP Client
   BaseHttpClient(std::string& vaddr, int tout, std::string& cert) \
@@ -138,18 +180,21 @@ class BaseHttpClient {
     std::string req_type = Poco::Net::HTTPRequest::HTTP_PUT;
     create_and_send_request(req_type, true, query_url, body, ret_buffer);
   }
+
   //! Execute a Post query
   inline void post_by_reference(std::string& query_url, std::string& body, \
       AOSSL::StringBuffer& ret_buffer) {
     std::string req_type = Poco::Net::HTTPRequest::HTTP_POST;
     create_and_send_request(req_type, true, query_url, body, ret_buffer);
   }
+
   //! Execute a Get query
   inline void get_by_reference(std::string& query_url, AOSSL::StringBuffer& ret_buffer) {
     std::string body = "";
     std::string req_type = Poco::Net::HTTPRequest::HTTP_GET;
     create_and_send_request(req_type, false, query_url, body, ret_buffer);
   }
+
   //! Execute a Delete query
   inline void delete_by_reference(std::string& query_url, AOSSL::StringBuffer& ret_buffer) {
     std::string body = "";
