@@ -78,8 +78,6 @@ class TieredApplicationProfile: public SafeApplicationProfile{
         AOSSL::StringBuffer buf;
         kv->get_opt(key, buf);
         KeyValueStore::set_opt(key, buf.val);
-        config_record.push_back(std::string("Retrieved Record: ") + buf.val \
-            + std::string(" for key: ") + key);
       }
     }
   }
@@ -99,8 +97,6 @@ class TieredApplicationProfile: public SafeApplicationProfile{
         if (d.IsObject()) {
           const rapidjson::Value& token_val = d["data"]["data"][key.c_str()];
           return_buf.val.assign(token_val.GetString());
-          config_record.push_back(std::string("Retrieved Record for key: ") \
-              + key + std::string(" from Vault"));
         }
       }
     } else {
@@ -177,8 +173,6 @@ class TieredApplicationProfile: public SafeApplicationProfile{
             parsed_buffer.val, decoded_buffer);
           if (KeyValueStore::opt_exist(key)) {
             KeyValueStore::set_opt(key, decoded_buffer.val);
-            config_record.push_back(std::string("Retrieved Record: ") + decoded_buffer.val \
-                + std::string(" for key: ") + key + std::string(" from Consul"));
           }
         }
       }
@@ -198,8 +192,6 @@ class TieredApplicationProfile: public SafeApplicationProfile{
     if (env_value && KeyValueStore::opt_exist(key)) {
       std::string env_str(env_value);
       KeyValueStore::set_opt(key, env_str);
-      config_record.push_back(std::string("Retrieved Record: ") + env_str \
-          + std::string(" for key: ") + key + std::string(" from Environment Variable"));
     }
   }
 
